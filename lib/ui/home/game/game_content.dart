@@ -1,0 +1,59 @@
+import 'package:flutter/material.dart';
+import 'package:tgp_flutter/entity/user_profile.dart';
+import 'package:tgp_flutter/src/gradient_decoration.dart';
+import 'package:tgp_flutter/src/custom_color.dart';
+import 'package:gradient_text/gradient_text.dart';
+import 'package:outline_gradient_button/outline_gradient_button.dart';
+import 'package:tgp_flutter/extension/screen_apis.dart';
+
+class GameContent extends StatefulWidget {
+  final ScrollController controller;
+  final List<List< String>> list;
+
+  GameContent({
+    @required
+    this.controller,
+    this.list
+  });
+
+  @override
+  _GameContentState createState() => _GameContentState();
+}
+
+class _GameContentState extends State<GameContent> {
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Container(
+        padding: EdgeInsets.only(right:5.auto, ),
+        decoration: BoxDecoration(
+          color: CustomColor.very_light_pink_four,
+          borderRadius: BorderRadius.circular(5.auto)
+        ),
+        child: Scrollbar(
+          isAlwaysShown: true,
+         controller: widget.controller,
+          thickness:4.0,
+          radius: Radius.circular(1.4),
+          child: ListView(
+            padding: EdgeInsets.only(right: 5.auto),
+            controller: widget.controller,
+            children: widget.list.expand((element) => element).toList().map((item) => Container(
+                padding: EdgeInsets.only(left: (8.5).auto, right: 5.auto, top: (12.5).auto, bottom: 5.auto),
+                child: GestureDetector(
+                  onTap: (){
+                  },
+                  child:AspectRatio(
+                    aspectRatio: 335/90,
+                    child: Image.asset(
+                      'images/game/$item',
+                    ),
+                  ),
+                )
+            )).toList()
+          ),
+        ),
+      ),
+    );
+  }
+}

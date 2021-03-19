@@ -1,113 +1,166 @@
 import 'package:flutter/material.dart';
+import 'package:tgp_flutter/my_behavior.dart';
+import 'package:tgp_flutter/route/route_path.dart';
+import 'package:tgp_flutter/src/custom_color.dart';
+import 'package:tgp_flutter/src/gradient_decoration.dart';
+import 'package:tgp_flutter/ui/home/home.dart';
+import 'package:tgp_flutter/extension/screen_apis.dart';
+import 'package:tgp_flutter/ui/login/login.dart';
+import 'package:tgp_flutter/ui/menu/menu.dart';
+import 'package:flutter/services.dart';
+import 'package:tgp_flutter/ui/splash/splash.dart';
+import 'package:tgp_flutter/ui/splash/splash_view_model.dart';
 
 void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+class MyApp extends StatelessWidget{
+  final appTitle = 'Drawer Demo';
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
+    /*SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+        systemNavigationBarColor: Colors.transparent,
+        systemNavigationBarDividerColor: Colors.transparent,
+        systemNavigationBarIconBrightness: Brightness.light,
+        statusBarColor: Colors.transparent
+    ));*/
+    return GestureDetector(
+      onTap: () {
+        FocusScopeNode currentFocus = FocusScope.of(context);
+        if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) {
+          currentFocus.focusedChild.unfocus();
+        }
+      },
+      child:MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: appTitle,
+        initialRoute: '/',
+        routes: {
+          RoutePath.empty: (context) => Splash(),
+          RoutePath.home: (context) => MyHomePage(),
+          RoutePath.login: (context) => Login(),
+          RoutePath.menu: (context) => Menu(),
+
+        },
+        theme: ThemeData(
+          primaryColor: CustomColor.theme_bar_gradient_1,
+          highlightColor: CustomColor.theme_bar_gradient_2,
+        ),//MyHomePage(title: appTitle),
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
+class MyHomePage  extends StatefulWidget{
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  int currentBottomIndex = 0;
+  static List<Widget> _page = <Widget>[
+    Home(),
+    Home(),
+    Menu(),
+    Login(),
+    Login(),
+  ];
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
+  @override
+  void initState() {
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
+    return ScrollConfiguration(
+      behavior: MyBehavior(),
+      child: Scaffold(
+        body:Center(
+          child: _page[currentBottomIndex],
+        ),
+        bottomNavigationBar:
+        Visibility(
+          visible: currentBottomIndex!=2,
+          child: Container(
+            decoration: gradientDecoration,
+            child: BottomNavigationBar(
+              type: BottomNavigationBarType.fixed,
+              backgroundColor: Colors.transparent,
+              unselectedItemColor: Colors.white,
+              selectedItemColor: Colors.yellow,
+              currentIndex: currentBottomIndex,
+              showSelectedLabels: true,
+              showUnselectedLabels: true,
+              onTap: (int index){
+                setState(() {
+                  currentBottomIndex = index;
+                });
+              },
+              items: [
+                BottomNavigationBarItem(
+                  icon:ImageIcon(
+                    AssetImage("images/bottom_navigation_bar/ic_home.png"),
+                    size: 23.auto,
+                  ),
+                  title: Text("首页",
+                    style: TextStyle(
+                      fontSize: 11.auto,
+                    ),
+                  ),
+                ),
+                BottomNavigationBarItem(
+                  icon: ImageIcon(
+                    AssetImage("images/bottom_navigation_bar/ic_promotion.png"),
+                    size: 23.auto,
+                  ),
+                  title: Text("优惠",
+                    style: TextStyle(
+                      fontSize: 11.auto,
+                    ),
+                  ),
+                ),
+                BottomNavigationBarItem(
+                  icon:CircleAvatar(
+                    foregroundColor: Colors.white,
+                    backgroundColor: CustomColor.theme_circle_button_bg,
+                    child: ImageIcon(
+                      AssetImage("images/bottom_navigation_bar/ic_menu.png"),
+                      size: 25.auto,
+                    ),
+                  ),
+                  title: Text("",
+                  ),
+                ),
+                BottomNavigationBarItem(
+                  icon: ImageIcon(
+                    AssetImage("images/bottom_navigation_bar/ic_customer_service.png"),
+                    size: 23.auto,
+                  ),
+                  title: Text("客服",
+                    style: TextStyle(
+                      fontSize: 11.auto,
+                    ),
+                  ),
+                ),
+                BottomNavigationBarItem(
+                  icon: ImageIcon(
+                    AssetImage("images/bottom_navigation_bar/ic_profile.png"),
+                    size: 23.auto,
+                  ),
+                  title: Text("我的",
+                    style: TextStyle(
+                      fontSize: 11.auto,
+                    ),
+                  ),
+                ),
+              ],
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
+          ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
