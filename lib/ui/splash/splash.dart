@@ -18,6 +18,7 @@ class _SplashState extends State<Splash> {
   @override
   void initState() {
     _vm.getAuthToken();
+    _navigateToHome();
     super.initState();
   }
 

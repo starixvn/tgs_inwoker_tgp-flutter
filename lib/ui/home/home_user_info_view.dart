@@ -136,7 +136,6 @@ class _HomeUserInfoViewState extends State<HomeUserInfoView> {
   _buildLoginRegisterButton() => Container(
     padding: EdgeInsets.only(top:10.auto, left:25.auto, bottom: 10.auto),
     child: FlatButton(
-      minWidth: context.screenWidth / 3.5,
       padding: EdgeInsets.all(12),
       onPressed: () => widget.onLoginTap(),
       child: RichText(

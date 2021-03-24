@@ -25,32 +25,33 @@ class _GameContentState extends State<GameContent> {
   Widget build(BuildContext context) {
     return Expanded(
       child: Container(
-        padding: EdgeInsets.only(right:5.auto, ),
+        padding: EdgeInsets.only(right:5.auto, bottom: 5.auto),
         decoration: BoxDecoration(
           color: CustomColor.very_light_pink_four,
           borderRadius: BorderRadius.circular(5.auto)
         ),
-        child: Scrollbar(
+        child: RawScrollbar(
           isAlwaysShown: true,
-         controller: widget.controller,
-          thickness:4.0,
+          thumbColor: CustomColor.theme_bar_gradient_2,
+          thickness: 3.5,
           radius: Radius.circular(1.4),
+          controller: widget.controller,
           child: ListView(
-            padding: EdgeInsets.only(right: 5.auto),
-            controller: widget.controller,
-            children: widget.list.expand((element) => element).toList().map((item) => Container(
-                padding: EdgeInsets.only(left: (8.5).auto, right: 5.auto, top: (12.5).auto, bottom: 5.auto),
-                child: GestureDetector(
-                  onTap: (){
-                  },
-                  child:AspectRatio(
-                    aspectRatio: 335/90,
-                    child: Image.asset(
-                      'images/game/$item',
+              padding: EdgeInsets.only(right: 5.auto),
+              controller: widget.controller,
+              children: widget.list.expand((element) => element).toList().map((item) => Container(
+                  padding: EdgeInsets.only(left: (8.5).auto, right: 5.auto, top: (12.5).auto, bottom: 5.auto),
+                  child: GestureDetector(
+                    onTap: (){
+                    },
+                    child:AspectRatio(
+                      aspectRatio: 335/90,
+                      child: Image.asset(
+                        'images/game/$item',
+                      ),
                     ),
-                  ),
-                )
-            )).toList()
+                  )
+              )).toList()
           ),
         ),
       ),

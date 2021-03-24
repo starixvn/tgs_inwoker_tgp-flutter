@@ -89,8 +89,8 @@ class CustomDialog extends StatelessWidget{
   }
 
   _buildDoneButton(BuildContext context) => FlatButton(
-    minWidth:context.screenWidth/ 3.5,
-    height:context.screenHeight / 15,
+    //minWidth:context.screenWidth/ 3.5,
+    //height:context.screenHeight / 15,
     onPressed: () => {
       this.onClick()
     },
@@ -127,8 +127,8 @@ class CustomDialog extends StatelessWidget{
   );
 
   _buildBackButton(BuildContext context) =>FlatButton(
-    minWidth: context.screenWidth / 3.5,
-    height:  context.screenHeight / 15,
+    // minWidth: context.screenWidth / 3.5,
+    // height:  context.screenHeight / 15,
     //padding: EdgeInsets.all(12),
     onPressed: ()  {
       Navigator.pop(context);

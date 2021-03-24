@@ -25,6 +25,7 @@ class _GameState extends State<Game> {
   var _controller = ScrollController();
   var itemRatio = 335/90;
   var currentTabIndex= "0";
+  var key = GlobalKey();
 
   @override
   void initState() {
@@ -50,9 +51,12 @@ class _GameState extends State<Game> {
                   }).toList()
               ),
             ),
-            GameContent(
-              controller: _controller,
-              list: widget.gameList,
+            Container(
+              key: key,
+              child: GameContent(
+                controller: _controller,
+                list: widget.gameList,
+              ),
             )
           ],
         ),
@@ -97,7 +101,8 @@ class _GameState extends State<Game> {
   }
 
   _onTabClick(String tabIndex){
-    var itemHeight = (context.screenWidth-98)*(1/itemRatio) + 10.auto;
+    var width = key.currentContext.size.width;
+    var itemHeight = (width+5.auto)*(1/itemRatio) + 10.auto;
     var index = int.parse(tabIndex);
     var des = 0.0;
 
@@ -114,7 +119,8 @@ class _GameState extends State<Game> {
   }
 
   _scrollListener(){
-    var scrollTab = (context.screenWidth-98)*(1/itemRatio) + 10.auto;
+    var width = key.currentContext.size.width;
+    var scrollTab = (width+5.auto)*(1/itemRatio) + 10.auto;
     var des = 0.0;
     var index = 0;
 

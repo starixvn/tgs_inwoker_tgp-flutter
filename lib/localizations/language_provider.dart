@@ -1,0 +1,38 @@
+import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tgp_flutter/entity/language.dart';
+
+import 'my_localizations.dart';
+
+class LanguageProvider{
+  var list=[
+    Language("en","English", Locale("en", '')),
+    Language("zh_Hans","简体中文", Locale.fromSubtags(languageCode: "zh", scriptCode: "Hans")),
+    Language("zh_Hant","繁体中文", Locale.fromSubtags(languageCode: "zh", scriptCode: "Hant")),
+  ];
+  
+  Future<Locale> setLocale(Language language) async {
+    SharedPreferences _prefs = await SharedPreferences.getInstance();
+    await _prefs.setString("LANGUAGE_CODE", language.code);
+    return _locale(language);
+  }
+
+  Future<Locale> getLocale() async {
+    SharedPreferences _prefs = await SharedPreferences.getInstance();
+    String languageCode = _prefs.getString("LANGUAGE_CODE");
+    list.singleWhere((e) => e.code == languageCode);
+    return _locale(list.singleWhere((e) => e.code == languageCode));
+  }
+
+  Locale _locale(Language language) {
+    if(language == null){
+      return null;
+    }else{
+      return language.locale;
+    }
+  }
+
+  String getTranslated(BuildContext context, String key) {
+    return MyLocalizations.of(context).translate(key);
+  }
+}

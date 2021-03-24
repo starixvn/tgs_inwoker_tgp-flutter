@@ -1,0 +1,96 @@
+import 'package:flutter/material.dart';
+import 'package:tgp_flutter/extension/screen_apis.dart';
+import 'package:tgp_flutter/src/custom_color.dart';
+
+class LoginPasswordTextFormField extends StatefulWidget{
+  final Widget icon;
+  final String hintText;
+  final ValueChanged<String> onFieldSubmitted;
+  final ValueChanged<String> onChanged;
+  final Function onShowPassword;
+  final TextEditingController controller;
+  final double width;
+  final Widget button;
+  final TextInputType textInputType;
+  final TextInputAction textInputAction;
+  final bool obscurePassword;
+
+  LoginPasswordTextFormField({Key key,
+    this.icon,
+    this.hintText,
+    this.onChanged,
+    this.onFieldSubmitted,
+    this.onShowPassword,
+    this.controller,
+    this.width,
+    this.button,
+    this.textInputType,
+    this.textInputAction,
+    this.obscurePassword,
+  }) : super(key: key);
+
+  @override
+  _LoginPasswordTextFormFieldState createState() => _LoginPasswordTextFormFieldState();
+}
+
+class _LoginPasswordTextFormFieldState extends State<LoginPasswordTextFormField> {
+  Widget build(BuildContext context) {
+    return Container(
+      height: 50.auto,
+      padding: EdgeInsets.symmetric(horizontal: 10.auto, vertical: 5.auto),
+      decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border.all(
+              color: CustomColor.very_light_pink_two,
+              width: 2
+          )
+      ),
+      child: Row(
+        children: [
+          Container(
+            height: 20.auto,
+            margin: EdgeInsets.only(right: 5.auto),
+            child: widget.icon,
+          ),
+          Expanded(
+            child: TextFormField(
+              autofocus: false,
+              onChanged: (value) => widget.onChanged(value),
+              controller: widget.controller,
+              onFieldSubmitted: (value) => widget.onChanged(value),
+              keyboardType: widget.textInputType,
+              textInputAction: widget.textInputAction,
+              obscureText: widget.obscurePassword,
+              style: TextStyle(
+                  color: CustomColor.theme_value_text_color,
+                  fontSize: 13.auto
+              ),
+              decoration: InputDecoration(
+                isDense: true,
+                border: InputBorder.none,
+                hintText: widget.hintText,
+                hintStyle: TextStyle(
+                    color: CustomColor.very_light_pink_two,
+                    fontSize: 10.auto
+                ),
+                suffixIcon:  IconButton(
+                  iconSize: 18.auto,
+                  padding: EdgeInsets.only(bottom: 0),
+                  splashColor: Colors.transparent,
+                  highlightColor: Colors.transparent,
+                  icon: Icon(
+                      widget.obscurePassword
+                          ? Icons.visibility_off
+                          : Icons.visibility,
+                      color: CustomColor.very_light_pink_two
+                  ),
+                  onPressed:()=> widget.onShowPassword(),
+                ),
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}

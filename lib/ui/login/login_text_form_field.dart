@@ -13,7 +13,6 @@ class LoginTextFormField extends StatefulWidget{
   final Widget button;
   final TextInputType textInputType;
   final TextInputAction textInputAction;
-  final bool obscurePassword;
 
   LoginTextFormField({Key key,
     this.icon,
@@ -26,7 +25,6 @@ class LoginTextFormField extends StatefulWidget{
     this.button,
     this.textInputType,
     this.textInputAction,
-    this.obscurePassword,
   }) : super(key: key);
 
   @override
@@ -51,8 +49,7 @@ class _LoginTextFormFieldState extends State<LoginTextFormField> {
             margin: EdgeInsets.only(right: 5.auto),
             child: widget.icon,
           ),
-          Container(
-            width: 255.auto,
+          Expanded(
             child: TextFormField(
               autofocus: false,
               onChanged: (value) => widget.onChanged(value),
@@ -60,7 +57,6 @@ class _LoginTextFormFieldState extends State<LoginTextFormField> {
               onFieldSubmitted: (value) => widget.onChanged(value),
               keyboardType: widget.textInputType,
               textInputAction: widget.textInputAction,
-              obscureText: widget.obscurePassword ?? false,
               style: TextStyle(
                   color: CustomColor.theme_value_text_color,
                   fontSize: 13.auto
@@ -72,23 +68,6 @@ class _LoginTextFormFieldState extends State<LoginTextFormField> {
                 hintStyle: TextStyle(
                     color: CustomColor.very_light_pink_two,
                     fontSize: 10.auto
-                ),
-                suffixIcon: widget.textInputType == TextInputType.visiblePassword
-                    ? IconButton(
-                  iconSize: 18.auto,
-                  padding: EdgeInsets.only(bottom: 0),
-                  splashColor: Colors.transparent,
-                  highlightColor: Colors.transparent,
-                  icon: Icon(
-                      widget.obscurePassword
-                          ? Icons.visibility_off
-                          : Icons.visibility,
-                      color: CustomColor.very_light_pink_two
-                  ),
-                  onPressed:()=> widget.onShowPassword(),
-                ):Container(
-                  width: 0,
-                  height: 0,
                 ),
               ),
             ),

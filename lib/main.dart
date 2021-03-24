@@ -1,39 +1,73 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tgp_flutter/entity/language.dart';
+import 'package:tgp_flutter/localizations/language_provider.dart';
+import 'package:tgp_flutter/localizations/my_localizations.dart';
 import 'package:tgp_flutter/my_behavior.dart';
 import 'package:tgp_flutter/route/route_path.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
 import 'package:tgp_flutter/ui/home/home.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
+import 'package:tgp_flutter/ui/home/home_view_model.dart';
 import 'package:tgp_flutter/ui/login/login.dart';
+import 'package:tgp_flutter/ui/login/login_content.dart';
+import 'package:tgp_flutter/ui/login/login_view_model.dart';
 import 'package:tgp_flutter/ui/menu/menu.dart';
 import 'package:flutter/services.dart';
+import 'package:tgp_flutter/ui/profile/profile.dart';
 import 'package:tgp_flutter/ui/splash/splash.dart';
 import 'package:tgp_flutter/ui/splash/splash_view_model.dart';
 
 void main() {
   runApp(MyApp());
 }
+class MyApp extends StatefulWidget{
+  @override
+  _MyAppState createState() => _MyAppState();
 
-class MyApp extends StatelessWidget{
+  static void setLocale(BuildContext context, Locale newLocale) async {
+    _MyAppState state = context.findAncestorStateOfType<_MyAppState>();
+    state.setLocale(newLocale);
+  }
+
+}
+
+class _MyAppState extends State<MyApp> {
   final appTitle = 'Drawer Demo';
+  Locale _locale;
+  var langList = LanguageProvider().list.map((e) => e.locale).toList();
+
+  setLocale(Locale locale) {
+    setState(() {
+      _locale = locale;
+    });
+  }
+
+  @override
+  void didChangeDependencies() {
+    LanguageProvider().getLocale().then((locale) {
+      setState(() {
+        this._locale = locale;
+      });
+    });
+
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
-    /*SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-        systemNavigationBarColor: Colors.transparent,
-        systemNavigationBarDividerColor: Colors.transparent,
-        systemNavigationBarIconBrightness: Brightness.light,
-        statusBarColor: Colors.transparent
-    ));*/
     return GestureDetector(
       onTap: () {
         FocusScopeNode currentFocus = FocusScope.of(context);
-        if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) {
+        if (!currentFocus.hasPrimaryFocus &&
+            currentFocus.focusedChild != null) {
           currentFocus.focusedChild.unfocus();
         }
       },
-      child:MaterialApp(
+      child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: appTitle,
         initialRoute: '/',
@@ -42,17 +76,34 @@ class MyApp extends StatelessWidget{
           RoutePath.home: (context) => MyHomePage(),
           RoutePath.login: (context) => Login(),
           RoutePath.menu: (context) => Menu(),
-
+          RoutePath.profile: (context) => Profile(),
         },
         theme: ThemeData(
           primaryColor: CustomColor.theme_bar_gradient_1,
           highlightColor: CustomColor.theme_bar_gradient_2,
-        ),//MyHomePage(title: appTitle),
+        ),
+        //
+        localizationsDelegates: [
+          MyLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate
+        ],
+        // MyHomePage(title: appTitle),
+        supportedLocales: langList,
+        locale: _locale,
+        localeResolutionCallback: (locale, supportedLocales) {
+          for (var supportedLocale in supportedLocales) {
+            if (supportedLocale.languageCode == locale.languageCode &&
+                supportedLocale.scriptCode == locale.scriptCode) {
+              return supportedLocale;
+            }
+          }
+          return supportedLocales.first;
+        },
       ),
     );
   }
 }
-
 class MyHomePage  extends StatefulWidget{
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -65,7 +116,7 @@ class _MyHomePageState extends State<MyHomePage> {
     Home(),
     Menu(),
     Login(),
-    Login(),
+    Profile(),
   ];
 
   @override
@@ -75,7 +126,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return ScrollConfiguration(
+    return  ScrollConfiguration(
       behavior: MyBehavior(),
       child: Scaffold(
         body:Center(
@@ -85,82 +136,82 @@ class _MyHomePageState extends State<MyHomePage> {
         Visibility(
           visible: currentBottomIndex!=2,
           child: Container(
-            decoration: gradientDecoration,
-            child: BottomNavigationBar(
-              type: BottomNavigationBarType.fixed,
-              backgroundColor: Colors.transparent,
-              unselectedItemColor: Colors.white,
-              selectedItemColor: Colors.yellow,
-              currentIndex: currentBottomIndex,
-              showSelectedLabels: true,
-              showUnselectedLabels: true,
-              onTap: (int index){
-                setState(() {
-                  currentBottomIndex = index;
-                });
-              },
-              items: [
-                BottomNavigationBarItem(
-                  icon:ImageIcon(
-                    AssetImage("images/bottom_navigation_bar/ic_home.png"),
-                    size: 23.auto,
-                  ),
-                  title: Text("首页",
-                    style: TextStyle(
-                      fontSize: 11.auto,
-                    ),
-                  ),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  CustomColor.theme_bar_gradient_1,
+                  CustomColor.theme_bar_gradient_2
+                ],
+                begin: Alignment.bottomCenter,
+                end: Alignment.topCenter,
+              ),
+            ),
+            child: BottomAppBar(
+              child: Container(
+                decoration: gradientDecoration,
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    _buildBottomBarItem(0,"ic_home", "首页"),
+                    _buildBottomBarItem(1,"ic_promotion", "优惠"),
+                    _buildBottomBarItem(2,"ic_menu", ""),
+                    _buildBottomBarItem(3,"ic_customer_service", "客服"),
+                    _buildBottomBarItem(4,"ic_profile", "账号"),
+                  ],
                 ),
-                BottomNavigationBarItem(
-                  icon: ImageIcon(
-                    AssetImage("images/bottom_navigation_bar/ic_promotion.png"),
-                    size: 23.auto,
-                  ),
-                  title: Text("优惠",
-                    style: TextStyle(
-                      fontSize: 11.auto,
-                    ),
-                  ),
-                ),
-                BottomNavigationBarItem(
-                  icon:CircleAvatar(
-                    foregroundColor: Colors.white,
-                    backgroundColor: CustomColor.theme_circle_button_bg,
-                    child: ImageIcon(
-                      AssetImage("images/bottom_navigation_bar/ic_menu.png"),
-                      size: 25.auto,
-                    ),
-                  ),
-                  title: Text("",
-                  ),
-                ),
-                BottomNavigationBarItem(
-                  icon: ImageIcon(
-                    AssetImage("images/bottom_navigation_bar/ic_customer_service.png"),
-                    size: 23.auto,
-                  ),
-                  title: Text("客服",
-                    style: TextStyle(
-                      fontSize: 11.auto,
-                    ),
-                  ),
-                ),
-                BottomNavigationBarItem(
-                  icon: ImageIcon(
-                    AssetImage("images/bottom_navigation_bar/ic_profile.png"),
-                    size: 23.auto,
-                  ),
-                  title: Text("我的",
-                    style: TextStyle(
-                      fontSize: 11.auto,
-                    ),
-                  ),
-                ),
-              ],
+              ),
             ),
           ),
         ),
       ),
     );
   }
+
+  _buildBottomBarItem(int index, String imagePath, String title) => Expanded(
+    child:SizedBox(
+      height: 58.auto,
+      child: Material(
+        type: MaterialType.transparency,
+        child: InkWell(
+          onTap: () {
+            setState(() {
+              currentBottomIndex = index;
+            });
+          },
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              index!=2
+                  ? ImageIcon(
+                AssetImage("images/bottom_navigation_bar/$imagePath.png"),
+                size: 23.auto,
+                color: currentBottomIndex==index?Colors.yellow:Colors.white,)
+                  :CircleAvatar(
+                backgroundColor: CustomColor.theme_circle_button_bg,
+                child: ImageIcon(
+                  AssetImage("images/bottom_navigation_bar/$imagePath.png"),
+                  size: 41.auto,
+                  color: currentBottomIndex==index?Colors.yellow:Colors.white,
+                ),
+              ),
+              index==2
+                  ?Container()
+                  :Container(
+                margin: EdgeInsets.only(top: 3.auto),
+                child: Text(title,
+                  style: TextStyle(
+                    fontSize: 11.auto,
+                    color: currentBottomIndex==index?Colors.yellow:Colors.white,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+
+      ),
+    ),
+  );
 }

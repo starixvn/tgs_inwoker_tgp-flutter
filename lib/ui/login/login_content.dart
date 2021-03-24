@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tgp_flutter/custom/button.dart';
 import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/custom/custom_toast.dart';
+import 'package:tgp_flutter/entity/language.dart';
+import 'package:tgp_flutter/localizations/language_provider.dart';
+import 'package:tgp_flutter/main.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
+import 'package:tgp_flutter/ui/login/login_password_text_form_field.dart';
 import 'package:tgp_flutter/ui/login/login_text_form_field.dart';
 import 'package:tgp_flutter/ui/login/login_view_model.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
@@ -11,6 +16,9 @@ import 'dart:math' as math;
 import 'package:tgp_flutter/constants.dart' as Constants;
 
 class LoginContent extends StatefulWidget {
+  final child;
+  LoginContent({this.child, Key key}):super(key:key);
+
   @override
   _LoginContentState createState() =>
       _LoginContentState();
@@ -22,6 +30,7 @@ class _LoginContentState extends State<LoginContent> {
   var username = TextEditingController();
   var password = TextEditingController();
   var _vm = LoginViewModel();
+  final GlobalKey key = GlobalKey();
 
   @override
   void dispose() {
@@ -38,6 +47,11 @@ class _LoginContentState extends State<LoginContent> {
     });
   }
 
+  void _changeLanguage(Language language) async {
+    Locale _locale = await LanguageProvider().setLocale(language);
+    MyApp.setLocale(context, _locale);
+  }
+
   @override
   Widget build(BuildContext context) {
     return ProviderWidget<LoginViewModel>(
@@ -49,9 +63,10 @@ class _LoginContentState extends State<LoginContent> {
               Container(
                 margin: EdgeInsets.only(bottom: 10.auto),
                 child: LoginTextFormField(
-                  icon: Icon(
-                    Icons.person,
-                    color: Colors.black,
+                  icon: SvgPicture.asset(
+                    "images/login/ic_login_username.svg",
+                    matchTextDirection: true,
+                    height: 20.auto,
                   ),
                   hintText:Constants.username_hint,
                   onChanged:(value){
@@ -66,14 +81,10 @@ class _LoginContentState extends State<LoginContent> {
                   textInputAction:TextInputAction.next,
                 ),
               ),
-              LoginTextFormField(
-                icon: Transform(
-                  alignment: Alignment.center,
-                  transform: Matrix4.rotationY(math.pi),
-                  child: Icon(
-                    Icons.lock_open,
-                    color: Colors.black,
-                  ),
+              LoginPasswordTextFormField(
+                icon: SvgPicture.asset(
+                  "images/login/ic_login_password.svg",
+                  height: 20.auto,
                 ),
                 hintText:Constants.password_hint,
                 onChanged:(value){
@@ -104,7 +115,7 @@ class _LoginContentState extends State<LoginContent> {
               Container(
                 margin: EdgeInsets.only(top: 50.auto,bottom: 10.auto),
                 child: Button(
-                  title:"登录",
+                  title: LanguageProvider().getTranslated(context, "title_page"),
                   onClick:() =>_login(),
                   isEnabled:true,
                   isGrey: false,
@@ -113,11 +124,13 @@ class _LoginContentState extends State<LoginContent> {
               Button(
                 title:"先去逛逛",
                 onClick:(){
-                  Navigator.of(context).pushNamed("/home");
+                  Navigator.of(context).pushNamedAndRemoveUntil("/home",
+                      ModalRoute.withName("/login"));
                 },
                 isEnabled:true,
                 isGrey: true,
-              )
+              ),
+              _buildLanguageText()
             ],
           );
         }
@@ -138,6 +151,40 @@ class _LoginContentState extends State<LoginContent> {
       _vm.login(username.text,password.text, _isRememberMe);
 
     }
+  }
+
+  _buildLanguageText() {
+    var list = LanguageProvider().list;
+    var deviceLanguage = list.singleWhere((e) => e.locale == Localizations.localeOf(context));
+    return Container(
+      margin: EdgeInsets.only(top: 10.auto),
+      child: IntrinsicHeight(
+          child: new Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: List.generate(list.length, (index) {
+              return Row(
+                children: [
+                  InkWell(
+                      onTap: () {
+                        _changeLanguage(list[index]);
+                      },
+                      child: Text(
+                        list[index].name,
+                        style: TextStyle(
+                            color: deviceLanguage == list[index]?CustomColor.theme_bar_gradient_2:Colors.black
+                        ),
+                      )
+                  ),
+                  VerticalDivider(
+                    color: Colors.black,
+                  )
+                ],
+
+              );
+            }),
+          )
+      ),
+    );
   }
 
   _buildForgotPassword() =>

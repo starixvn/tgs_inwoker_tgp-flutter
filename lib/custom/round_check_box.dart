@@ -39,7 +39,7 @@ class _RoundCheckBoxState extends State<RoundCheckBox> {
           ),*/
         ),
         child: Icon(
-          Icons.circle,
+          Icons.check_circle,
           size: 22.0,
           color: Colors.black,
         ),

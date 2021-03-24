@@ -22,7 +22,6 @@ class _MenuState extends State<Menu> {
     return Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: Colors.black,
-        resizeToAvoidBottomPadding: false,
         body: Container(
           alignment: Alignment.bottomCenter,
           padding: EdgeInsets.only(top:10.auto, left: 10.auto, right: 10.auto),

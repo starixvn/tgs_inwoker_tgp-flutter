@@ -1,0 +1,15 @@
+{
+  "title_page": "i18n",
+  "title_appbar": "i18n",
+  "content": {
+    "currentLanguage": "The current language is English1",
+    "zh": "zh",
+    "zh_TW": "zh_TW",
+    "en": "en"
+  },
+  "setting": {
+    "theme": "Theme",
+    "language": "Language",
+    "switchLangMsg": "Switch language to {lang}"
+  }
+}

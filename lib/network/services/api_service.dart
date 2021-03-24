@@ -19,11 +19,12 @@ apiPost(final endPoint, final content, [isAuthorization = true]) async{
       body: jsonEncode(content),
   );
   log("Api<-Done:${response.statusCode} \n ${response.body}");
-  if (response.statusCode == 200) {
+  return response;
+  /*if (response.statusCode == 200) {
     return response;
   } else {
     throw Exception('Failed to post URL.');
-  }
+  }*/
 }
 
 apiGet(final endPoint, final content) async{
@@ -34,11 +35,12 @@ apiGet(final endPoint, final content) async{
     headers: header,
   );
   log("Api<-Done:${response.statusCode} \n ${response.body}");
-  if (response.statusCode == 200) {
+  return response;
+  /*if (response.statusCode == 200) {
     return response;
   } else {
     throw Exception('Failed to post URL.');
-  }
+  }*/
 }
 
 _injectTokenToHeader()async{

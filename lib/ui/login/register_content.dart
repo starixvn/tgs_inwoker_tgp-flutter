@@ -1,10 +1,12 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tgp_flutter/custom/button.dart';
 import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/custom/custom_toast.dart';
 import 'package:tgp_flutter/data/provider/input_validation_provider.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
+import 'package:tgp_flutter/ui/login/login_password_text_form_field.dart';
 import 'package:tgp_flutter/ui/login/login_text_form_field.dart';
 import 'package:tgp_flutter/ui/login/login_view_model.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
@@ -48,9 +50,9 @@ class _RegisterContentState extends State<RegisterContent> {
           child: Column(
             children: [
               LoginTextFormField(
-                icon: Icon(
-                  Icons.person,
-                  color: Colors.black,
+                icon: SvgPicture.asset(
+                  "images/login/ic_login_username.svg",
+                  height: 20.auto,
                 ),
                 hintText:Constants.signup_username_hint,
                 onChanged:(value){
@@ -66,14 +68,10 @@ class _RegisterContentState extends State<RegisterContent> {
               ),
               Container(
                 margin: EdgeInsets.only(top: 10.auto),
-                child: LoginTextFormField(
-                  icon: Transform(
-                    alignment: Alignment.center,
-                    transform: Matrix4.rotationY(math.pi),
-                    child: Icon(
-                      Icons.lock_open,
-                      color: Colors.black,
-                    ),
+                child: LoginPasswordTextFormField(
+                  icon: SvgPicture.asset(
+                    "images/login/ic_login_password.svg",
+                    height: 20.auto,
                   ),
                   hintText:Constants.password_hint,
                   onChanged:(value){
@@ -97,14 +95,10 @@ class _RegisterContentState extends State<RegisterContent> {
               ),
               Container(
                 margin: EdgeInsets.only(top: 10.auto),
-                child: LoginTextFormField(
-                  icon: Transform(
-                    alignment: Alignment.center,
-                    transform: Matrix4.rotationY(math.pi),
-                    child: Icon(
-                      Icons.lock_open,
-                      color: Colors.black,
-                    ),
+                child: LoginPasswordTextFormField(
+                  icon: SvgPicture.asset(
+                    "images/login/ic_login_password.svg",
+                    height: 20.auto,
                   ),
                   hintText:Constants.confirm_password_hint,
                   onChanged:(value){
@@ -129,9 +123,9 @@ class _RegisterContentState extends State<RegisterContent> {
               Container(
                 margin: EdgeInsets.only(top: 10.auto),
                 child: LoginTextFormField(
-                  icon: Icon(
-                    Icons.person,
-                    color: Colors.black,
+                  icon: SvgPicture.asset(
+                    "images/login/ic_login_pig.svg",
+                    height: 20.auto,
                   ),
                   hintText:Constants.pay_hint,
                   onChanged:(value){
@@ -149,9 +143,9 @@ class _RegisterContentState extends State<RegisterContent> {
               Container(
                 margin: EdgeInsets.only(top: 10.auto),
                 child: LoginTextFormField(
-                  icon: Icon(
-                    Icons.person,
-                    color: Colors.black,
+                  icon: SvgPicture.asset(
+                    "images/login/ic_login_pig.svg",
+                    height: 20.auto,
                   ),
                   hintText:Constants.confirm_pay_hint,
                   onChanged:(value){
@@ -169,9 +163,9 @@ class _RegisterContentState extends State<RegisterContent> {
               Container(
                 margin: EdgeInsets.only(top: 10.auto),
                 child: LoginTextFormField(
-                  icon: Icon(
-                    Icons.person,
-                    color: Colors.black,
+                  icon: SvgPicture.asset(
+                    "images/login/ic_login_promotion.svg",
+                    height: 20.auto,
                   ),
                   hintText:Constants.promotion_hint,
                   onChanged:(value){

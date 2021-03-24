@@ -1,0 +1,15 @@
+{
+  "title_page": "国际化例子1",
+  "title_appbar": "国际化例子",
+  "content": {
+    "currentLanguage": "当前语言是中文1",
+    "zh": "中文",
+    "zh_TW": "繁体中文",
+    "en": "英文"
+  },
+  "setting": {
+    "theme": "主题",
+    "language": "语言",
+    "switchLangMsg": "切换语言成 {lang}"
+  }
+}
