@@ -16,21 +16,6 @@ class HomeViewModel extends BaseViewModel{
   bool isNotLogin = false, isExpired = false;
   var getGameState;
 
-  resumeIfNeed() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    var token = prefs.getString("token");
-    if (token != null) {
-      print(token);
-      setLoading();
-      notifyListeners();
-      await userRepo.getBasicInfo();
-      setLoading(false);
-      if (userProfile == null) isExpired = true;
-    }
-    else
-      isNotLogin = true;
-  }
-
   markIsNotLogin(){
     isNotLogin=false;
   }

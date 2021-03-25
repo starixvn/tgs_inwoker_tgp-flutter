@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/custom/custom_toast.dart';
 import 'package:tgp_flutter/entity/user_profile.dart';
+import 'package:tgp_flutter/localizations/language_provider.dart';
 import 'package:tgp_flutter/my_behavior.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
@@ -27,16 +28,16 @@ class _ProfileState extends State<Profile> {
   }
 
   Widget build(BuildContext context) {
-    /*if(_vm.userProfile !=null) {
+    if(_vm.userProfile !=null) {
       user = _vm.userProfile;
-      _vm.getTotalBalance();
-      _getVipDetails();
+      /*_vm.getTotalBalance();
+      _getVipDetails();*/
     }
     else{
       WidgetsBinding.instance.addPostFrameCallback((_) {
         Navigator.of(context).pushNamed("/login");
       });
-    }*/
+    }
     return ProviderWidget<ProfileViewModel>(
         model: _vm,
         builder: (ctx, vm, _) {
@@ -44,8 +45,8 @@ class _ProfileState extends State<Profile> {
           return Scaffold(
               resizeToAvoidBottomInset: false,
               backgroundColor: Colors.white,
-              body: /*_vm.userProfile!=null ?*/
-              Container(
+              body: _vm.userProfile!=null
+                  ? Container(
                 padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -95,14 +96,14 @@ class _ProfileState extends State<Profile> {
                                       padding: EdgeInsets.only(
                                           top: 3.auto, bottom: 3.auto),
                                       //"¥ ${widget.userProfile?.balance}",
-                                      child: Text("主帐户 : ¥ 0.00",// ¥ ${Format().currencyWithDecimalFormat(double.parse(user?.balance))}",
+                                      child: Text(getTranslatedText("main_wallet")+" : ¥ 0.00",// ¥ ${Format().currencyWithDecimalFormat(double.parse(user?.balance))}",
                                         style: TextStyle(
                                             color: Colors.white,
                                             fontSize: (11.2).auto
                                         ),
                                         textAlign: TextAlign.start,
                                       ),
-                                    ), Text("总资金 : ¥ 0.00",//"总资金  "+(_vm.totalBalance != null ? "¥ "+ Format().currencyWithDecimalFormat(_vm.totalBalance) : "-"),
+                                    ), Text(getTranslatedText("total_balance")+" : ¥ 0.00",//"总资金  "+(_vm.totalBalance != null ? "¥ "+ Format().currencyWithDecimalFormat(_vm.totalBalance) : "-"),
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontSize: (11.2).auto
@@ -127,9 +128,9 @@ class _ProfileState extends State<Profile> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              ProfileTopItem(title:"存款",imagePath:"ic_deposit", routePath:""),
-                              ProfileTopItem(title:"转账",imagePath:"ic_transfer", routePath:""),
-                              ProfileTopItem(title:"提款",imagePath:"ic_withdraw", routePath:""),
+                              ProfileTopItem(title:getTranslatedText("deposit") ,imagePath:"ic_deposit", routePath:""),
+                              ProfileTopItem(title:getTranslatedText("transfer"),imagePath:"ic_transfer", routePath:""),
+                              ProfileTopItem(title:getTranslatedText("withdrawal"),imagePath:"ic_withdraw", routePath:""),
                             ],
                           ),
                         ),
@@ -152,21 +153,21 @@ class _ProfileState extends State<Profile> {
                                 crossAxisSpacing: 25.auto,
                                 mainAxisSpacing: 20.auto,
                                 children: [
-                                  ProfileBottomItem(title:"个人资料", imagePath:"ic_profile_user_detail", routePath:""),
-                                  ProfileBottomItem(title:"消息中心", imagePath:"ic_message",routePath:""),
-                                  ProfileBottomItem(title:"转换记录", imagePath:"ic_account_detail",routePath:""),
-                                  ProfileBottomItem(title:"投注明细", imagePath:"ic_bet_transaction",routePath:""),
-                                  ProfileBottomItem(title:"管理银行卡", imagePath:"ic_card_detail",routePath:""),
-                                  ProfileBottomItem(title:"推荐好友", imagePath:"ic_refer_friend",routePath:""),
-                                  ProfileBottomItem(title:"常见问题", imagePath:"ic_profile_question",routePath:""),
-                                  ProfileBottomItem(title:"语言", imagePath:"ic_lang",routePath:""),
+                                  ProfileBottomItem(title: getTranslatedText("profile_detail"), imagePath:"ic_profile_user_detail", routePath:""),
+                                  ProfileBottomItem(title: getTranslatedText("message_center"), imagePath:"ic_message",routePath:""),
+                                  ProfileBottomItem(title: getTranslatedText("transfer_history"), imagePath:"ic_account_detail",routePath:""),
+                                  ProfileBottomItem(title: getTranslatedText("bet_history"), imagePath:"ic_bet_transaction",routePath:""),
+                                  ProfileBottomItem(title: getTranslatedText("manage_card"), imagePath:"ic_card_detail",routePath:""),
+                                  ProfileBottomItem(title: getTranslatedText("refer_friend"), imagePath:"ic_refer_friend",routePath:""),
+                                  ProfileBottomItem(title: getTranslatedText("frequent_question"), imagePath:"ic_profile_question",routePath:""),
+                                  ProfileBottomItem(title: getTranslatedText("language"), imagePath:"ic_lang",routePath:""),
                                 ],
                               ),
                               Container(
                                   padding: EdgeInsets.only(bottom: 10.auto),
                                   child: ElevatedButton(
                                       child: Text(
-                                          "退出登录",
+                                          getTranslatedText("logout"),
                                           style: TextStyle(fontSize: (16.3).auto)
                                       ),
                                       style: ButtonStyle(
@@ -188,10 +189,13 @@ class _ProfileState extends State<Profile> {
                     ]
                 ),
               )
+                  : Container()
           );
         }
     );
   }
+
+  getTranslatedText(String key) => LanguageProvider().getTranslated(context, key);
 
   _handleApiState(ProfileViewModel vm) {
     if(vm.logoutApiState == null) return;

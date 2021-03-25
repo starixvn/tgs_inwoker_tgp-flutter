@@ -48,12 +48,13 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void didChangeDependencies() {
-    LanguageProvider().getLocale().then((locale) {
-      setState(() {
-        this._locale = locale;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      LanguageProvider().getLocale().then((locale) {
+        setState(() {
+          this._locale = locale;
+        });
       });
     });
-
     super.didChangeDependencies();
   }
 
@@ -153,11 +154,11 @@ class _MyHomePageState extends State<MyHomePage> {
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    _buildBottomBarItem(0,"ic_home", "首页"),
-                    _buildBottomBarItem(1,"ic_promotion", "优惠"),
+                    _buildBottomBarItem(0,"ic_home", LanguageProvider().getTranslated(context, "home")),
+                    _buildBottomBarItem(1,"ic_promotion", LanguageProvider().getTranslated(context, "promotion")),
                     _buildBottomBarItem(2,"ic_menu", ""),
-                    _buildBottomBarItem(3,"ic_customer_service", "客服"),
-                    _buildBottomBarItem(4,"ic_profile", "账号"),
+                    _buildBottomBarItem(3,"ic_customer_service", LanguageProvider().getTranslated(context, "customer_service")),
+                    _buildBottomBarItem(4,"ic_profile", LanguageProvider().getTranslated(context, "my_profile")),
                   ],
                 ),
               ),

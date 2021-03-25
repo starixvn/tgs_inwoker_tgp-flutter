@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/custom/custom_toast.dart';
@@ -49,7 +50,7 @@ class _ProfileBottomItemState extends State<ProfileBottomItem> {
         elevation: 5,
         child: Container(
           //margin: EdgeInsets.symmetric(vertical: 13,horizontal: 10),
-          margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 15.auto),
+          margin: EdgeInsets.only(left: 10.auto, right: 9.auto, top: 10.auto, bottom: 9.auto),
           child: Column(
             children: [
               ImageIcon(
@@ -58,10 +59,14 @@ class _ProfileBottomItemState extends State<ProfileBottomItem> {
               ),
               Padding(
                 padding: EdgeInsets.only(top: 10.auto),
-                child: Text(widget.title,
+                child: AutoSizeText(
+                  widget.title,
                   style: TextStyle(
-                      fontSize: 11.auto
+                      fontSize: (9.5).auto
                   ),
+                  textAlign: TextAlign.center,
+                  maxLines: 2,
+                  minFontSize:9.auto,
                 ),
               )
             ],

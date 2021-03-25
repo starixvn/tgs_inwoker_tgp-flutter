@@ -17,7 +17,10 @@ class _SplashState extends State<Splash> {
 
   @override
   void initState() {
-    _vm.getAuthToken();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _vm.getAuthToken();
+      _vm.resumeIfNeed();
+    });
     _navigateToHome();
     super.initState();
   }

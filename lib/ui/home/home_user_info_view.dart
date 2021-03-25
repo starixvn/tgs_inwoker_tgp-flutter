@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter/entity/user_profile.dart';
+import 'package:tgp_flutter/localizations/language_provider.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:gradient_text/gradient_text.dart';
@@ -23,10 +24,8 @@ class HomeUserInfoView extends StatefulWidget {
 }
 
 class _HomeUserInfoViewState extends State<HomeUserInfoView> {
-
   @override
   Widget build(BuildContext context) {
-    String txtWelcome = widget.userProfile != null ? "欢迎你回来，" : "亲爱的用户您好，请先登录...";
     return Card(
       semanticContainer: true,
       clipBehavior: Clip.antiAliasWithSaveLayer,
@@ -41,11 +40,13 @@ class _HomeUserInfoViewState extends State<HomeUserInfoView> {
           children: [
             Container(
               width: context.screenWidth,
-              padding: EdgeInsets.only(top: 5.auto, left: 12.auto, right: 12.auto, bottom: 5.auto),
+              padding: EdgeInsets.only(top: 5.auto, left: 10.auto, right: 10.auto, bottom: 5.auto),
               child: Row(
                 children: [
                   Text(
-                    txtWelcome,
+                    (widget.userProfile != null
+                        ?getTranslatedText("welcome_back")+widget.userProfile.username
+                        :getTranslatedText("home_login_hint"))??"",
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: 10.auto
@@ -74,7 +75,7 @@ class _HomeUserInfoViewState extends State<HomeUserInfoView> {
                   ) : Wrap(),
                   Spacer(),
                   Text(
-                    "个人资料",
+                    getTranslatedText("profile_detail"),
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: 10.auto
@@ -85,7 +86,7 @@ class _HomeUserInfoViewState extends State<HomeUserInfoView> {
               ),
             ),
             Container(
-              padding: EdgeInsets.only(top: 5.auto, bottom:5.auto),
+              padding: EdgeInsets.only(top: 5.auto, bottom:5.auto, left: 10.auto, right: 10.auto),
               color: CustomColor.theme_color_1_40.withOpacity(0.4),
               child:  Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -104,7 +105,7 @@ class _HomeUserInfoViewState extends State<HomeUserInfoView> {
                             ),
                           ),
                           Text(
-                            "主账户",
+                            getTranslatedText("main_wallet"),
                             style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 10.auto
@@ -118,9 +119,9 @@ class _HomeUserInfoViewState extends State<HomeUserInfoView> {
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      _buildHomeIcon("ic_deposit", "存款" ),
-                      _buildHomeIcon("ic_transfer", "转账"),
-                      _buildHomeIcon("ic_withdraw", "提款")
+                      _buildHomeIcon("ic_deposit", getTranslatedText("deposit") ),
+                      _buildHomeIcon("ic_transfer", getTranslatedText("transfer")),
+                      _buildHomeIcon("ic_withdraw", getTranslatedText("withdrawal"))
                     ],
                   ),
                 ],
@@ -133,8 +134,14 @@ class _HomeUserInfoViewState extends State<HomeUserInfoView> {
     );
   }
 
-  _buildLoginRegisterButton() => Container(
-    padding: EdgeInsets.only(top:10.auto, left:25.auto, bottom: 10.auto),
+  getTranslatedText(String key) => LanguageProvider().getTranslated(context, key);
+
+  _buildLoginRegisterButton(){
+    var string = getTranslatedText("login_or_signup").split("/");
+    var loginString = string[0];
+    var registerString = "/"+string[1];
+    return Container(
+    padding: EdgeInsets.only(top:10.auto, bottom: 10.auto),
     child: FlatButton(
       padding: EdgeInsets.all(12),
       onPressed: () => widget.onLoginTap(),
@@ -146,14 +153,14 @@ class _HomeUserInfoViewState extends State<HomeUserInfoView> {
             ),
             children: [
               TextSpan(
-                  text: "登录",
+                  text: loginString,
                   style: TextStyle(
                       color: CustomColor.theme_label_text_highlight_color,
                     fontSize: (11.8).auto
                   )
               ),
               TextSpan(
-                  text: "/注册",
+                  text: registerString,
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: (11.8).auto
@@ -172,10 +179,11 @@ class _HomeUserInfoViewState extends State<HomeUserInfoView> {
       color: CustomColor.theme_circle_button_bg,
     ),
   );
+  }
 
   _buildHomeIcon(String imagePath, String title) =>
       Container(
-        margin: EdgeInsets.only(right: 20.auto),
+        margin: EdgeInsets.only(left: 20.auto),
         child: Column(
           children: [
             CircleAvatar(

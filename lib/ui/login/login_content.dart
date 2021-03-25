@@ -13,7 +13,6 @@ import 'package:tgp_flutter/ui/login/login_text_form_field.dart';
 import 'package:tgp_flutter/ui/login/login_view_model.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'dart:math' as math;
-import 'package:tgp_flutter/constants.dart' as Constants;
 
 class LoginContent extends StatefulWidget {
   final child;
@@ -68,7 +67,7 @@ class _LoginContentState extends State<LoginContent> {
                     matchTextDirection: true,
                     height: 20.auto,
                   ),
-                  hintText:Constants.username_hint,
+                  hintText: getTranslatedText("enter_username_hint"),
                   onChanged:(value){
 
                   },
@@ -86,7 +85,7 @@ class _LoginContentState extends State<LoginContent> {
                   "images/login/ic_login_password.svg",
                   height: 20.auto,
                 ),
-                hintText:Constants.password_hint,
+                hintText:getTranslatedText("enter_password_hint"),
                 onChanged:(value){
 
                 },
@@ -115,14 +114,14 @@ class _LoginContentState extends State<LoginContent> {
               Container(
                 margin: EdgeInsets.only(top: 50.auto,bottom: 10.auto),
                 child: Button(
-                  title: LanguageProvider().getTranslated(context, "title_page"),
+                  title: getTranslatedText("login"),
                   onClick:() =>_login(),
                   isEnabled:true,
                   isGrey: false,
                 ),
               ),
               Button(
-                title:"先去逛逛",
+                title:getTranslatedText("login_later"),
                 onClick:(){
                   Navigator.of(context).pushNamedAndRemoveUntil("/home",
                       ModalRoute.withName("/login"));
@@ -137,14 +136,16 @@ class _LoginContentState extends State<LoginContent> {
     );
   }
 
+  getTranslatedText(String key) => LanguageProvider().getTranslated(context, key);
+
   _login() {
     if (username.text == "") {
       setState(() {
-        CustomToast.show('请输入用户名');
+        CustomToast.show(getTranslatedText("enter_username_hint"));
       });
     } else if (password.text == "") {
       setState(() {
-        CustomToast.show('请输入密码');
+        CustomToast.show(getTranslatedText("enter_password_hint"));
       });
     } else {
       CustomProgressDialog.show(context);
@@ -194,7 +195,7 @@ class _LoginContentState extends State<LoginContent> {
           //_buildCheckBox(),
           InkWell(
             child: Text(
-              '忘記密碼?',
+              getTranslatedText("forgot_password_with_question_mark"),
               style: TextStyle(
                 color: Colors.black,
                 decoration:TextDecoration.underline,
@@ -218,7 +219,7 @@ class _LoginContentState extends State<LoginContent> {
                 }),
           ),
           Text(
-            "記住账号",
+           getTranslatedText("rmb_password"),
             style: TextStyle(
                 color: Colors.black
             ),

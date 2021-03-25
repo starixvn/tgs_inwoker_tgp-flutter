@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
+import 'package:tgp_flutter/localizations/language_provider.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 
 import 'menu_item.dart';
@@ -33,55 +34,55 @@ class _MenuState extends State<Menu> {
                   children: [
                     MenuItem(
                       image:"ic_menu_deposit",
-                      text:"存款",
+                      text:getTranslatedText("deposit"),
                       navigationPath: "deposit",
                       navigationID: 0,
                     ),
                     MenuItem(
-                      image:"ic_menu_transfer"
-                      ,text:"转账",
+                      image:"ic_menu_transfer",
+                      text: getTranslatedText("transfer"),
                       navigationPath: "wallet_transfer",
                       navigationID: 0,
                     ),
                     MenuItem(
                       image:"ic_menu_withdraw",
-                      text:"提款",
+                      text: getTranslatedText("withdrawal"),
                       navigationPath: "withdraw",
                       navigationID: 0,
                     ),
                     MenuItem(
                       image:"ic_menu_transfer_history",
-                      text:"账户明细",
+                      text: getTranslatedText("transfer_history"),
                       navigationPath: "transaction",
                       navigationID: 0,
                     ),
                     MenuItem(
                       image:"ic_menu_bet_history",
-                      text:"投注明细",
+                      text: getTranslatedText("bet_history"),
                       navigationPath: "transaction",
                       navigationID: 1,
                     ),
                     MenuItem(
                       image:"ic_menu_withdraw_history",
-                      text:"每日投注",
+                      text: getTranslatedText("withdrawal_history"),
                       navigationPath: "transaction",
                       navigationID: 2,
                     ),
                     MenuItem(
                       image:"ic_menu_deposit_history",
-                      text:"管理银行卡",
+                      text: getTranslatedText("deposit_history"),
                       navigationPath: "main_card",
                       navigationID: 0,
                     ),
                     MenuItem(
                       image:"ic_menu_card",
-                      text:"消息中心",
+                      text: getTranslatedText("manage_card"),
                       navigationPath: "message",
                       navigationID: 0,
                     ),
                     MenuItem(
                       image:"ic_menu_message_center",
-                      text:"红利中心",
+                      text: getTranslatedText("message_center"),
                       navigationPath: "bonus",
                       navigationID: 0,
                     ),
@@ -106,6 +107,8 @@ class _MenuState extends State<Menu> {
         )
     );
   }
+
+  getTranslatedText(String key) => LanguageProvider().getTranslated(context, key);
 }
 
 

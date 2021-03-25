@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tgp_flutter/custom/custom_dialog.dart';
 import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/entity/user_profile.dart';
+import 'package:tgp_flutter/localizations/language_provider.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/ui/home/home_user_info_view.dart';
@@ -23,38 +24,38 @@ class _HomeState extends State<Home> {
     'images/banner_1.jpg',
     //'images/banner_2.jpg'
   ];
-  String marquee = "《GD真人维护公告》GD真人将于 7 月 28 日 09:00 至 14:00 进行维护 维护期间不提供游戏相关服务。若有问题欢迎与在线客服联系 如有问题欢迎与在线客服联系，谢谢";
+  String marquee = "《GD真人维护公告》GD真人将于 7 月 2 8 日 09:00 至 14:00 进行维护 维护期间不提供游戏相关服务。若有问题欢迎与在线客服联系 如有问题欢迎与在线客服联系，谢谢";
   ScrollController controller = ScrollController();
   var currentTabIndex = "0";
   var tab =
   [
     {
       "id":"0",
-      "text":"真人"
+      "text":"cat_livecasino"
     },
     {
       "id":"1",
-      "text":"棋牌"
+      "text":"cat_qipai"
     },
     {
       "id":"2",
-      "text":"体育"
+      "text":"cat_sport"
     },
     {
       "id":"3",
-      "text":"彩票"
+      "text":"cat_lottery"
     },
     {
       "id":"4",
-      "text":"电子"
+      "text":"cat_slotgame"
     },
     {
       "id":"5",
-      "text":"老虎"
+      "text":"cat_laohu"
     },
     {
       "id":"6",
-      "text":"捕鱼"
+      "text":"cat_fish"
     },
   ];
   UserProfile user;
@@ -88,7 +89,6 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    // _vm.resumeIfNeed();
   }
 
   Widget build(BuildContext context) {
@@ -137,7 +137,7 @@ class _HomeState extends State<Home> {
                     Container(
                       padding: EdgeInsets.only(left: 10.auto),
                       child: Text(
-                        "公告",
+                        LanguageProvider().getTranslated(context, "notice"),
                         style: TextStyle(
                             fontSize: (13.5).auto,
                             fontWeight: FontWeight.w600

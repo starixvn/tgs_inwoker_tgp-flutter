@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter/entity/user_profile.dart';
+import 'package:tgp_flutter/localizations/language_provider.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:gradient_text/gradient_text.dart';
@@ -81,7 +82,7 @@ class _GameState extends State<Game> {
         ),
         child: Center(
             child: Text(
-              title,
+              LanguageProvider().getTranslated(context, title),
               style: TextStyle(
                   fontSize: 17.auto,
                   fontWeight: FontWeight.bold,
