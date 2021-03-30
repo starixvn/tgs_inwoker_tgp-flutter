@@ -6,7 +6,7 @@ import 'package:tgp_flutter/repository/base_repository.dart';
 import 'package:tgp_flutter/repository/user_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class LoginViewModel extends BaseViewModel{
+class LoginViewModel extends BaseViewModel {
   final userRepo = UserRepository.getSingleton();
   var logoutApiState, getAllWalletState;
 
@@ -19,11 +19,10 @@ class LoginViewModel extends BaseViewModel{
   bool isLoginResultHandled = false;
   bool isRegisterResultHandled = false;
 
-  login(String username, String password, bool rememberMe)async{
+  login(String username, String password, bool rememberMe) async {
     setLoading();
     loginApiState = await userRepo.login(username, password);
-    isLoginResultHandled = false;
-    if(loginApiState.isSuccess){
+    if (loginApiState.isSuccess) {
       token = loginApiState.result.token;
       print(token);
       savePreferences(username, password, rememberMe);
@@ -33,17 +32,13 @@ class LoginViewModel extends BaseViewModel{
     return loginApiState;
   }
 
-  register(
-      String username,
-      String password,
-      String rpassword,
-      String currency,
-      [String invitationCode]
-      ) async {
+  register(String username, String password, String rpassword, String currency,
+      [String invitationCode]) async {
     setLoading();
     isRegisterResultHandled = false;
-    registerApiState = await userRepo.register(username, password, rpassword, currency, invitationCode??"");
-    if(registerApiState.isSuccess){
+    registerApiState = await userRepo.register(
+        username, password, rpassword, currency, invitationCode ?? "");
+    if (registerApiState.isSuccess) {
       token = registerApiState.result;
       savePreferences(username, password, true);
       getUserInfo();
@@ -52,32 +47,34 @@ class LoginViewModel extends BaseViewModel{
     return registerApiState;
   }
 
-  getUserInfo()async{
+  getUserInfo() async {
     await userRepo.getBasicInfo();
   }
-  savePreferences( String username, String password, bool rememberMe) async{
+
+  savePreferences(String username, String password, bool rememberMe) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString("token", token);
-    if(rememberMe){
+    if (rememberMe) {
       prefs.setString("username", username);
       prefs.setString("password", password);
     }
   }
 
-  getUsername() async{
+  getUsername() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString("username") ?? "";
   }
 
-  getPassword() async{
+  getPassword() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString("password")?? "";
+    return prefs.getString("password") ?? "";
   }
 
-  markAsRegisterResultHandled(){
+  markAsRegisterResultHandled() {
     isRegisterResultHandled = true;
   }
-  markAsLoginResultHandled(){
+
+  markAsLoginResultHandled() {
     isLoginResultHandled = true;
   }
 }
