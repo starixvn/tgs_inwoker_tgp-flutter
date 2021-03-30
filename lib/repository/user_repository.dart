@@ -1,4 +1,6 @@
-import 'package:tgp_flutter/entity/login_response.dart';
+import 'package:tgp_flutter/entity/response/check_username_response.dart';
+import 'package:tgp_flutter/entity/response/login_response.dart';
+import 'package:tgp_flutter/entity/response/register_response.dart';
 import 'package:tgp_flutter/entity/user_profile.dart';
 import 'package:tgp_flutter/network/event_result.dart';
 import 'package:tgp_flutter/network/services/api_service.dart';
@@ -30,7 +32,7 @@ class UserRepository extends BaseRepository{
     return resolveResponse(response,(json) => LoginResponse.fromJson(json));
   }
 
-  Future<EventResult<String>> register(
+  Future<EventResult<RegisterResponse>> register(
       String username,
       String password,
       String rpassword,
@@ -48,20 +50,17 @@ class UserRepository extends BaseRepository{
           "agent": true,
           "testplayer": true
         },false);
-    return resolveBaseResponse(response,(json) => (json as String));
+    return resolveResponse(response,(json) => RegisterResponse.fromJson(json));
   }
 
   Future<EventResult<UserProfile>> getBasicInfo() async {
-    var response = await apiGet(
-        "api/Player/info",
-        {
-        });
+    var response = await apiGet("api/Player/info");
     return resolveBaseResponse(response,(json) => UserProfile.fromJson(json),(result) => userProfile = result);
   }
 
   Future<EventResult<String>> logout() async{
-    var response = await apiPost(
-        "passport/logout",
+    var response = await apiDelete(
+        "api/Player/logout",
         {
         });
     userProfile = null;
@@ -76,5 +75,14 @@ class UserRepository extends BaseRepository{
           "currency": "CNY"
         });
     return resolveResponse(response,(json) => LoginResponse.fromJson(json));
+  }
+
+  Future<EventResult<CheckUsernameResponse>> checkUsername(String username) async{
+    var response = await apiGet(
+        "api/Player/checkUsername",
+        content:{
+          "username": username,
+        });
+    return resolveResponse(response,(json) => CheckUsernameResponse.fromJson(json));
   }
 }

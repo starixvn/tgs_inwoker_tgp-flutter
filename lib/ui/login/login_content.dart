@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:tgp_flutter/custom/button.dart';
+import 'package:tgp_flutter/custom/color_button.dart';
 import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/custom/custom_toast.dart';
+import 'package:tgp_flutter/custom/gradient_button.dart';
 import 'package:tgp_flutter/entity/language.dart';
 import 'package:tgp_flutter/localizations/language_provider.dart';
 import 'package:tgp_flutter/main.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
+import 'package:tgp_flutter/ui/base_state.dart';
 import 'package:tgp_flutter/ui/login/login_password_text_form_field.dart';
 import 'package:tgp_flutter/ui/login/login_text_form_field.dart';
 import 'package:tgp_flutter/ui/login/login_view_model.dart';
@@ -23,7 +25,7 @@ class LoginContent extends StatefulWidget {
       _LoginContentState();
 }
 
-class _LoginContentState extends State<LoginContent> {
+class _LoginContentState extends BaseState<LoginContent> {
   bool _obscurePassword = true;
   bool _isRememberMe = true;
   var username = TextEditingController();
@@ -56,7 +58,7 @@ class _LoginContentState extends State<LoginContent> {
     return ProviderWidget<LoginViewModel>(
         model: _vm,
         builder: (ctx, vm, _) {
-          _handleApiState(vm);
+          _handleApiState();
           return Column(
             children: [
               Container(
@@ -68,12 +70,8 @@ class _LoginContentState extends State<LoginContent> {
                     height: 20.auto,
                   ),
                   hintText: getTranslatedText("enter_username_hint"),
-                  onChanged:(value){
-
-                  },
-                  onFieldSubmitted:(value){
-
-                  },
+                  onChanged:(value) => null,
+                  onFieldSubmitted:(value) => null,
                   controller:username,
                   width:context.screenWidth,
                   textInputType:TextInputType.text,
@@ -86,12 +84,8 @@ class _LoginContentState extends State<LoginContent> {
                   height: 20.auto,
                 ),
                 hintText:getTranslatedText("enter_password_hint"),
-                onChanged:(value){
-
-                },
-                onFieldSubmitted:(value){
-
-                },
+                onChanged:(value) => null,
+                onFieldSubmitted:(value) => _login(),
                 controller:password,
                 width:context.screenWidth,
                 textInputType:TextInputType.visiblePassword,
@@ -113,21 +107,23 @@ class _LoginContentState extends State<LoginContent> {
               ),
               Container(
                 margin: EdgeInsets.only(top: 50.auto,bottom: 10.auto),
-                child: Button(
+                child: GradientButton(
                   title: getTranslatedText("login"),
                   onClick:() =>_login(),
                   isEnabled:true,
-                  isGrey: false,
+                  radius: 2.9,
+                  height: 44.5,
                 ),
               ),
-              Button(
+              GradientButton(
                 title:getTranslatedText("login_later"),
                 onClick:(){
                   Navigator.of(context).pushNamedAndRemoveUntil("/home",
                       ModalRoute.withName("/login"));
                 },
                 isEnabled:true,
-                isGrey: true,
+                radius: 2.9,
+                height: 44.5,
               ),
               _buildLanguageText()
             ],
@@ -135,8 +131,6 @@ class _LoginContentState extends State<LoginContent> {
         }
     );
   }
-
-  getTranslatedText(String key) => LanguageProvider().getTranslated(context, key);
 
   _login() {
     if (username.text == "") {
@@ -150,7 +144,6 @@ class _LoginContentState extends State<LoginContent> {
     } else {
       CustomProgressDialog.show(context);
       _vm.login(username.text,password.text, _isRememberMe);
-
     }
   }
 
@@ -219,7 +212,7 @@ class _LoginContentState extends State<LoginContent> {
                 }),
           ),
           Text(
-           getTranslatedText("rmb_password"),
+            getTranslatedText("rmb_password"),
             style: TextStyle(
                 color: Colors.black
             ),
@@ -227,19 +220,10 @@ class _LoginContentState extends State<LoginContent> {
         ],
       );
 
-  _handleApiState(LoginViewModel vm) {
-    if(vm.loginApiState == null) return;
-    if(!vm.isLoginResultHandled){
-      if ((vm.loginApiState?.isError ?? false) ) {
-        CustomProgressDialog.hide();
-        CustomToast.show(vm.loginApiState.error);
-      }
-      if(vm.loginApiState.isSuccess){
-        CustomProgressDialog.hide();
-        _navigateToHome();
-      }
-    }
-    vm.markAsLoginResultHandled();
+  _handleApiState() {
+    handleApiState(_vm.loginApiState, onSuccess:(){
+      _navigateToHome();
+    });
   }
 
   _navigateToHome(){

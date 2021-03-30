@@ -84,7 +84,7 @@
   "rmb_password":"Remember Password",
   "enter_username_hint":"Please enter your username",
   "enter_password_hint":"Please enter your password",
-  "signup_username_hint":"Username (8-16 Alphanumeric)",
+  "signup_username_hint":"Username (6-32 Alphanumeric)",
   "signup_password_hint":"Password (8+ Alphanumeric)",
   "confirm_password":"Confirm Password",
   "signup_pay_password_hint":"Pay Password (6 Digit)",
@@ -168,10 +168,11 @@
   "receiver_bank_account":"Receiver Bank Account",
   "receiver_bank_number":"Receiver Bank Number",
   "cancel":"Cancel",
-  "enter_username_error_message": "Username must 8-16 characters",
+  "enter_username_error_message": "Username must be between 6-32 characters",
   "enter_password_error_msg" : "Password must consist of 6-20 letters or numbers",
   "confirm_password_error_msg" : "Confirm password is not same with password",
   "password_validate_error_msg" :"Password can only enter letters, numbers special symbols",
-  "confirm_pay_error_msg" :"Confirm pay password is not same with pay password"
+  "confirm_pay_error_msg" :"Confirm pay password is not same with pay password",
+  "slotgame_title": "Slot Game"
 }
 

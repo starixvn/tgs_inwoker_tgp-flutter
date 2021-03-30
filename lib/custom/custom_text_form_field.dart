@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
+import 'package:tgp_flutter/ui/base_state.dart';
 
 class CustomTextFormField extends StatefulWidget{
-  final Icon icon;
+  final String title;
   final String hintText;
   final ValueChanged<String> onFieldSubmitted;
   final ValueChanged<String> onChanged;
@@ -15,7 +16,7 @@ class CustomTextFormField extends StatefulWidget{
   final TextInputAction textInputAction;
 
   CustomTextFormField({Key key,
-    this.icon,
+    this.title,
     this.hintText,
     this.onChanged,
     this.onFieldSubmitted,
@@ -31,40 +32,67 @@ class CustomTextFormField extends StatefulWidget{
   _CustomTextFormFieldState createState() => _CustomTextFormFieldState();
 }
 
-class _CustomTextFormFieldState extends State<CustomTextFormField> {
+class _CustomTextFormFieldState extends BaseState<CustomTextFormField> {
   Widget build(BuildContext context) {
-    return Container(
-      child: Row(
-        children: [
-          widget.icon,
-          Container(
-            width: 100.auto,
-            child: TextFormField(
-              autofocus: false,
-              onChanged: (value) => widget.onChanged(value),
-              focusNode: widget.focusNode,
-              controller: widget.controller,
-              onFieldSubmitted: (value) => widget.onChanged(value),
-              keyboardType: widget.textInputType,
-              textInputAction: widget.textInputAction,
-              obscureText: (widget.textInputType == TextInputType.visiblePassword)? true: false,
-              style: TextStyle(
-                  color: CustomColor.theme_value_text_color,
-                  fontSize: 13.auto
+    return Card(
+        semanticContainer: true,
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+        elevation: 5,
+        //margin:EdgeInsets.only(top:15.auto,),
+        child: Container(
+          margin: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+          child:  Row(
+            children: [
+              Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Container(
+                      width: widget.width,
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                        widget.title,
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 9.auto
+                        ),
+                        textAlign: TextAlign.start,
+                      ),
+                    ),
+                    Container(
+                      width: widget.width,
+                      child: TextFormField(
+                        autofocus: false,
+                        onChanged: (value) => widget.onChanged(value),
+                        focusNode: widget.focusNode,
+                        controller: widget.controller,
+                        onFieldSubmitted: (value) => widget.onChanged(value),
+                        keyboardType: widget.textInputType,
+                        textInputAction: widget.textInputAction,
+                        obscureText: (widget.textInputType == TextInputType.visiblePassword)? true: false,
+                        style: TextStyle(
+                            color: CustomColor.theme_value_text_color,
+                            fontSize: 13.auto
+                        ),
+                        decoration: InputDecoration(
+                          isDense: true,
+                          border: InputBorder.none,
+                          hintText: widget.hintText,
+                          hintStyle: TextStyle(
+                              color: CustomColor.very_light_pink_two,
+                              fontSize: 13.auto
+                          ),
+                        ),
+                      ),
+                    ),
+                  ]
               ),
-              decoration: InputDecoration(
-                isDense: true,
-                border: InputBorder.none,
-                hintText: widget.hintText,
-                hintStyle: TextStyle(
-                    color: CustomColor.very_light_pink_two,
-                    fontSize: 13.auto
-                ),
-              ),
-            ),
-          )
-        ],
-      ),
+              widget.button==null?Container():widget.button
+            ],
+          ),
+        )
     );
   }
 }

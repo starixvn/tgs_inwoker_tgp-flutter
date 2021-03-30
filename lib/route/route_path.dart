@@ -40,4 +40,6 @@ class RoutePath{
   static final bonus = '/bonus';
   static final ipDeny = '/ip_deny';
   static final customerService = '/customer_service';
+  static final referFriend = '/refer_friend';
+  static final frequentQuestion = '/frequent_question';
 }

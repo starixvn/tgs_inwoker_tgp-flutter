@@ -18,21 +18,15 @@ class ProfileViewModel extends BaseViewModel{
   get userProfile => userRepo.userProfile;
 
   logout() async{
-    logoutApiState = EventResult.loading();
-    var value  = await UserRepository.getSingleton().logout();
-    logoutApiState = value;
-    if(value.isSuccess){
+    setLoading();;
+    logoutApiState  = await UserRepository.getSingleton().logout();
+    if(logoutApiState.isSuccess){
       final SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setString("token", null);
+      await prefs.remove("token");
     }
-    notifyListeners();
-    return value;
+    setLoading();
+    return logoutApiState;
   }
-
-  markAsNavigated(){
-    logoutApiState = null;
-  }
-
   /*getTotalBalance(){
     WalletRepository.getSingleton().getAllWallet();
   }

@@ -5,6 +5,7 @@ import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:gradient_text/gradient_text.dart';
 import 'package:outline_gradient_button/outline_gradient_button.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
+import 'package:tgp_flutter/ui/base_state.dart';
 
 class GameContent extends StatefulWidget {
   final ScrollController controller;
@@ -20,7 +21,7 @@ class GameContent extends StatefulWidget {
   _GameContentState createState() => _GameContentState();
 }
 
-class _GameContentState extends State<GameContent> {
+class _GameContentState extends BaseState<GameContent> {
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -42,8 +43,7 @@ class _GameContentState extends State<GameContent> {
               children: widget.list.expand((element) => element).toList().map((item) => Container(
                   padding: EdgeInsets.only(left: (8.5).auto, right: 5.auto, top: (12.5).auto, bottom: 5.auto),
                   child: GestureDetector(
-                    onTap: (){
-                    },
+                    onTap: () => _navigateToChildGame(),
                     child:AspectRatio(
                       aspectRatio: 335/90,
                       child: Image.asset(
@@ -56,5 +56,11 @@ class _GameContentState extends State<GameContent> {
         ),
       ),
     );
+  }
+
+  _navigateToChildGame(){
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Navigator.of(context).pushNamed("/child_game");
+    });
   }
 }

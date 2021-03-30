@@ -5,6 +5,7 @@ import 'package:tgp_flutter/entity/user_profile.dart';
 import 'package:tgp_flutter/localizations/language_provider.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
+import 'package:tgp_flutter/ui/base_state.dart';
 import 'package:tgp_flutter/ui/home/home_user_info_view.dart';
 import 'package:tgp_flutter/ui/home/home_view_model.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
@@ -19,7 +20,7 @@ class Home extends StatefulWidget{
   _HomeState createState() => _HomeState();
 }
 
-class _HomeState extends State<Home> {
+class _HomeState extends BaseState<Home> {
   List<String> imgList = [
     'images/banner_1.jpg',
     //'images/banner_2.jpg'
@@ -88,6 +89,7 @@ class _HomeState extends State<Home> {
 
   @override
   void initState() {
+    _vm.resumeIfNeed();
     super.initState();
   }
 
@@ -95,7 +97,7 @@ class _HomeState extends State<Home> {
     return ProviderWidget<HomeViewModel>(
         model: _vm,
         builder: (ctx, vm, _) {
-          /*if(_vm.isNotLogin) {
+          if(_vm.isNotLogin) {
             navigateToLogin();
             _vm.markIsNotLogin();
           }
@@ -103,7 +105,7 @@ class _HomeState extends State<Home> {
             WidgetsBinding.instance.addPostFrameCallback((_) {
               _displayDialog();
             });
-          }*/
+          }
           return Scaffold(
             resizeToAvoidBottomInset: false,
             backgroundColor: Colors.white,
@@ -214,7 +216,7 @@ class _HomeState extends State<Home> {
     });
   }
 
-/*_displayDialog() async {
+_displayDialog() async {
     if (_vm.userProfile == null) {
       showDialog(context: context,
         builder: (BuildContext context) => CustomDialog(
@@ -226,5 +228,5 @@ class _HomeState extends State<Home> {
         ),
       );
     }
-  }*/
+  }
 }

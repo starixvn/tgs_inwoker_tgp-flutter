@@ -9,6 +9,11 @@ import 'package:tgp_flutter/my_behavior.dart';
 import 'package:tgp_flutter/route/route_path.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
+import 'package:tgp_flutter/ui/base_state.dart';
+import 'package:tgp_flutter/ui/card/main_card.dart';
+import 'package:tgp_flutter/ui/deposit/deposit.dart';
+import 'package:tgp_flutter/ui/frequentQuestion/frequentQuestion.dart';
+import 'package:tgp_flutter/ui/home/child_game/child_game.dart';
 import 'package:tgp_flutter/ui/home/home.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/ui/home/home_view_model.dart';
@@ -17,9 +22,15 @@ import 'package:tgp_flutter/ui/login/login_content.dart';
 import 'package:tgp_flutter/ui/login/login_view_model.dart';
 import 'package:tgp_flutter/ui/menu/menu.dart';
 import 'package:flutter/services.dart';
+import 'package:tgp_flutter/ui/message/message.dart';
 import 'package:tgp_flutter/ui/profile/profile.dart';
+import 'package:tgp_flutter/ui/promotion/promotion_page.dart';
+import 'package:tgp_flutter/ui/referFriend/refer_friend.dart';
 import 'package:tgp_flutter/ui/splash/splash.dart';
 import 'package:tgp_flutter/ui/splash/splash_view_model.dart';
+import 'package:tgp_flutter/ui/transaction/transaction.dart';
+import 'package:tgp_flutter/ui/transfer/wallet_transfer.dart';
+import 'package:tgp_flutter/ui/withdraw/withdraw.dart';
 
 void main() {
   runApp(MyApp());
@@ -35,7 +46,7 @@ class MyApp extends StatefulWidget{
 
 }
 
-class _MyAppState extends State<MyApp> {
+class _MyAppState extends BaseState<MyApp> {
   final appTitle = 'Drawer Demo';
   Locale _locale;
   var langList = LanguageProvider().list.map((e) => e.locale).toList();
@@ -78,6 +89,16 @@ class _MyAppState extends State<MyApp> {
           RoutePath.login: (context) => Login(),
           RoutePath.menu: (context) => Menu(),
           RoutePath.profile: (context) => Profile(),
+          RoutePath.promotion: (context) => PromotionPage(),
+          RoutePath.childGame: (context) => ChildGame(),
+          RoutePath.deposit: (context) => Deposit(),
+          RoutePath.walletTransfer: (context) => WalletTransfer(),
+          RoutePath.withdraw: (context) => Withdraw(),
+          RoutePath.transaction: (context) => Transaction(),
+          RoutePath.mainCard: (context) => MainCard(),
+          RoutePath.message: (context) => Message(),
+          RoutePath.frequentQuestion: (context) => FrequentQuestion(),
+          RoutePath.referFriend: (context) => ReferFriend(),
         },
         theme: ThemeData(
           primaryColor: CustomColor.theme_bar_gradient_1,
@@ -110,11 +131,11 @@ class MyHomePage  extends StatefulWidget{
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends BaseState<MyHomePage> {
   int currentBottomIndex = 0;
   static List<Widget> _page = <Widget>[
     Home(),
-    Home(),
+    PromotionPage(),
     Menu(),
     Login(),
     Profile(),

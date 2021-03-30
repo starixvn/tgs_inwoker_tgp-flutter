@@ -3,6 +3,8 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
+import 'package:tgp_flutter/ui/base_state.dart';
+import 'package:tgp_flutter/ui/transaction/transaction.dart';
 
 class MenuItem extends StatefulWidget{
   final String image;
@@ -21,7 +23,7 @@ class MenuItem extends StatefulWidget{
   _MenuItemState createState() => _MenuItemState();
 }
 
-class _MenuItemState extends State<MenuItem> {
+class _MenuItemState extends BaseState<MenuItem> {
   var tabIndex;
   @override
   void initState() {
@@ -30,12 +32,12 @@ class _MenuItemState extends State<MenuItem> {
 
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: () => _onClick(),
       child: Column(
         children: [
           FloatingActionButton(
             heroTag: null,
-            onPressed: () {},
+            onPressed: () => _onClick(),
             child: ImageIcon(
               AssetImage("images/menu/${widget.image}.png"),
               size: 25.auto,
@@ -63,5 +65,20 @@ class _MenuItemState extends State<MenuItem> {
         ],
       ),
     );
+  }
+
+  _onClick(){
+    if(widget.navigationID==0){
+      Navigator.of(context).pushNamed("/${widget.navigationPath}");
+    }else {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  Transaction(
+                    tabIndex: widget.navigationID,
+                  )
+          ));
+    }
   }
 }

@@ -6,7 +6,8 @@ class UserProfile {
   UserProfile();
 
   String username;
-  String realname;
+  @JsonKey(name: 'realname')
+  String realName;
   String phone;
   String email;
   String qq;

@@ -9,7 +9,7 @@ part of 'user_profile.dart';
 UserProfile _$UserProfileFromJson(Map<String, dynamic> json) {
   return UserProfile()
     ..username = json['username'] as String
-    ..realname = json['realname'] as String
+    ..realName = json['realname'] as String
     ..phone = json['phone'] as String
     ..email = json['email'] as String
     ..qq = json['qq'] as String
@@ -19,7 +19,7 @@ UserProfile _$UserProfileFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$UserProfileToJson(UserProfile instance) =>
     <String, dynamic>{
       'username': instance.username,
-      'realname': instance.realname,
+      'realname': instance.realName,
       'phone': instance.phone,
       'email': instance.email,
       'qq': instance.qq,

@@ -8,8 +8,8 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
   getTranslatedText(String key) =>
       LanguageProvider().getTranslated(context, key);
 
-  handleApiState(EventResult eventResult, Function onSuccess,
-      {Function onError, bool isAutoHideLoading = true}) {
+  handleApiState(EventResult eventResult,{ Function onSuccess,
+      Function onError, bool isAutoHideLoading = true, bool isRequireResult = false}) {
     if (eventResult == null) return;
     if (!eventResult.isHandled) {
       if (eventResult.isError) {
@@ -21,7 +21,10 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
         }
       } else if (eventResult.isSuccess) {
         if (isAutoHideLoading) CustomProgressDialog.hide();
-        onSuccess(eventResult.result);
+        if(isRequireResult){
+          onSuccess(eventResult.result);
+        }
+        else onSuccess();
       }
     }
     eventResult.isHandled = true;

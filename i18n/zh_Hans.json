@@ -84,7 +84,7 @@
   "rmb_password":"记住密码",
   "enter_username_hint":"请输入您的账号",
   "enter_password_hint":"请输入您的密码",
-  "signup_username_hint":"请输入用户名(8-16位英文或数字)",
+  "signup_username_hint":"请输入用户名(6-32位英文或数字)",
   "signup_password_hint":"请输入密码(8位以上数字+字母)",
   "confirm_password":"确认密码",
   "signup_pay_password_hint":"提现密码(6位数字)",
@@ -168,11 +168,12 @@
   "receiver_bank_account":"收款银行账户",
   "receiver_bank_number":"收款银行账号",
   "cancel":"取消",
-  "enter_username_error_message": "用户名需8-16个字符",
+  "enter_username_error_message": "用户名需6-32个字符",
   "enter_password_error_msg" : "密码由6-20个英文字母或者数字组成",
   "confirm_password_error_msg" : "确认密码与密码不一致",
   "password_validate_error_msg" :"密码只能输入英文字母、数字或特殊符号",
-  "confirm_pay_error_msg" :"重复提款密码与提款密码不一致"
+  "confirm_pay_error_msg" :"重复提款密码与提款密码不一致",
+  "slotgame_title": "电子游戏"
 }
 
 

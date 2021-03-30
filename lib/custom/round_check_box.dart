@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
+import 'package:tgp_flutter/ui/base_state.dart';
 
 class RoundCheckBox extends StatefulWidget{
   final bool isEdit;
@@ -13,7 +14,7 @@ class RoundCheckBox extends StatefulWidget{
   _RoundCheckBoxState createState() => _RoundCheckBoxState();
 }
 
-class _RoundCheckBoxState extends State<RoundCheckBox> {
+class _RoundCheckBoxState extends BaseState<RoundCheckBox> {
   Widget build(BuildContext context) {
     return  Container(
       child: widget.isEdit

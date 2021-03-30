@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
+import 'package:tgp_flutter/ui/base_state.dart';
 
 class LoginTextFormField extends StatefulWidget{
   final Widget icon;
@@ -31,7 +32,7 @@ class LoginTextFormField extends StatefulWidget{
   _LoginTextFormFieldState createState() => _LoginTextFormFieldState();
 }
 
-class _LoginTextFormFieldState extends State<LoginTextFormField> {
+class _LoginTextFormFieldState extends BaseState<LoginTextFormField> {
   Widget build(BuildContext context) {
     return Container(
       height: 40.auto,
@@ -46,7 +47,7 @@ class _LoginTextFormFieldState extends State<LoginTextFormField> {
       child: Row(
         children: [
           Container(
-            margin: EdgeInsets.only(right: 5.auto),
+            margin: EdgeInsets.only(right: 10.auto),
             child: widget.icon,
           ),
           Expanded(
@@ -62,12 +63,11 @@ class _LoginTextFormFieldState extends State<LoginTextFormField> {
                   fontSize: 13.auto
               ),
               decoration: InputDecoration(
-                isDense: true,
                 border: InputBorder.none,
                 hintText: widget.hintText,
                 hintStyle: TextStyle(
                     color: CustomColor.very_light_pink_two,
-                    fontSize: 10.auto
+                    fontSize: 13.auto
                 ),
               ),
             ),

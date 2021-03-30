@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
+import 'package:tgp_flutter/ui/base_state.dart';
 
 class CustomTabBar extends StatefulWidget{
   final int index;
@@ -13,7 +14,7 @@ class CustomTabBar extends StatefulWidget{
   _CustomTabBarState createState() => _CustomTabBarState();
 }
 
-class _CustomTabBarState extends State<CustomTabBar> {
+class _CustomTabBarState extends BaseState<CustomTabBar> {
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,

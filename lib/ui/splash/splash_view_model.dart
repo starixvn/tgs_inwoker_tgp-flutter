@@ -12,8 +12,6 @@ class SplashViewModel extends BaseViewModel{
 
   @override
   List<BaseRepository> get repoList => [userRepo];
-  get userProfile => userRepo.userProfile;
-  bool isNotLogin = false, isExpired = false;
 
   getAuthToken()async{
     setLoading();
@@ -21,24 +19,10 @@ class SplashViewModel extends BaseViewModel{
     if(authApiState.isSuccess){
       authToken = authApiState.result.token;
       savePreferences(authToken);
+      print("Authorization:"+authToken);
     }
     setLoading(false);
     return authApiState;
-  }
-
-  resumeIfNeed() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    var token = prefs.getString("token");
-    if (token != null) {
-      print(token);
-      setLoading();
-      notifyListeners();
-      await userRepo.getBasicInfo();
-      setLoading(false);
-      if (userProfile == null) isExpired = true;
-    }
-    else
-      isNotLogin = true;
   }
 
   savePreferences(String authToken) async{

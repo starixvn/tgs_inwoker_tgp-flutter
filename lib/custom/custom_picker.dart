@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
+import 'package:tgp_flutter/ui/base_state.dart';
 
 class CustomPicker extends StatefulWidget{
   final String title;
@@ -24,7 +25,7 @@ class CustomPicker extends StatefulWidget{
   _CustomPickerState createState() => _CustomPickerState();
 }
 
-class _CustomPickerState extends State<CustomPicker> {
+class _CustomPickerState extends BaseState<CustomPicker> {
   Widget build(BuildContext context) {
     return Card(
       semanticContainer: true,
@@ -60,7 +61,7 @@ class _CustomPickerState extends State<CustomPicker> {
                       child: AutoSizeText(
                         widget.displayText,
                         style: TextStyle(
-                            color: widget.isHintText?Colors.red:Colors.black,
+                            color: widget.isHintText?CustomColor.theme_bar_gradient_1:Colors.black,
                         ),
                         maxFontSize: 12,
                         minFontSize: 8,

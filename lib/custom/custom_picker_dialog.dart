@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tgp_flutter/extension/format.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
+import 'package:tgp_flutter/ui/base_state.dart';
 
 class CustomPickerDialog extends StatefulWidget{
   final String title;
@@ -18,7 +19,7 @@ class CustomPickerDialog extends StatefulWidget{
   _CustomPickerDialogState createState() => _CustomPickerDialogState();
 }
 
-class _CustomPickerDialogState extends State<CustomPickerDialog> {
+class _CustomPickerDialogState extends BaseState<CustomPickerDialog> {
   //var isListEmpty = false;
   Widget build(BuildContext context) {
     return Container(
@@ -57,7 +58,6 @@ class _CustomPickerDialogState extends State<CustomPickerDialog> {
                   dense: true,
                 );
               }),
-
             ),
           ]
       ),

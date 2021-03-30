@@ -27,10 +27,27 @@ apiPost(final endPoint, final content, [isAuthorization = true]) async{
   }*/
 }
 
-apiGet(final endPoint, final content) async{
+apiGet(final endPoint, {final content}) async{
+  var uri = Uri.https("dev.operator.tgsdev.gq" , endPoint, content);
   print("Api->Get:${_url+endPoint}");
   var header = await _injectTokenToHeader();
   http.Response response = await http.get(
+    uri,
+    headers: header,
+  );
+  log("Api<-Done:${response.statusCode} \n ${response.body}");
+  return response;
+  /*if (response.statusCode == 200) {
+    return response;
+  } else {
+    throw Exception('Failed to post URL.');
+  }*/
+}
+
+apiDelete(final endPoint, final content) async{
+  print("Api->Get:${_url+endPoint}");
+  var header = await _injectTokenToHeader();
+  http.Response response = await http.delete(
     _url + endPoint,
     headers: header,
   );
@@ -50,8 +67,18 @@ _injectTokenToHeader()async{
     _header["Authorization"] = "Bearer "+authToken;
   }
   var token = prefs.getString("token");
-  if(authToken != null) {
+  if(token != null) {
     _header["Token"] = token;
   }
   return _header;
+}
+
+_apiGetContent(final endPoint, final content) async{
+  var header = await _injectTokenToHeader();
+  http.Response response = await http.post(
+    _url + endPoint,
+    headers: header,
+    body: jsonEncode(content),
+  );
+  return response;
 }

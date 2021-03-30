@@ -1,6 +1,6 @@
 class InputValidationProvider{
   validateUsernameLength(String username){
-    return RegExp("^.{8,16}\$",
+    return RegExp("^.{6,32}\$",
         caseSensitive: false,
         multiLine: false
     ).hasMatch(username);
@@ -13,12 +13,12 @@ class InputValidationProvider{
     ).hasMatch(password);
   }
 
-  validatePassword(String password){
-    return RegExp("^([a-zA-Z0-9!@#\$%^&*+=])*\$",
+/*  validatePassword(String password){
+    return RegExp("^([a-zA-Z0-9])*\$",
         caseSensitive: true,
         multiLine: false
     ).hasMatch(password);
-  }
+  }*/
 
   validateChinaPhoneNumber(String phone){
     return RegExp("^(?:\\+?86)?1\\d{10}\$",

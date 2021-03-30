@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
+import 'package:tgp_flutter/ui/base_state.dart';
 
 class LoginPasswordTextFormField extends StatefulWidget{
   final Widget icon;
@@ -33,10 +34,10 @@ class LoginPasswordTextFormField extends StatefulWidget{
   _LoginPasswordTextFormFieldState createState() => _LoginPasswordTextFormFieldState();
 }
 
-class _LoginPasswordTextFormFieldState extends State<LoginPasswordTextFormField> {
+class _LoginPasswordTextFormFieldState extends BaseState<LoginPasswordTextFormField> {
   Widget build(BuildContext context) {
     return Container(
-      height: 50.auto,
+      height: 40.auto,
       padding: EdgeInsets.symmetric(horizontal: 10.auto, vertical: 5.auto),
       decoration: BoxDecoration(
           color: Colors.white,
@@ -49,7 +50,7 @@ class _LoginPasswordTextFormFieldState extends State<LoginPasswordTextFormField>
         children: [
           Container(
             height: 20.auto,
-            margin: EdgeInsets.only(right: 5.auto),
+            margin: EdgeInsets.only(right: 10.auto),
             child: widget.icon,
           ),
           Expanded(
@@ -66,12 +67,11 @@ class _LoginPasswordTextFormFieldState extends State<LoginPasswordTextFormField>
                   fontSize: 13.auto
               ),
               decoration: InputDecoration(
-                isDense: true,
                 border: InputBorder.none,
                 hintText: widget.hintText,
                 hintStyle: TextStyle(
                     color: CustomColor.very_light_pink_two,
-                    fontSize: 10.auto
+                    fontSize: 13.auto
                 ),
                 suffixIcon:  IconButton(
                   iconSize: 18.auto,

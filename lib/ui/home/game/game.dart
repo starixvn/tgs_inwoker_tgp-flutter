@@ -6,6 +6,7 @@ import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:gradient_text/gradient_text.dart';
 import 'package:outline_gradient_button/outline_gradient_button.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
+import 'package:tgp_flutter/ui/base_state.dart';
 import 'package:tgp_flutter/ui/home/game/game_content.dart';
 
 class Game extends StatefulWidget {
@@ -22,7 +23,7 @@ class Game extends StatefulWidget {
   _GameState createState() => _GameState();
 }
 
-class _GameState extends State<Game> {
+class _GameState extends BaseState<Game> {
   var _controller = ScrollController();
   var itemRatio = 335/90;
   var currentTabIndex= "0";

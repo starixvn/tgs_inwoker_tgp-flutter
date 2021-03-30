@@ -4,6 +4,7 @@ import 'package:tgp_flutter/custom/custom_toast.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
+import 'package:tgp_flutter/ui/base_state.dart';
 
 
 class ProfileTopItem extends StatefulWidget{
@@ -20,7 +21,7 @@ class ProfileTopItem extends StatefulWidget{
   _ProfileTopItemState createState() => _ProfileTopItemState();
 }
 
-class _ProfileTopItemState extends State<ProfileTopItem> {
+class _ProfileTopItemState extends BaseState<ProfileTopItem> {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(top: 10.auto, bottom: 10.auto),

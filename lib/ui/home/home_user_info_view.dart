@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tgp_flutter/custom/color_button.dart';
 import 'package:tgp_flutter/entity/user_profile.dart';
 import 'package:tgp_flutter/localizations/language_provider.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
@@ -6,6 +7,7 @@ import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:gradient_text/gradient_text.dart';
 import 'package:outline_gradient_button/outline_gradient_button.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
+import 'package:tgp_flutter/ui/base_state.dart';
 
 class HomeUserInfoView extends StatefulWidget {
   final UserProfile userProfile;
@@ -23,7 +25,7 @@ class HomeUserInfoView extends StatefulWidget {
   _HomeUserInfoViewState createState() => _HomeUserInfoViewState();
 }
 
-class _HomeUserInfoViewState extends State<HomeUserInfoView> {
+class _HomeUserInfoViewState extends BaseState<HomeUserInfoView> {
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -45,7 +47,7 @@ class _HomeUserInfoViewState extends State<HomeUserInfoView> {
                 children: [
                   Text(
                     (widget.userProfile != null
-                        ?getTranslatedText("welcome_back")+widget.userProfile.username
+                        ?getTranslatedText("welcome_back")
                         :getTranslatedText("home_login_hint"))??"",
                     style: TextStyle(
                         color: Colors.white,
@@ -96,7 +98,7 @@ class _HomeUserInfoViewState extends State<HomeUserInfoView> {
                       child:  Column(
                         children: [
                           Text(
-                           //"¥ ${widget.userProfile?.balance}",
+                            //"¥ ${widget.userProfile?.balance}",
                             "¥ 0.00",
                             style: TextStyle(
                                 color: Colors.white,
@@ -134,51 +136,48 @@ class _HomeUserInfoViewState extends State<HomeUserInfoView> {
     );
   }
 
-  getTranslatedText(String key) => LanguageProvider().getTranslated(context, key);
-
   _buildLoginRegisterButton(){
     var string = getTranslatedText("login_or_signup").split("/");
     var loginString = string[0];
     var registerString = "/"+string[1];
     return Container(
-    padding: EdgeInsets.only(top:10.auto, bottom: 10.auto),
-    child: FlatButton(
-      padding: EdgeInsets.all(12),
-      onPressed: () => widget.onLoginTap(),
-      child: RichText(
-        text: TextSpan(
-            style: TextStyle(
-                fontSize: 12.auto,
-                fontWeight: FontWeight.bold
-            ),
-            children: [
-              TextSpan(
-                  text: loginString,
-                  style: TextStyle(
-                      color: CustomColor.theme_label_text_highlight_color,
-                    fontSize: (11.8).auto
-                  )
+      padding: EdgeInsets.only(top:10.auto, bottom: 10.auto),
+      child: ColorButton(
+        onClick: () => widget.onLoginTap(),
+        text: RichText(
+          text: TextSpan(
+              style: TextStyle(
+                  fontSize: 12.auto,
+                  fontWeight: FontWeight.bold
               ),
-              TextSpan(
-                  text: registerString,
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: (11.8).auto
-                  )
-              )
-            ]
+              children: [
+                TextSpan(
+                    text: loginString,
+                    style: TextStyle(
+                        color: CustomColor.theme_label_text_highlight_color,
+                        fontSize: (11.8).auto
+                    )
+                ),
+                TextSpan(
+                    text: registerString,
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: (11.8).auto
+                    )
+                )
+              ]
+          ),
         ),
-      ),
-      shape: RoundedRectangleBorder(
-        side: BorderSide(
+        border:BorderSide(
             color: Colors.white,
             width: 1.5
         ),
-        borderRadius: BorderRadius.all(Radius.circular(45)),
+        radius: 15.7,
+        width: 82.auto,
+        color: CustomColor.theme_circle_button_bg,
+        isEnabled: true,
       ),
-      color: CustomColor.theme_circle_button_bg,
-    ),
-  );
+    );
   }
 
   _buildHomeIcon(String imagePath, String title) =>

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/localizations/language_provider.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
+import 'package:tgp_flutter/ui/base_state.dart';
 
 import 'menu_item.dart';
 
@@ -12,7 +13,7 @@ class Menu extends StatefulWidget{
   _MenuState createState() => _MenuState();
 }
 
-class _MenuState extends State<Menu> {
+class _MenuState extends BaseState<Menu> {
 
   @override
   void initState() {
@@ -71,19 +72,19 @@ class _MenuState extends State<Menu> {
                     MenuItem(
                       image:"ic_menu_deposit_history",
                       text: getTranslatedText("deposit_history"),
-                      navigationPath: "main_card",
-                      navigationID: 0,
+                      navigationPath: "transaction",
+                      navigationID: 3,
                     ),
                     MenuItem(
                       image:"ic_menu_card",
                       text: getTranslatedText("manage_card"),
-                      navigationPath: "message",
+                      navigationPath: "main_card",
                       navigationID: 0,
                     ),
                     MenuItem(
                       image:"ic_menu_message_center",
                       text: getTranslatedText("message_center"),
-                      navigationPath: "bonus",
+                      navigationPath: "message",
                       navigationID: 0,
                     ),
                   ],
@@ -108,7 +109,6 @@ class _MenuState extends State<Menu> {
     );
   }
 
-  getTranslatedText(String key) => LanguageProvider().getTranslated(context, key);
 }
 
 

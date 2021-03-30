@@ -5,41 +5,45 @@ import 'package:tgp_flutter/custom/custom_toast.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
+import 'package:tgp_flutter/ui/base_state.dart';
+import 'package:tgp_flutter/ui/transaction/transaction.dart';
 
 
 class ProfileBottomItem extends StatefulWidget{
   final String title;
   final String imagePath;
   final String routePath;
+  final int navigationID;
 
   ProfileBottomItem({Key key,
     this.title,
     this.imagePath,
     this.routePath,
+    this.navigationID
   }) : super(key: key);
   @override
   _ProfileBottomItemState createState() => _ProfileBottomItemState();
 }
 
-class _ProfileBottomItemState extends State<ProfileBottomItem> {
+class _ProfileBottomItemState extends BaseState<ProfileBottomItem> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        /*WidgetsBinding.instance.addPostFrameCallback((_) {
-        if(isBetTransaction){
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+        if(widget.navigationID==0){
+          Navigator.of(context).pushNamed("/${widget.routePath}");
+        }
+        else{
           Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) =>
                       Transaction(
-                        tabIndex: 1,
+                        tabIndex: widget.navigationID,
                       )
               ));
         }
-        else{
-          Navigator.of(context).pushNamed("/$routePath");
-        }
-      });*/
+      });
       },
       child: Card(
         semanticContainer: true,
@@ -59,7 +63,7 @@ class _ProfileBottomItemState extends State<ProfileBottomItem> {
               ),
               Padding(
                 padding: EdgeInsets.only(top: 10.auto),
-                child: AutoSizeText(
+                child: /*AutoSizeText(
                   widget.title,
                   style: TextStyle(
                       fontSize: (9.5).auto
@@ -67,6 +71,13 @@ class _ProfileBottomItemState extends State<ProfileBottomItem> {
                   textAlign: TextAlign.center,
                   maxLines: 2,
                   minFontSize:9.auto,
+                ),*/
+                Text(
+                  widget.title,
+                  style: TextStyle(
+                      fontSize: (9.5).auto
+                  ),
+                  textAlign: TextAlign.center,
                 ),
               )
             ],

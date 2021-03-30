@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
-import 'package:tgp_flutter/entity/BaseResponse.dart';
-import 'package:tgp_flutter/entity/login_response.dart';
+import 'package:tgp_flutter/entity/response/BaseResponse.dart';
+import 'package:tgp_flutter/entity/response/login_response.dart';
 import 'package:tgp_flutter/network/event_result.dart';
 
 

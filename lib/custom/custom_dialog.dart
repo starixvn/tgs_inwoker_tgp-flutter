@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
+import 'package:tgp_flutter/src/gradient_decoration.dart';
 
 class CustomDialog extends StatelessWidget{
   final String title, description, buttonText1, buttonText2;
@@ -98,17 +99,7 @@ class CustomDialog extends StatelessWidget{
         borderRadius: BorderRadius.circular(45)),
     padding: EdgeInsets.all(0.0),
     child: Ink(
-      decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Color(0xffebce91),
-              Color(0xffdcb370),
-              Color(0xffc59f62),
-            ],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
-          borderRadius: BorderRadius.all(Radius.circular(45))),
+      decoration: roundGradientDecoration,
       child: Container(
         constraints:
         BoxConstraints(
@@ -120,7 +111,7 @@ class CustomDialog extends StatelessWidget{
           buttonText1,
           textAlign: TextAlign.center,
           style: TextStyle(
-              color: Colors.black),
+              color: Colors.white),
         ),
       ),
     ),

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:tgp_flutter/localizations/language_provider.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
+import 'package:tgp_flutter/ui/base_state.dart';
 import 'package:tgp_flutter/ui/login/login_content.dart';
 import 'package:tgp_flutter/ui/login/register_content.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
@@ -9,7 +11,7 @@ class LoginTab extends StatefulWidget{
   _LoginTabState createState() => _LoginTabState();
 }
 
-class _LoginTabState extends State<LoginTab>{
+class _LoginTabState extends BaseState<LoginTab>{
   int tabIndex = 0;
   @override
   Widget build(BuildContext context) {
@@ -41,7 +43,7 @@ class _LoginTabState extends State<LoginTab>{
                 // first tab [you can add an icon using the icon property]
                 Tab(
                   child: Text(
-                    "登录",
+                    getTranslatedText("login"),
                     style: TextStyle(
                       fontSize: 14.auto,
                       color: Colors.white
@@ -51,7 +53,7 @@ class _LoginTabState extends State<LoginTab>{
                 // second tab [you can add an icon using the icon property]
                 Tab(
                   child: Text(
-                    "注册",
+                    getTranslatedText("register"),
                     style: TextStyle(
                         fontSize: 14.auto,
                       color: Colors.white

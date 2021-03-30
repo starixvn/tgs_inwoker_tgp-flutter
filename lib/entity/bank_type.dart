@@ -1,0 +1,92 @@
+enum BankType{
+  AB,
+  ABC,
+  BOB,
+  BOC,
+  BOS,
+  COMM,
+  BCOM,
+  CCB,
+  ECITIC,
+  CITIC,
+  CEB,
+  CIB,
+  CMB,
+  CMBC,
+  HXB,
+  HXBANK,
+  ICBC,
+  PSBC,
+  SPDB,
+  GF,
+  GDB,
+  CGB,
+  PINGAN,
+  SPABANK,
+  PAB,
+}
+
+extension BankTypeExtension on BankType {
+
+  static const name = {
+    BankType.AB:  "农业银行",
+    BankType.ABC:  "中国农业银行",
+    BankType.BOB:  "北京银行",
+    BankType.BOC:  "中国银行",
+    BankType.BOS:  "上海银行",
+    BankType.COMM:  "中国交通银行",
+    BankType.BCOM:  "中国交通银行",
+    BankType.CCB:  "建设银行",
+    BankType.ECITIC:  "中信银行",
+    BankType.CITIC:  "中信银行",
+    BankType.CEB:  "中国光大银行",
+    BankType.CIB:  "兴业银行",
+    BankType.CMB:  "招商银行",
+    BankType.CMBC:  "民生银行",
+    BankType.HXB:  "华夏银行",
+    BankType.HXBANK:  "华夏银行",
+    BankType.ICBC:  "工商银行",
+    BankType.PSBC:  "中国邮政储蓄银行",
+    BankType.SPDB:  "浦东发展银行",
+    BankType.GF:  "广发银行",
+    BankType.GDB:  "广发银行",
+    BankType.CGB:  "广发银行",
+    BankType.PINGAN:  "平安银行",
+    BankType.SPABANK:  "平安银行",
+    BankType.PAB:  "平安银行",
+  };
+
+
+  static const imagePath = {
+
+    BankType.AB:    "images/bank/bank_abc.png",
+    BankType.ABC:       "images/bank/bank_abc.png",
+    BankType.BOB:       "images/bank/bank_bob.png",
+    BankType.BOC:       "images/bank/bank_boc.png",
+    BankType.BOS:       "images/bank/bank_bos.png",
+    BankType.COMM:      "images/bank/bank_icon_bcm.png",
+    BankType.BCOM:      "images/bank/bank_icon_bcm.png",
+    BankType.CCB:       "images/bank/bank_ccb.png",
+    BankType.ECITIC:    "images/bank/bank_ecitic.png",
+    BankType.CITIC:     "images/bank/bank_ecitic.png",
+    BankType.CEB:       "images/bank/bank_ceb.png",
+    BankType.CIB:       "images/bank/bank_cib.png",
+    BankType.CMB:       "images/bank/bank_cmb.png",
+    BankType.CMBC:      "images/bank/bank_cmbc.png",
+    BankType.HXB:       "images/bank/bank_hxb.png",
+    BankType.HXBANK:    "images/bank/bank_hxb.png",
+    BankType.ICBC:      "images/bank/bank_icbc.png",
+    BankType.PSBC:      "images/bank/bank_psbc.png",
+    BankType.SPDB:      "images/bank/bank_spdb.png",
+    BankType.GF:        "images/bank/bank_gf.png",
+    BankType.GDB:       "images/bank/bank_gf.png",
+    BankType.CGB:       "images/bank/bank_gf.png",
+    BankType.PINGAN:    "images/bank/bank_pingan.png",
+    BankType.SPABANK:   "images/bank/bank_pingan.png",
+    BankType.PAB:       "images/bank/bank_pingan.png",
+  };
+
+  String get displayName => name[this];
+  String get getImagePath => imagePath[this];
+
+}
