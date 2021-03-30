@@ -14,15 +14,12 @@ class LoginViewModel extends BaseViewModel{
   List<BaseRepository> get repoList => [userRepo];
 
   String token;
-  EventResult loginApiState;
-  EventResult registerApiState;
-  bool isLoginResultHandled = false;
-  bool isRegisterResultHandled = false;
+  EventResult loginApiState, registerApiState, checkUsernameApiState;
+  bool isUsernameExist = false;
 
   login(String username, String password, bool rememberMe)async{
     setLoading();
     loginApiState = await userRepo.login(username, password);
-    isLoginResultHandled = false;
     if(loginApiState.isSuccess){
       token = loginApiState.result.token;
       print(token);
@@ -41,12 +38,9 @@ class LoginViewModel extends BaseViewModel{
       [String invitationCode]
       ) async {
     setLoading();
-    isRegisterResultHandled = false;
-    registerApiState = await userRepo.register(username, password, rpassword, currency, invitationCode??"");
-    if(registerApiState.isSuccess){
-      token = registerApiState.result;
-      savePreferences(username, password, true);
-      getUserInfo();
+    var status = await userRepo.register(username, password, rpassword, currency, invitationCode??"");
+    if(status.isSuccess){
+      registerApiState = await login(username, password, true);
     }
     setLoading(false);
     return registerApiState;
@@ -55,6 +49,19 @@ class LoginViewModel extends BaseViewModel{
   getUserInfo()async{
     await userRepo.getBasicInfo();
   }
+
+  checkUsername(
+      String username
+      ) async {
+    setLoading();
+    checkUsernameApiState = await userRepo.checkUsername(username);
+    if(checkUsernameApiState.isSuccess){
+      isUsernameExist = checkUsernameApiState.result.isExist;
+    }
+    setLoading(false);
+    return checkUsernameApiState;
+  }
+
   savePreferences( String username, String password, bool rememberMe) async{
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString("token", token);
@@ -74,10 +81,15 @@ class LoginViewModel extends BaseViewModel{
     return prefs.getString("password")?? "";
   }
 
-  markAsRegisterResultHandled(){
-    isRegisterResultHandled = true;
-  }
-  markAsLoginResultHandled(){
-    isLoginResultHandled = true;
+  resetApiState({bool isLoginApiState = false, isRegisterApiState = false, isCheckUsernameApiState = false,}){
+    if (isLoginApiState){
+      loginApiState = null;
+    }
+    if(isRegisterApiState){
+      registerApiState = null;
+    }
+    if(isCheckUsernameApiState){
+      registerApiState = null;
+    }
   }
 }
