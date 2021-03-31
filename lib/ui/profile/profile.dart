@@ -169,7 +169,7 @@ class _ProfileState extends BaseState<Profile> {
             crossAxisSpacing: 25.auto,
             mainAxisSpacing: 20.auto,
             children: [
-              ProfileBottomItem(title: getTranslatedText("profile_detail"), imagePath:"ic_profile_user_detail", routePath:"", navigationID: 0,),
+              ProfileBottomItem(title: getTranslatedText("profile_detail"), imagePath:"ic_profile_user_detail", routePath:"profile_info", navigationID: 0,),
               ProfileBottomItem(title: getTranslatedText("message_center"), imagePath:"ic_message",routePath:"message", navigationID: 0,),
               ProfileBottomItem(title: getTranslatedText("transfer_history"), imagePath:"ic_account_detail",routePath:"transaction", navigationID: 0,),
               ProfileBottomItem(title: getTranslatedText("bet_history"), imagePath:"ic_bet_transaction",routePath:"transaction", navigationID: 1,),

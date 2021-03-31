@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
+import 'package:tgp_flutter/src/gradient_decoration.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
 //import 'package:webview_flutter/webview_flutter.dart';
 
@@ -40,7 +41,9 @@ class _DepositWebState extends BaseState<DepositWeb> {
         backgroundColor: Colors.white,
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          backgroundColor: Colors.black87,
+          flexibleSpace: Container(
+          decoration: gradientDecoration,
+        ),
           centerTitle: true,
           title: Text(
             widget.typeTitle??"",

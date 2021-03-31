@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
+import 'package:tgp_flutter/ui/base_state.dart';
 
 class ChildGameItem extends StatefulWidget{
   final bool isFavourite;
@@ -18,7 +19,7 @@ class ChildGameItem extends StatefulWidget{
   _ChildGameItemState createState() => _ChildGameItemState();
 }
 
-class _ChildGameItemState extends State<ChildGameItem> {
+class _ChildGameItemState  extends BaseState<ChildGameItem> {
   Widget build(BuildContext context) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(5),

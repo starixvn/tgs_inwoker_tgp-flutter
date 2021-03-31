@@ -3,13 +3,14 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/ui/home/child_game/child_game_item.dart';
+import 'package:tgp_flutter/ui/base_state.dart';
 
 class ChildGamePlatformTabBarView extends StatefulWidget{
   @override
   _ChildGamePlatformTabBarViewState createState() => _ChildGamePlatformTabBarViewState();
 }
 
-class _ChildGamePlatformTabBarViewState extends State<ChildGamePlatformTabBarView> {
+class _ChildGamePlatformTabBarViewState  extends BaseState<ChildGamePlatformTabBarView> {
   Widget build(BuildContext context) {
     return GridView.count(
       crossAxisCount: 2,

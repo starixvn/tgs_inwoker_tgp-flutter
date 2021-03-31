@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
+import 'package:tgp_flutter/src/gradient_decoration.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
 
 import 'deposit_view_model.dart';
@@ -15,7 +16,7 @@ class DepositOrderFragment extends StatefulWidget{
   final String params;
 
   DepositOrderFragment({Key key,
-   // this.order,
+    // this.order,
     this.params
   }) : super(key: key);
 
@@ -58,7 +59,9 @@ class _DepositOrderFragmentState extends BaseState<DepositOrderFragment> with Ti
               backgroundColor: Colors.grey[100],
               appBar: AppBar(
                 automaticallyImplyLeading: false,
-                backgroundColor: Colors.black87,
+                flexibleSpace: Container(
+                  decoration: gradientDecoration,
+                ),
                 centerTitle: true,
                 title: Text(
                   "存款",

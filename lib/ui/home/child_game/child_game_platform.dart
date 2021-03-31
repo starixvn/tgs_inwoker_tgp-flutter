@@ -4,13 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/ui/home/child_game/child_game_platform_tab_bar_view.dart';
+import 'package:tgp_flutter/ui/base_state.dart';
 
 class ChildGamePlatform extends StatefulWidget{
   @override
   _ChildGamePlatformState createState() => _ChildGamePlatformState();
 }
 
-class _ChildGamePlatformState extends State<ChildGamePlatform> with SingleTickerProviderStateMixin{
+class _ChildGamePlatformState  extends BaseState<ChildGamePlatform> with SingleTickerProviderStateMixin{
   var _platformTabController;
   var platformTabIndex = 0;
   var _platformTabList =

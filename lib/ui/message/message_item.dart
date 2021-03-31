@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:tgp_flutter/custom/round_check_box.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
+import 'package:tgp_flutter/ui/base_state.dart';
 
 class MessageItem extends StatefulWidget{
   final String title;
@@ -26,7 +27,7 @@ class MessageItem extends StatefulWidget{
   _MessageItemState createState() => _MessageItemState();
 }
 
-class _MessageItemState extends State<MessageItem> {
+class _MessageItemState  extends BaseState<MessageItem> {
   @override
   void initState() {
     super.initState();

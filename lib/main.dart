@@ -24,6 +24,21 @@ import 'package:tgp_flutter/ui/menu/menu.dart';
 import 'package:flutter/services.dart';
 import 'package:tgp_flutter/ui/message/message.dart';
 import 'package:tgp_flutter/ui/profile/profile.dart';
+import 'package:tgp_flutter/ui/profile_info/address/address.dart';
+import 'package:tgp_flutter/ui/profile_info/email/edit_email.dart';
+import 'package:tgp_flutter/ui/profile_info/email/email_verification.dart';
+import 'package:tgp_flutter/ui/profile_info/password/edit_password.dart';
+import 'package:tgp_flutter/ui/profile_info/phone/edit_phone.dart';
+import 'package:tgp_flutter/ui/profile_info/phone/phone_verification.dart';
+import 'package:tgp_flutter/ui/profile_info/profile_info.dart';
+import 'package:tgp_flutter/ui/profile_info/qq_account/qq_account.dart';
+import 'package:tgp_flutter/ui/profile_info/real_name/real_name_verification.dart';
+import 'package:tgp_flutter/ui/profile_info/security/edit_security_answer.dart';
+import 'package:tgp_flutter/ui/profile_info/security/edit_security_answer_by_security_answer.dart';
+import 'package:tgp_flutter/ui/profile_info/security/security_answer.dart';
+import 'package:tgp_flutter/ui/profile_info/wechat/wechat.dart';
+import 'package:tgp_flutter/ui/profile_info/withdraw_password/edit_withdraw_password.dart';
+import 'package:tgp_flutter/ui/profile_info/withdraw_password/withdraw_password.dart';
 import 'package:tgp_flutter/ui/promotion/promotion_page.dart';
 import 'package:tgp_flutter/ui/referFriend/refer_friend.dart';
 import 'package:tgp_flutter/ui/splash/splash.dart';
@@ -99,6 +114,21 @@ class _MyAppState extends BaseState<MyApp> {
           RoutePath.message: (context) => Message(),
           RoutePath.frequentQuestion: (context) => FrequentQuestion(),
           RoutePath.referFriend: (context) => ReferFriend(),
+          RoutePath.profileInfo: (context) => ProfileInfo(),
+          RoutePath.realNameVerification: (context) => RealNameVerification(),
+          RoutePath.phoneVerification: (context) => PhoneVerification(),
+          RoutePath.editPhone: (context) => EditPhone(),
+          RoutePath.emailVerification: (context) => EmailVerification(),
+          RoutePath.editEmail: (context) => EditEmail(),
+          RoutePath.qqAccount: (context) => QQAccount(),
+          RoutePath.wechat: (context) => Wechat(),
+          RoutePath.address: (context) => Address(),
+          RoutePath.editPassword: (context) => EditPassword(),
+          RoutePath.withdrawPassword: (context) => WithdrawPassword(),
+          RoutePath.editWithdrawPassword: (context) => EditWithdrawPassword(),
+          RoutePath.securityAnswer: (context) => SecurityAnswer(),
+          RoutePath.editSecurityAnswer: (context) => EditSecurityAnswer(),
+          RoutePath.editSecurityAnswerBySecurityAnswer: (context) => EditSecurityAnswerBySecurityAnswer(),
         },
         theme: ThemeData(
           primaryColor: CustomColor.theme_bar_gradient_1,
