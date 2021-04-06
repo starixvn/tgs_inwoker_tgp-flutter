@@ -42,4 +42,6 @@ class RoutePath{
   static final customerService = '/customer_service';
   static final referFriend = '/refer_friend';
   static final frequentQuestion = '/frequent_question';
+  static final forgotPassword = '/forgot_password';
+  static final language = '/language';
 }

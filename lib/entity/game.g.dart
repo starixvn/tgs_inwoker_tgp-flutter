@@ -14,7 +14,10 @@ Game _$GameFromJson(Map<String, dynamic> json) {
     ..description = json['description'] as String
     ..gamePlatformCode = json['gpcode'] as String
     ..isActive = json['isactive'] as bool
-    ..type = json['type'] as int;
+    ..type = json['type'] as int
+    ..tag = json['tag'] == null
+        ? null
+        : GameTag.fromJson(json['tag'] as Map<String, dynamic>);
 }
 
 Map<String, dynamic> _$GameToJson(Game instance) => <String, dynamic>{
@@ -25,4 +28,5 @@ Map<String, dynamic> _$GameToJson(Game instance) => <String, dynamic>{
       'gpcode': instance.gamePlatformCode,
       'isactive': instance.isActive,
       'type': instance.type,
+      'tag': instance.tag,
     };

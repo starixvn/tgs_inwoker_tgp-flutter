@@ -11,6 +11,7 @@ class ColorButton extends StatelessWidget {
   final double radius;
   final double width;
   final BorderSide border;
+  final MaterialStateProperty<EdgeInsetsGeometry> padding;
 
   ColorButton({Key key,
     @required this.text,
@@ -19,7 +20,8 @@ class ColorButton extends StatelessWidget {
     @required this.color,
     @required this.radius,
     this.width,
-    this.border
+    this.border,
+    this.padding
   }) : super(key: key);
 
   @override
@@ -29,6 +31,7 @@ class ColorButton extends StatelessWidget {
         this.onClick()
       },
       style: ButtonStyle(
+        padding: padding?? MaterialStateProperty.all(EdgeInsets.all(8)),
         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular((radius).auto),
@@ -44,6 +47,7 @@ class ColorButton extends StatelessWidget {
       child: Container(
           alignment: Alignment.center,
           width: width??context.screenWidth,
+          height: 20.auto,
           child: text
       ),
     ) :TextButton(

@@ -1,4 +1,8 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:tgp_flutter/entity/game.dart';
+import 'package:tgp_flutter/entity/game_provider.dart';
+import 'package:tgp_flutter/entity/game_type.dart';
 import 'package:tgp_flutter/entity/user_profile.dart';
 import 'package:tgp_flutter/localizations/language_provider.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
@@ -9,24 +13,24 @@ import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
 import 'package:tgp_flutter/ui/home/game/game_content.dart';
 
-class Game extends StatefulWidget {
-  final List<Map<String, String>> tabList;
-  final List<List<String>> gameList;
+class GameView extends StatefulWidget {
+  final List<GameProvider> tabList;
+  final List<List<GameType>> gameTypeList;
 
-  Game({
+  GameView({
     @required
     this.tabList,
-    this.gameList
+    this.gameTypeList
   });
 
   @override
-  _GameState createState() => _GameState();
+  _GameViewState createState() => _GameViewState();
 }
 
-class _GameState extends BaseState<Game> {
+class _GameViewState extends BaseState<GameView> {
   var _controller = ScrollController();
   var itemRatio = 335/90;
-  var currentTabIndex= "0";
+  var currentTabIndex= 0;
   var key = GlobalKey();
 
   @override
@@ -45,19 +49,25 @@ class _GameState extends BaseState<Game> {
             Container(
               margin: EdgeInsets.only(right: 10.auto, bottom: 5.auto),
               child: Column(
-                  children: widget.tabList.map((item) {
+                  children:List.generate(widget.tabList.length, (index) {
                     return Container(
                       margin: EdgeInsets.only(top: 8.auto),
-                      child: _buildGameTab(item["text"], item["id"]),
+                      child: _buildGameTab(index, widget.tabList[index].name),
                     );
-                  }).toList()
+                  }),
+                /* widget.tabList.map((item) {
+                    return Container(
+                      margin: EdgeInsets.only(top: 8.auto),
+                      child: _buildGameTab(item.name),
+                    );
+                  }).toList()*/
               ),
             ),
             Container(
               key: key,
               child: GameContent(
                 controller: _controller,
-                list: widget.gameList,
+                list: widget.gameTypeList,
               ),
             )
           ],
@@ -66,7 +76,7 @@ class _GameState extends BaseState<Game> {
     );
   }
 
-  _buildGameTab(String title, String tabIndex) {
+  _buildGameTab(int tabIndex, String title) {
     var bgImage = tabIndex==currentTabIndex?"btn_home_game_category_selected_bg":"btn_home_game_category_bg";
     return InkWell(
       onTap: (){
@@ -81,9 +91,10 @@ class _GameState extends BaseState<Game> {
             fit: BoxFit.fill,
           ),
         ),
+        padding: EdgeInsets.all(3.auto),
         child: Center(
-            child: Text(
-              LanguageProvider().getTranslated(context, title),
+            child: AutoSizeText(
+              title,
               style: TextStyle(
                   fontSize: 17.auto,
                   fontWeight: FontWeight.bold,
@@ -96,21 +107,21 @@ class _GameState extends BaseState<Game> {
                   ],
                   color: tabIndex==currentTabIndex?CustomColor.theme_label_text_highlight_color: Colors.black
               ),
+              minFontSize: 12.auto,
             )
         ),
       ),
     );
   }
 
-  _onTabClick(String tabIndex){
+  _onTabClick(int tabIndex){
     var width = key.currentContext.size.width;
     var itemHeight = (width+5.auto)*(1/itemRatio) + 10.auto;
-    var index = int.parse(tabIndex);
     var des = 0.0;
 
-    widget.gameList.asMap().forEach((i,element) {
-      if(index>i){
-        des += itemHeight * widget.gameList[i].length;
+    widget.gameTypeList.asMap().forEach((i,element) {
+      if(tabIndex>i){
+        des += itemHeight * widget.gameTypeList[i].length;
       }
     });
     setState(() {
@@ -126,16 +137,16 @@ class _GameState extends BaseState<Game> {
     var des = 0.0;
     var index = 0;
 
-    widget.gameList.asMap().forEach((i,element) {
+    widget.gameTypeList.asMap().forEach((i,element) {
       if(_controller.offset >= des){
-        des += scrollTab * widget.gameList[i].length;
+        des += scrollTab * widget.gameTypeList[i].length;
         index=i;
       }else if(_controller.offset >= _controller.position.maxScrollExtent){
-        index = widget.gameList.length-1;
+        index = widget.gameTypeList.length-1;
       }
     });
     setState(() {
-      currentTabIndex = index.toString();//1
+      currentTabIndex = index;//1
     });
   }
 }

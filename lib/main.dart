@@ -12,11 +12,13 @@ import 'package:tgp_flutter/src/gradient_decoration.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
 import 'package:tgp_flutter/ui/card/main_card.dart';
 import 'package:tgp_flutter/ui/deposit/deposit.dart';
-import 'package:tgp_flutter/ui/frequentQuestion/frequentQuestion.dart';
+import 'package:tgp_flutter/ui/forgot_password/forgot_password.dart';
+import 'package:tgp_flutter/ui/frequent_question/frequent_question.dart';
 import 'package:tgp_flutter/ui/home/child_game/child_game.dart';
 import 'package:tgp_flutter/ui/home/home.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/ui/home/home_view_model.dart';
+import 'package:tgp_flutter/ui/language/language_view.dart';
 import 'package:tgp_flutter/ui/login/login.dart';
 import 'package:tgp_flutter/ui/login/login_content.dart';
 import 'package:tgp_flutter/ui/login/login_view_model.dart';
@@ -25,10 +27,10 @@ import 'package:flutter/services.dart';
 import 'package:tgp_flutter/ui/message/message.dart';
 import 'package:tgp_flutter/ui/profile/profile.dart';
 import 'package:tgp_flutter/ui/profile_info/address/address.dart';
-import 'package:tgp_flutter/ui/profile_info/email/edit_email.dart';
+import 'package:tgp_flutter/ui/profile_info/email/email_verification.dart';
 import 'package:tgp_flutter/ui/profile_info/email/email_verification.dart';
 import 'package:tgp_flutter/ui/profile_info/password/edit_password.dart';
-import 'package:tgp_flutter/ui/profile_info/phone/edit_phone.dart';
+import 'package:tgp_flutter/ui/profile_info/phone/phone_verification.dart';
 import 'package:tgp_flutter/ui/profile_info/phone/phone_verification.dart';
 import 'package:tgp_flutter/ui/profile_info/profile_info.dart';
 import 'package:tgp_flutter/ui/profile_info/qq_account/qq_account.dart';
@@ -117,9 +119,7 @@ class _MyAppState extends BaseState<MyApp> {
           RoutePath.profileInfo: (context) => ProfileInfo(),
           RoutePath.realNameVerification: (context) => RealNameVerification(),
           RoutePath.phoneVerification: (context) => PhoneVerification(),
-          RoutePath.editPhone: (context) => EditPhone(),
           RoutePath.emailVerification: (context) => EmailVerification(),
-          RoutePath.editEmail: (context) => EditEmail(),
           RoutePath.qqAccount: (context) => QQAccount(),
           RoutePath.wechat: (context) => Wechat(),
           RoutePath.address: (context) => Address(),
@@ -129,6 +129,8 @@ class _MyAppState extends BaseState<MyApp> {
           RoutePath.securityAnswer: (context) => SecurityAnswer(),
           RoutePath.editSecurityAnswer: (context) => EditSecurityAnswer(),
           RoutePath.editSecurityAnswerBySecurityAnswer: (context) => EditSecurityAnswerBySecurityAnswer(),
+          RoutePath.forgotPassword: (context) => ForgotPassword(),
+          RoutePath.language:(context) => LanguageView(),
         },
         theme: ThemeData(
           primaryColor: CustomColor.theme_bar_gradient_1,

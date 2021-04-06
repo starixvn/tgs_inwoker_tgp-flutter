@@ -4,32 +4,20 @@ import 'package:tgp_flutter/repository/user_repository.dart';
 
 class QQAccountViewModel extends BaseViewModel{
   final userRepo = UserRepository.getSingleton();
-  var updateQQApiState, getBasicInfoApiState;
+  var setQQApiState, getBasicInfoApiState;
 
   @override
   List<BaseRepository> get repoList => [userRepo];
   get userProfile => userRepo.userProfile;
 
-  /*updateQQAccount(String qq) async{
+  setQQAccount(String qq) async{
     setLoading();
-    updateQQApiState = await userRepo.updateQQAccount(qq);
+    setQQApiState = await userRepo.setQQAccount(qq);
+    if(setQQApiState.isSuccess){
+      await userRepo.getBasicInfo();
+    }
     setLoading(false);
-    return updateQQApiState;
+    return setQQApiState;
   }
 
-  getBasicInfo() async{
-    setLoading();
-    getBasicInfoApiState = await userRepo.getBasicInfo();
-    setLoading(false);
-    return getBasicInfoApiState;
-  }
-
-  resetApiState({bool isUpdateQQApiState = false, bool isGetBasicInfoApiState = false}){
-    if(isUpdateQQApiState){
-      updateQQApiState = null;
-    }
-    else if(isGetBasicInfoApiState){
-      getBasicInfoApiState = null;
-    }
-  }*/
 }

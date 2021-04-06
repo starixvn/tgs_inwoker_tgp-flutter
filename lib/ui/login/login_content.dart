@@ -185,13 +185,16 @@ class _LoginContentState extends BaseState<LoginContent> {
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          //_buildCheckBox(),
           InkWell(
+            onTap: (){
+              Navigator.of(context).pushNamed("/forgot_password");
+            },
             child: Text(
               getTranslatedText("forgot_password_with_question_mark"),
               style: TextStyle(
                 color: Colors.black,
                 decoration:TextDecoration.underline,
+                fontSize: 12.auto
               ),
             ),
           )
@@ -214,7 +217,8 @@ class _LoginContentState extends BaseState<LoginContent> {
           Text(
             getTranslatedText("rmb_password"),
             style: TextStyle(
-                color: Colors.black
+                color: Colors.black,
+              fontSize: 12.auto
             ),
           ),
         ],

@@ -1,10 +1,10 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
+import 'package:tgp_flutter/custom/color_button.dart';
 import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/custom/custom_tab_bar.dart';
 import 'package:tgp_flutter/custom/custom_text_form_field.dart';
 import 'package:tgp_flutter/custom/custom_toast.dart';
+import 'package:tgp_flutter/custom/otp_text_form_field.dart';
 import 'package:tgp_flutter/custom/outline_border_button.dart';
 import 'package:tgp_flutter/data/provider/input_validation_provider.dart';
 import 'package:tgp_flutter/entity/event_type.dart';
@@ -12,7 +12,6 @@ import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
-import 'package:tgp_flutter/ui/profile_info/email/base_email_phone_verification.dart';
 import 'package:tgp_flutter/ui/profile_info/email/email_verification_view_model.dart';
 import 'package:tgp_flutter/ui/profile_info/phone/phone_verification_view_model.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
@@ -24,25 +23,17 @@ class EmailVerification extends StatefulWidget{
 
 class _EmailVerificationState extends BaseState<EmailVerification> {
   var _vm = EmailVerificationViewModel();
-  TextEditingController _otpController = TextEditingController(),
-      _emailController = TextEditingController();
-  var phoneText;
-  var isButtonEnabled = false, isPhoneVerified = false,  isCodeVisible = false;
-  var name, cardNumber, buttonText;
+  TextEditingController _emailController = TextEditingController(),
+      _otpController = TextEditingController();
+  var isButtonEnabled = false, isOtpEnabled = false, isTextFieldEnabled = false;
+  var buttonText;
   var userProfile;
   InputValidationProvider validate = new InputValidationProvider();
-
 
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      setState(() {
-        userProfile =  _vm.userProfile;
-        if(_vm.userProfile.memberEmail.isNotEmpty){
-          isPhoneVerified = true;
-          _emailController.text = _vm.userProfile.memberEmail;
-        }
-      });
+      _getUserProfile();
     });
     super.initState();
   }
@@ -66,40 +57,117 @@ class _EmailVerificationState extends BaseState<EmailVerification> {
                     Navigator.pop(context);
                   },
                 ),
-                title: Text("邮箱地址",
+                title: Text(getTranslatedText("email"),
                   style: TextStyle(fontSize: 16.auto),
                 ),
               ),
-              body: Container(
-                  decoration: BoxDecoration(
-                      color: Colors.grey[100],
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(10.0),
-                        topRight: Radius.circular(10.0),
-                      )
-                  ),
-                  padding: EdgeInsets.only(
-                      top: 10.auto, left: 10.auto, right: 10.auto),
-                  child: _buildBaseEmailPhoneVerification()
+              body: /*userProfile == null?
+                  Center(child: CircularProgressIndicator(),):*/
+              Container(
+                margin: EdgeInsets.only(
+                    left: 10.auto, right: 10.auto, top: 10.auto),
+                child: Column(
+                  children: [
+                    //CustomTabBar(index:1),
+                    _buildTextFormField(),
+                    _buildOtpTextFormField(),
+                    _buildButton()
+                  ],
+                ),
               )
           );
         });
   }
 
-  _buildBaseEmailPhoneVerification() => BaseEmailPhoneVerification(
-    inputText:"邮箱地址",
-    hintText:"请输入您的邮箱地址",
-    footerText1: isPhoneVerified?"如需修改号码，请点击": "如有任何问题，请联系",
-    footerText2:isPhoneVerified?"这里": "线上客服",
-    navigatePath:"edit_email",
-    isEmail:true,
-    isVerified:isPhoneVerified,
-    isInputCodeVisible:isCodeVisible,
-    getSmsCode:()=>_getSmsCode(),
-    onClick:()=>_onClick(),
-    inputController:_emailController,
-    otpController:_otpController,
+  _buildTextFormField() =>  Container(
+    margin: EdgeInsets.only(top: 15.auto),
+    child: CustomTextFormField(
+      title: getTranslatedText("email"),
+      hintText: getTranslatedText("email_hint"),
+      onChanged: (value) => _onTextChange(),
+      onFieldSubmitted: (value){},
+      controller: _emailController,
+      focusNode: null,
+      width: context.screenWidth-70.auto,
+      textInputType: TextInputType.number,
+      textInputAction: TextInputAction.next,
+      enabled: isTextFieldEnabled,
+    ),
   );
+
+  _buildOtpTextFormField() =>  Visibility(
+    visible:_vm.userProfile.email==null,
+    child: Opacity(
+      opacity: isOtpEnabled?1:0.4,
+      child: Container(
+        margin: EdgeInsets.only(top: 15.auto),
+        child: OtpTextFormField(
+          hintText: getTranslatedText("email_otp_hint"),
+          onChanged:(value) => _onTextChange(),
+          controller: _otpController,
+          textInputAction: TextInputAction.done,
+          getOtpCode:() {
+            _getSmsCode();
+          },
+          isEnabled: isOtpEnabled,
+        ),
+      ),
+    ),
+  );
+
+  _buildButton() => Container(
+      width: context.screenWidth,
+      margin: EdgeInsets.only(top: 30.auto, bottom: 20.auto),
+      child: ColorButton(
+        text: Text(
+          buttonText??"",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              color: Colors.white,
+              fontSize: 16.auto
+          ),
+        ),
+        onClick: (){
+          _onClick();
+        },
+        isEnabled: isButtonEnabled,
+        color: CustomColor.theme_bar_gradient_2,
+        radius: 9.6 ,
+      )
+  );
+
+  _onTextChange(){
+    setState(() {
+      if(_otpController.text.isNotEmpty && _emailController.text.isNotEmpty){
+        isButtonEnabled = true;
+      }else if(_emailController.text.isNotEmpty){
+        isOtpEnabled = true;
+      } else{
+        isButtonEnabled = false;
+        isOtpEnabled = false;
+      }
+    });
+  }
+
+  _getUserProfile(){
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {
+        userProfile =  _vm.userProfile;
+        if(userProfile.email !=null){
+          if(userProfile.email.isNotEmpty){
+            _emailController.text = userProfile.email;
+            buttonText = getTranslatedText("verified");
+            isButtonEnabled = false;
+            isTextFieldEnabled = false;
+          }
+        }
+        else{
+          buttonText = getTranslatedText("done");
+          isTextFieldEnabled = true;
+        }
+      });
+    });
+  }
 
   _getSmsCode() {
     if (!validate.validateEmail(_emailController.text)) {
@@ -107,37 +175,23 @@ class _EmailVerificationState extends BaseState<EmailVerification> {
         CustomToast.show("邮箱地址格式不正确");
       });
     } else {
-      //_vm.emailVerify(_emailController.text, EventType.BIND);
+      CustomProgressDialog.show(context);
+      _vm.getEmailCode(_emailController.text);
     }
   }
 
   _onClick() async {
-    /*CustomProgressDialog.show(context);
-    _vm.emailVerify(_emailController.text, EventType.BIND);
-    if (_vm.emailVerifyApiState.isSuccess) {
-      await _vm.getBasicInfo();
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        CustomProgressDialog.hide();
-        setState(() {
-          userProfile = _vm.getBasicInfoApiState.result;
-        });
-        _vm.resetApiState(isGetBasicInfoApiState: true);
-      });
-    }*/
+    CustomProgressDialog.show(context);
+    _vm.emailVerify(_otpController.text);
   }
 
   _handleApiState(){
-    /*if (_vm.emailVerifyApiState == null
-        && _vm.getBasicInfoApiState == null) {
-      return;
-    }
-    if ((_vm.emailVerifyApiState?.isError ?? false)) {
-      CustomToast.show(_vm.emailVerifyApiState.error);
-      CustomProgressDialog.hide();
-      FocusScope.of(context).requestFocus(FocusNode());
-      _vm.resetApiState(isVerifyCodeApiState: true);
-    }*/
+    handleApiState(_vm.getEmailCodeApiState, onSuccess: (){
+
+    });
+    handleApiState(_vm.emailVerifyApiState, onSuccess: (){
+      _getUserProfile();
+    });
   }
 }
-
 

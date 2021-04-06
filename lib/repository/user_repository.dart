@@ -27,8 +27,8 @@ class UserRepository extends BaseRepository{
         {
           "username": username,
           "password": password,
-          "platformtype": 0,
-        },false);
+          "platformtype": 1,
+        });
     return resolveResponse(response,(json) => LoginResponse.fromJson(json));
   }
 
@@ -49,7 +49,7 @@ class UserRepository extends BaseRepository{
           "invitationcode": invitationCode,
           "agent": true,
           "testplayer": true
-        },false);
+        });
     return resolveResponse(response,(json) => RegisterResponse.fromJson(json));
   }
 
@@ -79,10 +79,56 @@ class UserRepository extends BaseRepository{
 
   Future<EventResult<CheckUsernameResponse>> checkUsername(String username) async{
     var response = await apiGet(
-        "api/Player/checkUsername",
-        content:{
+        "api/player/checkUsername",
+        {
           "username": username,
         });
     return resolveResponse(response,(json) => CheckUsernameResponse.fromJson(json));
+  }
+
+  Future<EventResult<dynamic>> setQQAccount(String qq) async{
+    var response = await apiPatch(
+        "api/player/qq",
+        {
+          "qq": qq
+        });
+    return resolveResponse(response,(json) => json as dynamic);
+  }
+  Future<EventResult<dynamic>> setWechatAccount(String wechat) async{
+    var response = await apiPatch(
+        "api/player/wechat",
+        {
+          "wechat": wechat
+        });
+    return resolveResponse(response,(json) => json as dynamic);
+  }
+
+  Future<EventResult<dynamic>> editPassword(String oldPassword, String newPassword) async{
+    var response = await apiPut(
+        "api/player/password",
+        {
+          "oldpwd": oldPassword,
+          "newpwd": newPassword,
+        });
+    return resolveResponse(response,(json) => json as dynamic);
+  }
+
+  Future<EventResult<dynamic>> setIdentity (String realname, String id) async{
+    var response = await apiPatch(
+        "api/player/identity",
+        {
+          "id": id,
+          "realname": realname,
+        });
+    return resolveResponse(response,(json) => json as dynamic);
+  }
+
+  Future<EventResult<dynamic>> checkIdVerification (String id) async{
+    var response = await apiGet(
+        "api/player/identity/check",
+        {
+          "id": id,
+        });
+    return resolveResponse(response,(json) => json as dynamic);
   }
 }

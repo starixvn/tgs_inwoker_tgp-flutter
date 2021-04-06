@@ -1,14 +1,17 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
+import 'package:tgp_flutter/custom/color_button.dart';
 import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
+import 'package:tgp_flutter/custom/custom_tab_bar.dart';
+import 'package:tgp_flutter/custom/custom_text_form_field.dart';
 import 'package:tgp_flutter/custom/custom_toast.dart';
+import 'package:tgp_flutter/custom/otp_text_form_field.dart';
+import 'package:tgp_flutter/custom/outline_border_button.dart';
 import 'package:tgp_flutter/data/provider/input_validation_provider.dart';
 import 'package:tgp_flutter/entity/event_type.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
+import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
-import 'package:tgp_flutter/ui/profile_info/email/base_email_phone_verification.dart';
 import 'package:tgp_flutter/ui/profile_info/phone/phone_verification_view_model.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 
@@ -19,25 +22,18 @@ class PhoneVerification extends StatefulWidget{
 
 class _PhoneVerificationState extends BaseState<PhoneVerification> {
   var _vm = PhoneVerificationViewModel();
-  TextEditingController _otpController = TextEditingController(),
-      _phoneController = TextEditingController();
-  var phoneText;
-  var isButtonEnabled = false, isPhoneVerified = false,  isCodeVisible = false;
+  TextEditingController _phoneController = TextEditingController(),
+      _otpController = TextEditingController();
+  var isButtonEnabled = false, isOtpEnabled = false, isTextFieldEnabled = false;
   var name, cardNumber, buttonText;
   var userProfile;
   InputValidationProvider validate = new InputValidationProvider();
 
   @override
   void initState() {
-    /*WidgetsBinding.instance.addPostFrameCallback((_) {
-      setState(() {
-        userProfile =  _vm.userProfile;
-        if(_vm.userProfile.memberPhone.isNotEmpty){
-          isPhoneVerified = true;
-          _phoneController.text = _vm.userProfile.memberPhone;
-        }
-      });
-    });*/
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _getUserProfile();
+    });
     super.initState();
   }
 
@@ -60,40 +56,119 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
                     Navigator.pop(context);
                   },
                 ),
-                title: Text("手机号码",
+                title: Text(getTranslatedText("phone_number"),
                   style: TextStyle(fontSize: 16.auto),
                 ),
               ),
               body: Container(
-                  decoration: BoxDecoration(
-                      color: Colors.grey[100],
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(10.0),
-                        topRight: Radius.circular(10.0),
-                      )
-                  ),
-                  padding: EdgeInsets.only(
-                      top: 10.auto, left: 10.auto, right: 10.auto),
-                  child: _buildBaseEmailPhoneVerification()
+                  child: /*userProfile == null?
+                  Center(child: CircularProgressIndicator(),):*/
+                  Container(
+                    margin: EdgeInsets.only(
+                        left: 10.auto, right: 10.auto, top: 10.auto),
+                    child: Column(
+                      children: [
+                        //CustomTabBar(index:1),
+                        _buildTextFormField(),
+                        _buildOtpTextFormField(),
+                        _buildButton()
+                      ],
+                    ),
+                  )
               )
           );
         });
   }
 
-  _buildBaseEmailPhoneVerification() => BaseEmailPhoneVerification(
-    inputText: "手机号码",
-    hintText: "请输入手机号码",
-    footerText1: isPhoneVerified?"如需修改号码，请点击": "如有任何问题，请联系",
-    footerText2: isPhoneVerified?"这里": "线上客服",
-    navigatePath: "edit_email",
-    isEmail: true,
-    isVerified: isPhoneVerified,
-    isInputCodeVisible: isCodeVisible,
-    getSmsCode:()=> _getSmsCode(),
-    onClick:()=> _onClick(),
-    inputController: _phoneController,
-    otpController: _otpController,
+  _buildTextFormField()=>  Container(
+    margin: EdgeInsets.only(top: 15.auto),
+    child: CustomTextFormField(
+      title: getTranslatedText("phone_number"),
+      hintText: getTranslatedText("enter_phone_hint"),
+      onChanged: (value) => _onTextChange(),
+      onFieldSubmitted: (value){},
+      controller: _phoneController,
+      focusNode: null,
+      width: context.screenWidth-70.auto,
+      textInputType: TextInputType.number,
+      textInputAction: TextInputAction.next,
+      enabled: isTextFieldEnabled,
+    ),
   );
+
+  _buildOtpTextFormField() => Visibility(
+    visible:_vm.userProfile.phone==null,
+    child: Opacity(
+      opacity: isOtpEnabled?1:0.4,
+      child: Container(
+        margin: EdgeInsets.only(top: 15.auto),
+        child: OtpTextFormField(
+          hintText: getTranslatedText("enter_phone_otp_hint"),
+          onChanged:(value) => _onTextChange(),
+          controller: _otpController,
+          textInputAction: TextInputAction.done,
+          getOtpCode:() {
+            _getSmsCode();
+          },
+        ),
+      ),
+    ),
+  );
+
+  _buildButton() => Container(
+      width: context.screenWidth,
+      margin: EdgeInsets.only(top: 30.auto, bottom: 20.auto),
+      child: ColorButton(
+        text: Text(
+          "完成",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              color: Colors.white,
+              fontSize: 16.auto
+          ),
+        ),
+        onClick: (){
+          _onClick();
+        },
+        isEnabled: isButtonEnabled??false,
+        color: CustomColor.theme_bar_gradient_2,
+        radius: 9.6 ,
+      )
+  );
+
+  _onTextChange(){
+    setState(() {
+      if(_otpController.text.isNotEmpty && _phoneController.text.isNotEmpty){
+        isButtonEnabled = true;
+      }else if(_phoneController.text.isNotEmpty){
+        isOtpEnabled = true;
+      }
+      else{
+        isOtpEnabled = false;
+        isButtonEnabled = false;
+      }
+    });
+  }
+
+  _getUserProfile(){
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {
+        userProfile =  _vm.userProfile;
+        if(userProfile.phone !=null){
+          if(userProfile.phone.isNotEmpty){
+            _phoneController.text = userProfile.phone;
+            buttonText = getTranslatedText("verified");
+            isButtonEnabled = false;
+            isTextFieldEnabled = false;
+          }
+        }
+        else{
+          buttonText = getTranslatedText("done");
+          isTextFieldEnabled = true;
+        }
+      });
+    });
+  }
 
   _getSmsCode() {
     if (!validate.validateChinaPhoneNumber(_phoneController.text)) {
@@ -101,38 +176,24 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
         CustomToast.show("手机号码格式不正确");
       });
     } else {
-      //_vm.getSmsCode(_phoneController.text, EventType.BIND);
+      CustomProgressDialog.show(context);
+      _vm.getSmsCode(_phoneController.text);
     }
   }
 
   _onClick() async {
-    /*CustomProgressDialog.show(context);
-    _vm.verifyCode(
-        _phoneController.text, _otpController.text, EventType.BIND);
-    if (_vm.verifyCodeApiState.isSuccess) {
-      await _vm.getBasicInfo();
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        CustomProgressDialog.hide();
-        setState(() {
-          userProfile = _vm.getBasicInfoApiState.result;
-        });
-        _vm.resetApiState(isGetBasicInfoApiState: true);
-      });
-    }*/
+    CustomProgressDialog.show(context);
+    _vm.phoneVerify(_otpController.text);
   }
 
   _handleApiState(){
-    /*if (_vm.verifyCodeApiState == null
-        && _vm.getBasicInfoApiState == null) {
-      return;
-    }
-    if ((_vm.verifyCodeApiState?.isError ?? false)) {
-      CustomToast.show(_vm.verifyCodeApiState.error);
-      CustomProgressDialog.hide();
-      FocusScope.of(context).requestFocus(FocusNode());
-      _vm.resetApiState(isVerifyCodeApiState: true);
-    }*/
+    handleApiState(_vm.getSmsCodeApiState, onSuccess: (){
+
+    });
+
+    handleApiState(_vm.phoneVerifyApiState, onSuccess: (){
+      _getUserProfile();
+    });
   }
 }
-
 

@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:tgp_flutter/entity/game.dart';
+import 'package:tgp_flutter/entity/game_type.dart';
 import 'package:tgp_flutter/entity/user_profile.dart';
+import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:gradient_text/gradient_text.dart';
 import 'package:outline_gradient_button/outline_gradient_button.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
+import 'package:tgp_flutter/ui/home/child_game/child_game.dart';
+import 'package:tgp_flutter/ui/home/home_view_model.dart';
 
 class GameContent extends StatefulWidget {
   final ScrollController controller;
-  final List<List< String>> list;
+  final List<List<GameType>> list;
 
   GameContent({
     @required
@@ -22,45 +27,77 @@ class GameContent extends StatefulWidget {
 }
 
 class _GameContentState extends BaseState<GameContent> {
+  var _vm = HomeViewModel();
+
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Container(
-        padding: EdgeInsets.only(right:5.auto, bottom: 5.auto),
-        decoration: BoxDecoration(
-          color: CustomColor.very_light_pink_four,
-          borderRadius: BorderRadius.circular(5.auto)
-        ),
-        child: RawScrollbar(
-          isAlwaysShown: true,
-          thumbColor: CustomColor.theme_bar_gradient_2,
-          thickness: 3.5,
-          radius: Radius.circular(1.4),
-          controller: widget.controller,
-          child: ListView(
-              padding: EdgeInsets.only(right: 5.auto),
-              controller: widget.controller,
-              children: widget.list.expand((element) => element).toList().map((item) => Container(
-                  padding: EdgeInsets.only(left: (8.5).auto, right: 5.auto, top: (12.5).auto, bottom: 5.auto),
-                  child: GestureDetector(
-                    onTap: () => _navigateToChildGame(),
-                    child:AspectRatio(
+    return ProviderWidget<HomeViewModel>(
+        model: _vm,
+        builder: (ctx, vm, _) {
+          _handleApiState();
+          return Expanded(
+            child: Container(
+              padding: EdgeInsets.only(right:5.auto, bottom: 5.auto),
+              decoration: BoxDecoration(
+                  color: CustomColor.very_light_pink_four,
+                  borderRadius: BorderRadius.circular(5.auto)
+              ),
+              child: RawScrollbar(
+                isAlwaysShown: true,
+                thumbColor: CustomColor.theme_bar_gradient_2,
+                thickness: 3.5,
+                radius: Radius.circular(1.4),
+                controller: widget.controller,
+                child: ListView(
+                    padding: EdgeInsets.only(right: 5.auto),
+                    controller: widget.controller,
+                    children:
+                   widget.list.expand((element) => element).toList().map((item) => Container(
+                        padding: EdgeInsets.only(left: (8.5).auto, right: 5.auto, top: (12.5).auto, bottom: 5.auto),
+                        child: GestureDetector(
+                            onTap: () => _navigateToChildGame(item.index+1),
+                            child:/*AspectRatio(
                       aspectRatio: 335/90,
                       child: Image.asset(
                         'images/game/$item',
                       ),
                     ),
-                  )
-              )).toList()
-          ),
-        ),
-      ),
+                           */ Container(
+                                width: 335.auto,
+                                height: 90.auto,
+                                color: Colors.blue,
+                                alignment: Alignment.center,
+                                child:Text(
+                                  item.getName,
+                                )
+                            )
+                        )
+                    )).toList()
+                ),
+              ),
+            ),
+          );
+        }
     );
   }
 
-  _navigateToChildGame(){
+  _navigateToChildGame( int gameType){
+    var code = gameType<4?"SBO":"HABA";
+    _vm.getGameList(code, gameType);
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Navigator.of(context).pushNamed("/child_game");
+      Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      ChildGame(
+                        gamePlatformCode: code,
+                        gameType: gameType,
+                      )
+              ));
     });
+  }
+
+  _handleApiState(){
+
   }
 }

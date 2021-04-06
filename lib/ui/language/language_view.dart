@@ -1,0 +1,61 @@
+import 'dart:ui';
+import 'package:flutter/material.dart';
+import 'package:tgp_flutter/extension/screen_apis.dart';
+import 'package:tgp_flutter/localizations/language_provider.dart';
+import 'package:tgp_flutter/src/custom_color.dart';
+import 'package:tgp_flutter/ui/base_state.dart';
+import 'package:tgp_flutter/src/gradient_decoration.dart';
+import 'package:tgp_flutter/ui/language/language_item.dart';
+
+class LanguageView extends StatefulWidget{
+  @override
+  _LanguageViewState createState() => _LanguageViewState();
+}
+
+class _LanguageViewState extends BaseState<LanguageView> {
+  var isEditing = false, isSelected = false;
+  var list = LanguageProvider().list;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  Widget build(BuildContext context) {
+    var deviceLanguage = list.singleWhere((e) => e.locale == Localizations.localeOf(context));
+
+    return Scaffold(
+        resizeToAvoidBottomInset: false,
+        backgroundColor: Colors.grey[100],
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          centerTitle: true,
+          flexibleSpace: Container(
+            decoration: gradientDecoration,
+          ),
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+          title: Text(getTranslatedText("language"),
+            style: TextStyle(fontSize: 16.auto),
+          ),
+        ),
+        body: ListView(
+          children: List.generate(list.length, (index) =>
+              Container(
+                child: LanguageItem(
+                  imagePath: list[index].imageRes,
+                  text: list[index].name,
+                  isSelected: deviceLanguage == list[index],
+                ),
+              )
+          ),
+        )
+    );
+  }
+}
+
+

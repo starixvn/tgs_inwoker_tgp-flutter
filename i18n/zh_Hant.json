@@ -103,6 +103,7 @@
   "rebate_description":"返佣說明",
   "performance_bill":"業績賬單",
   "basic_info":"基本資料",
+  "other_info":"其他資料",
   "ic_no":"身份證",
   "phone_number":"手機號碼",
   "security_center":"安全中心",
@@ -173,5 +174,17 @@
   "confirm_password_error_msg" : "確認密碼與密碼不一致",
   "password_validate_error_msg" :"密碼只能輸入英文字母、數字或特殊符號",
   "confirm_pay_error_msg" :"重複提款密碼與提款密碼不一致",
-  "slotgame_title": "電子遊戲"
+  "slotgame_title": "電子遊戲",
+  "qq_no": "QQ號碼",
+  "qq_no_hint": "請輸入QQ號碼",
+  "edit_qq_cs": "如需修改QQ號碼，請聯繫",
+  "email": "郵箱地址",
+  "realname": "真實姓名",
+  "enter_realname_hint": "請輸入真實姓名",
+  "wechat_no": "微信號碼",
+  "is_configured":"已設置",
+  "wechat_no_hint": "請輸入微信號碼",
+  "edit_wechat_cs": "如需修改微信號碼，請聯繫",
+  "email_hint":"請輸入您的郵箱地址",
+  "email_otp_hint":"請輸入您的郵箱驗證碼"
 }

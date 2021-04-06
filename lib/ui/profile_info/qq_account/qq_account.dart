@@ -6,6 +6,7 @@ import 'package:tgp_flutter/custom/custom_toast.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
+import 'package:tgp_flutter/src/gradient_decoration.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
 import 'package:tgp_flutter/ui/profile_info/qq_account/qq_account_view_model.dart';
 import 'package:tgp_flutter/ui/profile_info/real_name/real_name_verification_view_model.dart';
@@ -18,7 +19,7 @@ class QQAccount extends StatefulWidget{
 class _QQAccountState extends BaseState<QQAccount> {
   var _vm = QQAccountViewModel();
   TextEditingController _qqController = TextEditingController();
-  var isButtonEnabled = false;
+  var isButtonEnabled = false, isTextFieldEnabled = false;
   var name, cardNumber, buttonText;
   var userProfile;
 
@@ -35,10 +36,11 @@ class _QQAccountState extends BaseState<QQAccount> {
           _handleApiState();
           return Scaffold(
               resizeToAvoidBottomInset: false,
-              backgroundColor: Colors.black87,
               appBar: AppBar(
                 automaticallyImplyLeading: false,
-                backgroundColor: Colors.black87,
+                flexibleSpace: Container(
+                  decoration: gradientDecoration,
+                ),
                 centerTitle: true,
                 leading: IconButton(
                   icon: Icon(Icons.arrow_back),
@@ -46,7 +48,7 @@ class _QQAccountState extends BaseState<QQAccount> {
                     Navigator.pop(context);
                   },
                 ),
-                title: Text("真实姓名",
+                title: Text(getTranslatedText("qq_no"),
                   style: TextStyle(fontSize: 16.auto),
                 ),
               ),
@@ -76,8 +78,8 @@ class _QQAccountState extends BaseState<QQAccount> {
   }
 
   _buildTextFormField() => CustomTextFormField(
-    title: "QQ号码",
-    hintText: "请输入您的QQ号码",
+    title: getTranslatedText("qq_no"),
+    hintText: getTranslatedText("qq_no_hint"),
     onChanged: (value) => _onTextChange(),
     onFieldSubmitted: (value){},
     controller: _qqController,
@@ -85,10 +87,11 @@ class _QQAccountState extends BaseState<QQAccount> {
     width: context.screenWidth-70.auto,
     textInputType: TextInputType.number,
     textInputAction: TextInputAction.next,
-    //enabled: (_vm.userProfile.memberQq.isEmpty)? true: false,
+    enabled: isTextFieldEnabled,
   );
 
   _buildButton() => Container(
+    width: context.screenWidth,
       margin: EdgeInsets.only(top: 30.auto, bottom: 20.auto),
       child: ColorButton(
         text: Text(
@@ -112,14 +115,14 @@ class _QQAccountState extends BaseState<QQAccount> {
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
       Text(
-        "如需修改真实姓名，请联系",
+        getTranslatedText("edit_qq_cs"),
         style: TextStyle(
             fontSize: 12.auto,
             color: CustomColor.theme_title_text_color
         ),
       ),
       Text(
-        "线上客服",
+        getTranslatedText("customer_service"),
         style: TextStyle(
             fontSize: 12.auto,
             color: CustomColor.theme_bar_gradient_2
@@ -131,14 +134,19 @@ class _QQAccountState extends BaseState<QQAccount> {
   _getUserProfile(){
     WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {
-        /*userProfile =  _vm.userProfile;
-        if(_vm.userProfile.memberQq.isNotEmpty){
-          _qqController.text = _vm.userProfile.memberQq;
-          buttonText = "已验证";
+        userProfile = _vm.userProfile;
+        if(userProfile.qq !=null){
+          if(userProfile.qq.isNotEmpty){
+            _qqController.text = userProfile.qq;
+            buttonText = getTranslatedText("verified");
+            isButtonEnabled = false;
+            isTextFieldEnabled = false;
+          }
         }
-        else{*/
-        buttonText = "确认";
-        //}
+        else{
+        buttonText = getTranslatedText("done");
+        isTextFieldEnabled = true;
+        }
       });
     });
   }
@@ -157,29 +165,13 @@ class _QQAccountState extends BaseState<QQAccount> {
   }
 
   _onClick() async{
-    /*CustomProgressDialog.show(context);
-    _vm.updateQQAccount(_qqController.text);
-    if(_vm.updateQQApiState.isSuccess){
-      await _vm.getBasicInfo();
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        CustomProgressDialog.hide();
-        setState(() {
-          userProfile = _vm.getBasicInfoApiState.result;
-        });
-        _vm.resetApiState(isGetBasicInfoApiState: true);
-      });
-    }*/
+    CustomProgressDialog.show(context);
+    _vm.setQQAccount(_qqController.text);
   }
 
   _handleApiState(){
-    /* if (_vm.updateQQApiState == null) {
-      return;
-    }
-    if ((_vm.updateQQApiState?.isError ?? false)) {
-      CustomToast.show(_vm.updateQQApiState.error);
-      CustomProgressDialog.hide();
-      FocusScope.of(context).requestFocus(FocusNode());
-      _vm.resetApiState(isUpdateQQApiState: true);
-    }*/
+    handleApiState(_vm.setQQApiState, onSuccess: (){
+      _getUserProfile();
+    });
   }
 }

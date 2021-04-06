@@ -11,13 +11,15 @@ class OtpTextFormField extends StatefulWidget{
   final TextEditingController controller;
   final TextInputAction textInputAction;
   final Function getOtpCode;
+  final bool isEnabled;
 
   OtpTextFormField({Key key,
     this.hintText,
     this.onChanged,
     this.controller,
     this.textInputAction,
-    this.getOtpCode
+    this.getOtpCode,
+    this.isEnabled
   }) : super(key: key);
 
   @override
@@ -42,10 +44,10 @@ class _OtpTextFormFieldState extends BaseState<OtpTextFormField> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Container(
-                      width: context.screenWidth-155.auto,
+                      width: context.screenWidth-145.auto,
                       alignment: Alignment.topLeft,
                       child: Text(
-                        "验证码",
+                        getTranslatedText("otp"),
                         style: TextStyle(
                             color: Colors.black,
                             fontSize: 9.auto
@@ -54,7 +56,7 @@ class _OtpTextFormFieldState extends BaseState<OtpTextFormField> {
                       ),
                     ),
                     Container(
-                      width:context.screenWidth-155.auto,
+                      width:context.screenWidth-145.auto,
                       child: TextFormField(
                         autofocus: false,
                         onChanged: (value) => widget.onChanged(value),
@@ -74,16 +76,18 @@ class _OtpTextFormFieldState extends BaseState<OtpTextFormField> {
                               fontSize: 13.auto
                           ),
                         ),
+                        enabled: widget.isEnabled,
                       ),
                     ),
                   ]
               ),
               OutlineBorderButton(
-                  title: "发送验证码",
+                  title: getTranslatedText("request_otp"),
                   onClick: ()=> widget.getOtpCode(),
                   isEnabled:true,
-                  width: 50.auto,
-                  color:CustomColor.theme_bar_gradient_2
+                  width: 60.auto,
+                  color:CustomColor.theme_bar_gradient_2,
+                  fontSize:10.auto
                 //fontSize: 11.auto,
               )
             ],

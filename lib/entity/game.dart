@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:tgp_flutter/entity/game_tag.dart';
 part 'game.g.dart';
 
 @JsonSerializable()
@@ -15,7 +16,7 @@ class Game {
   @JsonKey(name:"isactive")
   bool isActive;
   int type;
-
+  GameTag tag;
 
 
   factory Game.fromJson(Map<String, dynamic> json) => _$GameFromJson(json);

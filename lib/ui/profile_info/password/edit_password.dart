@@ -32,11 +32,11 @@ class _EditPasswordState extends BaseState<EditPassword> {
 
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    /*WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {
         userProfile =  _vm.userProfile;
       });
-    });
+    });*/
     super.initState();
   }
 
@@ -70,23 +70,7 @@ class _EditPasswordState extends BaseState<EditPassword> {
                       _buildTextFormField("旧密码", "请输入旧密码", _oldPasswordController,false),
                       _buildTextFormField("新密码", "请输入新密码", _newPasswordController,false),
                       _buildTextFormField("确认新密码", "请再次输入新密码", _confirmPasswordController,true),
-                      Container(
-                          padding:  EdgeInsets.only(top: 50.auto,bottom: 20.auto),
-                          child: ColorButton(
-                            text: Text(
-                              "确认",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16.auto
-                              ),
-                            ),
-                            onClick: () =>_onClick(),
-                            isEnabled: isButtonEnabled,
-                            color: CustomColor.theme_bar_gradient_2,
-                            radius: 9.6 ,
-                          )
-                      ),
+                      _buildButton()
                       //_buildFooterText()
                     ],
                   )
@@ -108,6 +92,25 @@ class _EditPasswordState extends BaseState<EditPassword> {
       textInputType: TextInputType.number,
       textInputAction: isLast?TextInputAction.done:TextInputAction.next,
     ),
+  );
+
+  _buildButton() => Container(
+      width: context.screenWidth,
+      padding:  EdgeInsets.only(top: 50.auto,bottom: 20.auto),
+      child: ColorButton(
+        text: Text(
+          "确认",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              color: Colors.white,
+              fontSize: 16.auto
+          ),
+        ),
+        onClick: () =>_onClick(),
+        isEnabled: isButtonEnabled,
+        color: CustomColor.theme_bar_gradient_2,
+        radius: 9.6 ,
+      )
   );
 
   /*_buildFooterText(){
@@ -163,44 +166,26 @@ class _EditPasswordState extends BaseState<EditPassword> {
   }
 
   _onClick() async {
-    /*CustomProgressDialog.show(context);
     if(!validate.validatePasswordLength(_newPasswordController.text)) {
       setState(() {
         CustomToast.show("密码由6-20个英文字母或者数字组成");
       });
-    }else if(_oldPasswordController.text != _confirmPasswordController.text){
+    }else if(_newPasswordController.text != _confirmPasswordController.text){
       setState(() {
         CustomToast.show("确认密码与密码不一致");
       });
-    }else if(!validate.validatePassword(_oldPasswordController.text)){
-      setState(() {
-        CustomToast.show("密码只能输入英文字母、数字或特殊符号");
-      });
-    } else{
+    }else{
+      CustomProgressDialog.show(context);
       _vm.editPassword(_oldPasswordController.text, _newPasswordController.text);
-      if (_vm.editPasswordApiState.isSuccess) {
-        await _vm.getBasicInfo();
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          CustomProgressDialog.hide();
-          setState(() {
-            userProfile = _vm.getBasicInfoApiState.result;
-          });
-          _vm.resetApiState(isGetBasicInfoApiState: true);
-        });
-      }
-    }*/
+    }
   }
 
   _handleApiState(){
-    /*if (_vm.editPasswordApiState == null) {
-      return;
-    }
-    if ((_vm.editPasswordApiState?.isError ?? false)) {
-      CustomToast.show(_vm.editPasswordApiState.error);
-      CustomProgressDialog.hide();
-      FocusScope.of(context).requestFocus(FocusNode());
-      _vm.resetApiState(isEditPasswordApiState: true);
-    }*/
+    handleApiState(_vm.editPasswordApiState, onSuccess: (){
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        Navigator.pop(context);
+      });
+    });
   }
 }
 

@@ -1,9 +1,12 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:tgp_flutter/custom/color_button.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
+import 'package:tgp_flutter/my_behavior.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
+import 'package:tgp_flutter/ui/profile/profile_bottom_item.dart';
 
 class ReferFriend extends StatefulWidget{
   @override
@@ -34,39 +37,24 @@ class _ReferFriendState extends BaseState<ReferFriend> {
             Navigator.pop(context);
           },
         ),
-        title: Text("消息中心",
+        title: Text("推荐朋友",
           style: TextStyle(fontSize: 16.auto),
         ),
-        actions: [
-          InkWell(
-            onTap: (){
-              setState(() {
-                isEditing = !isEditing;
-              });
-            },
-            child: Container(
-                margin: EdgeInsets.only(right: 15.auto),
-                alignment: Alignment.center,
-                child: Text(
-                  isEditing?"取消":"编辑",
-                  style: TextStyle(fontSize: 12.auto),
-                )
-            ),
-          ),
-        ],
       ),
-      bottomNavigationBar: _buildBottomNavigationBar(),
       body: Container(
         padding: const EdgeInsets.all(8.0),
         child: Column(
           //mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
+              margin: EdgeInsets.only(top: 50.auto),
               height: 120.auto,
               width: 120.auto,
               color: CustomColor.theme_bar_gradient_1,
             ),
             _buildReferIdText(),
+            _buildIdLink(),
+            _buildProfileItem()
           ],
         ),
       ),
@@ -131,68 +119,92 @@ class _ReferFriendState extends BaseState<ReferFriend> {
     child: Row(
       children: [
         Container(
-          margin:EdgeInsets.only(
-              right: 10.auto
-          ),
-          child: Text(
-            "My Refer ID",
-            style: TextStyle(
-                color: CustomColor.theme_button_disable_bg,
-                fontSize: 16.auto
+            margin:EdgeInsets.only(
+                right: 10.auto
             ),
-          ),
+            width: 20.auto,
+            height: 20.auto,
+            child: Image.asset(
+                "images/referFriend/ic_link.png"
+            )
         ),
         Text(
-          "m1189",
+          "yg.ck881.com/en-US/a/m1189",
           style: TextStyle(
               color: CustomColor.theme_bar_gradient_2,
-              fontSize: 16.auto
+              fontSize: 14.auto
+          ),
+        ),
+        Spacer(),
+        Container(
+          padding: EdgeInsets.zero,
+          height: 25.auto,
+          child: ColorButton(
+            text: Text(
+              "COPY",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 14.auto
+              ),
+            ),
+            onClick: () =>{},
+            isEnabled: true,
+            color: CustomColor.theme_bar_gradient_2,
+            radius:20 ,
+            width: 50.auto,
+            padding:  MaterialStateProperty.all(EdgeInsets.zero),
           ),
         )
       ],
     ),
   );
 
-  _buildBottomNavigationBar() => Visibility(
-    visible: isSelected,
-    child: BottomAppBar(
-        color: CustomColor.theme_button_disable_bg,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            InkWell(
-              onTap: (){
-
-              },
-              child: Container(
-                padding: EdgeInsets.only(top: 10.auto, bottom: 10.auto, left: 15.auto),
-                child: Text(
-                  "标示已读",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 12.auto
-                  ),
-                ),
-              ),
-            ),
-            InkWell(
-              onTap: (){
-
-              },
-              child: Container(
-                padding: EdgeInsets.only(top: 10.auto, bottom: 10.auto, right: 15.auto),
-                child: Text(
-                  "删除",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 12.auto
-                  ),
-                ),
-              ),
-            ),
-          ],
-        )
+  _buildProfileItem() =>  Expanded(
+    child: ScrollConfiguration(
+      behavior: MyBehavior(),
+      child: ListView(
+        padding: EdgeInsets.only(
+            left: 10.auto, right: 10.auto, bottom: 20.auto, top:20.auto),
+        shrinkWrap: true,
+        primary: false,
+        physics: AlwaysScrollableScrollPhysics(),
+        children: [
+          GridView.count(
+            padding: EdgeInsets.only(bottom: 10.auto),
+            crossAxisCount: 3,
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            crossAxisSpacing: 25.auto,
+            mainAxisSpacing: 20.auto,
+            children: [
+              ProfileBottomItem(title: getTranslatedText("profile_detail"), imagePath:"ic_profile_user_detail", routePath:"profile_info", navigationID: 0,),
+              ProfileBottomItem(title: getTranslatedText("message_center"), imagePath:"ic_message",routePath:"message", navigationID: 0,),
+              ProfileBottomItem(title: getTranslatedText("transfer_history"), imagePath:"ic_account_detail",routePath:"transaction", navigationID: 0,),
+            ],
+          ),
+          _buildButton()
+        ],
+      ),
     ),
+  );
+
+  _buildButton() => Container(
+      padding: EdgeInsets.only(bottom: 10.auto, top: 20.auto),
+      child: ColorButton(
+        text:Text(
+          getTranslatedText("download_qr"),
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              color: Colors.white,
+              fontSize: 16.auto
+          ),
+        ),
+        onClick: (){},
+        isEnabled: true,
+        color: CustomColor.theme_bar_gradient_2,
+        radius:9.4,
+      )
   );
 }
 

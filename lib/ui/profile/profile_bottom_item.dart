@@ -30,20 +30,20 @@ class _ProfileBottomItemState extends BaseState<ProfileBottomItem> {
     return InkWell(
       onTap: () {
         WidgetsBinding.instance.addPostFrameCallback((_) {
-        if(widget.navigationID==0){
-          Navigator.of(context).pushNamed("/${widget.routePath}");
-        }
-        else{
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      Transaction(
-                        tabIndex: widget.navigationID,
-                      )
-              ));
-        }
-      });
+          if(widget.navigationID==0){
+            Navigator.of(context).pushNamed("/${widget.routePath}");
+          }
+          else{
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        Transaction(
+                          tabIndex: widget.navigationID,
+                        )
+                ));
+          }
+        });
       },
       child: Card(
         semanticContainer: true,
@@ -56,23 +56,15 @@ class _ProfileBottomItemState extends BaseState<ProfileBottomItem> {
           //margin: EdgeInsets.symmetric(vertical: 13,horizontal: 10),
           margin: EdgeInsets.only(left: 10.auto, right: 9.auto, top: 10.auto, bottom: 9.auto),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               ImageIcon(
-              AssetImage("images/profile/${widget.imagePath}.png"),
+                AssetImage("images/profile/${widget.imagePath}.png"),
                 size: 27.auto,
               ),
               Padding(
                 padding: EdgeInsets.only(top: 10.auto),
-                child: /*AutoSizeText(
-                  widget.title,
-                  style: TextStyle(
-                      fontSize: (9.5).auto
-                  ),
-                  textAlign: TextAlign.center,
-                  maxLines: 2,
-                  minFontSize:9.auto,
-                ),*/
-                Text(
+                child: Text(
                   widget.title,
                   style: TextStyle(
                       fontSize: (9.5).auto

@@ -19,8 +19,8 @@ class RealNameVerification extends StatefulWidget{
 class _RealNameVerificationState extends BaseState<RealNameVerification> {
   var _vm = RealNameVerificationViewModel();
   TextEditingController _realNameController = TextEditingController(),
-      _cardNoController = TextEditingController();
-  var isButtonEnabled = false;
+      _icNoController = TextEditingController();
+  var isButtonEnabled = false, isTextFieldEnabled = false;
   var name, cardNumber, buttonText;
   var userProfile;
 
@@ -49,7 +49,7 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
                     Navigator.pop(context);
                   },
                 ),
-                title: Text("真实姓名",
+                title: Text(getTranslatedText("ic_no"),
                   style: TextStyle(fontSize: 16.auto),
                 ),
               ),
@@ -58,15 +58,15 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
                 child: Column(
                   children: [
                     _buildTextFormField(
-                        "真实姓名",
-                        "请输入真实姓名",
+                        getTranslatedText("realname"),
+                        getTranslatedText("enter_realname_hint"),
                         _realNameController,
                         false
                     ),
                     _buildTextFormField(
-                        "身份证号码",
-                        "请输入您的身份证号码",
-                        _realNameController,
+                        getTranslatedText("ic_no"),
+                        getTranslatedText("enter_ic_no_hint"),
+                        _icNoController,
                         true
                     ),
                     _buildButton(),
@@ -86,9 +86,9 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
     controller: controller,
     focusNode: null,
     width: context.screenWidth-70.auto,
-    textInputType: isLast?TextInputType.text:TextInputType.number,
+    textInputType: TextInputType.text,
     textInputAction: isLast?TextInputAction.next:TextInputAction.done,
-    //enabled: (_vm.userProfile.memberName.isEmpty)? true: false,
+    enabled: isTextFieldEnabled,
   );
 
   _buildButton() => Container(
@@ -132,65 +132,46 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
     ],
   );
 
-
-
   _getUserProfile(){
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      var userProfile = _vm.userProfile;
       setState(() {
-        userProfile =  _vm.userProfile;
-        if(_vm.userProfile.memberName.isNotEmpty){
-          _realNameController.text = _vm.userProfile.memberName;
-        }
-        if(_vm.userProfile.memberCardNo.isNotEmpty){
-          _cardNoController.text = _vm.userProfile.memberCardNo;
-        }
-        if(_vm.userProfile.memberName.isNotEmpty &&_vm.userProfile.memberCardNo.isNotEmpty ){
-          buttonText = "已验证";
+        if(userProfile.realname!=null){
+          if(userProfile.realname.isNotEmpty) {
+            _realNameController.text = userProfile.realname;
+            buttonText = getTranslatedText("verified");
+            isButtonEnabled = false;
+            isTextFieldEnabled = false;
+          }
         }
         else{
-          buttonText = "确认";
+          buttonText = getTranslatedText("done");
+          isTextFieldEnabled = true;
         }
       });
     });
   }
 
   _onTextChange(){
-    if(_realNameController.text.isNotEmpty && _cardNoController.text.isNotEmpty){
-      setState(() {
+    setState(() {
+      if(_realNameController.text.isNotEmpty && _icNoController.text.isNotEmpty){
         isButtonEnabled = true;
-      });
-    }
-    else{
-      setState(() {
+      }
+      else{
         isButtonEnabled = false;
-      });
-    }
+      }
+    });
   }
 
+
   _onClick() async{
-    /*CustomProgressDialog.show(context);
-    _vm.idVerify(_realNameController.text, _cardNoController.text);
-    if(_vm.idVerifyApiState.isSuccess){
-      await _vm.getBasicInfo();
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        CustomProgressDialog.hide();
-        setState(() {
-          userProfile = _vm.getBasicInfoApiState.result;
-        });
-        _vm.resetApiState(isGetBasicInfoApiState: true);
-      });
-    }*/
+    CustomProgressDialog.show(context);
+    _vm.idVerify(_realNameController.text, _icNoController.text);
   }
 
   _handleApiState(){
-    /*if (_vm.idVerifyApiState == null) {
-      return;
-    }
-    if ((_vm.idVerifyApiState?.isError ?? false)) {
-      CustomToast.show(_vm.idVerifyApiState.error);
-      CustomProgressDialog.hide();
-      FocusScope.of(context).requestFocus(FocusNode());
-      _vm.resetApiState(isIdVerifyApiState: true);
-    }*/
+    handleApiState(_vm.idVerifyApiState, onSuccess: (){
+      _getUserProfile();
+    });
   }
 }

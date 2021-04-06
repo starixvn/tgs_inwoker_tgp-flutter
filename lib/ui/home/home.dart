@@ -12,7 +12,7 @@ import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:marquee/marquee.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 
-import 'game/game.dart';
+import 'game/game_view.dart';
 
 
 class Home extends StatefulWidget{
@@ -28,37 +28,7 @@ class _HomeState extends BaseState<Home> {
   String marquee = "《GD真人维护公告》GD真人将于 7 月 2 8 日 09:00 至 14:00 进行维护 维护期间不提供游戏相关服务。若有问题欢迎与在线客服联系 如有问题欢迎与在线客服联系，谢谢";
   ScrollController controller = ScrollController();
   var currentTabIndex = "0";
-  var tab =
-  [
-    {
-      "id":"0",
-      "text":"cat_livecasino"
-    },
-    {
-      "id":"1",
-      "text":"cat_qipai"
-    },
-    {
-      "id":"2",
-      "text":"cat_sport"
-    },
-    {
-      "id":"3",
-      "text":"cat_lottery"
-    },
-    {
-      "id":"4",
-      "text":"cat_slotgame"
-    },
-    {
-      "id":"5",
-      "text":"cat_laohu"
-    },
-    {
-      "id":"6",
-      "text":"cat_fish"
-    },
-  ];
+  var tabList;
   UserProfile user;
 
   //livegame =4, qipai =5, slotgame =4, sport =2, lottery =1
@@ -89,7 +59,10 @@ class _HomeState extends BaseState<Home> {
 
   @override
   void initState() {
-    _vm.resumeIfNeed();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _vm.getGameProviderList();
+      _vm.resumeIfNeed();
+    });
     super.initState();
   }
 
@@ -97,15 +70,7 @@ class _HomeState extends BaseState<Home> {
     return ProviderWidget<HomeViewModel>(
         model: _vm,
         builder: (ctx, vm, _) {
-          if(_vm.isNotLogin) {
-            navigateToLogin();
-            _vm.markIsNotLogin();
-          }
-          else if(_vm.isExpired) {
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              _displayDialog();
-            });
-          }
+          _handleApiState();
           return Scaffold(
             resizeToAvoidBottomInset: false,
             backgroundColor: Colors.white,
@@ -156,9 +121,9 @@ class _HomeState extends BaseState<Home> {
                       navigateToLogin();
                     }
                 ),
-                Game(
-                  tabList: tab,
-                  gameList: gameList,
+                GameView(
+                  tabList: tabList??[],
+                  gameTypeList: _vm.gameTypeList,
                 )
               ],
             ),
@@ -216,7 +181,7 @@ class _HomeState extends BaseState<Home> {
     });
   }
 
-_displayDialog() async {
+  _displayDialog() async {
     if (_vm.userProfile == null) {
       showDialog(context: context,
         builder: (BuildContext context) => CustomDialog(
@@ -228,5 +193,20 @@ _displayDialog() async {
         ),
       );
     }
+  }
+
+  _handleApiState(){
+    if(_vm.isNotLogin) {
+      navigateToLogin();
+      _vm.markIsNotLogin();
+    }
+    else if(_vm.isExpired) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _displayDialog();
+      });
+    }
+    handleApiState(_vm.getGameProviderApiState, isAutoHideLoading:false, onSuccess: (){
+      tabList = _vm.getGameProviderApiState.result;
+    });
   }
 }

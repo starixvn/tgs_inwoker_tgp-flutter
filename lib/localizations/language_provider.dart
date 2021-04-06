@@ -6,9 +6,9 @@ import 'my_localizations.dart';
 
 class LanguageProvider{
   var list=[
-    Language("en","English", Locale("en", '')),
-    Language("zh_Hans","简体中文", Locale.fromSubtags(languageCode: "zh", scriptCode: "Hans")),
-    Language("zh_Hant","繁体中文", Locale.fromSubtags(languageCode: "zh", scriptCode: "Hant")),
+    Language("en","English", Locale("en", ''), "en-US","images/language/ic_lang_en.png"),
+    Language("zh_Hans","简体中文", Locale.fromSubtags(languageCode: "zh", scriptCode: "Hans"), "zh-CN","images/language/ic_lang_zh.png"),
+    Language("zh_Hant","繁体中文", Locale.fromSubtags(languageCode: "zh", scriptCode: "Hant"), "zh-TW","images/language/ic_lang_zh_tw.png"),
   ];
   
   Future<Locale> setLocale(Language language) async {
@@ -34,5 +34,9 @@ class LanguageProvider{
 
   String getTranslated(BuildContext context, String key) {
     return MyLocalizations.of(context).translate(key);
+  }
+
+  getCurrentLanguage(Locale _locale){
+    return list.singleWhere((e) => e.locale == _locale);
   }
 }

@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
@@ -16,12 +17,41 @@ class OutlineBorderButton extends StatelessWidget {
     this.isEnabled,
     this.width,
     this.color,
-    this.fontSize
+    this.fontSize,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return ButtonTheme(
+    return TextButton(
+      onPressed: () => {
+        this.onClick()
+      },
+      style: ButtonStyle(
+        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular((50).auto),
+              side: BorderSide(
+                  color: CustomColor.theme_bar_gradient_2
+              ),
+            )
+        ),
+        backgroundColor: MaterialStateProperty.all(
+            Colors.transparent
+        ),
+      ),
+      child: Container(
+          alignment: Alignment.center,
+          width: width??context.screenWidth,
+          child: AutoSizeText(
+            title,
+            style: TextStyle(
+                color: CustomColor.theme_bar_gradient_2,
+                fontSize: fontSize
+            ),
+            minFontSize: 8.auto,
+          ),
+      ),
+    ) ;/*ButtonTheme(
       minWidth: width,
       height: 30,
       child: OutlineButton(
@@ -35,14 +65,15 @@ class OutlineBorderButton extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(18.0),
         ),
-        child: Text(
+        child: AutoSizeText(
           title,
           style: TextStyle(
             color: color,
             fontSize: fontSize
           ),
+          minFontSize: 8.auto,
         ),
       ),
-    );
+    );*/
   }
 }

@@ -14,6 +14,7 @@ class CustomTextFormField extends StatefulWidget{
   final Widget button;
   final TextInputType textInputType;
   final TextInputAction textInputAction;
+  final bool enabled;
 
   CustomTextFormField({Key key,
     this.title,
@@ -26,6 +27,7 @@ class CustomTextFormField extends StatefulWidget{
     this.button,
     this.textInputType,
     this.textInputAction,
+    this.enabled
   }) : super(key: key);
 
   @override
@@ -64,6 +66,7 @@ class _CustomTextFormFieldState extends BaseState<CustomTextFormField> {
                     Container(
                       width: widget.width,
                       child: TextFormField(
+                        enabled: widget.enabled ?? true,
                         autofocus: false,
                         onChanged: (value) => widget.onChanged(value),
                         focusNode: widget.focusNode,

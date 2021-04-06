@@ -18,7 +18,7 @@ class Wechat extends StatefulWidget{
 class _WechatState  extends BaseState<Wechat> {
   var _vm = WechatViewModel();
   TextEditingController _wechatController = TextEditingController();
-  var isButtonEnabled = false;
+  var isButtonEnabled = false, isTextFieldEnabled = false;
   var name, cardNumber, buttonText;
   var userProfile;
 
@@ -47,7 +47,7 @@ class _WechatState  extends BaseState<Wechat> {
                     Navigator.pop(context);
                   },
                 ),
-                title: Text("真实姓名",
+                title: Text(getTranslatedText("wechat_no"),
                   style: TextStyle(fontSize: 16.auto),
                 ),
               ),
@@ -66,8 +66,8 @@ class _WechatState  extends BaseState<Wechat> {
   }
 
   _buildTextFormField() => CustomTextFormField(
-    title: "微信号码",
-    hintText: "请输入您的微信号码",
+    title: getTranslatedText("wechat_no"),
+    hintText: getTranslatedText("wechat_no_hint"),
     onChanged: (value) => _onTextChange(),
     onFieldSubmitted: (value){},
     controller: _wechatController,
@@ -75,14 +75,15 @@ class _WechatState  extends BaseState<Wechat> {
     width: context.screenWidth-70.auto,
     textInputType: TextInputType.number,
     textInputAction: TextInputAction.next,
-    //enabled: (_vm.userProfile.memberQq.isEmpty)? true: false,
+    enabled: isTextFieldEnabled,
   );
 
   _buildButton() => Container(
+    width: context.screenWidth,
       margin: EdgeInsets.only(top: 30.auto, bottom: 20.auto),
       child: ColorButton(
         text: Text(
-          buttonText ?? "",
+          buttonText??"",
           textAlign: TextAlign.center,
           style: TextStyle(
               color: Colors.white,
@@ -102,14 +103,14 @@ class _WechatState  extends BaseState<Wechat> {
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
       Text(
-        "如需修改真实姓名，请联系",
+       getTranslatedText("edit_wechat_cs"),
         style: TextStyle(
             fontSize: 12.auto,
             color: CustomColor.theme_title_text_color
         ),
       ),
       Text(
-        "线上客服",
+        getTranslatedText("customer_service"),
         style: TextStyle(
             fontSize: 12.auto,
             color: CustomColor.theme_bar_gradient_2
@@ -121,14 +122,20 @@ class _WechatState  extends BaseState<Wechat> {
   _getUserProfile(){
     WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {
-        /*userProfile =  _vm.userProfile;
-        if(_vm.userProfile.memberQq.isNotEmpty){
-          _qqController.text = _vm.userProfile.memberQq;
-          buttonText = "已验证";
+        userProfile =  _vm.userProfile;
+        var wechat = _vm.userProfile.wechat;
+        if(wechat!=null){
+          if(wechat.isNotEmpty){
+            _wechatController.text = wechat;
+            buttonText = getTranslatedText("verified");
+            isButtonEnabled = false;
+            isTextFieldEnabled = false;
+          }
         }
-        else{*/
-        buttonText = "确认";
-        //}
+        else {
+          buttonText = getTranslatedText("done");
+          isTextFieldEnabled = true;
+        }
       });
     });
   }
@@ -147,29 +154,13 @@ class _WechatState  extends BaseState<Wechat> {
   }
 
   _onClick() async{
-    /*CustomProgressDialog.show(context);
-    _vm.updateWechatAccount(_wechatController.text);
-    if(_vm.updateWechatApiState.isSuccess){
-      await _vm.getBasicInfo();
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        CustomProgressDialog.hide();
-        setState(() {
-          userProfile = _vm.getBasicInfoApiState.result;
-        });
-        _vm.resetApiState(isGetBasicInfoApiState: true);
-      });
-    }*/
+    CustomProgressDialog.show(context);
+    _vm.setWechatAccount(_wechatController.text);
   }
 
   _handleApiState(){
-    /*if (_vm.updateWechatApiState == null) {
-      return;
-    }
-    if ((_vm.updateWechatApiState?.isError ?? false)) {
-      CustomToast.show(_vm.updateWechatApiState.error);
-      CustomProgressDialog.hide();
-      FocusScope.of(context).requestFocus(FocusNode());
-      _vm.resetApiState(isUpdateWechatApiState: true);
-    }*/
+    handleApiState(_vm.setWechatApiState, onSuccess: (){
+      _getUserProfile();
+    });
   }
 }

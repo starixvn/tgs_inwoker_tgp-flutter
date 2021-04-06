@@ -37,4 +37,13 @@ class BaseRepository extends ChangeNotifier{
       return EventResult.failure(map["errmsg"]);
     }
   }
+
+  EventResult<T> resolveOnlyDataResponse<T>(http.Response response,ResponseResultConverter<T> converter, [void Function(T) onSuccess]){
+    var map = json.decode(response.body);
+    var result = converter(map);
+    if(onSuccess != null)
+      onSuccess(result);
+    notifyListeners();
+    return EventResult.success(result);
+  }
 }

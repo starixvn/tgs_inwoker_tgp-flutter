@@ -11,18 +11,10 @@ class EditPasswordViewModel extends BaseViewModel{
   List<BaseRepository> get repoList => [userRepo];
   get userProfile => userRepo.userProfile;
 
-  /*editPassword(String oldPassword, String newPassword, {String phone = "", String verCode = ""}) async{
+  editPassword(String oldPassword, String newPassword, {String phone = "", String verCode = ""}) async{
     setLoading();
     editPasswordApiState = await userRepo.editPassword(oldPassword, newPassword);
     setLoading(false);
     return editPasswordApiState;
   }
-
-  resetApiState({
-    bool isEditPasswordApiState = false,
-  }){
-    if(isEditPasswordApiState){
-      editPasswordApiState = null;
-    }
-  }*/
 }

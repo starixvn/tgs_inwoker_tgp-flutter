@@ -12,36 +12,32 @@ import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
-import 'package:tgp_flutter/ui/profile_info/email/email_verification_view_model.dart';
+import 'package:tgp_flutter/ui/forgot_password/forgot_password_view_model.dart';
+import 'package:tgp_flutter/ui/forgot_password/update_forgot_password.dart';
 import 'package:tgp_flutter/ui/profile_info/phone/phone_verification_view_model.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 
-class EditEmail extends StatefulWidget{
+class ForgotPassword extends StatefulWidget{
   @override
-  _EditEmailState createState() => _EditEmailState();
+  _ForgotPasswordState createState() => _ForgotPasswordState();
 }
 
-class _EditEmailState extends BaseState<EditEmail> {
-  var _vm = EmailVerificationViewModel();
-  TextEditingController _emailController = TextEditingController(),
+class _ForgotPasswordState extends BaseState<ForgotPassword> {
+  var _vm = ForgotPasswordViewModel();
+  TextEditingController _phoneController = TextEditingController(),
       _otpController = TextEditingController();
-  var isButtonEnabled = false;
+  var isButtonEnabled = false, isOtpEnabled = false;
   var name, cardNumber, buttonText;
   var userProfile;
   InputValidationProvider validate = new InputValidationProvider();
 
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      setState(() {
-        userProfile =  _vm.userProfile;
-      });
-    });
     super.initState();
   }
 
   Widget build(BuildContext context) {
-    return ProviderWidget<EmailVerificationViewModel>(
+    return ProviderWidget<ForgotPasswordViewModel>(
         model: _vm,
         builder: (ctx, vm, _) {
           _handleApiState();
@@ -59,36 +55,38 @@ class _EditEmailState extends BaseState<EditEmail> {
                     Navigator.pop(context);
                   },
                 ),
-                title: Text("修改邮箱",
+                title: Text(getTranslatedText("forgot_password"),
                   style: TextStyle(fontSize: 16.auto),
                 ),
               ),
-              body: /*userProfile == null?
+              body: Container(
+                  child: /*userProfile == null?
                   Center(child: CircularProgressIndicator(),):*/
-              Container(
-                margin: EdgeInsets.only(
-                    left: 10.auto, right: 10.auto, top: 10.auto),
-                child: Column(
-                  children: [
-                    CustomTabBar(index:1),
-                    _buildTextFormField(),
-                    _buildOtpTextFormField(),
-                    _buildButton()
-                  ],
-                ),
+                  Container(
+                    margin: EdgeInsets.only(
+                        left: 10.auto, right: 10.auto, top: 10.auto),
+                    child: Column(
+                      children: [
+                        //CustomTabBar(index:1),
+                        _buildTextFormField(),
+                        _buildOtpTextFormField(),
+                        _buildButton()
+                      ],
+                    ),
+                  )
               )
           );
         });
   }
 
-  _buildTextFormField() =>  Container(
+  _buildTextFormField()=>  Container(
     margin: EdgeInsets.only(top: 15.auto),
     child: CustomTextFormField(
-      title: "邮箱地址",
-      hintText: "请输入您的邮箱地址",
+      title: getTranslatedText("phone_number"),
+      hintText: getTranslatedText("enter_phone_hint"),
       onChanged: (value) => _onTextChange(),
       onFieldSubmitted: (value){},
-      controller: _emailController,
+      controller: _phoneController,
       focusNode: null,
       width: context.screenWidth-70.auto,
       textInputType: TextInputType.number,
@@ -96,21 +94,28 @@ class _EditEmailState extends BaseState<EditEmail> {
     ),
   );
 
-  _buildOtpTextFormField() => OtpTextFormField(
-    hintText: "请输入邮箱验证码",
-    onChanged:(value) => _onTextChange(),
-    controller: _otpController,
-    textInputAction: TextInputAction.done,
-    getOtpCode:() {
-      _getSmsCode();
-    },
+  _buildOtpTextFormField() =>  Opacity(
+    opacity: isOtpEnabled?1:0.3,
+    child: Container(
+      margin: EdgeInsets.only(top: 15.auto),
+      child: OtpTextFormField(
+        hintText: getTranslatedText("enter_phone_otp_hint"),
+        onChanged:(value) => _onTextChange(),
+        controller: _otpController,
+        textInputAction: TextInputAction.done,
+        getOtpCode:() {
+          _getSmsCode();
+        },
+      ),
+    ),
   );
 
   _buildButton() => Container(
+      width: context.screenWidth,
       margin: EdgeInsets.only(top: 30.auto, bottom: 20.auto),
       child: ColorButton(
         text: Text(
-          "完成",
+          getTranslatedText("next"),
           textAlign: TextAlign.center,
           style: TextStyle(
               color: Colors.white,
@@ -118,63 +123,55 @@ class _EditEmailState extends BaseState<EditEmail> {
           ),
         ),
         onClick: (){
-          _onClick();
+          _navigateToUpdatePassword();
         },
-        isEnabled: isButtonEnabled,
+        isEnabled: isButtonEnabled??false,
         color: CustomColor.theme_bar_gradient_2,
         radius: 9.6 ,
       )
   );
 
   _onTextChange(){
-    if(_otpController.text.isNotEmpty && _emailController.text.isNotEmpty){
-      setState(() {
+    setState(() {
+      if(_otpController.text.isNotEmpty && _phoneController.text.isNotEmpty){
         isButtonEnabled = true;
-      });
-    }
-    else{
-      setState(() {
+      }else if(_phoneController.text.isNotEmpty){
+        isOtpEnabled = true;
+      }
+      else{
+        isOtpEnabled = false;
         isButtonEnabled = false;
-      });
-    }
+      }
+    });
   }
 
   _getSmsCode() {
-    if (!validate.validateEmail(_emailController.text)) {
+   /* if (!validate.validateChinaPhoneNumber(_phoneController.text)) {
       setState(() {
-        CustomToast.show("邮箱地址格式不正确");
+        CustomToast.show("手机号码格式不正确");
       });
-    } else {
-      //_vm.emailVerify(_emailController.text, EventType.BIND);
-    }
-  }
-
-  _onClick() async {
-    /*CustomProgressDialog.show(context);
-    _vm.emailVerify(_emailController.text, EventType.BIND);
-    if (_vm.emailVerifyApiState.isSuccess) {
-      await _vm.getBasicInfo();
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        CustomProgressDialog.hide();
-        setState(() {
-          userProfile = _vm.getBasicInfoApiState.result;
-        });
-        _vm.resetApiState(isGetBasicInfoApiState: true);
-      });
-    }*/
+    } else {*/
+      CustomProgressDialog.show(context);
+      _vm.getForgotPasswordCode(_phoneController.text);
+    //}
   }
 
   _handleApiState(){
-    /*if (_vm.emailVerifyApiState == null
-        && _vm.getBasicInfoApiState == null) {
-      return;
-    }
-    if ((_vm.emailVerifyApiState?.isError ?? false)) {
-      CustomToast.show(_vm.emailVerifyApiState.error);
-      CustomProgressDialog.hide();
-      FocusScope.of(context).requestFocus(FocusNode());
-      _vm.resetApiState(isVerifyCodeApiState: true);
-    }*/
+    handleApiState(_vm.getForgotPasswordCodeApiState, onSuccess: (){
+
+    });
+  }
+
+  _navigateToUpdatePassword(){
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) =>
+                UpdateForgotPassword(
+                  code: _otpController.text,
+                  securityKey: _vm.securityKey
+                )
+        ));
   }
 }
 
