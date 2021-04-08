@@ -6,6 +6,7 @@ import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/custom/custom_tab_bar.dart';
 import 'package:tgp_flutter/custom/custom_text_form_field.dart';
 import 'package:tgp_flutter/custom/custom_toast.dart';
+import 'package:tgp_flutter/custom/otp_text_form_field.dart';
 import 'package:tgp_flutter/custom/outline_border_button.dart';
 import 'package:tgp_flutter/data/provider/input_validation_provider.dart';
 import 'package:tgp_flutter/entity/event_type.dart';
@@ -14,21 +15,23 @@ import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
 import 'package:tgp_flutter/ui/profile_info/email/email_verification_view_model.dart';
+import 'package:tgp_flutter/ui/profile_info/pay_password/pay_password_view_model.dart';
 import 'package:tgp_flutter/ui/profile_info/phone/phone_verification_view_model.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
-import 'package:tgp_flutter/ui/profile_info/withdraw_password/withdraw_password_view_model.dart';
 
-class WithdrawPassword extends StatefulWidget{
+class ResetPayPassword extends StatefulWidget{
   @override
-  _WithdrawPasswordState createState() => _WithdrawPasswordState();
+  _ResetPayPasswordState createState() => _ResetPayPasswordState();
 }
 
-class _WithdrawPasswordState  extends BaseState<WithdrawPassword> {
-  var _vm = WithdrawPasswordViewModel();
-  TextEditingController _passwordController = TextEditingController(),
-      _confirmPasswordController = TextEditingController();
+class _ResetPayPasswordState  extends BaseState<ResetPayPassword> {
+  var _vm = PayPasswordViewModel();
+  TextEditingController _payPasswordController = TextEditingController(),
+      _confirmPayPasswordController = TextEditingController(),
+      _phoneController = TextEditingController(),
+      _otpController = TextEditingController();
   var phoneText;
-  var isButtonEnabled = false, isResetPassword = false,  isCodeVisible = false;
+  var isButtonEnabled = false, isResetPassword = false,  isCodeVisible = false, isOtpEnabled = false;
   var name, cardNumber, buttonText;
   var userProfile;
   InputValidationProvider validate = new InputValidationProvider();
@@ -44,7 +47,7 @@ class _WithdrawPasswordState  extends BaseState<WithdrawPassword> {
   }
 
   Widget build(BuildContext context) {
-    return ProviderWidget<WithdrawPasswordViewModel>(
+    return ProviderWidget<PayPasswordViewModel>(
         model: _vm,
         builder: (ctx, vm, _) {
           _handleApiState();
@@ -62,7 +65,7 @@ class _WithdrawPasswordState  extends BaseState<WithdrawPassword> {
                     Navigator.pop(context);
                   },
                 ),
-                title: Text(isResetPassword?"修改提款密码":"提款密码",
+                title: Text(getTranslatedText("reset_pay_password"),
                   style: TextStyle(fontSize: 16.auto),
                 ),
               ),
@@ -70,12 +73,13 @@ class _WithdrawPasswordState  extends BaseState<WithdrawPassword> {
                   padding: EdgeInsets.only(top: 10.auto, left: 10.auto, right: 10.auto),
                   child: Column(
                     children: [
-                      _buildTextFormField("提款密码", "请输入提款密码", _passwordController, false),
-                      _buildTextFormField("确认提款密码", "请再次输入提款密码", _confirmPasswordController, true),
+                      _buildTextFormField("new_pay_password", "enter_new_pay_password", _payPasswordController, false),
+                      _buildTextFormField("confirm_pay_password", "confirm_pay_password_hint", _confirmPayPasswordController, false),
+                      _buildTextFormField("phone_number", "enter_phone_hint", _phoneController, false),
+                      _buildOtpTextFormField(),
                       _buildButton()
                     ],
                   )
-
               )
           );
         });
@@ -84,8 +88,8 @@ class _WithdrawPasswordState  extends BaseState<WithdrawPassword> {
   _buildTextFormField(String title, String hint, TextEditingController controller, bool isLast)=> Container(
     margin: EdgeInsets.only(top: 15.auto),
     child: CustomTextFormField(
-      title: title,
-      hintText: hint,
+      title: getTranslatedText(title),
+      hintText: getTranslatedText(hint),
       onChanged: (value) => _onTextChange(),
       onFieldSubmitted: (value){},
       controller: controller,
@@ -96,11 +100,28 @@ class _WithdrawPasswordState  extends BaseState<WithdrawPassword> {
     ),
   );
 
+  _buildOtpTextFormField() =>  Opacity(
+    opacity: isOtpEnabled?1:0.3,
+    child: Container(
+      margin: EdgeInsets.only(top: 15.auto),
+      child: OtpTextFormField(
+        hintText: getTranslatedText("enter_phone_otp_hint"),
+        onChanged:(value) => _onTextChange(),
+        controller: _otpController,
+        textInputAction: TextInputAction.done,
+        getOtpCode:() {
+          _getSmsCode();
+        },
+      ),
+    ),
+  );
+
   _buildButton() => Container(
+    width: context.screenWidth,
       padding:  EdgeInsets.only(top: 50.auto,bottom: 20.auto),
       child: ColorButton(
         text: Text(
-          "确认设置",
+          getTranslatedText("confirm_edit"),
           textAlign: TextAlign.center,
           style: TextStyle(
               color: Colors.white,
@@ -116,8 +137,19 @@ class _WithdrawPasswordState  extends BaseState<WithdrawPassword> {
       )
   );
 
+  _getSmsCode() {
+    /*if (!validate.validateChinaPhoneNumber(_phoneController.text)) {
+      setState(() {
+        CustomToast.show("手机号码格式不正确");
+      });
+    } else {
+    CustomProgressDialog.show(context);
+    _vm.getForgotPasswordCode(_phoneController.text);
+    }*/
+  }
+
   _onTextChange(){
-    if(_passwordController.text.isNotEmpty && _confirmPasswordController.text.isNotEmpty){
+    if(_payPasswordController.text.isNotEmpty && _confirmPayPasswordController.text.isNotEmpty){
       setState(() {
         isButtonEnabled = true;
       });
@@ -131,8 +163,8 @@ class _WithdrawPasswordState  extends BaseState<WithdrawPassword> {
 
   _onClick() async {
     /*CustomProgressDialog.show(context);
-    _vm.updateWithdrawPassword(_passwordController.text);
-    if (_vm.updateWithdrawPasswordApiState.isSuccess) {
+    _vm.updatePayPassword(_passwordController.text);
+    if (_vm.updatePayPasswordApiState.isSuccess) {
       await _vm.getBasicInfo();
       WidgetsBinding.instance.addPostFrameCallback((_) {
         CustomProgressDialog.hide();
@@ -145,15 +177,15 @@ class _WithdrawPasswordState  extends BaseState<WithdrawPassword> {
   }
 
   _handleApiState(){
-    /*if (_vm.updateWithdrawPasswordApiState == null
+    /*if (_vm.updatePayPasswordApiState == null
         && _vm.getBasicInfoApiState == null) {
       return;
     }
-    if ((_vm.updateWithdrawPasswordApiState?.isError ?? false)) {
-      CustomToast.show(_vm.updateWithdrawPasswordApiState.error);
+    if ((_vm.updatePayPasswordApiState?.isError ?? false)) {
+      CustomToast.show(_vm.updatePayPasswordApiState.error);
       CustomProgressDialog.hide();
       FocusScope.of(context).requestFocus(FocusNode());
-      _vm.resetApiState(isUpdateWithdrawPasswordApiState: true);
+      _vm.resetApiState(isUpdatePayPasswordApiState: true);
     }*/
   }
 }

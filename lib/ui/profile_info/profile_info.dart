@@ -83,8 +83,8 @@ class _ProfileInfoState  extends BaseState<ProfileInfo> {
                             child: _buildInfoCard(
                               getTranslatedText("security_center"),
                               [ProfileInfoItem.LOGIN_PASSWORD, ProfileInfoItem.PAY_PASSWORD, ProfileInfoItem.RESET_PAY_PASSWORD],
-                              ["edit_password","withdraw_password",
-                                "edit_security_answer"// if no security will navigate to security answer, else will navigate to edit security answer
+                              ["edit_password","edit_pay_password",
+                                "reset_pay_password"// if no security will navigate to security answer, else will navigate to edit security answer
                               ],
                               isSecurity: true
                             ),

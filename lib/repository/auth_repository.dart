@@ -52,7 +52,7 @@ class AuthenticationRepository extends BaseRepository {
         "api/player/password/forgot",
         {
           "phone": phone,
-        });
+        }, false);
     return resolveBaseResponse(response, (json) => json as String);
   }
 
@@ -63,7 +63,7 @@ class AuthenticationRepository extends BaseRepository {
           "securitykey": securityKey,
           "validatecode": validateCode,
           "newpwd": newPassword
-        });
+        },false);
     return resolveBaseResponse(response, (json) => json as String);
   }
 }

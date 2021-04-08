@@ -3,6 +3,7 @@ import 'package:tgp_flutter/custom/color_button.dart';
 import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/custom/custom_toast.dart';
 import 'package:tgp_flutter/entity/user_profile.dart';
+import 'package:tgp_flutter/extension/format.dart';
 import 'package:tgp_flutter/localizations/language_provider.dart';
 import 'package:tgp_flutter/my_behavior.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
@@ -23,23 +24,25 @@ class _ProfileState extends BaseState<Profile> {
   UserProfile user;
   var level, imagePath;
   var currentBottomIndex = 4;
+  var mainWallet;
 
   @override
   void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if(_vm.userProfile !=null) {
+        user = _vm.userProfile;
+        _vm.getWalletBalance();
+        //_getVipDetails();
+      }
+      else{
+        Navigator.of(context).pushNamed("/login");
+      }
+    });
     super.initState();
   }
 
   Widget build(BuildContext context) {
-    /*if(_vm.userProfile !=null) {
-      user = _vm.userProfile;
-      _vm.getTotalBalance();
-      _getVipDetails();
-    }
-    else{
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        Navigator.of(context).pushNamed("/login");
-      });
-    }*/
+
     return ProviderWidget<ProfileViewModel>(
         model: _vm,
         builder: (ctx, vm, _) {
@@ -47,8 +50,9 @@ class _ProfileState extends BaseState<Profile> {
           return Scaffold(
               resizeToAvoidBottomInset: false,
               backgroundColor: Colors.white,
-              body:/* _vm.userProfile!=null
-                  ? */Container(
+              body: _vm.userProfile==null || _vm.wallet == null
+                  ? Center(child: CircularProgressIndicator(),)
+                  :Container(
                 padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -91,7 +95,7 @@ class _ProfileState extends BaseState<Profile> {
                     ]
                 ),
               )
-                 // : Container()
+            // : Container()
           );
         }
     );
@@ -113,7 +117,7 @@ class _ProfileState extends BaseState<Profile> {
             padding: EdgeInsets.only(
                 top: 3.auto, bottom: 3.auto),
             //"¥ ${widget.userProfile?.balance}",
-            child: Text(getTranslatedText("main_wallet")+" : ¥ 0.00",// ¥ ${Format().currencyWithDecimalFormat(double.parse(user?.balance))}",
+            child: Text(getTranslatedText("main_wallet")+" :  ¥ ${Format().currencyWithDecimalFormat(_vm.wallet.main)}",
               style: TextStyle(
                   color: Colors.white,
                   fontSize: (11.2).auto
@@ -144,8 +148,8 @@ class _ProfileState extends BaseState<Profile> {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           ProfileTopItem(title:getTranslatedText("deposit") ,imagePath:"ic_deposit", routePath:"deposit"),
-          ProfileTopItem(title:getTranslatedText("transfer"),imagePath:"ic_transfer", routePath:""),
-          ProfileTopItem(title:getTranslatedText("withdrawal"),imagePath:"ic_withdraw", routePath:""),
+          ProfileTopItem(title:getTranslatedText("transfer"),imagePath:"ic_transfer", routePath:"wallet_transfer"),
+          ProfileTopItem(title:getTranslatedText("withdrawal"),imagePath:"ic_withdraw", routePath:"withdraw"),
         ],
       ),
     ),
@@ -196,10 +200,10 @@ class _ProfileState extends BaseState<Profile> {
               fontSize: 16.auto
           ),
         ),
-          onClick: () => _logout(),
-          isEnabled: true,
-          color: CustomColor.theme_bar_gradient_2,
-          radius:9.4,
+        onClick: () => _logout(),
+        isEnabled: true,
+        color: CustomColor.theme_bar_gradient_2,
+        radius:9.4,
       )
   );
 
@@ -207,7 +211,6 @@ class _ProfileState extends BaseState<Profile> {
     handleApiState(_vm.logoutApiState, onSuccess:(){
       _navigateToLogin();
     });
-
   }
 
   _navigateToLogin(){

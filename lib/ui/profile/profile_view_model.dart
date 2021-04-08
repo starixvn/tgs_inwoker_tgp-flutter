@@ -9,17 +9,17 @@ import 'package:shared_preferences/shared_preferences.dart';
 class ProfileViewModel extends BaseViewModel{
   final userRepo = UserRepository.getSingleton();
 
-  var logoutApiState, getAllWalletState;
-
+  var logoutApiState, getMainBalanceApiState;
   //get totalBalance => _computeTotalBalance();
 
   @override
-  List<BaseRepository> get repoList => [userRepo, ];
+  List<BaseRepository> get repoList => [userRepo,];
   get userProfile => userRepo.userProfile;
+  get wallet => userRepo.wallet;
 
   logout() async{
-    setLoading();;
-    logoutApiState  = await UserRepository.getSingleton().logout();
+    setLoading();
+    logoutApiState  = await userRepo.logout();
     if(logoutApiState.isSuccess){
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.remove("token");
@@ -27,6 +27,11 @@ class ProfileViewModel extends BaseViewModel{
     setLoading();
     return logoutApiState;
   }
+
+  getWalletBalance()async{
+    await userRepo.getWalletBalance();
+  }
+
   /*getTotalBalance(){
     WalletRepository.getSingleton().getAllWallet();
   }

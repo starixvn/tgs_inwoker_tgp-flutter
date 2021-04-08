@@ -102,7 +102,7 @@ class _UpdateForgotPasswordState extends BaseState<UpdateForgotPassword> {
       controller: controller,
       focusNode: null,
       width: context.screenWidth-70.auto,
-      textInputType: TextInputType.number,
+      textInputType: TextInputType.visiblePassword,
       textInputAction: TextInputAction.next,
     ),
   );

@@ -10,8 +10,8 @@ var _header = {
   "Content-Type": "application/json; charset=utf-8",
 };
 
-apiPost(final endPoint, final content) async{
-  var header = await _injectTokenToHeader();
+apiPost(final endPoint, final content, [isAuthorization = true]) async{
+  var header = await _injectTokenToHeader(isAuthorization);
   print("Api->Post:${_url+endPoint}");
   print(header);
   http.Response response = await http.post(
@@ -28,10 +28,10 @@ apiPost(final endPoint, final content) async{
   }*/
 }
 
-apiGet(final endPoint, [final content]) async{
+apiGet(final endPoint, {final content, isAuthorization = true}) async{
   var uri = Uri.https("dev.operator.tgsdev.gq" , endPoint, content);
   print("Api->Get:${_url+endPoint}");
-  var header = await _injectTokenToHeader();
+  var header = await _injectTokenToHeader(isAuthorization);
   http.Response response = await http.get(
     uri,
     headers: header,
@@ -45,9 +45,9 @@ apiGet(final endPoint, [final content]) async{
   }*/
 }
 
-apiDelete(final endPoint, final content) async{
+apiDelete(final endPoint, final content, [isAuthorization = true]) async{
   print("Api->Get:${_url+endPoint}");
-  var header = await _injectTokenToHeader();
+  var header = await _injectTokenToHeader(isAuthorization);
   http.Response response = await http.delete(
     _url + endPoint,
     headers: header,
@@ -61,24 +61,9 @@ apiDelete(final endPoint, final content) async{
   }*/
 }
 
-_injectTokenToHeader()async{
-  var prefs = await SharedPreferences.getInstance();
-  var authToken = prefs.getString("auth_token");
-  if(authToken != null) {
-    _header["Authorization"] = "Bearer "+authToken;
-  }
-  var token = prefs.getString("token");
-  if(token != null) {
-    _header["Token"] = token;
-  }else{
-    _header.remove("Token");
-  }
-  return _header;
-}
-
-apiPatch(final endPoint, final content) async{
+apiPatch(final endPoint, final content, [isAuthorization = true]) async{
   print("Api->Patch:${_url+endPoint}");
-  var header = await _injectTokenToHeader();
+  var header = await _injectTokenToHeader(isAuthorization);
   http.Response response = await http.patch(
     _url + endPoint,
     headers: header,
@@ -88,9 +73,9 @@ apiPatch(final endPoint, final content) async{
   return response;
 }
 
-apiPut(final endPoint, final content) async{
+apiPut(final endPoint, final content, [isAuthorization = true]) async{
   print("Api->Put:${_url+endPoint}");
-  var header = await _injectTokenToHeader();
+  var header = await _injectTokenToHeader(isAuthorization);
   http.Response response = await http.put(
     _url + endPoint,
     headers: header,
@@ -98,4 +83,24 @@ apiPut(final endPoint, final content) async{
   );
   log("Api<-Done:${response.statusCode} \n ${response.body}");
   return response;
+}
+
+
+_injectTokenToHeader(bool isAuthorization)async{
+  var prefs = await SharedPreferences.getInstance();
+  var authToken = prefs.getString("auth_token");
+  if(authToken != null) {
+    _header["Authorization"] = "Bearer "+authToken;
+  }
+
+  if(isAuthorization){
+    var token = prefs.getString("token");
+    if(token != null) {
+      _header["Token"] = token;
+    }
+  }else if(_header.containsKey("Token")){
+    _header.remove("Token");
+  }
+
+  return _header;
 }

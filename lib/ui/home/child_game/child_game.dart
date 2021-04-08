@@ -8,6 +8,7 @@ import 'package:tgp_flutter/src/gradient_decoration.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
 import 'package:tgp_flutter/ui/home/child_game/child_game_platform.dart';
 import 'package:tgp_flutter/ui/home/child_game/child_game_platform_tab_bar_view.dart';
+import 'package:tgp_flutter/ui/home/game/game_view_model.dart';
 import 'package:tgp_flutter/ui/home/home_view_model.dart';
 
 class ChildGame extends StatefulWidget{
@@ -35,7 +36,7 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
     "捕鱼游戏",
     "历史游戏"
   ];
-  var _vm = HomeViewModel();
+  var _vm = GameViewModel();
   var gameList;
 
   @override
@@ -48,7 +49,7 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
   }
 
   Widget build(BuildContext context) {
-    return ProviderWidget<HomeViewModel>(
+    return ProviderWidget<GameViewModel>(
         model: _vm,
         builder: (ctx, vm, _) {
           _handleApiState();
@@ -127,11 +128,11 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
 
   _handleApiState(){
     handleApiState(_vm.getGameApiState, isAutoHideLoading:false,onSuccess: (){
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+      /*WidgetsBinding.instance.addPostFrameCallback((_) {
         setState(() {
           gameList = _vm.getGameApiState.result;
         });
-      });
+      });*/
     });
   }
 }

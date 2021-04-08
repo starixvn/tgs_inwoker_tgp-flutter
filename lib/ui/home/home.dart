@@ -53,16 +53,49 @@ class _HomeState extends BaseState<Home> {
       'sport_sabah.png'],
     ['lottery_633.png'],
   ];
+  var tab = [
+    {
+      "id":"0",
+      "text":"cat_sport"
+    },
+    {
+      "id":"1",
+      "text":"cat_slotgame"
+    },
+    {
+      "id":"2",
+      "text":"cat_table"
+    },
+    /*{
+      "id":"0",
+      "text":"cat_livecasino"
+    },
+    {
+      "id":"1",
+      "text":"cat_qipai"
+    },
+    {
+      "id":"3",
+      "text":"cat_lottery"
+    },    {
+      "id":"5",
+      "text":"cat_laohu"
+    },
+    {
+      "id":"6",
+      "text":"cat_fish"
+    },*/
+  ];
+
   var itemHeightRatio = 335/90;
   var _vm = HomeViewModel();
 
 
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _vm.getGameProviderList();
+    //WidgetsBinding.instance.addPostFrameCallback((_) {
       _vm.resumeIfNeed();
-    });
+    //});
     super.initState();
   }
 
@@ -74,7 +107,7 @@ class _HomeState extends BaseState<Home> {
           return Scaffold(
             resizeToAvoidBottomInset: false,
             backgroundColor: Colors.white,
-            body: _vm.isLoading && _vm.userProfile == null ? Center(child: CircularProgressIndicator()) :
+            body: _vm.userProfile == null ? Center(child: CircularProgressIndicator()) :
             Column(
               children: [
                 Stack(
@@ -116,14 +149,12 @@ class _HomeState extends BaseState<Home> {
                 ),
                 HomeUserInfoView(
                     userProfile: _vm.userProfile,
-                    imagePath: "images/vip/ic_vip0.png",
                     onLoginTap: () {
                       navigateToLogin();
                     }
                 ),
                 GameView(
-                  tabList: tabList??[],
-                  gameTypeList: _vm.gameTypeList,
+                  tabList: tab,
                 )
               ],
             ),
@@ -205,8 +236,5 @@ class _HomeState extends BaseState<Home> {
         _displayDialog();
       });
     }
-    handleApiState(_vm.getGameProviderApiState, isAutoHideLoading:false, onSuccess: (){
-      tabList = _vm.getGameProviderApiState.result;
-    });
   }
 }

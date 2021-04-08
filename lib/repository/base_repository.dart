@@ -46,4 +46,17 @@ class BaseRepository extends ChangeNotifier{
     notifyListeners();
     return EventResult.success(result);
   }
+
+  EventResult<T> resolveReportRoundResponse<T>(http.Response response,ResponseResultConverter<T> converter, [void Function(T) onSuccess]){
+    var map = json.decode(response.body);
+    if(map["errors"].length==0){
+      var result = converter(map);
+      if(onSuccess != null)
+        onSuccess(result);
+      notifyListeners();
+      return EventResult.success(result);
+    } else{
+      return EventResult.failure(map["message"]);
+    }
+  }
 }

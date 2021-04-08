@@ -26,6 +26,8 @@ class _ProfileTopItemState extends BaseState<ProfileTopItem> {
     return Container(
       margin: EdgeInsets.only(top: 10.auto, bottom: 10.auto),
       child: InkWell(
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
         onTap:() {
           WidgetsBinding.instance.addPostFrameCallback((_) {
             Navigator.of(context).pushNamed("/${widget.routePath}");

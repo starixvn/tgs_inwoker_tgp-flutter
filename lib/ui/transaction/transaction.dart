@@ -9,6 +9,7 @@ import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
+import 'package:tgp_flutter/ui/transaction/bet_transaction_view.dart';
 import 'package:tgp_flutter/ui/transaction/transaction_details.dart';
 import 'package:tgp_flutter/ui/transaction/transaction_view_model.dart';
 
@@ -61,7 +62,7 @@ class _TransactionState extends BaseState<Transaction> with SingleTickerProvider
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: Colors.grey[100],
+      backgroundColor: Colors.white,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         centerTitle: true,
@@ -100,7 +101,7 @@ class _TransactionState extends BaseState<Transaction> with SingleTickerProvider
             child: TabBar(
               controller: _tabController,
               isScrollable : true,
-              unselectedLabelColor: CustomColor.grey,
+              unselectedLabelColor: Colors.white,
               labelColor: CustomColor.theme_label_text_highlight_color,
               indicatorColor: CustomColor.theme_label_text_highlight_color,
               indicatorWeight: 3,
@@ -129,42 +130,35 @@ class _TransactionState extends BaseState<Transaction> with SingleTickerProvider
               children: [
                 TransactionDetails<AccountTransaction>(
                     transactionHeaderList: [
-                      "时间",
-                      "交易状态",
-                      "钱包",
-                      "金额"
+                      "bet_time",
+                      "platform",
+                      "bet_amount",
+                      "win_loss"
                     ]
                 ),
+                BetTransactionView(),
                 TransactionDetails<AccountTransaction>(
                     transactionHeaderList: [
-                      "投注时间",
-                      "平台",
-                      "投注金额",
-                      "输赢"
-                    ]
-                ),
-                TransactionDetails<AccountTransaction>(
-                    transactionHeaderList: [
-                      "时间",
-                      "订单号",
-                      "交易状态",
-                      "金额"
+                      "bet_time",
+                      "platform",
+                      "bet_amount",
+                      "win_loss"
                     ]
                 ),
                 TransactionDetails<BetTransaction>(
                   transactionHeaderList: [
-                    "时间",
-                    "订单号",
-                    "交易状态",
-                    "金额"
+                    "bet_time",
+                    "platform",
+                    "bet_amount",
+                    "win_loss"
                   ],
                 ),
                 TransactionDetails<DailyTransaction>(
                   transactionHeaderList: [
-                    "编号",
-                    "周期日",
-                    "交易状态",
-                    "有效金额\n返水金额"
+                    "bet_time",
+                    "platform",
+                    "bet_amount",
+                    "win_loss"
                   ],
                 ),
               ],

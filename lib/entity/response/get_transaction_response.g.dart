@@ -11,9 +11,11 @@ GetTransactionResponse<T> _$GetTransactionResponseFromJson<T>(
   T Function(Object json) fromJsonT,
 ) {
   return GetTransactionResponse<T>(
-    json['total'] as int,
-    json['page_size'] as int,
-    (json['datas'] as List)?.map(fromJsonT)?.toList(),
+    (json['errors'] as List)?.map((e) => e as String)?.toList(),
+    json['message'] as String,
+    json['valid'] as bool,
+    json['totalCount'] as int,
+    (json['items'] as List)?.map(fromJsonT)?.toList(),
   );
 }
 
@@ -22,7 +24,9 @@ Map<String, dynamic> _$GetTransactionResponseToJson<T>(
   Object Function(T value) toJsonT,
 ) =>
     <String, dynamic>{
-      'total': instance.total,
-      'page_size': instance.pageSize,
-      'datas': instance.transactions?.map(toJsonT)?.toList(),
+      'errors': instance.code,
+      'valid': instance.valid,
+      'message': instance.msg,
+      'totalCount': instance.totalCount,
+      'items': instance.items?.map(toJsonT)?.toList(),
     };

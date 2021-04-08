@@ -3,10 +3,10 @@ import 'package:tgp_flutter/entity/event_type.dart';
 import 'package:tgp_flutter/repository/base_repository.dart';
 import 'package:tgp_flutter/repository/user_repository.dart';
 
-class WithdrawPasswordViewModel extends BaseViewModel{
+class PayPasswordViewModel extends BaseViewModel{
   //final authRepo = AuthenticationRepository.getSingleton();
   final userRepo = UserRepository.getSingleton();
-  var updateWithdrawPasswordApiState, resetQuestionApiState,
+  var updatePayPasswordApiState, resetQuestionApiState,
       getResetWithdrawalPasswordTokenApiState, getBasicInfoApiState;
 
   @override

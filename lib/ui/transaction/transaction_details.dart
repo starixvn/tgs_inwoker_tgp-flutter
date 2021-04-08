@@ -92,16 +92,16 @@ class TransactionDetailsState<T> extends BaseState<TransactionDetails<T>>{
                     pinned: true,
                     floating: false,
                     expandedHeight: 240.auto,
-                    backgroundColor: Colors.grey[100],
+                    backgroundColor: Colors.white,
                     flexibleSpace: FlexibleSpaceBar(
                       collapseMode: CollapseMode.pin,
                       background: Column(
                           children: [
                             _getCalendarItem(),
                             TransactionFilterButtonItem(
-                              isToday: isToday,
+                              /*isToday: isToday,
                               isWeek: isWeek,
-                              isMonth: isMonth,
+                              isMonth: isMonth,*/
                               onTextChanged:(value) {
                                 //this.getTransaction();
                                 onFilter(
@@ -110,7 +110,7 @@ class TransactionDetailsState<T> extends BaseState<TransactionDetails<T>>{
                                   month: value==3?true:false,
                                 );
                                 getTransaction();
-                                CustomProgressDialog.show(context);
+                                //CustomProgressDialog.show(context);
                               },
                             ),
                             _getPickerBox()

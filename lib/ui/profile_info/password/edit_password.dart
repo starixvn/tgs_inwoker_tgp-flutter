@@ -67,9 +67,9 @@ class _EditPasswordState extends BaseState<EditPassword> {
                   padding: EdgeInsets.only(top: 10.auto, left: 10.auto, right: 10.auto),
                   child: Column(
                     children:[
-                      _buildTextFormField("旧密码", "请输入旧密码", _oldPasswordController,false),
-                      _buildTextFormField("新密码", "请输入新密码", _newPasswordController,false),
-                      _buildTextFormField("确认新密码", "请再次输入新密码", _confirmPasswordController,true),
+                      _buildTextFormField("old_password", "enter_old_password_hint", _oldPasswordController,false),
+                      _buildTextFormField("new_password", "enter_new_password_hint", _newPasswordController,false),
+                      _buildTextFormField("confirm_new_password", "confirm_new_password_hint", _confirmPasswordController,true),
                       _buildButton()
                       //_buildFooterText()
                     ],
@@ -82,14 +82,14 @@ class _EditPasswordState extends BaseState<EditPassword> {
   _buildTextFormField(String title, String hint, TextEditingController controller, bool isLast)=> Container(
     margin: EdgeInsets.only(top: 15.auto),
     child: CustomTextFormField(
-      title: title,
-      hintText: hint,
+      title: getTranslatedText(title),
+      hintText: getTranslatedText(hint),
       onChanged: (value) => _onTextChange(),
       onFieldSubmitted: (value){},
       controller: controller,
       focusNode: null,
       width: context.screenWidth-70.auto,
-      textInputType: TextInputType.number,
+      textInputType: TextInputType.visiblePassword,
       textInputAction: isLast?TextInputAction.done:TextInputAction.next,
     ),
   );
@@ -99,7 +99,7 @@ class _EditPasswordState extends BaseState<EditPassword> {
       padding:  EdgeInsets.only(top: 50.auto,bottom: 20.auto),
       child: ColorButton(
         text: Text(
-          "确认",
+          getTranslatedText("confirm"),
           textAlign: TextAlign.center,
           style: TextStyle(
               color: Colors.white,

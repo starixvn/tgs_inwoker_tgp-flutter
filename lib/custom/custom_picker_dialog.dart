@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tgp_flutter/entity/game_provider.dart';
 import 'package:tgp_flutter/extension/format.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
@@ -39,7 +40,7 @@ class _CustomPickerDialogState extends BaseState<CustomPickerDialog> {
                   )
               ),
               child: Text(
-                widget.title??"",
+                getTranslatedText(widget.title)??"",
                 style: TextStyle(
                   fontSize: 13.auto,
                   color: Colors.red,
@@ -50,7 +51,7 @@ class _CustomPickerDialogState extends BaseState<CustomPickerDialog> {
             Wrap(
               children: List.generate(widget.list.length, (index) {
                 return ListTile(
-                  title: Container(),
+                  title: _getPickerItem(index),
                   onTap: () {
                     widget.onChanged(widget.list[index]);
                   },
@@ -91,55 +92,20 @@ class _CustomPickerDialogState extends BaseState<CustomPickerDialog> {
     else if(widget.list is List<TransactionThirdParty>){
       return widget.list[index].name;
     }
-    else if(widget.list is List<BankCard>){
-      var bank = widget.list[index];
-      return bank.getDisplayString();
+    else*/ if(widget.list is List<GameProvider>){
+      GameProvider game = widget.list[index];
+      return game.name;
     }
-    else*/ return widget.list[index];
+    else return widget.list[index];
   }
 
-  /*_getPickerItem(index){
-    //title and text display in the same row
-    if(widget.list is List<Wallet>) {
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            width: context.screenWidth/2 - 16.auto,
-            padding:  EdgeInsets.only(right: 8.auto),
-            child: Text(
-              widget.list[index].name,
-              style: TextStyle(
-                  fontSize: 13.auto
-              ),
-              textAlign: TextAlign.right,
-            ),
-          ),
-          Container(
-            width: context.screenWidth/2 -16.auto,
-            padding:  EdgeInsets.only(left: 8.auto),
-            child: Text(
-              Format().amountFormat(widget.list[index].balance),
-              style: TextStyle(
-                  fontSize: 13.auto,
-                  color: Colors.red
-              ),
-              textAlign: TextAlign.left,
-            ),
-          ),
-        ],
-      );
-    }
-    //only text will display
-    else{
-      return Text(
-        _getText(index),
-        style: TextStyle(
-            fontSize: 13.auto
-        ),
-        textAlign: TextAlign.center,
-      );
-    }
-  }*/
-
+  _getPickerItem(index){
+    return Text(
+      _getText(index),
+      style: TextStyle(
+          fontSize: 13.auto
+      ),
+      textAlign: TextAlign.center,
+    );
+  }
 }

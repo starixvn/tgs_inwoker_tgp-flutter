@@ -11,13 +11,11 @@ import 'package:tgp_flutter/ui/base_state.dart';
 
 class HomeUserInfoView extends StatefulWidget {
   final UserProfile userProfile;
-  final String imagePath;
   final void Function() onLoginTap;
 
   HomeUserInfoView({
     @required
     this.userProfile,
-    this.imagePath,
     this.onLoginTap
   });
 
@@ -65,14 +63,14 @@ class _HomeUserInfoViewState extends BaseState<HomeUserInfoView> {
                         ),
                         textAlign: TextAlign.center,
                       ),
-                      Container(
+                      /*Container(
                         margin: EdgeInsets.only(left:5.auto),
                         child: Image.asset(
                           widget.imagePath,
                           width: 20.auto,
                           height: 20.auto,
                         ),
-                      )
+                      )*/
                     ],
                   ) : Wrap(),
                   Spacer(),
@@ -121,9 +119,9 @@ class _HomeUserInfoViewState extends BaseState<HomeUserInfoView> {
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      _buildHomeIcon("ic_deposit", getTranslatedText("deposit") ),
-                      _buildHomeIcon("ic_transfer", getTranslatedText("transfer")),
-                      _buildHomeIcon("ic_withdraw", getTranslatedText("withdrawal"))
+                      _buildHomeIcon("ic_deposit", getTranslatedText("deposit"), "deposit"),
+                      _buildHomeIcon("ic_transfer", getTranslatedText("transfer"), "wallet_transfer"),
+                      _buildHomeIcon("ic_withdraw", getTranslatedText("withdrawal"), "withdraw")
                     ],
                   ),
                 ],
@@ -180,38 +178,44 @@ class _HomeUserInfoViewState extends BaseState<HomeUserInfoView> {
     );
   }
 
-  _buildHomeIcon(String imagePath, String title) =>
-      Container(
-        margin: EdgeInsets.only(left: 20.auto),
-        child: Column(
-          children: [
-            CircleAvatar(
-              backgroundColor: CustomColor.theme_circle_button_bg,
-              child: Center(
-                  child: Image.asset("images/home/$imagePath.png")
+  _buildHomeIcon(String imagePath, String title, String routePath) =>
+      InkWell(
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
+        onTap:() {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            Navigator.of(context).pushNamed("/$routePath");
+          });
+        },
+        child: Container(
+          margin: EdgeInsets.only(left: 20.auto),
+          child: Column(
+            children: [
+              CircleAvatar(
+                backgroundColor: CustomColor.theme_circle_button_bg,
+                child: Center(
+                    child: Image.asset("images/home/$imagePath.png")
+                ),
               ),
-            ),
-            Text(
-              title,
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: (13.5).auto,
-                shadows: [
-                  Shadow(
-                    blurRadius:1.5,
-                    color: Colors.black,
-                    offset: Offset(0, 2.0),
-                  ),
-                ],
-              ),
+              Text(
+                title,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: (13.5).auto,
+                  shadows: [
+                    Shadow(
+                      blurRadius:1.5,
+                      color: Colors.black,
+                      offset: Offset(0, 2.0),
+                    ),
+                  ],
+                ),
 
-            )
-          ],
+              )
+            ],
+          ),
         ),
       );
 
-/* _navigateToDeposit() => Navigator.of(context).pushNamed("/login");
-  _navigateToTransfer() => Navigator.of(context).pushNamed("/login");
-  _navigateToWithdraw() => Navigator.of(context).pushNamed("/login");*/
 }

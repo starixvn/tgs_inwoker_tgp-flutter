@@ -81,6 +81,8 @@ flutter:
     - images/card/
     - images/message/
     - images/profile_info/
+    - images/referFriend/
+    - images/language/
 
     - i18n/
 

@@ -30,6 +30,8 @@ import 'package:tgp_flutter/ui/profile_info/address/address.dart';
 import 'package:tgp_flutter/ui/profile_info/email/email_verification.dart';
 import 'package:tgp_flutter/ui/profile_info/email/email_verification.dart';
 import 'package:tgp_flutter/ui/profile_info/password/edit_password.dart';
+import 'package:tgp_flutter/ui/profile_info/pay_password/edit_pay_password.dart';
+import 'package:tgp_flutter/ui/profile_info/pay_password/reset_pay_password.dart';
 import 'package:tgp_flutter/ui/profile_info/phone/phone_verification.dart';
 import 'package:tgp_flutter/ui/profile_info/phone/phone_verification.dart';
 import 'package:tgp_flutter/ui/profile_info/profile_info.dart';
@@ -39,8 +41,6 @@ import 'package:tgp_flutter/ui/profile_info/security/edit_security_answer.dart';
 import 'package:tgp_flutter/ui/profile_info/security/edit_security_answer_by_security_answer.dart';
 import 'package:tgp_flutter/ui/profile_info/security/security_answer.dart';
 import 'package:tgp_flutter/ui/profile_info/wechat/wechat.dart';
-import 'package:tgp_flutter/ui/profile_info/withdraw_password/edit_withdraw_password.dart';
-import 'package:tgp_flutter/ui/profile_info/withdraw_password/withdraw_password.dart';
 import 'package:tgp_flutter/ui/promotion/promotion_page.dart';
 import 'package:tgp_flutter/ui/referFriend/refer_friend.dart';
 import 'package:tgp_flutter/ui/splash/splash.dart';
@@ -88,6 +88,11 @@ class _MyAppState extends BaseState<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(
+        SystemUiOverlayStyle(
+            statusBarColor: Colors.transparent,
+        )
+    );
     return GestureDetector(
       onTap: () {
         FocusScopeNode currentFocus = FocusScope.of(context);
@@ -124,19 +129,14 @@ class _MyAppState extends BaseState<MyApp> {
           RoutePath.wechat: (context) => Wechat(),
           RoutePath.address: (context) => Address(),
           RoutePath.editPassword: (context) => EditPassword(),
-          RoutePath.withdrawPassword: (context) => WithdrawPassword(),
-          RoutePath.editWithdrawPassword: (context) => EditWithdrawPassword(),
+          RoutePath.resetPayPassword: (context) => ResetPayPassword(),
+          RoutePath.editPayPassword: (context) => EditPayPassword(),
           RoutePath.securityAnswer: (context) => SecurityAnswer(),
           RoutePath.editSecurityAnswer: (context) => EditSecurityAnswer(),
           RoutePath.editSecurityAnswerBySecurityAnswer: (context) => EditSecurityAnswerBySecurityAnswer(),
           RoutePath.forgotPassword: (context) => ForgotPassword(),
           RoutePath.language:(context) => LanguageView(),
         },
-        theme: ThemeData(
-          primaryColor: CustomColor.theme_bar_gradient_1,
-          highlightColor: CustomColor.theme_bar_gradient_2,
-        ),
-        //
         localizationsDelegates: [
           MyLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,

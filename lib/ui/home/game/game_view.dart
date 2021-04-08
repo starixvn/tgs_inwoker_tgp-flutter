@@ -5,6 +5,7 @@ import 'package:tgp_flutter/entity/game_provider.dart';
 import 'package:tgp_flutter/entity/game_type.dart';
 import 'package:tgp_flutter/entity/user_profile.dart';
 import 'package:tgp_flutter/localizations/language_provider.dart';
+import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:gradient_text/gradient_text.dart';
@@ -12,15 +13,16 @@ import 'package:outline_gradient_button/outline_gradient_button.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
 import 'package:tgp_flutter/ui/home/game/game_content.dart';
+import 'package:tgp_flutter/ui/home/game/game_view_model.dart';
 
 class GameView extends StatefulWidget {
-  final List<GameProvider> tabList;
-  final List<List<GameType>> gameTypeList;
+  final List<Map<String, String>> tabList;
+  final List<List<Game>> gameList;
 
   GameView({
     @required
     this.tabList,
-    this.gameTypeList
+    this.gameList
   });
 
   @override
@@ -32,47 +34,60 @@ class _GameViewState extends BaseState<GameView> {
   var itemRatio = 335/90;
   var currentTabIndex= 0;
   var key = GlobalKey();
+  var _vm = GameViewModel();
 
   @override
   void initState() {
     _controller.addListener(_scrollListener);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _vm.getAllGameList();
+    });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Container(
-        margin: EdgeInsets.only(left: 10.auto, right: 10.auto, bottom: 5.auto),
-        child: Row(
-          children: [
-            Container(
-              margin: EdgeInsets.only(right: 10.auto, bottom: 5.auto),
-              child: Column(
-                  children:List.generate(widget.tabList.length, (index) {
-                    return Container(
-                      margin: EdgeInsets.only(top: 8.auto),
-                      child: _buildGameTab(index, widget.tabList[index].name),
-                    );
-                  }),
-                /* widget.tabList.map((item) {
+    return ProviderWidget<GameViewModel>(
+        model: _vm,
+        builder: (ctx, vm, _) {
+          //_handleApiState();
+          return _vm.gameList==null
+              ?Center(child: CircularProgressIndicator(),)
+              :Expanded(
+            child: Container(
+              margin: EdgeInsets.only(left: 10.auto, right: 10.auto, bottom: 5.auto),
+              child: Row(
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(right: 10.auto, bottom: 5.auto),
+                    child: Column(
+                      children:List.generate(widget.tabList.length, (index) {
+                        return Container(
+                          margin: EdgeInsets.only(top: 8.auto),
+                          child: _buildGameTab(index, widget.tabList[index]["text"]),
+                        );
+                      }),
+                      /* widget.tabList.map((item) {
                     return Container(
                       margin: EdgeInsets.only(top: 8.auto),
                       child: _buildGameTab(item.name),
                     );
                   }).toList()*/
+                    ),
+                  ),
+                  Container(
+                    key: key,
+                    child: GameContent(
+                      controller: _controller,
+                      list: _vm.gameList,
+                      onClick:(gamePlatformCode, gameId) => _getGameUrl(gamePlatformCode, gameId),
+                    ),
+                  )
+                ],
               ),
             ),
-            Container(
-              key: key,
-              child: GameContent(
-                controller: _controller,
-                list: widget.gameTypeList,
-              ),
-            )
-          ],
-        ),
-      ),
+          );
+        }
     );
   }
 
@@ -94,10 +109,9 @@ class _GameViewState extends BaseState<GameView> {
         padding: EdgeInsets.all(3.auto),
         child: Center(
             child: AutoSizeText(
-              title,
+              getTranslatedText(title),
               style: TextStyle(
                   fontSize: 17.auto,
-                  fontWeight: FontWeight.bold,
                   shadows: [
                     tabIndex==currentTabIndex?Shadow(
                       blurRadius:1.5,
@@ -115,13 +129,13 @@ class _GameViewState extends BaseState<GameView> {
   }
 
   _onTabClick(int tabIndex){
-    var width = key.currentContext.size.width;
-    var itemHeight = (width+5.auto)*(1/itemRatio) + 10.auto;
+    var width = key.currentContext.size.width + 67.5.auto;
+    var itemHeight = (width)*(1/itemRatio) + 17.5.auto;
     var des = 0.0;
 
-    widget.gameTypeList.asMap().forEach((i,element) {
+    _vm.gameList.asMap().forEach((i,element) {
       if(tabIndex>i){
-        des += itemHeight * widget.gameTypeList[i].length;
+        des += itemHeight * _vm.gameList[i].length;
       }
     });
     setState(() {
@@ -132,21 +146,25 @@ class _GameViewState extends BaseState<GameView> {
   }
 
   _scrollListener(){
-    var width = key.currentContext.size.width;
-    var scrollTab = (width+5.auto)*(1/itemRatio) + 10.auto;
+    var width = key.currentContext.size.width + 67.5.auto;
+    var scrollTab = (width)*(1/itemRatio) + 17.5.auto;
     var des = 0.0;
     var index = 0;
 
-    widget.gameTypeList.asMap().forEach((i,element) {
+    _vm.gameList.asMap().forEach((i,element) {
       if(_controller.offset >= des){
-        des += scrollTab * widget.gameTypeList[i].length;
+        des += scrollTab * _vm.gameList[i].length;
         index=i;
       }else if(_controller.offset >= _controller.position.maxScrollExtent){
-        index = widget.gameTypeList.length-1;
+        index = _vm.gameList.length-1;
       }
     });
     setState(() {
       currentTabIndex = index;//1
     });
+  }
+
+  _getGameUrl(String gamePlatformCode, int gameId){
+    _vm.getGameUrl(gamePlatformCode, gameId);
   }
 }

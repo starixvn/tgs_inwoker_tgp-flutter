@@ -24,8 +24,10 @@ class _TransactionHeaderItemState extends BaseState<TransactionHeaderItem> {
           children:
           List.generate(widget.headerList.length, (index) {
             return Expanded(
+              //first header (time) flex number is 2, others will be 1
               flex: index == 0 ? 2: 1,
-              child: Text(widget.headerList[index],
+              child: Text(
+                getTranslatedText(widget.headerList[index]),
                 style: TextStyle(
                     fontSize: 12.auto
                 ),

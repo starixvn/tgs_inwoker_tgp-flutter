@@ -9,6 +9,7 @@ import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
+import 'package:tgp_flutter/ui/home/game/game_view_model.dart';
 import 'package:tgp_flutter/ui/home/home_view_model.dart';
 
 class ChildGameItem extends StatefulWidget{
@@ -25,10 +26,10 @@ class ChildGameItem extends StatefulWidget{
 }
 
 class _ChildGameItemState  extends BaseState<ChildGameItem> {
-  var _vm = HomeViewModel();
+  var _vm = GameViewModel();
 
   Widget build(BuildContext context) {
-    return ProviderWidget<HomeViewModel>(
+    return ProviderWidget<GameViewModel>(
         model: _vm,
         builder: (ctx, vm, _) {
           _handleApiState();

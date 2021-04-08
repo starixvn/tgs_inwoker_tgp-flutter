@@ -25,6 +25,7 @@ class LoginViewModel extends BaseViewModel{
       print(token);
       savePreferences(username, password, rememberMe);
       getUserInfo();
+      getWalletBalance();
     }
     setLoading(false);
     return loginApiState;
@@ -48,6 +49,10 @@ class LoginViewModel extends BaseViewModel{
 
   getUserInfo()async{
     await userRepo.getBasicInfo();
+  }
+
+  getWalletBalance() async{
+    await userRepo.getWalletBalance();
   }
 
   checkUsername(

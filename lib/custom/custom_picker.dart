@@ -43,13 +43,16 @@ class _CustomPickerState extends BaseState<CustomPicker> {
           children: [
             Container(
               margin: EdgeInsets.only(bottom: 8.auto,),
-              child: Text(widget.title,
+              child: Text(
+                getTranslatedText(widget.title)??"",
                 style: TextStyle(
                     fontSize: 9.auto
                 ),
               ),
             ),
             InkWell(
+              highlightColor: Colors.transparent,
+              splashColor: Colors.transparent,
                 onTap: () {
                   widget.onClick();
                 },
