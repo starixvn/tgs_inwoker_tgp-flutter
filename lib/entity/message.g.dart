@@ -8,21 +8,17 @@ part of 'message.dart';
 
 Message _$MessageFromJson(Map<String, dynamic> json) {
   return Message()
-    ..id = json['id'] as int
-    ..title = json['title'] as String
+    ..id = json['id'] as String
+    ..createdOn = json['createon'] as String
     ..content = json['content'] as String
-    ..createdTime = json['created_time'] as String
-    ..readId = json['read_id'] as int
-    ..intIsRead = json['is_read'] as int
-    ..isAdminSend = json['is_admin_send'] as int;
+    ..subject = json['subject'] as String
+    ..isRead = json['isread'] as bool;
 }
 
 Map<String, dynamic> _$MessageToJson(Message instance) => <String, dynamic>{
       'id': instance.id,
-      'title': instance.title,
+      'createon': instance.createdOn,
       'content': instance.content,
-      'created_time': instance.createdTime,
-      'read_id': instance.readId,
-      'is_read': instance.intIsRead,
-      'is_admin_send': instance.isAdminSend,
+      'subject': instance.subject,
+      'isread': instance.isRead,
     };

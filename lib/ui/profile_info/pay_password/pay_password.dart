@@ -15,12 +15,12 @@ import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/ui/profile_info/pay_password/pay_password_view_model.dart';
 
 
-class EditPayPassword extends StatefulWidget{
+class PayPassword extends StatefulWidget{
   @override
-  _EditPayPasswordState createState() => _EditPayPasswordState();
+  _PayPasswordState createState() => _PayPasswordState();
 }
 
-class _EditPayPasswordState extends BaseState<EditPayPassword> {
+class _PayPasswordState extends BaseState<PayPassword> {
   var _vm = PayPasswordViewModel();
   TextEditingController _oldPasswordController = TextEditingController(),
       _newPasswordController = TextEditingController(),
@@ -33,11 +33,6 @@ class _EditPayPasswordState extends BaseState<EditPayPassword> {
 
   @override
   void initState() {
-    /*WidgetsBinding.instance.addPostFrameCallback((_) {
-      setState(() {
-        userProfile =  _vm.userProfile;
-      });
-    });*/
     super.initState();
   }
 
@@ -60,15 +55,21 @@ class _EditPayPasswordState extends BaseState<EditPayPassword> {
                     Navigator.pop(context);
                   },
                 ),
-                title: Text(getTranslatedText("edit_pay_password"),
+                title: Text(
+                  _vm.userProfile.isSetPayPassword?getTranslatedText("edit_pay_password"): getTranslatedText("add_pay_password"),
                   style: TextStyle(fontSize: 16.auto),
                 ),
               ),
-              body: Container(
+              body: _vm.userProfile==null
+                  ? Center(child: CircularProgressIndicator(),)
+                  : Container(
                   padding: EdgeInsets.only(top: 10.auto, left: 10.auto, right: 10.auto),
                   child: Column(
                     children:[
-                      _buildTextFormField("old_password", "enter_old_password_hint", _oldPasswordController,false),
+                      Visibility(
+                          visible: _vm.userProfile.isSetPayPassword,
+                          child: _buildTextFormField("old_password", "enter_old_password_hint", _oldPasswordController,false)
+                      ),
                       _buildTextFormField("new_password", "enter_new_password_hint", _newPasswordController,false),
                       _buildTextFormField("confirm_new_password", "confirm_new_password_hint", _confirmPasswordController,true),
                       _buildButton()
@@ -152,18 +153,25 @@ class _EditPayPasswordState extends BaseState<EditPayPassword> {
   }*/
 
   _onTextChange(){
-    if(_oldPasswordController.text.isNotEmpty &&
-        _newPasswordController.text.isNotEmpty &&
-        _confirmPasswordController.text.isNotEmpty
-    ){
-      setState(() {
-        isButtonEnabled = true;
-      });
-    }else{
-      setState(() {
+    setState(() {
+      if(!_vm.userProfile.isSetPayPassword){
+        if(_newPasswordController.text.isNotEmpty &&
+            _confirmPasswordController.text.isNotEmpty
+        ){
+
+          isButtonEnabled = true;
+        }
+      } else if (_vm.userProfile.isSetPayPassword){
+        if(_oldPasswordController.text.isNotEmpty &&
+            _newPasswordController.text.isNotEmpty &&
+            _confirmPasswordController.text.isNotEmpty
+        ){
+          isButtonEnabled = true;
+        }
+      }else{
         isButtonEnabled = false;
-      });
-    }
+      }
+    });
   }
 
   _onClick() async {
@@ -177,16 +185,21 @@ class _EditPayPasswordState extends BaseState<EditPayPassword> {
       });
     }else{
       CustomProgressDialog.show(context);
-      //_vm.EditPayPassword(_oldPasswordController.text, _newPasswordController.text);
+      if(_vm.userProfile.isSetPayPassword){
+        //_vm.EditPayPassword(_oldPasswordController.text, _newPasswordController.text);
+      }else{
+        _vm.addPayPassword(_newPasswordController.text);
+      }
     }
   }
 
   _handleApiState(){
-    /*handleApiState(_vm.EditPayPasswordApiState, onSuccess: (){
-      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    handleApiState(_vm.addPayPasswordApiState, onSuccess: (){
+      CustomToast.show("success");
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         Navigator.pop(context);
       });
-    });*/
+    });
   }
 }
 

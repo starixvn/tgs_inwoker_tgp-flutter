@@ -2,25 +2,21 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter/custom/round_check_box.dart';
+import 'package:tgp_flutter/entity/message.dart';
+import 'package:tgp_flutter/extension/format.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
 
 class MessageItem extends StatefulWidget{
-  final String title;
-  final String date;
-  final String text;
+  final Message message;
   final bool isEditing;
-  final bool isSelected;
-  final Function onChanged;
+  final Function(bool, Message) onSelected;
 
   MessageItem({
-    this.title,
-    this.date,
-    this.text,
+    this.message,
     this.isEditing,
-    this.isSelected,
-    this.onChanged
+    this.onSelected
   });
 
   @override
@@ -28,6 +24,7 @@ class MessageItem extends StatefulWidget{
 }
 
 class _MessageItemState  extends BaseState<MessageItem> {
+  var isSelected = false;
   @override
   void initState() {
     super.initState();
@@ -42,9 +39,10 @@ class _MessageItemState  extends BaseState<MessageItem> {
               flex: 1,
               child: InkWell(
                 onTap: (){
-                  widget.onChanged();
+                  _onChanged();
+                  widget.onSelected(isSelected, widget.message);
                 },
-                child: widget.isSelected?
+                child: isSelected?
                 Image.asset(
                   "images/message/ic_message_selected_dot.png",
                   width: 22.auto, height: 22.auto,
@@ -90,13 +88,16 @@ class _MessageItemState  extends BaseState<MessageItem> {
     );
   }
 
-  _messageDot() =>Container(
-    width: 8.auto,
-    height: 8.auto,
-    margin: EdgeInsets.only(top:10.auto, right: 10.auto),
-    decoration: BoxDecoration(
-        color: Colors.red,
-        shape: BoxShape.circle
+  _messageDot() =>Visibility(
+    visible: widget.message.isRead,
+    child: Container(
+      width: 8.auto,
+      height: 8.auto,
+      margin: EdgeInsets.only(top:10.auto, right: 10.auto),
+      decoration: BoxDecoration(
+          color: Colors.red,
+          shape: BoxShape.circle
+      ),
     ),
   );
 
@@ -106,7 +107,7 @@ class _MessageItemState  extends BaseState<MessageItem> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          widget.title,
+          widget.message.subject,
           style: TextStyle(
               fontSize: 15.auto
           ),
@@ -114,7 +115,7 @@ class _MessageItemState  extends BaseState<MessageItem> {
         Container(
           margin: EdgeInsets.symmetric(vertical:5.auto),
           child: Text(
-            widget.date,
+            Format().dateFormat(DateTime.parse(widget.message.createdOn)),
             style: TextStyle(
                 fontSize: 10.auto,
                 color: CustomColor.grey
@@ -122,7 +123,7 @@ class _MessageItemState  extends BaseState<MessageItem> {
           ),
         ),
         Text(
-          widget.text,
+          widget.message.content,
           overflow: TextOverflow.ellipsis,
           softWrap: false,
           style: TextStyle(
@@ -133,4 +134,10 @@ class _MessageItemState  extends BaseState<MessageItem> {
       ],
     ),
   );
+
+  _onChanged(){
+    setState(() {
+      isSelected = !isSelected;
+    });
+  }
 }

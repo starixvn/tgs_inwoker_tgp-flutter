@@ -28,7 +28,7 @@ class RoutePath{
   static final address = '/address';
   static final editPassword = '/edit_password';
   static final resetPayPassword= '/reset_pay_password';
-  static final editPayPassword= '/edit_pay_password';
+  static final payPassword= '/pay_password';
   static final securityAnswer = '/security_answer';
   static final editSecurityAnswer = '/edit_security_answer';
   static final editSecurityAnswerBySecurityAnswer = '/edit_security_answer_by_security_answer';

@@ -182,7 +182,8 @@ class _EditPasswordState extends BaseState<EditPassword> {
 
   _handleApiState(){
     handleApiState(_vm.editPasswordApiState, onSuccess: (){
-      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      CustomToast.show("Success");
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         Navigator.pop(context);
       });
     });

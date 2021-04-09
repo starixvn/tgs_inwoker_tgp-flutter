@@ -42,7 +42,6 @@ class _ProfileState extends BaseState<Profile> {
   }
 
   Widget build(BuildContext context) {
-
     return ProviderWidget<ProfileViewModel>(
         model: _vm,
         builder: (ctx, vm, _) {

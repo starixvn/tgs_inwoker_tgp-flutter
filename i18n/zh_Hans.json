@@ -187,7 +187,8 @@
   "wechat_no_hint": "请输入微信号码",
   "edit_wechat_cs": "如需修改QQ号码，请联系",
   "email_hint":"请输入您的邮箱地址",
-  "email_otp_hint":"请输入您的邮箱验证码"
+  "email_otp_hint":"请输入您的邮箱验证码",
+  "add_pay_password":"添加提款密码"
 }
 
 

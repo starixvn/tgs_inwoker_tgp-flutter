@@ -187,6 +187,7 @@
   "wechat_no_hint": "Enter WeChat Number",
   "edit_wechat_cs": "If want edit WeChat number, Please contact ",
   "email_hint":"Enter your email address",
-  "email_otp_hint":"Enter OTP"
+  "email_otp_hint":"Enter OTP",
+  "add_pay_password": "Add Pay Password"
 }
 

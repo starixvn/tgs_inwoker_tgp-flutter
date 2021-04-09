@@ -10,6 +10,7 @@ import 'package:tgp_flutter/route/route_path.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
+import 'package:tgp_flutter/ui/card/add_card.dart';
 import 'package:tgp_flutter/ui/card/main_card.dart';
 import 'package:tgp_flutter/ui/deposit/deposit.dart';
 import 'package:tgp_flutter/ui/forgot_password/forgot_password.dart';
@@ -24,13 +25,13 @@ import 'package:tgp_flutter/ui/login/login_content.dart';
 import 'package:tgp_flutter/ui/login/login_view_model.dart';
 import 'package:tgp_flutter/ui/menu/menu.dart';
 import 'package:flutter/services.dart';
-import 'package:tgp_flutter/ui/message/message.dart';
+import 'package:tgp_flutter/ui/message/message_view.dart';
 import 'package:tgp_flutter/ui/profile/profile.dart';
 import 'package:tgp_flutter/ui/profile_info/address/address.dart';
 import 'package:tgp_flutter/ui/profile_info/email/email_verification.dart';
 import 'package:tgp_flutter/ui/profile_info/email/email_verification.dart';
 import 'package:tgp_flutter/ui/profile_info/password/edit_password.dart';
-import 'package:tgp_flutter/ui/profile_info/pay_password/edit_pay_password.dart';
+import 'package:tgp_flutter/ui/profile_info/pay_password/pay_password.dart';
 import 'package:tgp_flutter/ui/profile_info/pay_password/reset_pay_password.dart';
 import 'package:tgp_flutter/ui/profile_info/phone/phone_verification.dart';
 import 'package:tgp_flutter/ui/profile_info/phone/phone_verification.dart';
@@ -118,7 +119,7 @@ class _MyAppState extends BaseState<MyApp> {
           RoutePath.withdraw: (context) => Withdraw(),
           RoutePath.transaction: (context) => Transaction(),
           RoutePath.mainCard: (context) => MainCard(),
-          RoutePath.message: (context) => Message(),
+          RoutePath.message: (context) => MessageView(),
           RoutePath.frequentQuestion: (context) => FrequentQuestion(),
           RoutePath.referFriend: (context) => ReferFriend(),
           RoutePath.profileInfo: (context) => ProfileInfo(),
@@ -130,12 +131,13 @@ class _MyAppState extends BaseState<MyApp> {
           RoutePath.address: (context) => Address(),
           RoutePath.editPassword: (context) => EditPassword(),
           RoutePath.resetPayPassword: (context) => ResetPayPassword(),
-          RoutePath.editPayPassword: (context) => EditPayPassword(),
+          RoutePath.payPassword: (context) => PayPassword(),
           RoutePath.securityAnswer: (context) => SecurityAnswer(),
           RoutePath.editSecurityAnswer: (context) => EditSecurityAnswer(),
           RoutePath.editSecurityAnswerBySecurityAnswer: (context) => EditSecurityAnswerBySecurityAnswer(),
           RoutePath.forgotPassword: (context) => ForgotPassword(),
           RoutePath.language:(context) => LanguageView(),
+          RoutePath.addCard:(context) => AddCard(),
         },
         localizationsDelegates: [
           MyLocalizations.delegate,

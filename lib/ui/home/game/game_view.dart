@@ -14,6 +14,7 @@ import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
 import 'package:tgp_flutter/ui/home/game/game_content.dart';
 import 'package:tgp_flutter/ui/home/game/game_view_model.dart';
+import 'package:tgp_flutter/ui/home/game/game_web_view.dart';
 
 class GameView extends StatefulWidget {
   final List<Map<String, String>> tabList;
@@ -35,6 +36,7 @@ class _GameViewState extends BaseState<GameView> {
   var currentTabIndex= 0;
   var key = GlobalKey();
   var _vm = GameViewModel();
+  var gameName;
 
   @override
   void initState() {
@@ -50,7 +52,6 @@ class _GameViewState extends BaseState<GameView> {
     return ProviderWidget<GameViewModel>(
         model: _vm,
         builder: (ctx, vm, _) {
-          //_handleApiState();
           return _vm.gameList==null
               ?Center(child: CircularProgressIndicator(),)
               :Expanded(
@@ -80,7 +81,7 @@ class _GameViewState extends BaseState<GameView> {
                     child: GameContent(
                       controller: _controller,
                       list: _vm.gameList,
-                      onClick:(gamePlatformCode, gameId) => _getGameUrl(gamePlatformCode, gameId),
+                      onClick:(game) => _navigateToGameWeb(game),
                     ),
                   )
                 ],
@@ -164,7 +165,17 @@ class _GameViewState extends BaseState<GameView> {
     });
   }
 
-  _getGameUrl(String gamePlatformCode, int gameId){
-    _vm.getGameUrl(gamePlatformCode, gameId);
+  _navigateToGameWeb(Game game){
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  GameWeb(
+                      game:game
+                  )
+          ));
+    });
   }
+
 }

@@ -92,9 +92,7 @@ class CustomDialog extends StatelessWidget{
   _buildDoneButton(BuildContext context) => FlatButton(
     //minWidth:context.screenWidth/ 3.5,
     //height:context.screenHeight / 15,
-    onPressed: () => {
-      this.onClick()
-    },
+    onPressed: () => this.onClick(),
     shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(45)),
     padding: EdgeInsets.all(0.0),
@@ -121,9 +119,7 @@ class CustomDialog extends StatelessWidget{
     // minWidth: context.screenWidth / 3.5,
     // height:  context.screenHeight / 15,
     //padding: EdgeInsets.all(12),
-    onPressed: ()  {
-      Navigator.pop(context);
-    },
+    onPressed:()=> Navigator.pop(context),
     child: Text(buttonText2?? "uyy"),
     textColor: Colors.red,
     shape: RoundedRectangleBorder(

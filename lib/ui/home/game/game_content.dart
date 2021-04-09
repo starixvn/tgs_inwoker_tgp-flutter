@@ -46,7 +46,7 @@ class _GameContentState extends BaseState<GameContent> {
                   padding: EdgeInsets.only(left: (8.5).auto, right: 5.auto, top: (12.5).auto, bottom: 5.auto),
                   child: GestureDetector(
                       onTap: (){
-                        widget.onClick(item.value.gamePlatformCode, item.value.id);
+                        widget.onClick(item.value);
                       },
                       child:/*AspectRatio(
                       aspectRatio: 335/90,

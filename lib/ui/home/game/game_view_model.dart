@@ -19,6 +19,7 @@ class GameViewModel extends BaseViewModel{
   List<List<GameType>> gameTypeList;
   List<List<Game>> gameList;
   List<List<Game>> list = [];
+  var url;
 
 
   getAllGameList(){
@@ -59,6 +60,9 @@ class GameViewModel extends BaseViewModel{
   getGameUrl(String gamePlatformCode, int gameId)async{
     setLoading();
     getGameUrlApiState = await contentRepo.getGameUrl(gamePlatformCode, gameId);
+    if(getGameUrlApiState.isSuccess){
+      url = getGameUrlApiState.result.url;
+    }
     setLoading(false);
     return getGameUrlApiState;
   }

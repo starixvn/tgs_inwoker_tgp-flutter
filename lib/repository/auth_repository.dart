@@ -66,4 +66,32 @@ class AuthenticationRepository extends BaseRepository {
         },false);
     return resolveBaseResponse(response, (json) => json as String);
   }
+
+  Future<EventResult<dynamic>> addPayPassword(String password) async{
+    var response = await apiPost(
+        "api/pay/password",
+        {
+          "pwd": password
+        });
+    return resolveBaseResponse(response,(json) => json as dynamic);
+  }
+
+  Future<EventResult<dynamic>> getPayPasswordCode() async{
+    var response = await apiPost(
+        "api/pay/password/validate-code",
+        {
+        });
+    return resolveBaseResponse(response,(json) => json as dynamic);
+  }
+
+  Future<EventResult<dynamic>> payPasswordVerify (String password, String  code, String securityKey) async{
+    var response = await apiPatch(
+        "api/pay/password",
+        {
+          "newpwd": password,
+          "validatecode": code,
+          "securitykey": securityKey
+        });
+    return resolveBaseResponse(response,(json) => json as dynamic);
+  }
 }

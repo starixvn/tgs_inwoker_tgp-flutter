@@ -107,8 +107,9 @@ class _HomeState extends BaseState<Home> {
           return Scaffold(
             resizeToAvoidBottomInset: false,
             backgroundColor: Colors.white,
-            body: _vm.userProfile == null ? Center(child: CircularProgressIndicator()) :
-            Column(
+            body: _vm.userProfile == null
+                ? Center(child: CircularProgressIndicator())
+                : Column(
               children: [
                 Stack(
                     children: [

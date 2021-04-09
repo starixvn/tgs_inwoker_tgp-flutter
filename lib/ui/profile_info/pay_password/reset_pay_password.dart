@@ -10,6 +10,7 @@ import 'package:tgp_flutter/custom/otp_text_form_field.dart';
 import 'package:tgp_flutter/custom/outline_border_button.dart';
 import 'package:tgp_flutter/data/provider/input_validation_provider.dart';
 import 'package:tgp_flutter/entity/event_type.dart';
+import 'package:tgp_flutter/entity/user_profile.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
@@ -33,15 +34,20 @@ class _ResetPayPasswordState  extends BaseState<ResetPayPassword> {
   var phoneText;
   var isButtonEnabled = false, isResetPassword = false,  isCodeVisible = false, isOtpEnabled = false;
   var name, cardNumber, buttonText;
-  var userProfile;
+  UserProfile userProfile;
   InputValidationProvider validate = new InputValidationProvider();
 
 
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      setState(() {
-      });
+      if(_vm.userProfile.phone!=null&& _vm.userProfile.phone.isNotEmpty) {
+        setState(() {
+          _phoneController.text = _vm.userProfile.phone;
+        });
+      }else{
+        Navigator.of(context).pushNamed("/phone_verification");
+      }
     });
     super.initState();
   }
@@ -73,9 +79,9 @@ class _ResetPayPasswordState  extends BaseState<ResetPayPassword> {
                   padding: EdgeInsets.only(top: 10.auto, left: 10.auto, right: 10.auto),
                   child: Column(
                     children: [
-                      _buildTextFormField("new_pay_password", "enter_new_pay_password", _payPasswordController, false),
-                      _buildTextFormField("confirm_pay_password", "confirm_pay_password_hint", _confirmPayPasswordController, false),
-                      _buildTextFormField("phone_number", "enter_phone_hint", _phoneController, false),
+                      _buildPasswordTextFormField("new_pay_password", "enter_new_pay_password", _payPasswordController),
+                      _buildPasswordTextFormField("confirm_pay_password", "confirm_pay_password_hint", _confirmPayPasswordController),
+                      _buildTextFormField("phone_number", "enter_phone_hint", _phoneController),
                       _buildOtpTextFormField(),
                       _buildButton()
                     ],
@@ -85,7 +91,7 @@ class _ResetPayPasswordState  extends BaseState<ResetPayPassword> {
         });
   }
 
-  _buildTextFormField(String title, String hint, TextEditingController controller, bool isLast)=> Container(
+  _buildTextFormField(String title, String hint, TextEditingController controller)=> Container(
     margin: EdgeInsets.only(top: 15.auto),
     child: CustomTextFormField(
       title: getTranslatedText(title),
@@ -96,7 +102,23 @@ class _ResetPayPasswordState  extends BaseState<ResetPayPassword> {
       focusNode: null,
       width: context.screenWidth-70.auto,
       textInputType: TextInputType.number,
-      textInputAction: isLast?TextInputAction.done:TextInputAction.next,
+      textInputAction: TextInputAction.next,
+      enabled: false,
+    ),
+  );
+
+  _buildPasswordTextFormField(String title, String hint, TextEditingController controller)=> Container(
+    margin: EdgeInsets.only(top: 15.auto),
+    child: CustomTextFormField(
+      title: getTranslatedText(title),
+      hintText: getTranslatedText(hint),
+      onChanged: (value) => _onTextChange(),
+      onFieldSubmitted: (value){},
+      controller: controller,
+      focusNode: null,
+      width: context.screenWidth-70.auto,
+      textInputType: TextInputType.visiblePassword,
+      textInputAction: TextInputAction.done,
     ),
   );
 
@@ -117,7 +139,7 @@ class _ResetPayPasswordState  extends BaseState<ResetPayPassword> {
   );
 
   _buildButton() => Container(
-    width: context.screenWidth,
+      width: context.screenWidth,
       padding:  EdgeInsets.only(top: 50.auto,bottom: 20.auto),
       child: ColorButton(
         text: Text(
@@ -138,14 +160,8 @@ class _ResetPayPasswordState  extends BaseState<ResetPayPassword> {
   );
 
   _getSmsCode() {
-    /*if (!validate.validateChinaPhoneNumber(_phoneController.text)) {
-      setState(() {
-        CustomToast.show("手机号码格式不正确");
-      });
-    } else {
     CustomProgressDialog.show(context);
-    _vm.getForgotPasswordCode(_phoneController.text);
-    }*/
+    _vm.getPayPasswordCode();
   }
 
   _onTextChange(){
@@ -162,31 +178,27 @@ class _ResetPayPasswordState  extends BaseState<ResetPayPassword> {
   }
 
   _onClick() async {
-    /*CustomProgressDialog.show(context);
-    _vm.updatePayPassword(_passwordController.text);
-    if (_vm.updatePayPasswordApiState.isSuccess) {
-      await _vm.getBasicInfo();
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        CustomProgressDialog.hide();
-        setState(() {
-          userProfile = _vm.getBasicInfoApiState.result;
-        });
-        _vm.resetApiState(isGetBasicInfoApiState: true);
+    if(_payPasswordController.text != _confirmPayPasswordController.text) {
+      setState(() {
+        CustomToast.show("确认提款密码与提款密码不一致");
       });
-    }*/
+    }
+    else{
+      CustomProgressDialog.show(context);
+      _vm.payPasswordVerify(_payPasswordController.text, _otpController.text);
+    }
   }
 
   _handleApiState(){
-    /*if (_vm.updatePayPasswordApiState == null
-        && _vm.getBasicInfoApiState == null) {
-      return;
-    }
-    if ((_vm.updatePayPasswordApiState?.isError ?? false)) {
-      CustomToast.show(_vm.updatePayPasswordApiState.error);
-      CustomProgressDialog.hide();
-      FocusScope.of(context).requestFocus(FocusNode());
-      _vm.resetApiState(isUpdatePayPasswordApiState: true);
-    }*/
+   handleApiState(_vm.getPayPasswordCodeApiState, onSuccess: (){
+
+    });
+   handleApiState(_vm.payPasswordVerifyApiState, onSuccess: (){
+     CustomToast.show("Success");
+     WidgetsBinding.instance.addPostFrameCallback((_) {
+       Navigator.pop(context);
+     });
+   });
   }
 }
 
