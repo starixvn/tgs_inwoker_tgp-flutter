@@ -6,6 +6,7 @@ import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
+import 'package:tgp_flutter/ui/home/home.dart';
 import 'package:tgp_flutter/ui/splash/splash_view_model.dart';
 
 
@@ -68,18 +69,15 @@ class _SplashState extends BaseState<Splash> {
     );
   }
 
-  void navigateToLogin() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      Navigator.of(context).pushNamedAndRemoveUntil(
-          "/login", (Route<dynamic> route) => false);
-    });
-  }
-
-
   _navigateToHome() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Navigator.of(context).pushNamedAndRemoveUntil(
-          "/home", (Route<dynamic> route) => false);
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(
+              builder: (context) =>
+                  Home(
+                    isFirstRun: true,
+                  )
+          ), (Route<dynamic> route) => false);
     });
   }
 }

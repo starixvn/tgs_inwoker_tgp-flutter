@@ -16,6 +16,12 @@ import 'game/game_view.dart';
 
 
 class Home extends StatefulWidget{
+  final bool isFirstRun;
+
+  Home({
+    this.isFirstRun
+  });
+
   @override
   _HomeState createState() => _HomeState();
 }
@@ -226,14 +232,16 @@ class _HomeState extends BaseState<Home> {
   }
 
   _handleApiState(){
-    if(_vm.isNotLogin) {
-      navigateToLogin();
-      _vm.markIsNotLogin();
-    }
-    else if(_vm.isExpired) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        _displayDialog();
-      });
+    if(widget.isFirstRun!=null && widget.isFirstRun) {
+      if (_vm.isNotLogin) {
+        navigateToLogin();
+        _vm.markIsNotLogin();
+      }
+      else if (_vm.isExpired) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          _displayDialog();
+        });
+      }
     }
   }
 }

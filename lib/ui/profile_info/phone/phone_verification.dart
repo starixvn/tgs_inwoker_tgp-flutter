@@ -120,7 +120,7 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
       margin: EdgeInsets.only(top: 30.auto, bottom: 20.auto),
       child: ColorButton(
         text: Text(
-          "完成",
+          buttonText ?? "",
           textAlign: TextAlign.center,
           style: TextStyle(
               color: Colors.white,
@@ -192,6 +192,7 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
     });
 
     handleApiState(_vm.phoneVerifyApiState, onSuccess: (){
+      CustomToast.show("Success");
       _getUserProfile();
     });
   }

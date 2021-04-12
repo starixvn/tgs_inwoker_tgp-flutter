@@ -116,14 +116,14 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
       Text(
-        "如需修改真实姓名，请联系",
+        getTranslatedText("edit_ic_no_cs"),
         style: TextStyle(
             fontSize: 12.auto,
             color: CustomColor.theme_title_text_color
         ),
       ),
       Text(
-        "线上客服",
+        getTranslatedText("online_cs"),
         style: TextStyle(
             fontSize: 12.auto,
             color: CustomColor.theme_bar_gradient_2
@@ -171,6 +171,7 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
 
   _handleApiState(){
     handleApiState(_vm.idVerifyApiState, onSuccess: (){
+      CustomToast.show("Success");
       _getUserProfile();
     });
   }

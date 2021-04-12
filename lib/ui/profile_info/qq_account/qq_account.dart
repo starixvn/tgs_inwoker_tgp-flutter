@@ -171,6 +171,7 @@ class _QQAccountState extends BaseState<QQAccount> {
 
   _handleApiState(){
     handleApiState(_vm.setQQApiState, onSuccess: (){
+      CustomToast.show("Success");
       _getUserProfile();
     });
   }

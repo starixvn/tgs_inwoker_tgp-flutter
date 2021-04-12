@@ -210,11 +210,11 @@ class _MyHomePageState extends BaseState<MyHomePage> {
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    _buildBottomBarItem(0,"ic_home", LanguageProvider().getTranslated(context, "home")),
-                    _buildBottomBarItem(1,"ic_promotion", LanguageProvider().getTranslated(context, "promotion")),
+                    _buildBottomBarItem(0,"ic_home",  "home"),
+                    _buildBottomBarItem(1,"ic_promotion", "promotion"),
                     _buildBottomBarItem(2,"ic_menu", ""),
-                    _buildBottomBarItem(3,"ic_customer_service", LanguageProvider().getTranslated(context, "customer_service")),
-                    _buildBottomBarItem(4,"ic_profile", LanguageProvider().getTranslated(context, "my_profile")),
+                    _buildBottomBarItem(3,"ic_customer_service","customer_service"),
+                    _buildBottomBarItem(4,"ic_profile",  "my_profile"),
                   ],
                 ),
               ),
@@ -257,7 +257,8 @@ class _MyHomePageState extends BaseState<MyHomePage> {
                   ?Container()
                   :Container(
                 margin: EdgeInsets.only(top: 3.auto),
-                child: Text(title,
+                child: Text(
+                  getTranslatedText(title),
                   style: TextStyle(
                     fontSize: 11.auto,
                     color: currentBottomIndex==index?Colors.yellow:Colors.white,

@@ -160,6 +160,7 @@ class _WechatState  extends BaseState<Wechat> {
 
   _handleApiState(){
     handleApiState(_vm.setWechatApiState, onSuccess: (){
+      CustomToast.show("Success");
       _getUserProfile();
     });
   }

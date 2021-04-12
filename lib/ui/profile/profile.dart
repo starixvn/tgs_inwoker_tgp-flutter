@@ -105,7 +105,7 @@ class _ProfileState extends BaseState<Profile> {
     child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(/*_vm.userProfile.username*/"username",
+          Text(_vm.userProfile.username??"",
             style: TextStyle(
               color: Colors.white,
               fontSize: (19.2).auto,

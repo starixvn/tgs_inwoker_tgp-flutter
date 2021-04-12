@@ -117,9 +117,7 @@ class _LoginContentState extends BaseState<LoginContent> {
               ),
               GradientButton(
                 title:getTranslatedText("login_later"),
-                onClick:(){
-                  Navigator.of(context).pop();
-                },
+                onClick:()=> _navigateToHome(),
                 isEnabled:true,
                 radius: 2.9,
                 height: 44.5,

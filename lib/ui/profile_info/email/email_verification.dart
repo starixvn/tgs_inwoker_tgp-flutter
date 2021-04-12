@@ -190,6 +190,7 @@ class _EmailVerificationState extends BaseState<EmailVerification> {
 
     });
     handleApiState(_vm.emailVerifyApiState, onSuccess: (){
+      CustomToast.show("Success");
       _getUserProfile();
     });
   }
