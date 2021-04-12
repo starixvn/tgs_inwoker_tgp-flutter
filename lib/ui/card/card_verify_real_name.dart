@@ -52,7 +52,7 @@ class _CardVerifyRealNameState extends BaseState<CardVerifyRealName> {
                     style: TextStyle(fontSize: 20.auto),
                   ),
                   bottom: PreferredSize(
-                    preferredSize: Size.fromHeight(30),
+                    preferredSize: Size.fromHeight(40),
                     child: Container(
                         margin: EdgeInsets.symmetric(vertical: 20.auto),
                         alignment: Alignment.center,

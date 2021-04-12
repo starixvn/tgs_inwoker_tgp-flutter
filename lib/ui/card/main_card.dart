@@ -65,7 +65,7 @@ class _MainCardState extends BaseState<MainCard> {
                   style: TextStyle(fontSize: 16.auto),
                 ),
                 bottom: PreferredSize(
-                  preferredSize: Size.fromHeight(30),
+                  preferredSize: Size.fromHeight(40),
                   child: Container(
                       margin: EdgeInsets.symmetric(vertical: 20.auto),
                       alignment: Alignment.center,

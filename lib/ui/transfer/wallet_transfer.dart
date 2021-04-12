@@ -31,6 +31,7 @@ class _WalletTransferState extends BaseState<WalletTransfer> {
   var transferAmount;
   FocusNode _focusNode = FocusNode();
   var mainWalletBalance, noneMainWalletList;
+  var _key= GlobalKey();
 
   @override
   void dispose() {
@@ -315,22 +316,29 @@ class _WalletTransferState extends BaseState<WalletTransfer> {
       child: CustomTextFormField(
         title: "金额",
         hintText: "请输入转账金额",
-        onChanged:null,
-        onFieldSubmitted:null,
+        onChanged:(value){
+
+        },
+        onFieldSubmitted:(value){
+
+        },
         controller: amount,
         focusNode: _focusNode,
-        width: context.screenWidth-140.auto  ,
-        button: ColorButton(
-          onClick: this.getMaxAmount,
-          isEnabled: isMaxAmountButtonEnabled,
-          radius: 4.8,
-          color: null,
-          width: 40.auto,
-          text: Text(
-            "最大金额",
-            style: TextStyle(
-              fontSize: 10.5,
-              color: Colors.white
+        width: context.screenWidth - 140.auto,
+        button: Container(
+          key: _key,
+          child: ColorButton(
+            onClick: this.getMaxAmount,
+            isEnabled: isMaxAmountButtonEnabled,
+            radius: 4.8,
+            color: null,
+            width: 40.auto,
+            text: Text(
+              "最大金额",
+              style: TextStyle(
+                fontSize: 10.5,
+                color: Colors.white
+              ),
             ),
           ),
         ),

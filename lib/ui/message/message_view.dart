@@ -55,6 +55,7 @@ class _MessageViewState extends BaseState<MessageView> {
                   onTap: () {
                     setState(() {
                       isEditing = !isEditing;
+                      selectedMessageList = [];
                     });
                   },
                   child: Container(
@@ -137,7 +138,6 @@ class _MessageViewState extends BaseState<MessageView> {
       else {
         selectedMessageList.removeWhere((element) => element.id == _selectedMessage.id);
       }
-      print(selectedMessageList);
     });
   }
 

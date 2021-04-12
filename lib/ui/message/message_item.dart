@@ -38,6 +38,8 @@ class _MessageItemState  extends BaseState<MessageItem> {
             child: Expanded(
               flex: 1,
               child: InkWell(
+                highlightColor: Colors.transparent,
+                splashColor: Colors.transparent,
                 onTap: (){
                   _onChanged();
                   widget.onSelected(isSelected, widget.message);

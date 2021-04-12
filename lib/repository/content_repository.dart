@@ -32,10 +32,11 @@ class ContentRepository extends BaseRepository {
       return (json as List<dynamic>).map((e) =>
           GameProvider.fromJson(e)
       ).toList();
-    }, (result) => gameProviderList = result);
+    });
   }
 
-  Future<EventResult<List<Game>>> getGameList(String gamePlatformCode,
+  Future<EventResult<List<Game>>> getGameList(
+      String gamePlatformCode,
       int gameType) async {
     var response = await apiGet(
         "api/Game/list",

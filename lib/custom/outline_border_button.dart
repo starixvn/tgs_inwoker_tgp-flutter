@@ -48,7 +48,7 @@ class OutlineBorderButton extends StatelessWidget {
                 color: CustomColor.theme_bar_gradient_2,
                 fontSize: fontSize
             ),
-            minFontSize: 8.auto,
+            minFontSize: 8,
           ),
       ),
     ) ;/*ButtonTheme(

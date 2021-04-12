@@ -203,6 +203,7 @@ class _MyHomePageState extends BaseState<MyHomePage> {
               ),
             ),
             child: BottomAppBar(
+              color: CustomColor.theme_bar_gradient_1,
               child: Container(
                 decoration: gradientDecoration,
                 child: Row(

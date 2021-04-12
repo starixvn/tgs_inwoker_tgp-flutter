@@ -9,14 +9,12 @@ import 'package:tgp_flutter/ui/home/home_view_model.dart';
 
 class GameContent extends StatefulWidget {
   final ScrollController controller;
-  final List<List<Game>> list;
-  final Function onClick;
+  final List<List<Map<String, String>>> list;
 
   GameContent({
     @required
     this.controller,
     this.list,
-    this.onClick
   });
 
   @override
@@ -42,11 +40,11 @@ class _GameContentState extends BaseState<GameContent> {
           child: ListView(
               padding: EdgeInsets.only(right: 5.auto),
               controller: widget.controller,
-              children: widget.list.expand((element) => element).toList().asMap().entries.map((item) => Container(
+              children: widget.list.expand((element) => element).toList().map((item) => Container(
                   padding: EdgeInsets.only(left: (8.5).auto, right: 5.auto, top: (12.5).auto, bottom: 5.auto),
                   child: GestureDetector(
                       onTap: (){
-                        widget.onClick(item.value);
+                        _navigateToChildGame(item["game_platform_code"], item["game_id"]);
                       },
                       child:/*AspectRatio(
                       aspectRatio: 335/90,
@@ -60,7 +58,7 @@ class _GameContentState extends BaseState<GameContent> {
                           color: Colors.blue,
                           alignment: Alignment.center,
                           child:Text(
-                            item.value.name+" / "+item.key.toString(),
+                            item["text"],
                           )
                       )
                   )
@@ -71,17 +69,15 @@ class _GameContentState extends BaseState<GameContent> {
     );
   }
 
-  _navigateToChildGame( int gameType){
-    var code = gameType<4?"SBO":"HABA";
-   // _vm.getGameList(code, gameType);
+  _navigateToChildGame(String gamePlatformCode, String gameType){
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Navigator.push(
           context,
           MaterialPageRoute(
               builder: (context) =>
                   ChildGame(
-                    gamePlatformCode: code,
-                    gameType: gameType,
+                    gamePlatformCode: gamePlatformCode,
+                    gameType: int.parse(gameType),
                   )
           ));
     });

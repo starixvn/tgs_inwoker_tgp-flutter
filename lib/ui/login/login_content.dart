@@ -118,8 +118,7 @@ class _LoginContentState extends BaseState<LoginContent> {
               GradientButton(
                 title:getTranslatedText("login_later"),
                 onClick:(){
-                  Navigator.of(context).pushNamedAndRemoveUntil("/home",
-                      ModalRoute.withName("/login"));
+                  Navigator.of(context).pop();
                 },
                 isEnabled:true,
                 radius: 2.9,

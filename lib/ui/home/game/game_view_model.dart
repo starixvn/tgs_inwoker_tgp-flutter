@@ -14,41 +14,28 @@ class GameViewModel extends BaseViewModel{
 
   @override
   List<BaseRepository> get repoList => [contentRepo];
-  EventResult getGameApiState, getGameUrlApiState;
+  EventResult getGameApiState, getGameUrlApiState, getGameProviderListApiState;
   List<GameProvider> gameProviderList;
   List<List<GameType>> gameTypeList;
-  List<List<Game>> gameList;
-  List<List<Game>> list = [];
+ List<Game> gameList;
   var url;
 
-
-  getAllGameList(){
-    var gamePlatformlist = [
-      {
-        "id":"SBO",
-        "code":"1"
-      },
-      {
-        "id":"HABA",
-        "code":"15"
-      },
-      {
-        "id":"HABA",
-        "code":"16"
-      },
-    ];
-    gamePlatformlist.forEach((element) {
-      getGameList(element["id"], int.parse(element["code"]));
-    });
+  getGameProviderList() async{
+    setLoading();
+    getGameProviderListApiState = await contentRepo.getGameProviderList();
+    if(getGameProviderListApiState.isSuccess){
+      gameProviderList = getGameProviderListApiState.result;
+    }
+    setLoading(false);
+    return getGameProviderListApiState;
   }
 
   getGameList(String gamePlatformCode, int gameType) async{
     setLoading();
     getGameApiState = await contentRepo.getGameList(gamePlatformCode, gameType);
     if(getGameApiState.isSuccess){
-      list.add(getGameApiState.result);
+      gameList = getGameApiState.result;
     }
-    gameList = list;
     setLoading(false);
     return getGameApiState;
   }

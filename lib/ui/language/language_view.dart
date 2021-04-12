@@ -1,7 +1,9 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:tgp_flutter/entity/language.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/localizations/language_provider.dart';
+import 'package:tgp_flutter/main.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
@@ -46,15 +48,23 @@ class _LanguageViewState extends BaseState<LanguageView> {
         body: ListView(
           children: List.generate(list.length, (index) =>
               Container(
-                child: LanguageItem(
-                  imagePath: list[index].imageRes,
-                  text: list[index].name,
-                  isSelected: deviceLanguage == list[index],
+                child: InkWell(
+                  onTap: () => _changeLanguage(list[index]),
+                  child: LanguageItem(
+                    imagePath: list[index].imageRes,
+                    text: list[index].name,
+                    isSelected: deviceLanguage == list[index],
+                  ),
                 ),
               )
           ),
         )
     );
+  }
+
+  void _changeLanguage(Language language) async {
+    Locale _locale = await LanguageProvider().setLocale(language);
+    MyApp.setLocale(context, _locale);
   }
 }
 

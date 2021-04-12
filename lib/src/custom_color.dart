@@ -15,5 +15,5 @@ class CustomColor{
   static const Color theme_label_text_highlight_color = Color(0xfffde73f);
 
   static const Color grey = Color(0xff686868);
-
+  static const Color black = Color(0xff2b2b2b);
 }

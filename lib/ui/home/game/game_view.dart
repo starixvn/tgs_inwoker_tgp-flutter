@@ -18,12 +18,10 @@ import 'package:tgp_flutter/ui/home/game/game_web_view.dart';
 
 class GameView extends StatefulWidget {
   final List<Map<String, String>> tabList;
-  final List<List<Game>> gameList;
 
   GameView({
     @required
     this.tabList,
-    this.gameList
   });
 
   @override
@@ -37,13 +35,15 @@ class _GameViewState extends BaseState<GameView> {
   var key = GlobalKey();
   var _vm = GameViewModel();
   var gameName;
+  var list =[
+    [{"id":"0","text":"Sportsbook","game_id":"1", "game_platform_code":"SBO"}],
+    [{"id":"1","text":"Habanero","game_id":"15", "game_platform_code":"HABA"}],
+    [{"id":"2","text":"Habanero", "game_id":"16", "game_platform_code":"HABA"}]
+  ];
 
   @override
   void initState() {
     _controller.addListener(_scrollListener);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _vm.getAllGameList();
-    });
     super.initState();
   }
 
@@ -52,9 +52,7 @@ class _GameViewState extends BaseState<GameView> {
     return ProviderWidget<GameViewModel>(
         model: _vm,
         builder: (ctx, vm, _) {
-          return _vm.gameList==null
-              ?Center(child: CircularProgressIndicator(),)
-              :Expanded(
+          return Expanded(
             child: Container(
               margin: EdgeInsets.only(left: 10.auto, right: 10.auto, bottom: 5.auto),
               child: Row(
@@ -80,8 +78,7 @@ class _GameViewState extends BaseState<GameView> {
                     key: key,
                     child: GameContent(
                       controller: _controller,
-                      list: _vm.gameList,
-                      onClick:(game) => _navigateToGameWeb(game),
+                      list: list,
                     ),
                   )
                 ],
@@ -112,7 +109,7 @@ class _GameViewState extends BaseState<GameView> {
             child: AutoSizeText(
               getTranslatedText(title),
               style: TextStyle(
-                  fontSize: 17.auto,
+                  fontSize: 17,
                   shadows: [
                     tabIndex==currentTabIndex?Shadow(
                       blurRadius:1.5,
@@ -122,7 +119,8 @@ class _GameViewState extends BaseState<GameView> {
                   ],
                   color: tabIndex==currentTabIndex?CustomColor.theme_label_text_highlight_color: Colors.black
               ),
-              minFontSize: 12.auto,
+              minFontSize: 10,
+              stepGranularity: 1,
             )
         ),
       ),
@@ -134,9 +132,9 @@ class _GameViewState extends BaseState<GameView> {
     var itemHeight = (width)*(1/itemRatio) + 17.5.auto;
     var des = 0.0;
 
-    _vm.gameList.asMap().forEach((i,element) {
+    list.asMap().forEach((i,element) {
       if(tabIndex>i){
-        des += itemHeight * _vm.gameList[i].length;
+        des += itemHeight * list[i].length;
       }
     });
     setState(() {
@@ -152,12 +150,12 @@ class _GameViewState extends BaseState<GameView> {
     var des = 0.0;
     var index = 0;
 
-    _vm.gameList.asMap().forEach((i,element) {
+    list.asMap().forEach((i,element) {
       if(_controller.offset >= des){
-        des += scrollTab * _vm.gameList[i].length;
+        des += scrollTab * list[i].length;
         index=i;
       }else if(_controller.offset >= _controller.position.maxScrollExtent){
-        index = _vm.gameList.length-1;
+        index = list.length-1;
       }
     });
     setState(() {
@@ -165,7 +163,7 @@ class _GameViewState extends BaseState<GameView> {
     });
   }
 
-  _navigateToGameWeb(Game game){
+/*  _navigateToGameWeb(Game game){
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Navigator.push(
           context,
@@ -176,6 +174,6 @@ class _GameViewState extends BaseState<GameView> {
                   )
           ));
     });
-  }
+  }*/
 
 }

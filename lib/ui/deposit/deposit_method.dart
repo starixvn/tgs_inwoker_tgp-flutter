@@ -165,7 +165,7 @@ class _DepositMethodState extends BaseState<DepositMethod> {
       onFieldSubmitted:(value) => onTextChange(),
       controller: _textEditingController,
       focusNode: _focusNode,
-      width:context.screenWidth-70,
+      width:context.screenWidth -70.auto,
       textInputType: TextInputType.number,
       textInputAction: TextInputAction.done,
     ),

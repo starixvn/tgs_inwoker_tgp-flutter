@@ -45,8 +45,9 @@ class _CustomTextFormFieldState extends BaseState<CustomTextFormField> {
         elevation: 5,
         //margin:EdgeInsets.only(top:15.auto,),
         child: Container(
-          margin: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+          margin: EdgeInsets.symmetric(vertical: 15.auto, horizontal: 20.auto),
           child:  Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,

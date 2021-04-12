@@ -94,7 +94,7 @@ class _HomeState extends BaseState<Home> {
   @override
   void initState() {
     //WidgetsBinding.instance.addPostFrameCallback((_) {
-      _vm.resumeIfNeed();
+    _vm.resumeIfNeed();
     //});
     super.initState();
   }
@@ -107,9 +107,7 @@ class _HomeState extends BaseState<Home> {
           return Scaffold(
             resizeToAvoidBottomInset: false,
             backgroundColor: Colors.white,
-            body: _vm.userProfile == null
-                ? Center(child: CircularProgressIndicator())
-                : Column(
+            body: Column(
               children: [
                 Stack(
                     children: [

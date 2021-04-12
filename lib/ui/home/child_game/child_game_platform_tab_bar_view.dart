@@ -21,7 +21,8 @@ class ChildGamePlatformTabBarView extends StatefulWidget{
 
 class _ChildGamePlatformTabBarViewState  extends BaseState<ChildGamePlatformTabBarView> {
   Widget build(BuildContext context) {
-    return GridView.count(
+    return  GridView.count(
+      padding: EdgeInsets.all(10.auto),
       crossAxisCount: 2,
       shrinkWrap: true,
       physics: AlwaysScrollableScrollPhysics(),
@@ -38,6 +39,7 @@ class _ChildGamePlatformTabBarViewState  extends BaseState<ChildGamePlatformTabB
             )
         );
       }),
+
     );
   }
 }

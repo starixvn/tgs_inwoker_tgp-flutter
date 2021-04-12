@@ -54,7 +54,7 @@ class _ProfileBottomItemState extends BaseState<ProfileBottomItem> {
         elevation: 5,
         child: Container(
           //margin: EdgeInsets.symmetric(vertical: 13,horizontal: 10),
-          margin: EdgeInsets.only(left: 10.auto, right: 9.auto, top: 10.auto, bottom: 9.auto),
+          margin: EdgeInsets.only(left: 5.auto, right: 5.auto, top: 10.auto, bottom: 5.auto),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -64,12 +64,14 @@ class _ProfileBottomItemState extends BaseState<ProfileBottomItem> {
               ),
               Padding(
                 padding: EdgeInsets.only(top: 10.auto),
-                child: Text(
+                child: AutoSizeText(
                   widget.title,
                   style: TextStyle(
-                      fontSize: (9.5).auto
+                      fontSize: 10
                   ),
                   textAlign: TextAlign.center,
+                  minFontSize: 5,
+                  stepGranularity: 1,
                 ),
               )
             ],

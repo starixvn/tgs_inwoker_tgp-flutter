@@ -119,10 +119,12 @@ class _TransactionCellItemState extends BaseState<TransactionCellItem> {
                       child:AutoSizeText(
                         widget.list[index],
                         style: TextStyle(
-                            fontSize: 12.auto,
+                            fontSize: 12,
                             color: Colors.grey[700]
                         ),
                         textAlign: TextAlign.center,
+                        minFontSize: 10,
+                        stepGranularity: 1,
                       ),
                     );
                   }).toList()
@@ -194,6 +196,8 @@ class _TransactionCellItemState extends BaseState<TransactionCellItem> {
         color: Colors.grey[700]
     ),
     textAlign: TextAlign.center,
+    minFontSize: 10,
+    stepGranularity: 1,
   );
 
 /*  _getDisplayText() {
