@@ -31,10 +31,7 @@ class _ResetPayPasswordState  extends BaseState<ResetPayPassword> {
       _confirmPayPasswordController = TextEditingController(),
       _phoneController = TextEditingController(),
       _otpController = TextEditingController();
-  var phoneText;
   var isButtonEnabled = false, isResetPassword = false,  isCodeVisible = false, isOtpEnabled = false;
-  var name, cardNumber, buttonText;
-  UserProfile userProfile;
   InputValidationProvider validate = new InputValidationProvider();
 
 

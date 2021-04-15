@@ -1,4 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:tgp_flutter/localizations/language_provider.dart';
 
 enum GameType{
   @JsonValue(1) Sportsbook,
@@ -23,28 +25,34 @@ enum GameType{
   @JsonValue(16) TableGame,
 }
 
-extension GameTypeExtension on GameType {
+
+  extension GameTypeExtension on GameType {
 
   static const name = {
-    GameType.Sportsbook:"Sportsbook",
-    GameType.VirtualSports:"VirtualSports",
-    GameType.VirtualSportsLobby:"VirtualSportsLobby",
-    GameType.ESports:"ESports",
-    GameType.LiveDealer:"LiveDealer",
-    GameType.LiveDealerLobby:"LiveDealerLobby",
-    GameType.CardGame:"CardGame",
-    GameType.CardGameLobby:"CardGameLobby",
-    GameType.Fishing:"Fishing",
-    GameType.FishingLobby:" FishingLobby",
-    GameType.Arcade:" Arcade",
-    GameType.ArcadeLobby:" ArcadeLobby",
-    GameType.Lottery:" Lottery",
-    GameType.LotteryLobby:" LotteryLobby",
-    GameType.Slot:" Slot",
-    GameType.TableGame:" TableGame",
-
+    GameType.Sportsbook:"cat_sport",
+    GameType.ESports:"cat_laohu",
+    GameType.LiveDealer:"cat_livecasino",
+    GameType.CardGame:"cat_qipai",
+    GameType.Fishing:"cat_fish",
+    GameType.Lottery:" cat_lottery",
+    GameType.Slot:" cat_slotgame",
+    GameType.TableGame:" cat_table",
   };
 
-  String get getName => name[this];
+  static const json ={
+    GameType.Sportsbook: 1,
+    GameType.ESports: 4,
+    GameType.LiveDealer: 5,
+    GameType.CardGame: 7,
+    GameType.Fishing: 9,
+    GameType.Lottery: 13,
+    GameType.Slot: 15,
+    GameType.TableGame: 16,
+  };
+
+  String getDisplayName(BuildContext context) => getTranslatedText(context,name[this]);
+  int get getJsonValue => json[this];
+
+  getTranslatedText(BuildContext context, String key) => LanguageProvider().getTranslated(context, key);
 
 }

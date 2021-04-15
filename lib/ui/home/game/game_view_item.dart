@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter/entity/game.dart';
+import 'package:tgp_flutter/entity/game_provider2.dart';
+import 'package:tgp_flutter/entity/game_type.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
@@ -7,21 +9,21 @@ import 'package:tgp_flutter/ui/base_state.dart';
 import 'package:tgp_flutter/ui/home/child_game/child_game.dart';
 import 'package:tgp_flutter/ui/home/home_view_model.dart';
 
-class GameContent extends StatefulWidget {
+class GameViewItem extends StatefulWidget {
   final ScrollController controller;
-  final List<List<Map<String, String>>> list;
+  final List<dynamic> gameProviderList;
 
-  GameContent({
+  GameViewItem({
     @required
     this.controller,
-    this.list,
+    this.gameProviderList,
   });
 
   @override
-  _GameContentState createState() => _GameContentState();
+  _GameViewItemState createState() => _GameViewItemState();
 }
 
-class _GameContentState extends BaseState<GameContent> {
+class _GameViewItemState extends BaseState<GameViewItem> {
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -40,25 +42,19 @@ class _GameContentState extends BaseState<GameContent> {
           child: ListView(
               padding: EdgeInsets.only(right: 5.auto),
               controller: widget.controller,
-              children: widget.list.expand((element) => element).toList().map((item) => Container(
+              children: widget.gameProviderList.expand((element) => element).toList().map((item) => Container(
                   padding: EdgeInsets.only(left: (8.5).auto, right: 5.auto, top: (12.5).auto, bottom: 5.auto),
                   child: GestureDetector(
                       onTap: (){
-                        _navigateToChildGame(item["game_platform_code"], item["game_id"]);
+                        _navigateToChildGame(item.code, item.gameType);
                       },
-                      child:/*AspectRatio(
-                      aspectRatio: 335/90,
-                      child: Image.asset(
-                        'images/game/$item',
-                      ),
-                    ),
-                           */ Container(
+                      child: Container(
                           width: 335.auto,
                           height: 90.auto,
                           color: Colors.blue,
                           alignment: Alignment.center,
                           child:Text(
-                            item["text"],
+                            item.name,
                           )
                       )
                   )
@@ -69,7 +65,7 @@ class _GameContentState extends BaseState<GameContent> {
     );
   }
 
-  _navigateToChildGame(String gamePlatformCode, String gameType){
+  _navigateToChildGame(String gamePlatformCode, GameType gametype){
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Navigator.push(
           context,
@@ -77,7 +73,7 @@ class _GameContentState extends BaseState<GameContent> {
               builder: (context) =>
                   ChildGame(
                     gamePlatformCode: gamePlatformCode,
-                    gameType: int.parse(gameType),
+                    gameType: gametype,
                   )
           ));
     });

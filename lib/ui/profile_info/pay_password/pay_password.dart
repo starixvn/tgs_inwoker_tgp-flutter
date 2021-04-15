@@ -26,8 +26,6 @@ class _PayPasswordState extends BaseState<PayPassword> {
       _newPasswordController = TextEditingController(),
       _confirmPasswordController = TextEditingController();
   var isButtonEnabled = false;
-  var name, cardNumber, buttonText;
-  var userProfile;
   InputValidationProvider validate = new InputValidationProvider();
 
 

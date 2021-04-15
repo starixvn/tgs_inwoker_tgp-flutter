@@ -1,12 +1,24 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:tgp_flutter/entity/game.dart';
+import 'package:tgp_flutter/entity/game_provider2.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/ui/home/child_game/child_game_platform_tab_bar_view.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
 
 class ChildGamePlatform extends StatefulWidget{
+  final List<GameProvider2> platformList;
+  final List<Game> gameList;
+  final bool isSearching;
+
+  ChildGamePlatform({
+    this.platformList,
+    this.gameList,
+    this.isSearching
+  });
+
   @override
   _ChildGamePlatformState createState() => _ChildGamePlatformState();
 }
@@ -14,18 +26,14 @@ class ChildGamePlatform extends StatefulWidget{
 class _ChildGamePlatformState  extends BaseState<ChildGamePlatform> with SingleTickerProviderStateMixin{
   var _platformTabController;
   var platformTabIndex = 0;
-  var _platformTabList =
-  [
-    "全部",
-    "AG",
-    "BBIN",
-    "JDB",
-    "MG"
-  ];
+  var _platformTabList = ["全部"];
 
   @override
   void initState() {
-    _platformTabController = TabController(length: _platformTabList.length, vsync: this, initialIndex: platformTabIndex);
+    widget.platformList.forEach((element) {
+      _platformTabList.add(element.name);
+    });
+    _platformTabController = TabController(length: widget.platformList.length+1, vsync: this, initialIndex: platformTabIndex);
     super.initState();
   }
 
@@ -35,9 +43,10 @@ class _ChildGamePlatformState  extends BaseState<ChildGamePlatform> with SingleT
           Container(
             margin: EdgeInsets.symmetric(vertical: 8.auto,horizontal: 5.auto),
             constraints: BoxConstraints(maxHeight: 30.auto),
+            width: context.screenWidth,
             child: TabBar(
               controller: _platformTabController,
-              isScrollable: false,
+              isScrollable: true,
               unselectedLabelColor: CustomColor.theme_button_disable_bg,
               labelColor: CustomColor.theme_button_disable_bg,
               indicatorWeight: 3,
@@ -47,12 +56,12 @@ class _ChildGamePlatformState  extends BaseState<ChildGamePlatform> with SingleT
                 });
               },
               indicator: ShapeDecoration(
-                  shape: RoundedRectangleBorder(
-                    side: BorderSide(
-                        color:CustomColor.theme_button_disable_bg
-                    ),
-                      borderRadius: BorderRadius.circular(15.auto),
+                shape: RoundedRectangleBorder(
+                  side: BorderSide(
+                      color:CustomColor.theme_button_disable_bg
                   ),
+                  borderRadius: BorderRadius.circular(15.auto),
+                ),
               ),
               unselectedLabelStyle: TextStyle(
                   color: CustomColor.theme_button_disable_bg
@@ -69,16 +78,10 @@ class _ChildGamePlatformState  extends BaseState<ChildGamePlatform> with SingleT
             ),
           ),
           Expanded(
-            child: TabBarView(
-              controller: _platformTabController,
-              children: [
-                ChildGamePlatformTabBarView(),
-                ChildGamePlatformTabBarView(),
-                ChildGamePlatformTabBarView(),
-                ChildGamePlatformTabBarView(),
-                ChildGamePlatformTabBarView(),
-              ],
-            ),
+              child:ChildGamePlatformTabBarView(
+                gameList: widget.gameList,
+                isDisabled: widget.isSearching,
+              )
           ),
         ]
     );

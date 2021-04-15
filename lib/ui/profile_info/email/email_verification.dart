@@ -27,7 +27,6 @@ class _EmailVerificationState extends BaseState<EmailVerification> {
       _otpController = TextEditingController();
   var isButtonEnabled = false, isOtpEnabled = false, isTextFieldEnabled = false;
   var buttonText;
-  var userProfile;
   InputValidationProvider validate = new InputValidationProvider();
 
   @override
@@ -150,12 +149,11 @@ class _EmailVerificationState extends BaseState<EmailVerification> {
   }
 
   _getUserProfile(){
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+      var _email = _vm.userProfile.email;
       setState(() {
-        userProfile =  _vm.userProfile;
-        if(userProfile.email !=null){
-          if(userProfile.email.isNotEmpty){
-            _emailController.text = userProfile.email;
+        if(_email !=null){
+          if(_email.isNotEmpty){
+            _emailController.text = _email;
             buttonText = getTranslatedText("verified");
             isButtonEnabled = false;
             isTextFieldEnabled = false;
@@ -166,7 +164,6 @@ class _EmailVerificationState extends BaseState<EmailVerification> {
           isTextFieldEnabled = true;
         }
       });
-    });
   }
 
   _getSmsCode() {

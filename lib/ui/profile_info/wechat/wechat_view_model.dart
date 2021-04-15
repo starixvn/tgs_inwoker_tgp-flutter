@@ -4,7 +4,7 @@ import 'package:tgp_flutter/repository/user_repository.dart';
 
 class WechatViewModel extends BaseViewModel{
   final userRepo = UserRepository.getSingleton();
-  var setWechatApiState, getBasicInfoApiState;
+  var setWechatApiState;
 
   @override
   List<BaseRepository> get repoList => [userRepo];

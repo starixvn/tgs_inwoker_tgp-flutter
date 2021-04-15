@@ -142,7 +142,7 @@ class _HomeState extends BaseState<Home> {
                     Container(
                       padding: EdgeInsets.only(left: 10.auto),
                       child: Text(
-                        LanguageProvider().getTranslated(context, "notice"),
+                        getTranslatedText("notice"),
                         style: TextStyle(
                             fontSize: (13.5).auto,
                             fontWeight: FontWeight.w600

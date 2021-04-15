@@ -19,12 +19,13 @@ class _WechatState  extends BaseState<Wechat> {
   var _vm = WechatViewModel();
   TextEditingController _wechatController = TextEditingController();
   var isButtonEnabled = false, isTextFieldEnabled = false;
-  var name, cardNumber, buttonText;
-  var userProfile;
+  var buttonText;
 
   @override
   void initState() {
-    _getUserProfile();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _getUserProfile();
+    });
     super.initState();
   }
 
@@ -79,7 +80,7 @@ class _WechatState  extends BaseState<Wechat> {
   );
 
   _buildButton() => Container(
-    width: context.screenWidth,
+      width: context.screenWidth,
       margin: EdgeInsets.only(top: 30.auto, bottom: 20.auto),
       child: ColorButton(
         text: Text(
@@ -103,7 +104,7 @@ class _WechatState  extends BaseState<Wechat> {
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
       Text(
-       getTranslatedText("edit_wechat_cs"),
+        getTranslatedText("edit_wechat_cs"),
         style: TextStyle(
             fontSize: 12.auto,
             color: CustomColor.theme_title_text_color
@@ -121,9 +122,8 @@ class _WechatState  extends BaseState<Wechat> {
 
   _getUserProfile(){
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      var wechat = _vm.userProfile.wechat;
       setState(() {
-        userProfile =  _vm.userProfile;
-        var wechat = _vm.userProfile.wechat;
         if(wechat!=null){
           if(wechat.isNotEmpty){
             _wechatController.text = wechat;

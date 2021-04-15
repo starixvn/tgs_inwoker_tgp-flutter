@@ -20,12 +20,13 @@ class _QQAccountState extends BaseState<QQAccount> {
   var _vm = QQAccountViewModel();
   TextEditingController _qqController = TextEditingController();
   var isButtonEnabled = false, isTextFieldEnabled = false;
-  var name, cardNumber, buttonText;
-  var userProfile;
+  var buttonText;
 
   @override
   void initState() {
-    _getUserProfile();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _getUserProfile();
+    });
     super.initState();
   }
 
@@ -91,7 +92,7 @@ class _QQAccountState extends BaseState<QQAccount> {
   );
 
   _buildButton() => Container(
-    width: context.screenWidth,
+      width: context.screenWidth,
       margin: EdgeInsets.only(top: 30.auto, bottom: 20.auto),
       child: ColorButton(
         text: Text(
@@ -133,19 +134,19 @@ class _QQAccountState extends BaseState<QQAccount> {
 
   _getUserProfile(){
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      var _qq = _vm.userProfile.qq;
       setState(() {
-        userProfile = _vm.userProfile;
-        if(userProfile.qq !=null){
-          if(userProfile.qq.isNotEmpty){
-            _qqController.text = userProfile.qq;
+        if(_qq !=null){
+          if(_qq.isNotEmpty){
+            _qqController.text = _qq;
             buttonText = getTranslatedText("verified");
             isButtonEnabled = false;
             isTextFieldEnabled = false;
           }
         }
         else{
-        buttonText = getTranslatedText("done");
-        isTextFieldEnabled = true;
+          buttonText = getTranslatedText("done");
+          isTextFieldEnabled = true;
         }
       });
     });

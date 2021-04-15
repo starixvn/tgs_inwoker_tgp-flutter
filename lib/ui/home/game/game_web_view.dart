@@ -124,10 +124,13 @@ class _GameWebState extends BaseState<GameWeb> {
   _displayDialog(){
     showDialog(context: context,
       builder: (BuildContext context) => CustomDialog(
-        description: "确定离开游戏吗？",
-        buttonText1: "离开",
-        buttonText2: "再玩一会",
-        onClick: ()=> Navigator.of(context).popUntil(ModalRoute.withName('/home')),
+          description: "确定离开游戏吗？",
+          buttonText1: "离开",
+          buttonText2: "再玩一会",
+          onClick: (){
+            Navigator.of(context).pop();
+            Navigator.of(context).pop();
+          }
       ),
     );
   }
@@ -140,7 +143,7 @@ class _GameWebState extends BaseState<GameWeb> {
   _handleApiState(){
     handleApiState(_vm.getGameUrlApiState, isAutoHideLoading: false, onSuccess: (){
       if(isLoading){
-          isLoading=!isLoading;
+        isLoading=!isLoading;
       }
     });
   }

@@ -9,7 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class ProfileViewModel extends BaseViewModel{
   final userRepo = UserRepository.getSingleton();
 
-  var logoutApiState, getMainBalanceApiState;
+  var logoutApiState, getWalletBalanceApiState;
   //get totalBalance => _computeTotalBalance();
 
   @override
@@ -24,12 +24,15 @@ class ProfileViewModel extends BaseViewModel{
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.remove("token");
     }
-    setLoading();
+    setLoading(false);
     return logoutApiState;
   }
 
   getWalletBalance()async{
-    await userRepo.getWalletBalance();
+    setLoading();
+    getWalletBalanceApiState = await userRepo.getWalletBalance();
+    setLoading(false);
+    return logoutApiState;
   }
 
   /*getTotalBalance(){

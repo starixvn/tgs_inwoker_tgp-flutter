@@ -18,6 +18,20 @@ class Game {
   int type;
   GameTag tag;
 
+ String gamePlatformName(){
+   switch (gamePlatformCode){
+     case "HABA":
+       return "Habanero";
+       break;
+     case "SBO":
+       return "SBOBET";
+       break;
+     default:
+       return "Habanero";
+       break;
+   }
+ }
+
 
   factory Game.fromJson(Map<String, dynamic> json) => _$GameFromJson(json);
   Map<String, dynamic> toJson() => _$GameToJson(this);

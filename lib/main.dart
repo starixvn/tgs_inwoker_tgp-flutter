@@ -161,20 +161,20 @@ class _MyAppState extends BaseState<MyApp> {
   }
 }
 class MyHomePage  extends StatefulWidget{
+  final bool isFirstRun;
+
+  MyHomePage({
+    this.isFirstRun
+  });
+
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends BaseState<MyHomePage> {
   int currentBottomIndex = 0;
-  static List<Widget> _page = <Widget>[
-    Home(),
-    PromotionPage(),
-    Menu(),
-    Login(),
-    Profile(),
-  ];
 
+  List _page;
   @override
   void initState() {
     super.initState();
@@ -182,6 +182,15 @@ class _MyHomePageState extends BaseState<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    _page = [
+      Home(
+        isFirstRun: widget.isFirstRun ?? false,
+      ),
+      PromotionPage(),
+      Menu(),
+      Login(),
+      Profile(),
+    ];
     return  ScrollConfiguration(
       behavior: MyBehavior(),
       child: Scaffold(

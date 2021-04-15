@@ -85,16 +85,4 @@ class LoginViewModel extends BaseViewModel{
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString("password")?? "";
   }
-
-  resetApiState({bool isLoginApiState = false, isRegisterApiState = false, isCheckUsernameApiState = false,}){
-    if (isLoginApiState){
-      loginApiState = null;
-    }
-    if(isRegisterApiState){
-      registerApiState = null;
-    }
-    if(isCheckUsernameApiState){
-      registerApiState = null;
-    }
-  }
 }

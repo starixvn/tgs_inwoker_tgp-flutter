@@ -32,17 +32,10 @@ class _UpdateForgotPasswordState extends BaseState<UpdateForgotPassword> {
   TextEditingController _newPasswordController = TextEditingController(),
       _confirmPasswordController = TextEditingController();
   var isButtonEnabled = false;
-  var name, cardNumber, buttonText;
-  var userProfile;
   InputValidationProvider validate = new InputValidationProvider();
 
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      setState(() {
-        userProfile =  _vm.userProfile;
-      });
-    });
     super.initState();
   }
 

@@ -1,6 +1,7 @@
 
 import 'package:tgp_flutter/entity/game.dart';
 import 'package:tgp_flutter/entity/game_provider.dart';
+import 'package:tgp_flutter/entity/game_type.dart';
 import 'package:tgp_flutter/entity/response/game_url_response.dart';
 import 'package:tgp_flutter/entity/user_profile.dart';
 import 'package:tgp_flutter/network/event_result.dart';
@@ -37,12 +38,12 @@ class ContentRepository extends BaseRepository {
 
   Future<EventResult<List<Game>>> getGameList(
       String gamePlatformCode,
-      int gameType) async {
+      GameType gameType) async {
     var response = await apiGet(
         "api/Game/list",
         content:{
           "gpcode": gamePlatformCode,
-          "gametypes": gameType.toString(),
+          "gametypes": gameType.getJsonValue.toString(),
           "platformtype": "1",
           "language": "en-US",
           "currency": "CNY"

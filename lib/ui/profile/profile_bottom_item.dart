@@ -49,7 +49,7 @@ class _ProfileBottomItemState extends BaseState<ProfileBottomItem> {
         semanticContainer: true,
         clipBehavior: Clip.antiAlias,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.0),
+          borderRadius: BorderRadius.circular(2.9),
         ),
         elevation: 5,
         child: Container(

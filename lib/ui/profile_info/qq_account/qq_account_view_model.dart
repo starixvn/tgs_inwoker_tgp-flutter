@@ -4,7 +4,7 @@ import 'package:tgp_flutter/repository/user_repository.dart';
 
 class QQAccountViewModel extends BaseViewModel{
   final userRepo = UserRepository.getSingleton();
-  var setQQApiState, getBasicInfoApiState;
+  var setQQApiState;
 
   @override
   List<BaseRepository> get repoList => [userRepo];

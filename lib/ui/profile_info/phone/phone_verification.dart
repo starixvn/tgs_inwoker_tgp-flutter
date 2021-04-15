@@ -25,8 +25,7 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
   TextEditingController _phoneController = TextEditingController(),
       _otpController = TextEditingController();
   var isButtonEnabled = false, isOtpEnabled = false, isTextFieldEnabled = false;
-  var name, cardNumber, buttonText;
-  var userProfile;
+  var buttonText;
   InputValidationProvider validate = new InputValidationProvider();
 
   @override
@@ -152,11 +151,11 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
 
   _getUserProfile(){
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      var phone =  _vm.userProfile.phone;
       setState(() {
-        userProfile =  _vm.userProfile;
-        if(userProfile.phone !=null){
-          if(userProfile.phone.isNotEmpty){
-            _phoneController.text = userProfile.phone;
+        if(phone !=null){
+          if(phone.isNotEmpty){
+            _phoneController.text = phone;
             buttonText = getTranslatedText("verified");
             isButtonEnabled = false;
             isTextFieldEnabled = false;

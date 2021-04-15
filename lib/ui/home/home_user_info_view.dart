@@ -63,14 +63,6 @@ class _HomeUserInfoViewState extends BaseState<HomeUserInfoView> {
                         ),
                         textAlign: TextAlign.center,
                       ),
-                      /*Container(
-                        margin: EdgeInsets.only(left:5.auto),
-                        child: Image.asset(
-                          widget.imagePath,
-                          width: 20.auto,
-                          height: 20.auto,
-                        ),
-                      )*/
                     ],
                   ) : Wrap(),
                   Spacer(),

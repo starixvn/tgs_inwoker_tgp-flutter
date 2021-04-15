@@ -18,7 +18,7 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
         if (onError != null) {
           onError(eventResult.error);
         } else {
-          if(eventResult.error.contains("login token is expired")){
+          if(eventResult.errorCode ==101 || eventResult.errorCode ==102){
             WidgetsBinding.instance.addPostFrameCallback((_) {
               showDialog(context: context,
                 builder: (BuildContext context) =>

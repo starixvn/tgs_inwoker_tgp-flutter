@@ -9,11 +9,13 @@ import 'package:tgp_flutter/ui/base_state.dart';
 class ChildGamePlatformTabBarView extends StatefulWidget{
   final List<Game> gameList;
   final Function onClick;
+  final bool isDisabled;
 
   ChildGamePlatformTabBarView({
     @required
     this.gameList,
-    this.onClick
+    this.onClick,
+    this.isDisabled
   });
   @override
   _ChildGamePlatformTabBarViewState createState() => _ChildGamePlatformTabBarViewState();
@@ -36,6 +38,7 @@ class _ChildGamePlatformTabBarViewState  extends BaseState<ChildGamePlatformTabB
             child: ChildGameItem(
               game: widget.gameList[index],
               isFavourite: true,
+              isDisabled: widget.isDisabled,
             )
         );
       }),

@@ -237,6 +237,5 @@ class _ProfileInfoState  extends BaseState<ProfileInfo> {
   _getItemText(String text){
     if(text!=null&&text.isNotEmpty) return text;
     else return getTranslatedText("not_configured");
-
   }
 }

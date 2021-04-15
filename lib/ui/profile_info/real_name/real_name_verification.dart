@@ -21,8 +21,7 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
   TextEditingController _realNameController = TextEditingController(),
       _icNoController = TextEditingController();
   var isButtonEnabled = false, isTextFieldEnabled = false;
-  var name, cardNumber, buttonText;
-  var userProfile;
+  var buttonText;
 
   @override
   void initState() {
@@ -134,11 +133,11 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
 
   _getUserProfile(){
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      var userProfile = _vm.userProfile;
+      var _realname = _vm.userProfile.realname;
       setState(() {
-        if(userProfile.realname!=null){
-          if(userProfile.realname.isNotEmpty) {
-            _realNameController.text = userProfile.realname;
+        if(_realname!=null){
+          if(_realname.isNotEmpty) {
+            _realNameController.text = _realname;
             buttonText = getTranslatedText("verified");
             isButtonEnabled = false;
             isTextFieldEnabled = false;

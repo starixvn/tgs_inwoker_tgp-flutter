@@ -12,7 +12,7 @@ import 'package:gradient_text/gradient_text.dart';
 import 'package:outline_gradient_button/outline_gradient_button.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
-import 'package:tgp_flutter/ui/home/game/game_content.dart';
+import 'package:tgp_flutter/ui/home/game/game_view_item.dart';
 import 'package:tgp_flutter/ui/home/game/game_view_model.dart';
 import 'package:tgp_flutter/ui/home/game/game_web_view.dart';
 
@@ -35,24 +35,33 @@ class _GameViewState extends BaseState<GameView> {
   var key = GlobalKey();
   var _vm = GameViewModel();
   var gameName;
-  var list =[
-    [{"id":"0","text":"Sportsbook","game_id":"1", "game_platform_code":"SBO"}],
-    [{"id":"1","text":"Habanero","game_id":"15", "game_platform_code":"HABA"}],
-    [{"id":"2","text":"Habanero", "game_id":"16", "game_platform_code":"HABA"}]
-  ];
+  var _gameProviderList =[];
 
   @override
   void initState() {
     _controller.addListener(_scrollListener);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _vm.getGameProviderList();
+    });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    if(_vm.gameProviderList!=null){
+      _gameProviderList = [
+        _vm.gameProviderList.where((element) => element.gameType == GameType.Sportsbook),
+        _vm.gameProviderList.where((element) => element.gameType == GameType.Slot),
+        _vm.gameProviderList.where((element) => element.gameType == GameType.TableGame),
+      ];
+    }
     return ProviderWidget<GameViewModel>(
         model: _vm,
         builder: (ctx, vm, _) {
-          return Expanded(
+          _handleApiState();
+          return _vm.gameProviderList ==null
+              ?Center(child: CircularProgressIndicator(),)
+              :Expanded(
             child: Container(
               margin: EdgeInsets.only(left: 10.auto, right: 10.auto, bottom: 5.auto),
               child: Row(
@@ -66,19 +75,13 @@ class _GameViewState extends BaseState<GameView> {
                           child: _buildGameTab(index, widget.tabList[index]["text"]),
                         );
                       }),
-                      /* widget.tabList.map((item) {
-                    return Container(
-                      margin: EdgeInsets.only(top: 8.auto),
-                      child: _buildGameTab(item.name),
-                    );
-                  }).toList()*/
                     ),
                   ),
                   Container(
                     key: key,
-                    child: GameContent(
+                    child: GameViewItem(
                       controller: _controller,
-                      list: list,
+                      gameProviderList: _gameProviderList,
                     ),
                   )
                 ],
@@ -132,9 +135,9 @@ class _GameViewState extends BaseState<GameView> {
     var itemHeight = (width)*(1/itemRatio) + 17.5.auto;
     var des = 0.0;
 
-    list.asMap().forEach((i,element) {
+    _vm.gameProviderList.asMap().forEach((i,element) {
       if(tabIndex>i){
-        des += itemHeight * list[i].length;
+        des += itemHeight * _gameProviderList[i].length;
       }
     });
     setState(() {
@@ -150,12 +153,12 @@ class _GameViewState extends BaseState<GameView> {
     var des = 0.0;
     var index = 0;
 
-    list.asMap().forEach((i,element) {
+    _gameProviderList.asMap().forEach((i,element) {
       if(_controller.offset >= des){
-        des += scrollTab * list[i].length;
+        des += scrollTab * _gameProviderList[i].length;
         index=i;
       }else if(_controller.offset >= _controller.position.maxScrollExtent){
-        index = list.length-1;
+        index = _gameProviderList.length-1;
       }
     });
     setState(() {
@@ -176,4 +179,9 @@ class _GameViewState extends BaseState<GameView> {
     });
   }*/
 
+_handleApiState(){
+  handleApiState(_vm.getGameProviderListApiState, isAutoHideLoading: false, onSuccess: (){
+
+  });
+}
 }

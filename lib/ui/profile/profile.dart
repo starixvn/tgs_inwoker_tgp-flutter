@@ -21,8 +21,6 @@ class Profile extends StatefulWidget{
 
 class _ProfileState extends BaseState<Profile> {
   var _vm = ProfileViewModel();
-  UserProfile user;
-  var level, imagePath;
   var currentBottomIndex = 4;
   var mainWallet;
 
@@ -30,7 +28,6 @@ class _ProfileState extends BaseState<Profile> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if(_vm.userProfile !=null) {
-        user = _vm.userProfile;
         _vm.getWalletBalance();
         //_getVipDetails();
       }
@@ -165,12 +162,12 @@ class _ProfileState extends BaseState<Profile> {
         physics: AlwaysScrollableScrollPhysics(),
         children: [
           GridView.count(
-            padding: EdgeInsets.only(bottom: 10.auto),
+            padding: EdgeInsets.only(bottom: 30.auto),
             crossAxisCount: 3,
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
-            crossAxisSpacing: 25.auto,
-            mainAxisSpacing: 20.auto,
+            crossAxisSpacing: 15.auto,
+            mainAxisSpacing: 15.auto,
             children: [
               ProfileBottomItem(title: getTranslatedText("profile_detail"), imagePath:"ic_profile_user_detail", routePath:"profile_info", navigationID: 0,),
               ProfileBottomItem(title: getTranslatedText("message_center"), imagePath:"ic_message",routePath:"message", navigationID: 0,),
@@ -209,6 +206,9 @@ class _ProfileState extends BaseState<Profile> {
   _handleApiState() {
     handleApiState(_vm.logoutApiState, onSuccess:(){
       _navigateToLogin();
+    });
+    handleApiState(_vm.getWalletBalanceApiState, isAutoHideLoading:false, onSuccess:(){
+
     });
   }
 

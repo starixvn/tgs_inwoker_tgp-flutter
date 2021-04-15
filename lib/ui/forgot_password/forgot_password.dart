@@ -27,8 +27,6 @@ class _ForgotPasswordState extends BaseState<ForgotPassword> {
   TextEditingController _phoneController = TextEditingController(),
       _otpController = TextEditingController();
   var isButtonEnabled = false, isOtpEnabled = false;
-  var name, cardNumber, buttonText;
-  var userProfile;
   InputValidationProvider validate = new InputValidationProvider();
 
   @override
@@ -146,14 +144,14 @@ class _ForgotPasswordState extends BaseState<ForgotPassword> {
   }
 
   _getSmsCode() {
-   /* if (!validate.validateChinaPhoneNumber(_phoneController.text)) {
+    if (!validate.validateChinaPhoneNumber(_phoneController.text)) {
       setState(() {
         CustomToast.show("手机号码格式不正确");
       });
-    } else {*/
+    } else {
       CustomProgressDialog.show(context);
       _vm.getForgotPasswordCode(_phoneController.text);
-    //}
+    }
   }
 
   _handleApiState(){

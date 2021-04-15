@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/custom/custom_toast.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
+import 'package:tgp_flutter/main.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
@@ -74,7 +75,7 @@ class _SplashState extends BaseState<Splash> {
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
               builder: (context) =>
-                  Home(
+                  MyHomePage(
                     isFirstRun: true,
                   )
           ), (Route<dynamic> route) => false);

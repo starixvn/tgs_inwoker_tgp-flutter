@@ -1,6 +1,10 @@
 import 'dart:ui';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
+import 'package:tgp_flutter/entity/game.dart';
+import 'package:tgp_flutter/entity/game_type.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/my_behavior.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
@@ -9,12 +13,12 @@ import 'package:tgp_flutter/src/gradient_decoration.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
 import 'package:tgp_flutter/ui/home/child_game/child_game_platform.dart';
 import 'package:tgp_flutter/ui/home/child_game/child_game_platform_tab_bar_view.dart';
+import 'package:tgp_flutter/ui/home/child_game/child_game_suggestion.dart';
 import 'package:tgp_flutter/ui/home/game/game_view_model.dart';
-import 'package:tgp_flutter/ui/home/home_view_model.dart';
 
 class ChildGame extends StatefulWidget{
   final String gamePlatformCode;
-  final int gameType;
+  final GameType gameType;
 
   ChildGame({
     this.gamePlatformCode,
@@ -33,20 +37,27 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
     "全部游戏",
     "最新游戏",
     "热门游戏",
-    "收藏游戏",
+    /*"收藏游戏",
     "捕鱼游戏",
-    "历史游戏"
+    "历史游戏"*/
   ];
   var _vm = GameViewModel();
-  var gameList;
+  var searchController = TextEditingController();
+  var _focusNode = FocusNode();
+  var isSearching = false, isVisibleSuggestionList = false;
 
   @override
-  void initState() {
+  void initState(){
     _groupTabController = TabController(length: _groupTabList.length, vsync: this, initialIndex: _groupTabIndex);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _vm.getGameList(widget.gamePlatformCode, widget.gameType);
-    });
+    _focusNode.addListener(_onFocusNodeListener);
+    _initData();
     super.initState();
+  }
+
+  _initData() async{
+    _vm.getGameList(widget.gamePlatformCode, widget.gameType);
+    await _vm.getGameProviderList();
+    _vm.getPlatformList(widget.gameType);
   }
 
   Widget build(BuildContext context) {
@@ -57,86 +68,249 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
           builder: (ctx, vm, _) {
             _handleApiState();
             return Scaffold(
-                resizeToAvoidBottomInset: false,
-                backgroundColor: Colors.grey[100],
-                appBar: AppBar(
-                  automaticallyImplyLeading: false,
-                  centerTitle: true,
-                  flexibleSpace: Container(
-                    decoration: gradientDecoration,
-                  ),
-                  leading: IconButton(
-                    icon: Icon(Icons.arrow_back),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-                  title: Text(getTranslatedText("slotgame_title"??""),
-                    style: TextStyle(fontSize: 16.auto),
-                  ),
+              resizeToAvoidBottomInset: false,
+              backgroundColor: Colors.grey[100],
+              appBar: AppBar(
+                automaticallyImplyLeading: false,
+                centerTitle: true,
+                flexibleSpace: Container(
+                  decoration: gradientDecoration,
                 ),
-                body:gameList == null?
-                    Center(child: CircularProgressIndicator(),): Column(
-                  children: [
-                    Container(
-                      color: CustomColor.theme_button_disable_bg,
-                      constraints: BoxConstraints(maxHeight: 35.auto),
-                      child: TabBar(
-                        controller: _groupTabController,
-                        isScrollable: true,
-                        unselectedLabelColor: Colors.white,
-                        labelColor: CustomColor.theme_label_text_highlight_color,
-                        indicatorColor: CustomColor.theme_label_text_highlight_color,
-                        indicatorWeight: 3,
-                        onTap: (index){
-                          setState(() {
-                            _groupTabIndex = index;
-                          });
-                        },
-                        unselectedLabelStyle: TextStyle(
-                            color: CustomColor.grey
-                        ),
-                        tabs: _groupTabList.map((item) {
-                          return Tab(
-                            child: Text(item,
-                                style: TextStyle(
-                                  fontFamily: 'PingFang',
-                                  fontSize: 14.auto,
-                                )),
-                          );
-                        }).toList(),
-                      ),
-                    ),
-                    Expanded(
-                      child: TabBarView(
-                        controller: _groupTabController,
-                        children: [
-                          ChildGamePlatformTabBarView(
-                              gameList: gameList
-                          ),
-                          ChildGamePlatformTabBarView(gameList: gameList),
-                          ChildGamePlatformTabBarView(gameList: gameList),
-                          ChildGamePlatformTabBarView(gameList: gameList),
-                          ChildGamePlatformTabBarView(gameList: gameList),
-                          ChildGamePlatformTabBarView(gameList: gameList),
-                        ],
-                      ),
-                    ),
-                  ],
-                )
+                leading: IconButton(
+                  icon: Icon(Icons.arrow_back),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                title: isSearching
+                    ?_buildSearchTextField()
+                    :Text(
+                  _getAppTitle(),
+                  style: TextStyle(fontSize: 16.auto),
+                ),
+                actions: [
+                  _getAction()
+                ],
+              ),
+              body:  _vm.filteredGameList == null ||_vm.gameProviderList==null
+                  ? Center(child: CircularProgressIndicator(),)
+                  : Stack(
+                children: [
+                  _buildChildGame(),
+                  _buildOverlay(),
+                  ChildGameSuggestion(
+                    isVisible: isVisibleSuggestionList,
+                    recommendList: _vm.recommendGameList,
+                  )
+                ],
+              ),
+
             );
           }
       ),
     );
   }
 
+  _buildChildGame() => Column(
+    children: [
+      Container(
+        color: CustomColor.theme_button_disable_bg,
+        constraints: BoxConstraints(maxHeight: 35.auto),
+        width: context.screenWidth,
+        child: TabBar(
+          controller: _groupTabController,
+          isScrollable: true,
+          unselectedLabelColor: Colors.white,
+          labelColor: CustomColor.theme_label_text_highlight_color,
+          indicatorColor: CustomColor.theme_label_text_highlight_color,
+          indicatorWeight: 3,
+          onTap: (index){
+            setState(() {
+              _groupTabIndex = index;
+              _filterGameList(category: index);
+            });
+          },
+          unselectedLabelStyle: TextStyle(
+              color: CustomColor.grey
+          ),
+          tabs: _groupTabList.map((item) {
+            return Tab(
+              child: Text(item,
+                  style: TextStyle(
+                    fontFamily: 'PingFang',
+                    fontSize: 14.auto,
+                  )),
+            );
+          }).toList(),
+        ),
+      ),
+      Expanded(
+        child: ChildGamePlatform(
+          platformList: _vm.platformList,
+          gameList: _vm.filteredGameList,
+          isSearching: isSearching,
+        ),
+      ),
+    ],
+  );
+
+  _buildOverlay() =>  Visibility(
+    visible: isSearching,
+    child: ColorFiltered(
+      colorFilter: ColorFilter.mode(
+          Colors.black54,
+          BlendMode.srcOut
+      ),
+      child: Stack(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.transparent,
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+
+  _buildSearchTextField() =>  Card(
+      semanticContainer: true,
+      clipBehavior: Clip.antiAliasWithSaveLayer,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8.0),
+      ),
+      elevation: 5,
+      //margin:EdgeInsets.only(top:15.auto,),
+      child: Container(
+        child:  Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Container(
+                    width: 110.auto,
+                    padding: EdgeInsets.symmetric(horizontal: 10.auto),
+                    child: TextFormField(
+                      controller: searchController,
+                      decoration: InputDecoration(
+                        isDense: true,
+                        border: InputBorder.none,
+                        hintText: "搜索关键词",
+                        hintStyle: TextStyle(
+                            color: CustomColor.very_light_pink_two,
+                            fontSize: 13.auto
+                        ),
+                      ),
+                      focusNode: _focusNode,
+                      autofocus: true,
+                      onChanged: (value) => _onTextChange(),
+                    ),
+                  ),
+                ]
+            ),
+            Icon(
+              Icons.search,
+              color: CustomColor.theme_bar_gradient_2,
+            )
+          ],
+        ),
+      )
+  );
+
+  _getAppTitle(){
+    if(widget.gameType != null){
+      switch(widget.gameType){
+        case GameType.Sportsbook:
+          return getTranslatedText("cat_sport");
+          break;
+        case GameType.Slot:
+          return getTranslatedText("cat_slotgame");
+          break;
+        case GameType.TableGame:
+          return getTranslatedText("cat_table");
+          break;
+        default:
+          return "Game";
+          break;
+      }
+    }
+  }
+
+  _getAction(){
+    if(isSearching){
+      return InkWell(
+        onTap: (){
+          setState(() {
+            isSearching=false;
+            isVisibleSuggestionList = false;
+            searchController.text = "";
+          });
+          _vm.filter(searchQuery: "");
+        },
+        child: Container(
+            padding: EdgeInsets.only(right: 8.auto),
+            alignment: Alignment.center,
+            child: Text("取消")
+        ),
+      );
+
+    }else{
+      if(_vm.mSearchQuery.isEmpty){
+        return InkWell(
+          onTap: (){
+            setState(() {
+              isSearching=true;
+              isVisibleSuggestionList = true;
+            });
+          },
+          child: Container(
+            padding: EdgeInsets.only(right: 8.auto),
+            child: Icon(
+              Icons.search,
+            ),
+          ),
+        );
+      }else{
+        return InkWell(
+          onTap: (){
+            _vm.filter(searchQuery: "");
+          },
+          child: Container(
+              padding: EdgeInsets.only(right: 8.auto),
+              alignment: Alignment.center,
+              child: Text("取消搜索")
+          ),
+        );
+      }
+    }
+  }
+
+  _onFocusNodeListener(){
+    if(!_focusNode.hasFocus){
+      isSearching=false;
+      isVisibleSuggestionList = false;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        searchController.text = "";
+      });
+    }
+  }
+
+  _onTextChange(){
+    if(searchController.text.isNotEmpty){
+      _filterGameList(searchQuery: searchController.text);
+    }
+  }
+
+
+  _filterGameList({int category, String searchQuery}) async{
+    await _vm.filter(category: category, platform: widget.gamePlatformCode, searchQuery: searchQuery);
+  }
+
   _handleApiState(){
     handleApiState(_vm.getGameApiState, isAutoHideLoading:false,onSuccess: (){
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        setState(() {
-          gameList = _vm.getGameApiState.result;
-        });
-      });
+    });
+    handleApiState(_vm.getGameProviderListApiState, isAutoHideLoading:false,onSuccess: (){
     });
   }
 }

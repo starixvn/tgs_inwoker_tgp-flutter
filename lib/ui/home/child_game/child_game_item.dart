@@ -11,15 +11,18 @@ import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
 import 'package:tgp_flutter/ui/home/game/game_view_model.dart';
+import 'package:tgp_flutter/ui/home/game/game_web_view.dart';
 import 'package:tgp_flutter/ui/home/home_view_model.dart';
 
 class ChildGameItem extends StatefulWidget{
   final bool isFavourite;
   final Game game;
+  final bool isDisabled;
 
   ChildGameItem({
     this.isFavourite,
     this.game,
+    this.isDisabled
   });
 
   @override
@@ -33,94 +36,94 @@ class _ChildGameItemState  extends BaseState<ChildGameItem> {
     return ProviderWidget<GameViewModel>(
         model: _vm,
         builder: (ctx, vm, _) {
-          _handleApiState();
           return InkWell(
-            onTap: () => _getGameUrl(widget.game.gamePlatformCode, widget.game.id),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(5),
-              child: Stack(
-                children: [
-                  Column(
-                      children:[
-                        Container(
-                            width: (165.5).auto,
-                            height: (130).auto,
-                            child: FittedBox(
-                                fit: BoxFit.fill,
-                                child: Image.asset(
-                                    "images/child_game_image/${widget.game.code.replaceAll(RegExp("_"), "")}.png"
-                                )
-                            )
-                        ),
-                        Container(
-                          height: 35.auto,
-                          decoration:BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [
-                                  CustomColor.theme_bar_gradient_1,
-                                  CustomColor.theme_bar_gradient_2
+            onTap: widget.isDisabled?(){} :() => _navigateToGameWeb(widget.game),
+            child: Container(
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(5),
+                child: Stack(
+                  children: [
+                    Column(
+                        children:[
+                          Expanded(
+                              flex: 4,
+                              child: Image.asset(
+                                "images/child_game_image/${widget.game.code.replaceAll(RegExp("_"), "")}.png",
+                                width: 165.5.auto,
+                                fit: BoxFit.cover,
+                              )
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Container(
+                              decoration:BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      CustomColor.theme_bar_gradient_1,
+                                      CustomColor.theme_bar_gradient_2
+                                    ],
+                                    begin: Alignment.bottomCenter,
+                                    end: Alignment.topCenter,
+                                  ),
+                                  borderRadius: BorderRadius.only(
+                                    bottomLeft: Radius.circular(5),
+                                    bottomRight: Radius.circular(5),
+                                  )
+                              ),
+                              padding: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 5.auto),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    flex:9,
+                                    child: AutoSizeText(
+                                      widget.game.name,
+                                      style: TextStyle(
+                                          color: Colors.white
+                                      ),
+                                      minFontSize: 10,
+                                      stepGranularity: 1,
+                                      maxLines: 1,
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex:1,
+                                    child: InkWell(
+                                      onTap: (){
+
+                                      },
+                                      child: Image.asset(
+                                        widget.isFavourite?"images/child_game/ic_like.png":"images/child_game/ic_unlike.png",
+                                        width: 20.auto,
+                                        height: 20.auto,
+                                      ),
+                                    ),
+                                  )
                                 ],
-                                begin: Alignment.bottomCenter,
-                                end: Alignment.topCenter,
                               ),
-                              borderRadius: BorderRadius.only(
-                                bottomLeft: Radius.circular(5),
-                                bottomRight: Radius.circular(5),
-                              )
+                            ),
                           ),
-                          padding: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 5.auto),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                flex:9,
-                                child: AutoSizeText(
-                                  widget.game.name,
-                                  style: TextStyle(
-                                      color: Colors.white
-                                  ),
-                                  minFontSize: 10,
-                                  stepGranularity: 1,
-                                  maxLines: 1,
-                                ),
-                              ),
-
-                              Expanded(
-                                flex:1,
-                                child: InkWell(
-                                  onTap: (){
-
-                                  },
-                                  child: Image.asset(
-                                    widget.isFavourite?"images/child_game/ic_like.png":"images/child_game/ic_unlike.png",
-                                    width: 20.auto,
-                                    height: 20.auto,
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
+                        ]
+                    ),
+                    Positioned(
+                      top: 115,
+                      child: Container(
+                        margin: EdgeInsets.only(left: 10.auto, top: 5.auto),
+                        padding: EdgeInsets.symmetric(vertical:5.auto, horizontal: 15.auto),
+                        decoration: BoxDecoration(
+                            color: CustomColor.black,
+                            borderRadius: BorderRadius.circular(15.0)
                         ),
-                      ]
-                  ),
-                  Positioned(
-                    top: 115,
-                    child: Container(
-                      margin: EdgeInsets.only(left: 10.auto, top: 5.auto),
-                      padding: EdgeInsets.symmetric(vertical:5.auto, horizontal: 15.auto),
-                      decoration: BoxDecoration(
-                          color: CustomColor.black,
-                          borderRadius: BorderRadius.circular(15.0)
-                      ),
-                      child: Text(
-                        "PlayTech",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 9.auto
+                        child: Text(
+                          widget.game.gamePlatformName(),
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 9.auto
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           );
@@ -128,14 +131,16 @@ class _ChildGameItemState  extends BaseState<ChildGameItem> {
     );
   }
 
-  _getGameUrl(String gamePlatformCode, int gameId){
-    _vm.getGameUrl(gamePlatformCode, gameId);
-    CustomProgressDialog.show(context);
-  }
-
-  _handleApiState(){
-    handleApiState(_vm.getGameUrlApiState, onSuccess: (){
-      CustomToast.show(_vm.getGameUrlApiState.result.url);
+  _navigateToGameWeb(Game game){
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  GameWeb(
+                      game:game
+                  )
+          ));
     });
   }
 }

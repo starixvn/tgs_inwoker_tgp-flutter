@@ -21,7 +21,7 @@ class BaseRepository extends ChangeNotifier{
       notifyListeners();
       return EventResult.success(result);
     }else{
-      return EventResult.failure(baseResponse.msg);
+      return EventResult.failure(baseResponse.code, baseResponse.msg);
     }
   }
 
@@ -34,7 +34,7 @@ class BaseRepository extends ChangeNotifier{
       notifyListeners();
       return EventResult.success(result);
     } else{
-      return EventResult.failure(map["errmsg"]);
+      return EventResult.failure(map["err"],map["errmsg"]);
     }
   }
 
@@ -56,7 +56,7 @@ class BaseRepository extends ChangeNotifier{
       notifyListeners();
       return EventResult.success(result);
     } else{
-      return EventResult.failure(map["message"]);
+      return EventResult.failure(map["errors"].length, map["message"]);
     }
   }
 }
