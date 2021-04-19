@@ -63,6 +63,8 @@ apiDelete(final endPoint, final content, [isAuthorization = true]) async{
 
 apiPatch(final endPoint, final content, [isAuthorization = true]) async{
   print("Api->Patch:${_url+endPoint}");
+  print("Api->Post Body:${content}");
+
   var header = await _injectTokenToHeader(isAuthorization);
   http.Response response = await http.patch(
     _url + endPoint,
