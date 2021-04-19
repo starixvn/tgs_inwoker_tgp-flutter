@@ -11,15 +11,14 @@ import 'package:tgp_flutter/src/gradient_decoration.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
 import 'package:tgp_flutter/ui/profile_info/real_name/real_name_verification_view_model.dart';
 
-class RealNameVerification extends StatefulWidget{
+class RealNameVerification extends StatefulWidget {
   @override
   _RealNameVerificationState createState() => _RealNameVerificationState();
 }
 
 class _RealNameVerificationState extends BaseState<RealNameVerification> {
   var _vm = RealNameVerificationViewModel();
-  TextEditingController _realNameController = TextEditingController(),
-      _icNoController = TextEditingController();
+  TextEditingController _realNameController = TextEditingController(), _icNoController = TextEditingController();
   var isButtonEnabled = false, isTextFieldEnabled = false;
   var buttonText;
 
@@ -36,114 +35,95 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
           _handleApiState();
           return Scaffold(
               resizeToAvoidBottomInset: false,
-              appBar: AppBar(
-                automaticallyImplyLeading: false,
-                flexibleSpace: Container(
-                  decoration: gradientDecoration,
-                ),
-                centerTitle: true,
-                leading: IconButton(
-                  icon: Icon(Icons.arrow_back),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                ),
-                title: Text(getTranslatedText("ic_no"),
-                  style: TextStyle(fontSize: 16.auto),
-                ),
-              ),
-              body:  Container(
+              appBar: _buildAppBar(),
+              body: Container(
                 margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 20.auto),
                 child: Column(
                   children: [
-                    _buildTextFormField(
-                        getTranslatedText("realname"),
-                        getTranslatedText("enter_realname_hint"),
-                        _realNameController,
-                        false
-                    ),
-                    _buildTextFormField(
-                        getTranslatedText("ic_no"),
-                        getTranslatedText("enter_ic_no_hint"),
-                        _icNoController,
-                        true
-                    ),
+                    _buildTextFormField("realname", "enter_realname_hint", _realNameController, false),
+                    _buildTextFormField("ic_no", "enter_ic_no_hint", _icNoController, true),
                     _buildButton(),
                     _buildFooterText()
                   ],
                 ),
-              )
-          );
+              ));
         });
   }
 
+  _buildAppBar() => AppBar(
+        automaticallyImplyLeading: false,
+        flexibleSpace: Container(
+          decoration: gradientDecoration,
+        ),
+        centerTitle: true,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        title: Text(
+          getTranslatedText("ic_no"),
+          style: TextStyle(fontSize: 16.auto),
+        ),
+      );
+
   _buildTextFormField(String title, String hint, TextEditingController controller, bool isLast) => CustomTextFormField(
-    title: title,
-    hintText: hint,
-    onChanged: (value) => _onTextChange(),
-    onFieldSubmitted: (value){},
-    controller: controller,
-    focusNode: null,
-    width: context.screenWidth-70.auto,
-    textInputType: TextInputType.text,
-    textInputAction: isLast?TextInputAction.next:TextInputAction.done,
-    enabled: isTextFieldEnabled,
-  );
+        title: getTranslatedText(title),
+        hintText: getTranslatedText(hint),
+        onChanged: (value) => _onTextChange(),
+        onFieldSubmitted: (value) {},
+        controller: controller,
+        focusNode: null,
+        width: context.screenWidth - 70.auto,
+        textInputType: TextInputType.text,
+        textInputAction: isLast ? TextInputAction.done : TextInputAction.next,
+        enabled: isTextFieldEnabled,
+      );
 
   _buildButton() => Container(
-      width:context.screenWidth,
+      width: context.screenWidth,
       margin: EdgeInsets.only(top: 30.auto, bottom: 20.auto),
       child: ColorButton(
         text: Text(
-          buttonText?? "Done",
+          buttonText ?? "Done",
           textAlign: TextAlign.center,
-          style: TextStyle(
-              color: Colors.white,
-              fontSize: 16.auto
-          ),
+          style: TextStyle(color: Colors.white, fontSize: 16.auto),
         ),
-        onClick: (){
+        onClick: () {
           _onClick();
         },
         isEnabled: isButtonEnabled,
         color: CustomColor.theme_bar_gradient_2,
-        radius: 9.6 ,
-      )
-  );
+        radius: 9.6,
+      ));
 
   _buildFooterText() => Row(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-      Text(
-        getTranslatedText("edit_ic_no_cs"),
-        style: TextStyle(
-            fontSize: 12.auto,
-            color: CustomColor.theme_title_text_color
-        ),
-      ),
-      Text(
-        getTranslatedText("online_cs"),
-        style: TextStyle(
-            fontSize: 12.auto,
-            color: CustomColor.theme_bar_gradient_2
-        ),
-      )
-    ],
-  );
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            getTranslatedText("edit_ic_no_cs"),
+            style: TextStyle(fontSize: 12.auto, color: CustomColor.theme_title_text_color),
+          ),
+          Text(
+            getTranslatedText("online_cs"),
+            style: TextStyle(fontSize: 12.auto, color: CustomColor.theme_bar_gradient_2),
+          )
+        ],
+      );
 
-  _getUserProfile(){
+  _getUserProfile() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       var _realname = _vm.userProfile.realname;
       setState(() {
-        if(_realname!=null){
-          if(_realname.isNotEmpty) {
+        if (_realname != null) {
+          if (_realname.isNotEmpty) {
             _realNameController.text = _realname;
             buttonText = getTranslatedText("verified");
             isButtonEnabled = false;
             isTextFieldEnabled = false;
           }
-        }
-        else{
+        } else {
           buttonText = getTranslatedText("done");
           isTextFieldEnabled = true;
         }
@@ -151,25 +131,23 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
     });
   }
 
-  _onTextChange(){
+  _onTextChange() {
     setState(() {
-      if(_realNameController.text.isNotEmpty && _icNoController.text.isNotEmpty){
+      if (_realNameController.text.isNotEmpty && _icNoController.text.isNotEmpty) {
         isButtonEnabled = true;
-      }
-      else{
+      } else {
         isButtonEnabled = false;
       }
     });
   }
 
-
-  _onClick() async{
+  _onClick() async {
     CustomProgressDialog.show(context);
     _vm.idVerify(_realNameController.text, _icNoController.text);
   }
 
-  _handleApiState(){
-    handleApiState(_vm.idVerifyApiState, onSuccess: (){
+  _handleApiState() {
+    handleApiState(_vm.idVerifyApiState, onSuccess: () {
       CustomToast.show("Success");
       _getUserProfile();
     });

@@ -8,7 +8,7 @@ import 'package:tgp_flutter/repository/user_repository.dart';
 
 class DepositViewModel extends BaseViewModel{
   /*final contentRepo = ContentRepository.getSingleton();
-  final userRepo = UserRepository.getSingleton();
+
   final walletRepo = WalletRepository.getSingleton();*/
 
   @override

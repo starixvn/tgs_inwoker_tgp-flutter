@@ -15,15 +15,14 @@ import 'package:tgp_flutter/ui/base_state.dart';
 import 'package:tgp_flutter/ui/profile_info/phone/phone_verification_view_model.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 
-class PhoneVerification extends StatefulWidget{
+class PhoneVerification extends StatefulWidget {
   @override
   _PhoneVerificationState createState() => _PhoneVerificationState();
 }
 
 class _PhoneVerificationState extends BaseState<PhoneVerification> {
   var _vm = PhoneVerificationViewModel();
-  TextEditingController _phoneController = TextEditingController(),
-      _otpController = TextEditingController();
+  TextEditingController _phoneController = TextEditingController(), _otpController = TextEditingController();
   var isButtonEnabled = false, isOtpEnabled = false, isTextFieldEnabled = false;
   var buttonText;
   InputValidationProvider validate = new InputValidationProvider();
@@ -43,76 +42,76 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
           _handleApiState();
           return Scaffold(
               resizeToAvoidBottomInset: false,
-              appBar: AppBar(
-                automaticallyImplyLeading: false,
-                flexibleSpace: Container(
-                  decoration: gradientDecoration,
-                ),
-                centerTitle: true,
-                leading: IconButton(
-                  icon: Icon(Icons.arrow_back),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                ),
-                title: Text(getTranslatedText("phone_number"),
-                  style: TextStyle(fontSize: 16.auto),
-                ),
-              ),
+              appBar: _buildAppBar(),
               body: Container(
                   child: /*userProfile == null?
                   Center(child: CircularProgressIndicator(),):*/
-                  Container(
-                    margin: EdgeInsets.only(
-                        left: 10.auto, right: 10.auto, top: 10.auto),
-                    child: Column(
-                      children: [
-                        //CustomTabBar(index:1),
-                        _buildTextFormField(),
-                        _buildOtpTextFormField(),
-                        _buildButton()
-                      ],
-                    ),
-                  )
-              )
-          );
+                      Container(
+                margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 10.auto),
+                child: Column(
+                  children: [
+                    //CustomTabBar(index:1),
+                    _buildTextFormField(),
+                    _buildOtpTextFormField(),
+                    _buildButton()
+                  ],
+                ),
+              )));
         });
   }
 
-  _buildTextFormField()=>  Container(
-    margin: EdgeInsets.only(top: 15.auto),
-    child: CustomTextFormField(
-      title: getTranslatedText("phone_number"),
-      hintText: getTranslatedText("enter_phone_hint"),
-      onChanged: (value) => _onTextChange(),
-      onFieldSubmitted: (value){},
-      controller: _phoneController,
-      focusNode: null,
-      width: context.screenWidth-70.auto,
-      textInputType: TextInputType.number,
-      textInputAction: TextInputAction.next,
-      enabled: isTextFieldEnabled,
-    ),
-  );
-
-  _buildOtpTextFormField() => Visibility(
-    visible:_vm.userProfile.phone==null,
-    child: Opacity(
-      opacity: isOtpEnabled?1:0.4,
-      child: Container(
-        margin: EdgeInsets.only(top: 15.auto),
-        child: OtpTextFormField(
-          hintText: getTranslatedText("enter_phone_otp_hint"),
-          onChanged:(value) => _onTextChange(),
-          controller: _otpController,
-          textInputAction: TextInputAction.done,
-          getOtpCode:() {
-            _getSmsCode();
+  _buildAppBar() => AppBar(
+        automaticallyImplyLeading: false,
+        flexibleSpace: Container(
+          decoration: gradientDecoration,
+        ),
+        centerTitle: true,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
           },
         ),
-      ),
-    ),
-  );
+        title: Text(
+          getTranslatedText("phone_number"),
+          style: TextStyle(fontSize: 16.auto),
+        ),
+      );
+
+  _buildTextFormField() => Container(
+        margin: EdgeInsets.only(top: 15.auto),
+        child: CustomTextFormField(
+          title: getTranslatedText("phone_number"),
+          hintText: getTranslatedText("enter_phone_hint"),
+          onChanged: (value) => _onTextChange(),
+          onFieldSubmitted: (value) {},
+          controller: _phoneController,
+          focusNode: null,
+          width: context.screenWidth - 70.auto,
+          textInputType: TextInputType.number,
+          textInputAction: TextInputAction.next,
+          enabled: isTextFieldEnabled,
+        ),
+      );
+
+  _buildOtpTextFormField() => Visibility(
+        visible: _vm.userProfile.phone == null,
+        child: Opacity(
+          opacity: isOtpEnabled ? 1 : 0.4,
+          child: Container(
+            margin: EdgeInsets.only(top: 15.auto),
+            child: OtpTextFormField(
+              hintText: getTranslatedText("enter_phone_otp_hint"),
+              onChanged: (value) => _onTextChange(),
+              controller: _otpController,
+              textInputAction: TextInputAction.done,
+              getOtpCode: () {
+                _getSmsCode();
+              },
+            ),
+          ),
+        ),
+      );
 
   _buildButton() => Container(
       width: context.screenWidth,
@@ -121,47 +120,41 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
         text: Text(
           buttonText ?? "",
           textAlign: TextAlign.center,
-          style: TextStyle(
-              color: Colors.white,
-              fontSize: 16.auto
-          ),
+          style: TextStyle(color: Colors.white, fontSize: 16.auto),
         ),
-        onClick: (){
+        onClick: () {
           _onClick();
         },
-        isEnabled: isButtonEnabled??false,
+        isEnabled: isButtonEnabled ?? false,
         color: CustomColor.theme_bar_gradient_2,
-        radius: 9.6 ,
-      )
-  );
+        radius: 9.6,
+      ));
 
-  _onTextChange(){
+  _onTextChange() {
     setState(() {
-      if(_otpController.text.isNotEmpty && _phoneController.text.isNotEmpty){
+      if (_otpController.text.isNotEmpty && _phoneController.text.isNotEmpty) {
         isButtonEnabled = true;
-      }else if(_phoneController.text.isNotEmpty){
+      } else if (_phoneController.text.isNotEmpty) {
         isOtpEnabled = true;
-      }
-      else{
+      } else {
         isOtpEnabled = false;
         isButtonEnabled = false;
       }
     });
   }
 
-  _getUserProfile(){
+  _getUserProfile() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      var phone =  _vm.userProfile.phone;
+      var phone = _vm.userProfile.phone;
       setState(() {
-        if(phone !=null){
-          if(phone.isNotEmpty){
+        if (phone != null) {
+          if (phone.isNotEmpty) {
             _phoneController.text = phone;
             buttonText = getTranslatedText("verified");
             isButtonEnabled = false;
             isTextFieldEnabled = false;
           }
-        }
-        else{
+        } else {
           buttonText = getTranslatedText("done");
           isTextFieldEnabled = true;
         }
@@ -185,15 +178,12 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
     _vm.phoneVerify(_otpController.text);
   }
 
-  _handleApiState(){
-    handleApiState(_vm.getSmsCodeApiState, onSuccess: (){
+  _handleApiState() {
+    handleApiState(_vm.getSmsCodeApiState, onSuccess: () {});
 
-    });
-
-    handleApiState(_vm.phoneVerifyApiState, onSuccess: (){
+    handleApiState(_vm.phoneVerifyApiState, onSuccess: () {
       CustomToast.show("Success");
       _getUserProfile();
     });
   }
 }
-

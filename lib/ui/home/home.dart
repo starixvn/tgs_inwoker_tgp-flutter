@@ -14,13 +14,10 @@ import 'package:tgp_flutter/extension/screen_apis.dart';
 
 import 'game/game_view.dart';
 
-
-class Home extends StatefulWidget{
+class Home extends StatefulWidget {
   final bool isFirstRun;
 
-  Home({
-    this.isFirstRun
-  });
+  Home({this.isFirstRun});
 
   @override
   _HomeState createState() => _HomeState();
@@ -39,39 +36,18 @@ class _HomeState extends BaseState<Home> {
 
   //livegame =4, qipai =5, slotgame =4, sport =2, lottery =1
   var gameList = [
-    ['livegame_ag.png',
-      'livegame_bbin.png',
-      'livegame_dg.png',
-      'livegame_mg.png'],
-    ['qipai_ky.png',
-      'qipai_ap.png',
-      'qipai_as.png',
-      'qipai_bole.png',
-      'qipai_leyou.png'],
-    ['sport_stt.png',
-      'sport_sabah.png'],
+    ['livegame_ag.png', 'livegame_bbin.png', 'livegame_dg.png', 'livegame_mg.png'],
+    ['qipai_ky.png', 'qipai_ap.png', 'qipai_as.png', 'qipai_bole.png', 'qipai_leyou.png'],
+    ['sport_stt.png', 'sport_sabah.png'],
     ['lottery_633.png'],
-    ['slotgame_mg.png',
-      'slotgame_jdb.png',
-      'slotgame_ag.png',
-      'slotgame_bbin.png'],
-    ['sport_stt.png',
-      'sport_sabah.png'],
+    ['slotgame_mg.png', 'slotgame_jdb.png', 'slotgame_ag.png', 'slotgame_bbin.png'],
+    ['sport_stt.png', 'sport_sabah.png'],
     ['lottery_633.png'],
   ];
   var tab = [
-    {
-      "id":"0",
-      "text":"cat_sport"
-    },
-    {
-      "id":"1",
-      "text":"cat_slotgame"
-    },
-    {
-      "id":"2",
-      "text":"cat_table"
-    },
+    {"id": "0", "text": "cat_sport"},
+    {"id": "1", "text": "cat_slotgame"},
+    {"id": "2", "text": "cat_table"},
     /*{
       "id":"0",
       "text":"cat_livecasino"
@@ -93,15 +69,12 @@ class _HomeState extends BaseState<Home> {
     },*/
   ];
 
-  var itemHeightRatio = 335/90;
+  var itemHeightRatio = 335 / 90;
   var _vm = HomeViewModel();
-
 
   @override
   void initState() {
-    //WidgetsBinding.instance.addPostFrameCallback((_) {
     _vm.resumeIfNeed();
-    //});
     super.initState();
   }
 
@@ -115,103 +88,91 @@ class _HomeState extends BaseState<Home> {
             backgroundColor: Colors.white,
             body: Column(
               children: [
-                Stack(
-                    children: [
-                      Container(
-                        height: context.screenHeight / 3.5,
-                        child: _buildImageSlider(),
-                      ),
-                      Positioned(
-                        top: context.screenHeight / 3.7,
-                        child: Container(
-                          width: context.screenWidth,
-                          height: context.screenHeight,
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(10.0),
-                                topRight: Radius.circular(10.0),
-                              )
-                          ),
-                        ),
-                      ),
-                    ]
-                ),
-                Row(
-                  children: [
-                    Container(
-                      padding: EdgeInsets.only(left: 10.auto),
-                      child: Text(
-                        getTranslatedText("notice"),
-                        style: TextStyle(
-                            fontSize: (13.5).auto,
-                            fontWeight: FontWeight.w600
-                        ),
-                      ),
-                    ),
-                    _buildTextMarquee()
-                  ],
-                ),
+                Stack(children: [_buildImageSlider(), _buildBorderCorner()]),
+                _buildMarqueeRow(),
                 HomeUserInfoView(
                     userProfile: _vm.userProfile,
+                    wallet: _vm.wallet,
                     onLoginTap: () {
                       navigateToLogin();
-                    }
-                ),
+                    }),
                 GameView(
                   tabList: tab,
                 )
               ],
             ),
           );
-        }
-    );
+        });
   }
 
-  _buildImageSlider() => Swiper(
-    itemBuilder: (BuildContext context, int index){
-      return AspectRatio(
-        aspectRatio: 360/200,
-        child: Image.asset(
-          imgList[index],
-          fit: BoxFit.fill,
+  _buildImageSlider() => Container(
+        height: context.screenHeight / 5,
+        child: Swiper(
+          itemBuilder: (BuildContext context, int index) {
+            return AspectRatio(
+              aspectRatio: 360 / 200,
+              child: Image.asset(
+                imgList[index],
+                fit: BoxFit.fill,
+              ),
+            );
+          },
+          autoplay: true,
+          itemCount: imgList.length,
+          pagination: new SwiperPagination(
+              alignment: Alignment.bottomCenter,
+              margin: new EdgeInsets.all(context.screenHeight / 90),
+              builder: new DotSwiperPaginationBuilder(color: Colors.grey, activeColor: Colors.red)),
         ),
       );
-    },
-    autoplay: true,
-    itemCount: imgList.length,
-    pagination: new SwiperPagination(
-        alignment: Alignment.bottomCenter,
-        margin: new EdgeInsets.all(context.screenHeight/30),
-        builder: new DotSwiperPaginationBuilder(
-            color: Colors.grey,
-            activeColor: Colors.red)
-    ),
-  );
+
+  _buildBorderCorner() => Positioned(
+        top: context.screenHeight / 5.3,
+        child: Container(
+          width: context.screenWidth,
+          height: context.screenHeight,
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(10.0),
+                topRight: Radius.circular(10.0),
+              )),
+        ),
+      );
+
+  _buildMarqueeRow() => Row(
+        children: [
+          Container(
+            padding: EdgeInsets.only(left: 10.auto),
+            child: Text(
+              getTranslatedText("notice"),
+              style: TextStyle(fontSize: (13.5).auto, fontWeight: FontWeight.w600),
+            ),
+          ),
+          _buildTextMarquee()
+        ],
+      );
 
   _buildTextMarquee() => Expanded(
-    child: Container(
-      decoration: BoxDecoration(
-          color: CustomColor.theme_bar_gradient_1,
-          borderRadius: BorderRadius.circular(10.0)
-      ),
-      margin: EdgeInsets.only(left: 10.auto, right:10.auto),
-      height: 18.auto,
-      child:Marquee(
-        text: marquee,
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: 10.auto,
+        child: Container(
+          decoration: BoxDecoration(color: CustomColor.theme_bar_gradient_1, borderRadius: BorderRadius.circular(10.0)),
+          margin: EdgeInsets.only(left: 10.auto, right: 10.auto),
+          height: 18.auto,
+          child: Marquee(
+            text: marquee,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 10.auto,
+            ),
+            scrollAxis: Axis.horizontal,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            blankSpace: 5.auto,
+            pauseAfterRound: Duration(seconds: 1),
+          ),
         ),
-        scrollAxis: Axis.horizontal,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        blankSpace: 5.auto,
-        pauseAfterRound: Duration(seconds: 1),
-      ),
-    ),
-  );
+      );
 
-  navigateToLogin(){
+  navigateToLogin() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Navigator.of(context).pushNamed("/login");
     });
@@ -219,7 +180,8 @@ class _HomeState extends BaseState<Home> {
 
   _displayDialog() async {
     if (_vm.userProfile == null) {
-      showDialog(context: context,
+      showDialog(
+        context: context,
         builder: (BuildContext context) => CustomDialog(
           title: "登录已超时",
           description: "请再登录",
@@ -231,13 +193,12 @@ class _HomeState extends BaseState<Home> {
     }
   }
 
-  _handleApiState(){
-    if(widget.isFirstRun!=null && widget.isFirstRun) {
+  _handleApiState() {
+    if (widget.isFirstRun != null && widget.isFirstRun) {
       if (_vm.isNotLogin) {
         navigateToLogin();
         _vm.markIsNotLogin();
-      }
-      else if (_vm.isExpired) {
+      } else if (_vm.isExpired) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           _displayDialog();
         });

@@ -63,10 +63,14 @@ class _SplashState extends BaseState<Splash> {
   }
 
   _handleApiState() {
-    handleApiState(_vm.authApiState, onSuccess: () {
+    handleApiState(_vm.authApiState, onSuccess: ()
+    {
       _navigateToHome();
     },
-        isAutoHideLoading: false
+        isAutoHideLoading: false,
+      onError: (_){
+
+      }
     );
   }
 

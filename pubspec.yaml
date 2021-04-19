@@ -85,6 +85,8 @@ flutter:
     - images/referFriend/
     - images/language/
     - images/child_game_image/
+    - images/child_game_image/haba/
+    - images/child_game_image/sbo/
 
     - i18n/
 

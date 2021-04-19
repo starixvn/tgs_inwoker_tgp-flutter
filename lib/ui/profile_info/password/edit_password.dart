@@ -13,8 +13,7 @@ import 'package:tgp_flutter/ui/base_state.dart';
 import 'package:tgp_flutter/ui/profile_info/password/edit_password_view_model.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 
-
-class EditPassword extends StatefulWidget{
+class EditPassword extends StatefulWidget {
   @override
   _EditPasswordState createState() => _EditPasswordState();
 }
@@ -26,7 +25,6 @@ class _EditPasswordState extends BaseState<EditPassword> {
       _confirmPasswordController = TextEditingController();
   var isButtonEnabled = false;
   InputValidationProvider validate = new InputValidationProvider();
-
 
   @override
   void initState() {
@@ -40,71 +38,69 @@ class _EditPasswordState extends BaseState<EditPassword> {
           _handleApiState();
           return Scaffold(
               resizeToAvoidBottomInset: false,
-              appBar: AppBar(
-                automaticallyImplyLeading: false,
-                flexibleSpace: Container(
-                  decoration: gradientDecoration,
-                ),
-                centerTitle: true,
-                leading: IconButton(
-                  icon: Icon(Icons.arrow_back),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                ),
-                title: Text("修改密码",
-                  style: TextStyle(fontSize: 16.auto),
-                ),
-              ),
+              appBar: _buildAppBar(),
               body: Container(
                   padding: EdgeInsets.only(top: 10.auto, left: 10.auto, right: 10.auto),
                   child: Column(
-                    children:[
-                      _buildTextFormField("old_password", "enter_old_password_hint", _oldPasswordController,false),
-                      _buildTextFormField("new_password", "enter_new_password_hint", _newPasswordController,false),
-                      _buildTextFormField("confirm_new_password", "confirm_new_password_hint", _confirmPasswordController,true),
+                    children: [
+                      _buildTextFormField("old_password", "enter_old_password_hint", _oldPasswordController, false),
+                      _buildTextFormField("new_password", "enter_new_password_hint", _newPasswordController, false),
+                      _buildTextFormField(
+                          "confirm_new_password", "confirm_new_password_hint", _confirmPasswordController, true),
                       _buildButton()
                       //_buildFooterText()
                     ],
-                  )
-              )
-          );
+                  )));
         });
   }
 
-  _buildTextFormField(String title, String hint, TextEditingController controller, bool isLast)=> Container(
-    margin: EdgeInsets.only(top: 15.auto),
-    child: CustomTextFormField(
-      title: getTranslatedText(title),
-      hintText: getTranslatedText(hint),
-      onChanged: (value) => _onTextChange(),
-      onFieldSubmitted: (value){},
-      controller: controller,
-      focusNode: null,
-      width: context.screenWidth-70.auto,
-      textInputType: TextInputType.visiblePassword,
-      textInputAction: isLast?TextInputAction.done:TextInputAction.next,
-    ),
-  );
+  _buildAppBar() => AppBar(
+        automaticallyImplyLeading: false,
+        flexibleSpace: Container(
+          decoration: gradientDecoration,
+        ),
+        centerTitle: true,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        title: Text(
+          "修改密码",
+          style: TextStyle(fontSize: 16.auto),
+        ),
+      );
+
+  _buildTextFormField(String title, String hint, TextEditingController controller, bool isLast) => Container(
+        margin: EdgeInsets.only(top: 15.auto),
+        child: CustomTextFormField(
+          title: getTranslatedText(title),
+          hintText: getTranslatedText(hint),
+          onChanged: (value) => _onTextChange(),
+          onFieldSubmitted: (value) {},
+          controller: controller,
+          focusNode: null,
+          width: context.screenWidth - 70.auto,
+          textInputType: TextInputType.visiblePassword,
+          textInputAction: isLast ? TextInputAction.done : TextInputAction.next,
+        ),
+      );
 
   _buildButton() => Container(
       width: context.screenWidth,
-      padding:  EdgeInsets.only(top: 50.auto,bottom: 20.auto),
+      padding: EdgeInsets.only(top: 50.auto, bottom: 20.auto),
       child: ColorButton(
         text: Text(
           getTranslatedText("confirm"),
           textAlign: TextAlign.center,
-          style: TextStyle(
-              color: Colors.white,
-              fontSize: 16.auto
-          ),
+          style: TextStyle(color: Colors.white, fontSize: 16.auto),
         ),
-        onClick: () =>_onClick(),
+        onClick: () => _onClick(),
         isEnabled: isButtonEnabled,
         color: CustomColor.theme_bar_gradient_2,
-        radius: 9.6 ,
-      )
-  );
+        radius: 9.6,
+      ));
 
   /*_buildFooterText(){
     var _footerText1, _footerText2;
@@ -143,15 +139,14 @@ class _EditPasswordState extends BaseState<EditPassword> {
     );
   }*/
 
-  _onTextChange(){
-    if(_oldPasswordController.text.isNotEmpty &&
+  _onTextChange() {
+    if (_oldPasswordController.text.isNotEmpty &&
         _newPasswordController.text.isNotEmpty &&
-        _confirmPasswordController.text.isNotEmpty
-    ){
+        _confirmPasswordController.text.isNotEmpty) {
       setState(() {
         isButtonEnabled = true;
       });
-    }else{
+    } else {
       setState(() {
         isButtonEnabled = false;
       });
@@ -159,22 +154,22 @@ class _EditPasswordState extends BaseState<EditPassword> {
   }
 
   _onClick() async {
-    if(!validate.validatePasswordLength(_newPasswordController.text)) {
+    if (!validate.validatePasswordLength(_newPasswordController.text)) {
       setState(() {
         CustomToast.show("密码由6-20个英文字母或者数字组成");
       });
-    }else if(_newPasswordController.text != _confirmPasswordController.text){
+    } else if (_newPasswordController.text != _confirmPasswordController.text) {
       setState(() {
         CustomToast.show("确认密码与密码不一致");
       });
-    }else{
+    } else {
       CustomProgressDialog.show(context);
       _vm.editPassword(_oldPasswordController.text, _newPasswordController.text);
     }
   }
 
-  _handleApiState(){
-    handleApiState(_vm.editPasswordApiState, onSuccess: (){
+  _handleApiState() {
+    handleApiState(_vm.editPasswordApiState, onSuccess: () {
       CustomToast.show("Success");
       WidgetsBinding.instance.addPostFrameCallback((_) {
         Navigator.pop(context);
@@ -182,5 +177,3 @@ class _EditPasswordState extends BaseState<EditPassword> {
     });
   }
 }
-
-

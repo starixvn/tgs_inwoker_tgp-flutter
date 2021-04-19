@@ -6,7 +6,7 @@ import 'package:tgp_flutter/repository/base_repository.dart';
 import 'package:tgp_flutter/repository/user_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class LoginViewModel extends BaseViewModel{
+class LoginViewModel extends BaseViewModel {
   final userRepo = UserRepository.getSingleton();
   var logoutApiState, getAllWalletState;
 
@@ -17,10 +17,10 @@ class LoginViewModel extends BaseViewModel{
   EventResult loginApiState, registerApiState, checkUsernameApiState;
   bool isUsernameExist = false;
 
-  login(String username, String password, bool rememberMe)async{
+  login(String username, String password, bool rememberMe) async {
     setLoading();
     loginApiState = await userRepo.login(username, password);
-    if(loginApiState.isSuccess){
+    if (loginApiState.isSuccess) {
       token = loginApiState.result.token;
       print(token);
       savePreferences(username, password, rememberMe);
@@ -31,58 +31,51 @@ class LoginViewModel extends BaseViewModel{
     return loginApiState;
   }
 
-  register(
-      String username,
-      String password,
-      String rpassword,
-      String currency,
-      [String invitationCode]
-      ) async {
+  register(String username, String password, String rpassword, String currency, [String invitationCode]) async {
     setLoading();
-    var status = await userRepo.register(username, password, rpassword, currency, invitationCode??"");
-    if(status.isSuccess){
+    var _status = await userRepo.register(username, password, rpassword, currency, invitationCode ?? "");
+    if (_status.isSuccess) {
       registerApiState = await login(username, password, true);
-    }
+    } else
+      registerApiState = _status;
     setLoading(false);
     return registerApiState;
   }
 
-  getUserInfo()async{
+  getUserInfo() async {
     await userRepo.getBasicInfo();
   }
 
-  getWalletBalance() async{
+  getWalletBalance() async {
     await userRepo.getWalletBalance();
   }
 
-  checkUsername(
-      String username
-      ) async {
+  checkUsername(String username) async {
     setLoading();
     checkUsernameApiState = await userRepo.checkUsername(username);
-    if(checkUsernameApiState.isSuccess){
+    if (checkUsernameApiState.isSuccess) {
       isUsernameExist = checkUsernameApiState.result.isExist;
     }
     setLoading(false);
     return checkUsernameApiState;
   }
 
-  savePreferences( String username, String password, bool rememberMe) async{
+  savePreferences(String username, String password, bool rememberMe) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString("token", token);
-    if(rememberMe){
+    if (rememberMe) {
       prefs.setString("username", username);
       prefs.setString("password", password);
     }
   }
 
-  getUsername() async{
+  getUsername() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString("username") ?? "";
   }
 
-  getPassword() async{
+  getPassword() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString("password")?? "";
+    return prefs.getString("password") ?? "";
   }
 }

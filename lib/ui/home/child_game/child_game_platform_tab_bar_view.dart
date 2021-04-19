@@ -6,24 +6,20 @@ import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/ui/home/child_game/child_game_item.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
 
-class ChildGamePlatformTabBarView extends StatefulWidget{
+class ChildGamePlatformTabBarView extends StatefulWidget {
   final List<Game> gameList;
   final Function onClick;
   final bool isDisabled;
 
-  ChildGamePlatformTabBarView({
-    @required
-    this.gameList,
-    this.onClick,
-    this.isDisabled
-  });
+  ChildGamePlatformTabBarView({@required this.gameList, this.onClick, this.isDisabled});
+
   @override
   _ChildGamePlatformTabBarViewState createState() => _ChildGamePlatformTabBarViewState();
 }
 
-class _ChildGamePlatformTabBarViewState  extends BaseState<ChildGamePlatformTabBarView> {
+class _ChildGamePlatformTabBarViewState extends BaseState<ChildGamePlatformTabBarView> {
   Widget build(BuildContext context) {
-    return  GridView.count(
+    return GridView.count(
       padding: EdgeInsets.all(10.auto),
       crossAxisCount: 2,
       shrinkWrap: true,
@@ -39,10 +35,8 @@ class _ChildGamePlatformTabBarViewState  extends BaseState<ChildGamePlatformTabB
               game: widget.gameList[index],
               isFavourite: true,
               isDisabled: widget.isDisabled,
-            )
-        );
+            ));
       }),
-
     );
   }
 }

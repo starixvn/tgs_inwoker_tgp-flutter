@@ -14,14 +14,11 @@ import 'package:tgp_flutter/ui/forgot_password/forgot_password_view_model.dart';
 import 'package:tgp_flutter/ui/profile_info/password/edit_password_view_model.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 
-class UpdateForgotPassword extends StatefulWidget{
+class UpdateForgotPassword extends StatefulWidget {
   final String code;
   final String securityKey;
 
-  UpdateForgotPassword({
-    this.code,
-    this.securityKey
-  });
+  UpdateForgotPassword({this.code, this.securityKey});
 
   @override
   _UpdateForgotPasswordState createState() => _UpdateForgotPasswordState();
@@ -58,7 +55,8 @@ class _UpdateForgotPasswordState extends BaseState<UpdateForgotPassword> {
                     Navigator.pop(context);
                   },
                 ),
-                title: Text(getTranslatedText("forgot_password"),
+                title: Text(
+                  getTranslatedText("forgot_password"),
                   style: TextStyle(fontSize: 16.auto),
                 ),
               ),
@@ -68,37 +66,34 @@ class _UpdateForgotPasswordState extends BaseState<UpdateForgotPassword> {
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(10.0),
                         topRight: Radius.circular(10.0),
-                      )
-                  ),
-                  padding: EdgeInsets.only(
-                      top: 10.auto, left: 10.auto, right: 10.auto),
+                      )),
+                  padding: EdgeInsets.only(top: 10.auto, left: 10.auto, right: 10.auto),
                   child: Column(
                     children: [
-                      _buildTextFormField("新密码", "请输入新密码", _newPasswordController),
-                      _buildTextFormField("确认新密码", "请再次输入新密码", _confirmPasswordController),
+                      _buildTextFormField("new_password", "enter_new_password_hint", _newPasswordController),
+                      _buildTextFormField(
+                          "confirm_new_password", "confirm_new_password_hint", _confirmPasswordController),
                       _buildButton()
                       //_buildFooterText()
                     ],
-                  )
-              )
-          );
+                  )));
         });
   }
 
   _buildTextFormField(String title, String hint, TextEditingController controller) => Container(
-    margin: EdgeInsets.only(top: 15.auto),
-    child: CustomTextFormField(
-      title: title,
-      hintText: hint,
-      onChanged: (value) => _onTextChange(),
-      onFieldSubmitted: (value){},
-      controller: controller,
-      focusNode: null,
-      width: context.screenWidth-70.auto,
-      textInputType: TextInputType.visiblePassword,
-      textInputAction: TextInputAction.next,
-    ),
-  );
+        margin: EdgeInsets.only(top: 15.auto),
+        child: CustomTextFormField(
+          title: getTranslatedText(title),
+          hintText: getTranslatedText(hint),
+          onChanged: (value) => _onTextChange(),
+          onFieldSubmitted: (value) {},
+          controller: controller,
+          focusNode: null,
+          width: context.screenWidth - 70.auto,
+          textInputType: TextInputType.visiblePassword,
+          textInputAction: TextInputAction.next,
+        ),
+      );
 
   /*_buildFooterText(){
     var _footerText1, _footerText2;
@@ -138,57 +133,51 @@ class _UpdateForgotPasswordState extends BaseState<UpdateForgotPassword> {
   }*/
   _buildButton() => Container(
       width: context.screenWidth,
-      padding:  EdgeInsets.only(top: 50.auto,bottom: 20.auto),
+      padding: EdgeInsets.only(top: 50.auto, bottom: 20.auto),
       child: ColorButton(
         text: Text(
           "完成",
           textAlign: TextAlign.center,
-          style: TextStyle(
-              color: Colors.white,
-              fontSize: 16.auto
-          ),
+          style: TextStyle(color: Colors.white, fontSize: 16.auto),
         ),
-        onClick: (){
+        onClick: () {
           _onClick();
         },
-        isEnabled: isButtonEnabled??false,
+        isEnabled: isButtonEnabled ?? false,
         color: CustomColor.theme_bar_gradient_2,
-        radius: 9.6 ,
-      )
-  );
+        radius: 9.6,
+      ));
 
-  _onTextChange(){
+  _onTextChange() {
     setState(() {
-      if(_newPasswordController.text.isNotEmpty && _confirmPasswordController.text.isNotEmpty){
+      if (_newPasswordController.text.isNotEmpty && _confirmPasswordController.text.isNotEmpty) {
         isButtonEnabled = true;
-      }else{
+      } else {
         isButtonEnabled = false;
       }
     });
   }
 
   _onClick() async {
-    if(!validate.validatePasswordLength(_newPasswordController.text)) {
+    if (!validate.validatePasswordLength(_newPasswordController.text)) {
       setState(() {
         CustomToast.show("密码由6-20个英文字母或者数字组成");
       });
-    }else if(_newPasswordController.text != _confirmPasswordController.text){
+    } else if (_newPasswordController.text != _confirmPasswordController.text) {
       setState(() {
         CustomToast.show("确认密码与密码不一致");
       });
-    } else{
+    } else {
       CustomProgressDialog.show(context);
       _vm.resetPassword(widget.securityKey, widget.code, _newPasswordController.text);
     }
   }
 
-  _handleApiState(){
-    handleApiState(_vm.resetPasswordApiState, onSuccess: (){
+  _handleApiState() {
+    handleApiState(_vm.resetPasswordApiState, onSuccess: () {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         Navigator.popUntil(context, ModalRoute.withName("/login"));
       });
     });
   }
 }
-
-

@@ -10,6 +10,7 @@ import 'package:tgp_flutter/main.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
+import 'package:tgp_flutter/ui/home/home.dart';
 import 'package:tgp_flutter/ui/login/login_password_text_form_field.dart';
 import 'package:tgp_flutter/ui/login/login_text_form_field.dart';
 import 'package:tgp_flutter/ui/login/login_view_model.dart';
@@ -18,11 +19,11 @@ import 'dart:math' as math;
 
 class LoginContent extends StatefulWidget {
   final child;
-  LoginContent({this.child, Key key}):super(key:key);
+
+  LoginContent({this.child, Key key}) : super(key: key);
 
   @override
-  _LoginContentState createState() =>
-      _LoginContentState();
+  _LoginContentState createState() => _LoginContentState();
 }
 
 class _LoginContentState extends BaseState<LoginContent> {
@@ -31,7 +32,6 @@ class _LoginContentState extends BaseState<LoginContent> {
   var username = TextEditingController();
   var password = TextEditingController();
   var _vm = LoginViewModel();
-  final GlobalKey key = GlobalKey();
 
   @override
   void dispose() {
@@ -39,13 +39,16 @@ class _LoginContentState extends BaseState<LoginContent> {
     password.dispose();
     super.dispose();
   }
+
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      username.text = await _vm.getUsername();
-      password.text = await _vm.getPassword();
-    });
+    initData();
+  }
+
+  initData() async {
+    username.text = await _vm.getUsername();
+    password.text = await _vm.getPassword();
   }
 
   void _changeLanguage(Language language) async {
@@ -61,71 +64,143 @@ class _LoginContentState extends BaseState<LoginContent> {
           _handleApiState();
           return Column(
             children: [
-              Container(
-                margin: EdgeInsets.only(bottom: 10.auto),
-                child: LoginTextFormField(
-                  icon: SvgPicture.asset(
-                    "images/login/ic_login_username.svg",
-                    matchTextDirection: true,
-                    height: 20.auto,
-                  ),
-                  hintText: getTranslatedText("enter_username_hint"),
-                  onChanged:(value) => null,
-                  onFieldSubmitted:(value) => null,
-                  controller:username,
-                  width:context.screenWidth,
-                  textInputType:TextInputType.text,
-                  textInputAction:TextInputAction.next,
-                ),
-              ),
-              LoginPasswordTextFormField(
-                icon: SvgPicture.asset(
-                  "images/login/ic_login_password.svg",
-                  height: 20.auto,
-                ),
-                hintText:getTranslatedText("enter_password_hint"),
-                onChanged:(value) => null,
-                onFieldSubmitted:(value) => _login(),
-                controller:password,
-                width:context.screenWidth,
-                textInputType:TextInputType.visiblePassword,
-                textInputAction:TextInputAction.done,
-                onShowPassword: (){
-                  setState(() =>
-                  this._obscurePassword =
-                  !this._obscurePassword);
-
-                },
-                obscurePassword: _obscurePassword,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  _buildCheckBox(),
-                  _buildForgotPassword()
-                ],
-              ),
-              Container(
-                margin: EdgeInsets.only(top: 50.auto,bottom: 10.auto),
-                child: GradientButton(
-                  title: getTranslatedText("login"),
-                  onClick:() =>_login(),
-                  isEnabled:true,
-                  radius: 2.9,
-                  height: 44.5,
-                ),
-              ),
-              GradientButton(
-                title:getTranslatedText("login_later"),
-                onClick:()=> _navigateToHome(),
-                isEnabled:true,
-                radius: 2.9,
-                height: 44.5,
-              ),
-              _buildLanguageText()
+              _buildUsernameTextFormField(),
+              _buildPasswordTextFormField(),
+              _buildRememberAndForgotPassword(),
+              _buildLoginButton(),
+              _buildLoginLaterButton(),
+              _buildChangeLanguageText()
             ],
           );
-        }
+        });
+  }
+
+  _buildUsernameTextFormField() => Container(
+        margin: EdgeInsets.only(bottom: 10.auto),
+        child: LoginTextFormField(
+          icon: SvgPicture.asset(
+            "images/login/ic_login_username.svg",
+            matchTextDirection: true,
+            height: 20.auto,
+          ),
+          hintText: getTranslatedText("enter_username_hint"),
+          onChanged: (value) => null,
+          onFieldSubmitted: (value) => null,
+          controller: username,
+          width: context.screenWidth,
+          textInputType: TextInputType.text,
+          textInputAction: TextInputAction.next,
+        ),
+      );
+
+  _buildPasswordTextFormField() => LoginPasswordTextFormField(
+        icon: SvgPicture.asset(
+          "images/login/ic_login_password.svg",
+          height: 20.auto,
+        ),
+        hintText: getTranslatedText("enter_password_hint"),
+        onChanged: (value) => null,
+        onFieldSubmitted: (value) => _login(),
+        controller: password,
+        width: context.screenWidth,
+        textInputType: TextInputType.visiblePassword,
+        textInputAction: TextInputAction.done,
+        onShowPassword: () {
+          setState(() => this._obscurePassword = !this._obscurePassword);
+        },
+        obscurePassword: _obscurePassword,
+      );
+
+  _buildRememberAndForgotPassword() => Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [_buildCheckBox(), _buildForgotPassword()],
+      );
+
+  _buildForgotPassword() => Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          InkWell(
+            onTap: () {
+              Navigator.of(context).pushNamed("/forgot_password");
+            },
+            child: Text(
+              getTranslatedText("forgot_password_with_question_mark"),
+              style: TextStyle(color: Colors.black, decoration: TextDecoration.underline, fontSize: 12.auto),
+            ),
+          )
+        ],
+      );
+
+  _buildCheckBox() => Row(
+        children: [
+          Checkbox(
+            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            value: this._isRememberMe,
+            checkColor: Colors.white,
+            activeColor: Colors.black,
+            onChanged: (val) => this.setState(() {
+              this._isRememberMe = !this._isRememberMe;
+            }),
+          ),
+          Text(
+            getTranslatedText("rmb_password"),
+            style: TextStyle(color: Colors.black, fontSize: 12.auto),
+          ),
+        ],
+      );
+
+  _buildLoginButton() => Container(
+        margin: EdgeInsets.only(top: 50.auto, bottom: 10.auto),
+        child: GradientButton(
+          title: getTranslatedText("login"),
+          onClick: () => _login(),
+          isEnabled: true,
+          radius: 2.9,
+          height: 44.5,
+        ),
+      );
+
+  _buildLoginLaterButton() => ColorButton(
+        text: Text(
+          getTranslatedText("login_later"),
+          textAlign: TextAlign.center,
+          style: TextStyle(color: Colors.white, fontSize: 16.auto),
+        ),
+        onClick: () => _navigateToHome(),
+        isEnabled: true,
+        radius: 2.9,
+        height: 44.5,
+        color: CustomColor.theme_button_disable_bg,
+        padding: MaterialStateProperty.all(EdgeInsets.zero),
+      );
+
+  _buildChangeLanguageText() {
+    var list = LanguageProvider().list;
+    var deviceLanguage = list.singleWhere((e) => e.locale == Localizations.localeOf(context));
+    return Container(
+      margin: EdgeInsets.only(top: 10.auto),
+      child: IntrinsicHeight(
+          child: new Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: List.generate(list.length, (index) {
+          return Row(
+            children: [
+              InkWell(
+                  onTap: () {
+                    _changeLanguage(list[index]);
+                  },
+                  child: Text(
+                    list[index].name,
+                    style: TextStyle(
+                        color: deviceLanguage == list[index] ? CustomColor.theme_bar_gradient_2 : Colors.black),
+                  )),
+              VerticalDivider(
+                color: Colors.black,
+              )
+            ],
+          );
+        }),
+      )),
     );
   }
 
@@ -140,96 +215,26 @@ class _LoginContentState extends BaseState<LoginContent> {
       });
     } else {
       CustomProgressDialog.show(context);
-      _vm.login(username.text,password.text, _isRememberMe);
+      _vm.login(username.text, password.text, _isRememberMe);
     }
   }
 
-  _buildLanguageText() {
-    var list = LanguageProvider().list;
-    var deviceLanguage = list.singleWhere((e) => e.locale == Localizations.localeOf(context));
-    return Container(
-      margin: EdgeInsets.only(top: 10.auto),
-      child: IntrinsicHeight(
-          child: new Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: List.generate(list.length, (index) {
-              return Row(
-                children: [
-                  InkWell(
-                      onTap: () {
-                        _changeLanguage(list[index]);
-                      },
-                      child: Text(
-                        list[index].name,
-                        style: TextStyle(
-                            color: deviceLanguage == list[index]?CustomColor.theme_bar_gradient_2:Colors.black
-                        ),
-                      )
-                  ),
-                  VerticalDivider(
-                    color: Colors.black,
-                  )
-                ],
-
-              );
-            }),
-          )
-      ),
-    );
-  }
-
-  _buildForgotPassword() =>
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          InkWell(
-            onTap: (){
-              Navigator.of(context).pushNamed("/forgot_password");
-            },
-            child: Text(
-              getTranslatedText("forgot_password_with_question_mark"),
-              style: TextStyle(
-                color: Colors.black,
-                decoration:TextDecoration.underline,
-                fontSize: 12.auto
-              ),
-            ),
-          )
-        ],
-      );
-
-  _buildCheckBox() =>
-      Row(
-        children: [
-          Checkbox(
-            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            value: this._isRememberMe,
-            checkColor: Colors.white,
-            activeColor: Colors.black,
-            onChanged: (val) =>
-                this.setState(() {
-                  this._isRememberMe = !this._isRememberMe;
-                }),
-          ),
-          Text(
-            getTranslatedText("rmb_password"),
-            style: TextStyle(
-                color: Colors.black,
-              fontSize: 12.auto
-            ),
-          ),
-        ],
-      );
-
-  _handleApiState() {
-    handleApiState(_vm.loginApiState, onSuccess:(){
-      _navigateToHome();
+  _navigateToHome() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(
+              builder: (context) => MyHomePage(
+                    isFirstRun: false,
+                  )),
+          (Route<dynamic> route) => false);
     });
   }
 
-  _navigateToHome(){
-    WidgetsBinding.instance.addPostFrameCallback((_){
-      Navigator.of(context).pushNamedAndRemoveUntil("/home",(Route<dynamic> route) => false);
+  _handleApiState() {
+    handleApiState(_vm.loginApiState, onSuccess: () {
+      _navigateToHome();
+    }, onError: (error) {
+      CustomToast.show(error);
     });
   }
 }

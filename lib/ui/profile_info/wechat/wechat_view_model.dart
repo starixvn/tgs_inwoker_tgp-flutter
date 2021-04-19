@@ -2,20 +2,22 @@ import 'package:tgp_flutter/base_viewmodel.dart';
 import 'package:tgp_flutter/repository/base_repository.dart';
 import 'package:tgp_flutter/repository/user_repository.dart';
 
-class WechatViewModel extends BaseViewModel{
+class WechatViewModel extends BaseViewModel {
   final userRepo = UserRepository.getSingleton();
   var setWechatApiState;
 
   @override
   List<BaseRepository> get repoList => [userRepo];
+
   get userProfile => userRepo.userProfile;
 
-  setWechatAccount(String qq) async{
+  setWechatAccount(String qq) async {
     setLoading();
-    setWechatApiState = await userRepo.setWechatAccount(qq);
-    if(setWechatApiState.isSuccess){
-      await userRepo.getBasicInfo();
-    }
+    var _status = await userRepo.setWechatAccount(qq);
+    if (_status.isSuccess) {
+      setWechatApiState = await userRepo.getBasicInfo();
+    } else
+      setWechatApiState = _status;
     setLoading(false);
     return setWechatApiState;
   }

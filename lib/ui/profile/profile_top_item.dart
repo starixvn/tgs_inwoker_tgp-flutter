@@ -28,23 +28,17 @@ class _ProfileTopItemState extends BaseState<ProfileTopItem> {
       child: InkWell(
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
-        onTap:() {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            Navigator.of(context).pushNamed("/${widget.routePath}");
-          });
-        },
+        onTap:() => _navigate(),
         child: Column(
           children: [
-            Container(
-
-              child: ImageIcon(
-                AssetImage("images/home/${widget.imagePath}.png"),
-                size: 50.auto,
-              ),
+            ImageIcon(
+              AssetImage("images/home/${widget.imagePath}.png"),
+              size: 50.auto,
             ),
-            Text(widget.title,
+            Text(
+              widget.title,
               style: TextStyle(
-                  fontSize: 17.auto
+                  fontSize: 15.auto
               ),
             )
           ],
@@ -52,4 +46,8 @@ class _ProfileTopItemState extends BaseState<ProfileTopItem> {
       ),
     );
   }
+
+  _navigate() => WidgetsBinding.instance.addPostFrameCallback((_) {
+    Navigator.of(context).pushNamed("/${widget.routePath}");
+  });
 }

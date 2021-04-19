@@ -1,0 +1,99 @@
+import 'package:flutter/material.dart';
+import 'package:tgp_flutter/custom/color_button.dart';
+import 'package:tgp_flutter/custom/outline_border_button.dart';
+import 'package:tgp_flutter/extension/screen_apis.dart';
+import 'package:tgp_flutter/src/custom_color.dart';
+import 'package:tgp_flutter/src/gradient_decoration.dart';
+import 'package:tgp_flutter/ui/base_state.dart';
+
+class LeaveGameDialog extends StatefulWidget {
+  @override
+  _LeaveGameDialogState createState() => _LeaveGameDialogState();
+}
+
+class _LeaveGameDialogState extends BaseState<LeaveGameDialog> {
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      backgroundColor: Colors.transparent,
+      child: dialogContent(),
+    );
+  }
+
+  dialogContent() {
+    return Container(
+      child: Wrap(
+        children: [
+          Stack(
+            children: [
+              Container(child: Image.asset("images/child_game/leave_game_bg.png")),
+              Positioned(
+                top: context.screenWidth / 6,
+                left: context.screenWidth / 8,
+                child: Text(
+                  "确定离开游戏吗？",
+                  style: TextStyle(
+                    fontSize: 13.5.auto,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Row(
+            children: [
+              _buildLeaveButton(),
+              VerticalDivider(
+                color: CustomColor.grey_five,
+                width: 0.5,
+              ),
+              _buildContinuePlayingButton()
+            ],
+          )
+        ],
+      ),
+    );
+  }
+
+  _buildLeaveButton() => Expanded(
+        flex: 1,
+        child: InkWell(
+          onTap: () {
+            Navigator.pop(context);
+            Navigator.pop(context);
+          },
+          child: Container(
+            alignment: Alignment.center,
+            margin: EdgeInsets.only(left: 22.5.auto),
+            height: 35.auto,
+            decoration: BoxDecoration(
+                color: Colors.white, borderRadius: BorderRadius.only(bottomLeft: Radius.circular(5.auto))),
+            child: Text(
+              "离开",
+              style: TextStyle(color: CustomColor.grey_five, fontSize: 11.5.auto),
+            ),
+          ),
+        ),
+      );
+
+  _buildContinuePlayingButton() => Expanded(
+        flex: 1,
+        child: InkWell(
+          onTap: () => Navigator.pop(context),
+          child: Container(
+            alignment: Alignment.center,
+            margin: EdgeInsets.only(right: 17.5.auto),
+            height: 35.auto,
+            decoration: BoxDecoration(
+                color: Colors.white, borderRadius: BorderRadius.only(bottomRight: Radius.circular(5.auto))),
+            child: Text(
+              "再玩一会",
+              style: TextStyle(color: CustomColor.faded_red, fontSize: 11.5.auto),
+            ),
+          ),
+        ),
+      );
+}

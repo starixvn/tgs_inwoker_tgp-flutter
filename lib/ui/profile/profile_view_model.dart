@@ -20,10 +20,8 @@ class ProfileViewModel extends BaseViewModel{
   logout() async{
     setLoading();
     logoutApiState  = await userRepo.logout();
-    if(logoutApiState.isSuccess){
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.remove("token");
-    }
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove("token");
     setLoading(false);
     return logoutApiState;
   }
@@ -32,10 +30,10 @@ class ProfileViewModel extends BaseViewModel{
     setLoading();
     getWalletBalanceApiState = await userRepo.getWalletBalance();
     setLoading(false);
-    return logoutApiState;
+    return getWalletBalanceApiState;
   }
 
-  /*getTotalBalance(){
+/*getTotalBalance(){
     WalletRepository.getSingleton().getAllWallet();
   }
 

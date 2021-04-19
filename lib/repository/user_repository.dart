@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:tgp_flutter/entity/response/check_username_response.dart';
 import 'package:tgp_flutter/entity/response/edit_password_response.dart';
 import 'package:tgp_flutter/entity/response/get_transaction_response.dart';
@@ -37,19 +38,10 @@ class UserRepository extends BaseRepository {
             resolver: resolveResponse,
             jwtRefresher: jwtAuth)
         .execute();
-//    var response = await apiPost(
-//        "api/Player/login",
-//        {
-//          "username": username,
-//          "password": password,
-//          "platformtype": 1,
-//        },
-//        false);
-//    return resolveResponse(response, (json) => LoginResponse.fromJson(json));
   }
 
-  Future<EventResult<RegisterResponse>> register(String username, String password, String rpassword,
-      String currency, String invitationCode) async {
+  Future<EventResult<RegisterResponse>> register(
+      String username, String password, String rpassword, String currency, String invitationCode) async {
     return await ApiRequestBuilder<RegisterResponse>(
             isAuthorization: false,
             endPoint: "api/Player/create",
@@ -66,19 +58,6 @@ class UserRepository extends BaseRepository {
             resolver: resolveResponse,
             jwtRefresher: jwtAuth)
         .execute();
-//    var response = await apiPost(
-//        "api/Player/create",
-//        {
-//          "username": username,
-//          "currency": currency,
-//          "pwd": password,
-//          "confirmpwd": rpassword,
-//          "invitationcode": invitationCode,
-//          "agent": true,
-//          "testplayer": true
-//        },
-//        false);
-//    return resolveResponse(response, (json) => RegisterResponse.fromJson(json));
   }
 
   Future<EventResult<UserProfile>> getBasicInfo() async {
@@ -90,39 +69,22 @@ class UserRepository extends BaseRepository {
             consumer: (result) => userProfile = result,
             jwtRefresher: jwtAuth)
         .execute();
-//    var response = await apiGet("api/Player/info");
-//    return resolveBaseResponse(
-//        response,
-//        (json) => UserProfile.fromJson(json),
-//        (result) => userProfile = result)
-//        ;
   }
 
   Future<EventResult<String>> logout() async {
     var apiState = await ApiRequestBuilder<String>(
-        method: HttpMethod.DELETE,
-        endPoint: "api/Player/logout",
-        converter:  (json) => (json as String),
-        resolver: resolveBaseResponse,
-        jwtRefresher: jwtAuth)
+            method: HttpMethod.DELETE,
+            endPoint: "api/Player/logout",
+            converter: (json) => (json as String),
+            resolver: resolveBaseResponse,
+            jwtRefresher: jwtAuth)
         .execute();
     userProfile = null;
     return apiState;
-//    var response = await apiDelete("api/Player/logout", {});
-//    userProfile = null;
-//    return resolveBaseResponse(response, (json) => (json as String));
   }
 
   Future<EventResult<LoginResponse>> auth() async {
     return jwtAuth();
-    var response = await apiPost(
-        "api/Auth/jwt",
-        {
-          "client": "I7nKiimrZQOqnJ6ryjUw74c0Hi64KC6Myunhob4cHh8VOUIuZh4p63czefxyyzbZ",
-          "currency": "CNY"
-        },
-        false);
-    return resolveResponse(response, (json) => LoginResponse.fromJson(json));
   }
 
   Future<EventResult<CheckUsernameResponse>> checkUsername(String username) async {
@@ -136,44 +98,73 @@ class UserRepository extends BaseRepository {
             resolver: resolveResponse,
             jwtRefresher: jwtAuth)
         .execute();
-//
-//    var response = await apiGet(, content:);
-//    return resolveResponse(
-//        response, (json) => CheckUsernameResponse.fromJson(json));
   }
 
   Future<EventResult<dynamic>> setQQAccount(String qq) async {
-    var response = await apiPatch("api/player/qq", {"qq": qq});
-    return resolveBaseResponse(response);
+    return await ApiRequestBuilder<dynamic>(
+            method: HttpMethod.PATCH,
+            endPoint: "api/player/qq",
+            params: {
+              "qq": qq,
+            },
+            converter: (json) => json as dynamic,
+            resolver: resolveBaseResponse,
+            jwtRefresher: jwtAuth)
+        .execute();
   }
 
   Future<EventResult<dynamic>> setWechatAccount(String wechat) async {
-    var response = await apiPatch("api/player/wechat", {"wechat": wechat});
-    return resolveResponse(response, (json) => json as dynamic);
+    return await ApiRequestBuilder<dynamic>(
+            method: HttpMethod.PATCH,
+            endPoint: "api/player/wechat",
+            params: {
+              "wechat": wechat,
+            },
+            converter: (json) => json as dynamic,
+            resolver: resolveResponse,
+            jwtRefresher: jwtAuth)
+        .execute();
   }
 
-  Future<EventResult<EditPasswordResponse>> editPassword(
-      String oldPassword, String newPassword) async {
-    var response = await apiPut("api/player/password", {
-      "oldpwd": oldPassword,
-      "newpwd": newPassword,
-    });
-    return resolveResponse(response, (json) => EditPasswordResponse.fromJson(json));
+  Future<EventResult<EditPasswordResponse>> editPassword(String oldPassword, String newPassword) async {
+    return await ApiRequestBuilder<EditPasswordResponse>(
+            method: HttpMethod.PUT,
+            endPoint: "api/player/password",
+            params: {
+              "oldpwd": oldPassword,
+              "newpwd": newPassword,
+            },
+            converter: (json) => EditPasswordResponse.fromJson(json),
+            resolver: resolveResponse,
+            jwtRefresher: jwtAuth)
+        .execute();
   }
 
   Future<EventResult<dynamic>> setIdentity(String realname, String id) async {
-    var response = await apiPatch("api/player/identity", {
-      "id": id,
-      "realname": realname,
-    });
-    return resolveResponse(response, (json) => json as dynamic);
+    return await ApiRequestBuilder<dynamic>(
+            method: HttpMethod.PATCH,
+            endPoint: "api/player/identity",
+            params: {
+              "id": id,
+              "realname": realname,
+            },
+            converter: (json) => json as dynamic,
+            resolver: resolveResponse,
+            jwtRefresher: jwtAuth)
+        .execute();
   }
 
   Future<EventResult<dynamic>> checkIdVerification(String id) async {
-    var response = await apiGet("api/player/identity/check", content: {
-      "id": id,
-    });
-    return resolveResponse(response, (json) => json as dynamic);
+    return await ApiRequestBuilder<dynamic>(
+            method: HttpMethod.GET,
+            endPoint: "api/player/identity/check",
+            params: {
+              "id": id,
+            },
+            converter: (json) => json as dynamic,
+            resolver: resolveResponse,
+            jwtRefresher: jwtAuth)
+        .execute();
   }
 
   Future<EventResult<GetTransactionResponse<BetTransaction>>> getTransaction(
@@ -186,24 +177,42 @@ class UserRepository extends BaseRepository {
       String sortBy,
       bool showAll*/
   ) async {
-    var response = await apiGet("api/Player/report/rounds", content: {
-      "From": startDate.toString(),
-      "To": endDate.toString(),
-      "Page": page.toString(),
-      "Rows": rows.toString(),
-      /*"OrderBy":orderBy.toString(),
+    return await ApiRequestBuilder<GetTransactionResponse<BetTransaction>>(
+            method: HttpMethod.GET,
+            endPoint: "api/player/report/rounds",
+            params: {
+              "From": startDate.toString(),
+              "To": endDate.toString(),
+              "Page": page.toString(),
+              "Rows": rows.toString(),
+              /*"OrderBy":orderBy.toString(),
           "IsDesc":isDesc.toString(),
           "SortBy":sortBy,
           "ShowAll":showAll.toString(),*/
-    });
-
-    return resolveReportRoundResponse(response,
-        (json) => GetTransactionResponse.fromJson(json, (res) => BetTransaction.fromJson(res)));
+            },
+            converter: (json) => GetTransactionResponse.fromJson(json, (res) => BetTransaction.fromJson(res)),
+            resolver: resolveReportRoundResponse,
+            jwtRefresher: jwtAuth)
+        .execute();
   }
 
   Future<EventResult<Wallet>> getWalletBalance() async {
-    var response = await apiGet("api/Wallet");
-    return resolveBaseResponse(
-        response, (json) => Wallet.fromJson(json), (result) => wallet = result);
+    return await ApiRequestBuilder<Wallet>(
+            method: HttpMethod.GET,
+            endPoint: "api/Wallet",
+            converter: (json) => Wallet.fromJson(json),
+            resolver: resolveResponse,
+            consumer: (result) => wallet = result,
+            jwtRefresher: jwtAuth)
+        .execute();
+
+    /*return await ApiRequestBuilder<UserProfile>(
+        method: HttpMethod.GET,
+        endPoint: "api/Player/info",
+        converter: (json) => UserProfile.fromJson(json),
+        resolver: resolveBaseResponse,
+        consumer: (result) => userProfile = result,
+        jwtRefresher: jwtAuth)
+        .execute();*/
   }
 }

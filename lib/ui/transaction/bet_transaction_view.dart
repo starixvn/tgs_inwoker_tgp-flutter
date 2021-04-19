@@ -43,8 +43,6 @@ class BetTransactionView extends StatefulWidget {
 
 class BetTransactionViewState extends BaseState<BetTransactionView>{
   TransactionViewModel _vm = TransactionViewModel();
-  DateTime startDate, endDate;
-  var transactionList;
   ScrollController _scrollController = ScrollController();
   var isEndRecord = false, isLoading = false;
   RefreshController _refreshController = RefreshController();
@@ -53,13 +51,11 @@ class BetTransactionViewState extends BaseState<BetTransactionView>{
   var isFirst = true;
 
   void initState(){
-    startDate = DateTime.now();
-    endDate = DateTime.now();
     _scrollController.addListener(_scrollListener);
     isFirst = false;
     _vm.getGameProviderList();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _onFilter(0);
+      _onDateFilter(0);
     });
     super.initState();
   }
@@ -81,7 +77,7 @@ class BetTransactionViewState extends BaseState<BetTransactionView>{
                     _getTransaction(isLoadMore:false);
                     _refreshController.refreshCompleted();
                   },
-                  child: transactionList == null?
+                  child: _vm.betTransactionList == null?
                   Center(
                     child: CircularProgressIndicator(),
                   ) :
@@ -98,11 +94,11 @@ class BetTransactionViewState extends BaseState<BetTransactionView>{
                           onCalendarClick:(value, isStartDate)=> _onCalendarClick(value, isStartDate),
                           onFilter:(value) {
                             CustomProgressDialog.show(context);
-                            _onFilter(value);
+                            _onDateFilter(value);
                           },
                           getPickerBox: _getPickerBox(),
-                          startDate: startDate,
-                          endDate: endDate,
+                          startDate: _vm.pStartDate,
+                          endDate: _vm.pEndDate,
                           filterIndex: filterIndex,
                         ),
                         _buildTransactionItem()
@@ -119,7 +115,7 @@ class BetTransactionViewState extends BaseState<BetTransactionView>{
     padding: EdgeInsets.only(left: 10.auto, right:10.auto, top: 5.auto),
     sliver: SliverList(
       delegate: SliverChildListDelegate(
-          transactionList.length==0?
+          _vm.betTransactionList.length==0?
           List.generate(1, (index) => Container(
             margin: EdgeInsets.only(top:60.auto),
             child: Container(
@@ -128,14 +124,14 @@ class BetTransactionViewState extends BaseState<BetTransactionView>{
                 child: Image.asset("images/transaction/ic_no_record.png")
             ),
           )
-          ): List.generate(transactionList.length, (index) {
+          ): List.generate(_vm.betTransactionList.length, (index) {
             return Container(
               child: TransactionCellItem(
                   list:[
-                    Format().dateFormat(DateTime.parse(transactionList[index].createdOn)),
-                    transactionList[index].gameProviderName,
-                    transactionList[index].betAmount.toString(),
-                    transactionList[index].winLoss.toString(),
+                    Format().dateFormat(DateTime.parse(_vm.betTransactionList[index].createdOn)),
+                    _vm.betTransactionList[index].gameProviderName,
+                    _vm.betTransactionList[index].betAmount.toString(),
+                    _vm.betTransactionList[index].winLoss.toString(),
                   ] ,
                   type: _getTransactionItemType(index),
                   isLoading: isEndRecord?false:isLoading,
@@ -148,55 +144,42 @@ class BetTransactionViewState extends BaseState<BetTransactionView>{
   );
 
   _onCalendarClick(DateTime date, bool isStartDate){
-    setState(() {
-      if(isStartDate){
-        startDate = date;
-        _getTransaction(startDate: date);
-      }else{
-        endDate = date;
-        _getTransaction(endDate: date);
-      }
-      _onFilter(-1);
-      CustomProgressDialog.show(context);
-    });
+    if(isStartDate){
+      _vm.setDate(startDate: date);
+      _getTransaction(startDate: date);
+    }else{
+      _vm.setDate(endDate: date);
+      _getTransaction(endDate: date);
+    }
+    _onDateFilter(-1);
+    CustomProgressDialog.show(context);
   }
 
-
-  _onFilter(int index) {
+  _onDateFilter(int index) {
     var currentDate = DateTime.now();
     switch(index) {
       case 0: //today
-        setState(() {
-          startDate = currentDate;
-          endDate = currentDate;
-          filterIndex = index;
-        });
+        _vm.setDate(startDate: currentDate, endDate: currentDate);
         break;
       case 1://week
-        setState(() {
-          startDate = DateTime(
-              currentDate.year, currentDate.month, currentDate.day - 7);
-          endDate = currentDate;
-          filterIndex = index;
-        });
+        _vm.setDate(
+            startDate: DateTime(currentDate.year, currentDate.month, currentDate.day - 7) ,
+            endDate: currentDate
+        );
         break;
       case 2://month
-        setState(() {
-          startDate = DateTime(
-              currentDate.year, currentDate.month - 1, currentDate.day);
-          endDate = currentDate;
-          filterIndex = index;
-        });
+        _vm.setDate(
+            startDate: DateTime(currentDate.year, currentDate.month - 1, currentDate.day),
+            endDate: currentDate
+        );
         break;
       default:
-        setState(() {
-          startDate = currentDate;
-          endDate = currentDate;
-          filterIndex = index;
-        });
+        _vm.setDate();
         break;
     }
-    _vm.filter(startDate);
+    setState(() {
+      filterIndex = index;
+    });
     _getTransaction();
   }
 
@@ -247,13 +230,13 @@ class BetTransactionViewState extends BaseState<BetTransactionView>{
   }
 
   _getTransactionItemType(int index){
-    if(transactionList.length == 1){
+    if(_vm.betTransactionList.length == 1){
       return TransactionCellItemType.SINGLE;
     }else{
       if(index == 0) {
         return TransactionCellItemType.TOP;
       }
-      else if(index == transactionList.length -1){
+      else if(index == _vm.betTransactionList.length -1){
         return TransactionCellItemType.BOTTOM;
       }
       else{
@@ -272,19 +255,20 @@ class BetTransactionViewState extends BaseState<BetTransactionView>{
   }
 
   _getTransaction({DateTime startDate, DateTime endDate, GameProvider platform, bool isLoadMore}) async{
-    await _vm.getTransaction(startDate: startDate, endDate:endDate, isLoadMore: isLoadMore?? false);
+    await _vm.getTransaction(isLoadMore: isLoadMore?? false);
   }
 
   _handleApiState(){
     handleApiState(_vm.getTransactionApiState, isAutoHideLoading: isFirst, onSuccess: (){
       WidgetsBinding.instance.addPostFrameCallback((_) {
         setState(() {
-          if(!isFirst)setState(() {
-            isFirst=!isFirst;
-          });
-          transactionList = _vm.getTransactionApiState.result.items;
+          if(!isFirst) isFirst=!isFirst;
         });
       });
+    });
+
+    handleApiState(_vm.getGameProviderApiState, isAutoHideLoading: false, onSuccess: (){
+
     });
   }
 }

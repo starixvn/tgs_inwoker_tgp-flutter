@@ -8,7 +8,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 class SplashViewModel extends BaseViewModel{
   final userRepo = UserRepository.getSingleton();
   var authApiState;
-  String authToken;
 
   @override
   List<BaseRepository> get repoList => [userRepo];
@@ -16,17 +15,8 @@ class SplashViewModel extends BaseViewModel{
   getAuthToken()async{
     setLoading();
     authApiState = await userRepo.auth();
-    if(authApiState.isSuccess){
-      authToken = authApiState.result.token;
-      savePreferences(authToken);
-      print("Authorization:"+authToken);
-    }
     setLoading(false);
     return authApiState;
   }
 
-  savePreferences(String authToken) async{
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString("auth_token", authToken);
-  }
 }

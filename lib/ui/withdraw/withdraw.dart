@@ -16,19 +16,18 @@ import 'package:tgp_flutter/ui/withdraw/withdraw_view_model.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
 
-class Withdraw extends StatefulWidget{
+class Withdraw extends StatefulWidget {
   @override
   _WithdrawState createState() => _WithdrawState();
 }
 
 class _WithdrawState extends BaseState<Withdraw> {
   var _vm = WithdrawViewModel();
+
   //UserProfile user;
-  var isDetailsButtonEnabled = false,
-      isNextButtonEnabled = false;
+  var isDetailsButtonEnabled = false, isNextButtonEnabled = false;
   var selectedBankCard;
-  TextEditingController _amountController = TextEditingController(),
-      _payPasswordController = TextEditingController();
+  TextEditingController _amountController = TextEditingController(), _payPasswordController = TextEditingController();
 
   @override
   void initState() {
@@ -45,50 +44,20 @@ class _WithdrawState extends BaseState<Withdraw> {
           _handleApiState();
           return Scaffold(
             resizeToAvoidBottomInset: false,
-            appBar: AppBar(
-              automaticallyImplyLeading: false,
-              centerTitle: true,
-              leading: IconButton(
-                icon: Icon(Icons.arrow_back),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
-              flexibleSpace: Container(
-                decoration: gradientDecoration,
-              ),
-              actions: [
-                Container(
-                    margin: EdgeInsets.only(right: 15.auto),
-                    alignment: Alignment.center,
-                    child: Text(
-                      "¥ 0.00",
-                      /*_vm.mainAccountBalance ==null?"-":"¥ ${Format().currencyWithDecimalFormat(
-                          _vm.mainAccountBalance)}",*/
-                      style: TextStyle(
-                          color: CustomColor.theme_bar_gradient_2
-                      ),
-                    )
-                ),
-              ],
-              title: Text(
-                "提款",
-                style: TextStyle(fontSize: 20.auto),),
-            ),
-            body: /*_vm.withdrawalInfo ==null || _vm.bankCardList == null?
+            appBar: _buildAppBar(),
+            body:
+                /*_vm.withdrawalInfo ==null || _vm.bankCardList == null?
             Center(
               child: CircularProgressIndicator(),
             ):*/
-            Container(
-              padding: EdgeInsets.only(
-                  left: 10.auto, right: 10.auto, bottom:  MediaQuery.of(context).viewInsets.bottom),
+                Container(
+              padding: EdgeInsets.only(left: 10.auto, right: 10.auto, bottom: MediaQuery.of(context).viewInsets.bottom),
               decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(10.0),
                     topRight: Radius.circular(10.0),
-                  )
-              ),
+                  )),
               child: ScrollConfiguration(
                 behavior: MyBehavior(),
                 child: ListView(
@@ -96,16 +65,8 @@ class _WithdrawState extends BaseState<Withdraw> {
                     _buildWithdrawCard(),
                     _buildEditBankItem(),
                     _buildBankPicker(),
-                    _buildTextField(
-                      "金额",
-                      "请输入100-450，000元",
-                      _amountController
-                    ),
-                    _buildTextField(
-                      "提款密码",
-                      "请输入提款密码",
-                      _payPasswordController
-                    ),
+                    _buildTextField("金额", "请输入100-450，000元", _amountController),
+                    _buildTextField("提款密码", "请输入提款密码", _payPasswordController),
                     _buildHintText(),
                     _buildButton(),
                     _buildCustomerServiceText()
@@ -117,9 +78,37 @@ class _WithdrawState extends BaseState<Withdraw> {
         });
   }
 
-  _buildWithdrawCard() =>
-      Container(
-        padding: EdgeInsets.only(top:15.auto),
+  _buildAppBar() => AppBar(
+        automaticallyImplyLeading: false,
+        centerTitle: true,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        flexibleSpace: Container(
+          decoration: gradientDecoration,
+        ),
+        actions: [
+          Container(
+              margin: EdgeInsets.only(right: 15.auto),
+              alignment: Alignment.center,
+              child: Text(
+                "¥ 0.00",
+                /*_vm.mainAccountBalance ==null?"-":"¥ ${Format().currencyWithDecimalFormat(
+                          _vm.mainAccountBalance)}",*/
+                style: TextStyle(color: Colors.white),
+              )),
+        ],
+        title: Text(
+          "提款",
+          style: TextStyle(fontSize: 20.auto),
+        ),
+      );
+
+  _buildWithdrawCard() => Container(
+        padding: EdgeInsets.only(top: 15.auto),
         child: Card(
           semanticContainer: true,
           clipBehavior: Clip.antiAliasWithSaveLayer,
@@ -129,24 +118,18 @@ class _WithdrawState extends BaseState<Withdraw> {
           elevation: 5,
           child: Column(
             children: [
-              _buildWithdrawItem(
-                  "可提资金",
-                  "¥ 0.00"
+              _buildWithdrawItem("可提资金", "0.00"
                   //Format().currencyWithDecimalFormat(double.parse(_vm.withdrawalInfo.canWithdrawal))
-              ),
-              _buildWithdrawItem(
-                  "未完成流水",
-                  "¥ 0.00"
+                  ),
+              _buildWithdrawItem("未完成流水", "0.00"
                   //Format().currencyWithDecimalFormat(double.parse(_vm.withdrawalInfo.limitTurnover))
-              ),
+                  ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  _buildWithdrawItem(
-                      "红利限额",
-                      "¥ 0.00"
+                  _buildWithdrawItem("红利限额", "0.00"
                       //Format().currencyWithDecimalFormat(double.parse(_vm.withdrawalInfo.bonusLimitWithdrawal))
-                  ),
+                      ),
                   Container(
                     margin: EdgeInsets.only(right: 10.auto),
                     child: RedButton(
@@ -162,8 +145,7 @@ class _WithdrawState extends BaseState<Withdraw> {
         ),
       );
 
-  _buildWithdrawItem(String title, String amount) =>
-      Container(
+  _buildWithdrawItem(String title, String amount) => Container(
         margin: EdgeInsets.symmetric(vertical: 10.auto),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -172,8 +154,7 @@ class _WithdrawState extends BaseState<Withdraw> {
               width: 3,
               height: 20.auto,
               color: Colors.black,
-              margin: EdgeInsets.symmetric(
-                  vertical: 5.auto, horizontal: 15.auto),
+              margin: EdgeInsets.symmetric(vertical: 5.auto, horizontal: 15.auto),
               alignment: Alignment.topCenter,
             ),
             Column(
@@ -181,19 +162,13 @@ class _WithdrawState extends BaseState<Withdraw> {
               children: [
                 Text(
                   title,
-                  style: TextStyle(
-                      color: CustomColor.grey,
-                      fontSize: 14.auto
-                  ),
+                  style: TextStyle(color: CustomColor.grey, fontSize: 14.auto),
                 ),
                 Container(
                   padding: EdgeInsets.only(top: 5.auto),
                   child: Text(
                     "¥ $amount",
-                    style: TextStyle(
-                        color: CustomColor.theme_bar_gradient_2,
-                        fontSize: 12.auto
-                    ),
+                    style: TextStyle(color: CustomColor.theme_bar_gradient_2, fontSize: 12.auto),
                     textAlign: TextAlign.start,
                   ),
                 ),
@@ -203,40 +178,30 @@ class _WithdrawState extends BaseState<Withdraw> {
         ),
       );
 
-  _buildEditBankItem() =>
-      Container(
+  _buildEditBankItem() => Container(
         padding: EdgeInsets.symmetric(vertical: 10.auto),
-        child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Image.asset(
-                "images/ic_edit_card.png",
-                width: 15.auto,
-                height: 15.auto,
-              ),
-              Text(
-                "管理银行卡",
-                style: TextStyle(
-                    color: CustomColor.grey,
-                    fontSize: 12.auto
-                ),
-              )
-            ]
-        ),
+        child: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+          Image.asset(
+            "images/ic_edit_card.png",
+            width: 15.auto,
+            height: 15.auto,
+          ),
+          Text(
+            "管理银行卡",
+            style: TextStyle(color: CustomColor.grey, fontSize: 12.auto),
+          )
+        ]),
       );
 
-
-
-  _buildBankPicker() =>
-      CustomPicker(
-        title:"银行卡",
-        displayText: _getBankText()??"请选择银行卡",
-        list:[],
-        isHintText://selectedBankCard !=null || _vm.bankCardList.first !=null ?
-        true,
-            //:false,
+  _buildBankPicker() => CustomPicker(
+        title: "银行卡",
+        displayText: _getBankText() ?? "请选择银行卡",
+        list: [],
+        isHintText: //selectedBankCard !=null || _vm.bankCardList.first !=null ?
+            true,
+        //:false,
         width: context.screenWidth,
-        onClick:(){
+        onClick: () {
           //_buildPickerDialog("银行卡", _vm.bankCardList);
         },
       );
@@ -258,98 +223,86 @@ class _WithdrawState extends BaseState<Withdraw> {
     );
   }*/
 
-  _getBankText(){
-    if(selectedBankCard == null){
+  _getBankText() {
+    if (selectedBankCard == null) {
       //selectedBankCard = _vm.bankCardList.first;
     }
     return selectedBankCard?.getDisplayString();
   }
 
-  _buildTextField(String titleText, String hintText, TextEditingController controller) =>
-      CustomTextFormField(
+  _buildTextField(String titleText, String hintText, TextEditingController controller) => CustomTextFormField(
         title: titleText,
         hintText: hintText,
-        onChanged:(value) => onTextChange(value),
-        onFieldSubmitted:(value) => onTextChange(value),
+        onChanged: (value) => onTextChange(value),
+        onFieldSubmitted: (value) => onTextChange(value),
         controller: controller,
         focusNode: null,
-        width: context.screenWidth-70.auto,
+        width: context.screenWidth - 70.auto,
         textInputType: TextInputType.number,
         textInputAction: TextInputAction.done,
       );
 
   _buildHintText() => Container(
-    margin: EdgeInsets.symmetric(vertical: 10.auto, horizontal: 15.auto),
-    child: Text(
-      "此银行卡的开户名必须与您帐号所填写真实姓名一致，否则提款可能失败",
-      style: TextStyle(
-          color: Colors.red,
-          fontSize: 11.auto
-      ),
-    ),
-  );
+        margin: EdgeInsets.symmetric(vertical: 10.auto, horizontal: 15.auto),
+        child: Text(
+          "此银行卡的开户名必须与您帐号所填写真实姓名一致，否则提款可能失败",
+          style: TextStyle(color: Colors.red, fontSize: 11.auto),
+        ),
+      );
 
-  _buildCustomerServiceText() =>
-      Container(
+  _buildCustomerServiceText() => Container(
         margin: EdgeInsets.symmetric(vertical: 15.auto),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
               "如有任何问题，请联系",
-              style: TextStyle(
-                  fontSize: 12.auto
-              ),
+              style: TextStyle(fontSize: 12.auto),
             ),
             Text(
               "线上客服",
-              style: TextStyle(
-                  color: CustomColor.theme_bar_gradient_2,
-                  fontSize: 12.auto
-              ),
+              style: TextStyle(color: CustomColor.theme_bar_gradient_2, fontSize: 12.auto),
             )
           ],
         ),
       );
 
   _buildButton() => ColorButton(
-    onClick: this.onNextButtonClick,
-    isEnabled: isNextButtonEnabled,
-    radius: 9.6,
-    color: CustomColor.theme_bar_gradient_2,
-    text: Text(
-      "下一步",
-      style: TextStyle(
-          color: Colors.white,
-          fontSize: 16.auto
-      ),
-    ),
-  );
+        onClick: this.onNextButtonClick,
+        isEnabled: isNextButtonEnabled,
+        radius: 9.6,
+        color: CustomColor.theme_bar_gradient_2,
+        text: Text(
+          "下一步",
+          style: TextStyle(color: Colors.white, fontSize: 16.auto),
+        ),
+      );
 
   onDetailsClick() {
-    showDialog(context: context,
+    showDialog(
+      context: context,
       builder: (BuildContext context) => WithdrawDialog(),
     );
   }
 
   onTextChange(String amount) {
-    if(amount.isNotEmpty){
+    if (amount.isNotEmpty) {
       setState(() {
         isNextButtonEnabled = true;
       });
-    }else{
+    } else {
       setState(() {
         isNextButtonEnabled = false;
       });
     }
   }
 
-  onNextButtonClick(){
+  onNextButtonClick() {
     CustomProgressDialog.show(context);
     //_vm.withdraw(selectedBankCard.id, int.parse(_textEditingController.text));
   }
 
-  _handleApiState(){
+  _handleApiState() {
     /*if (_vm.withdrawalApiState == null &&
         _vm.getWithdrawalInfoApiState == null) {
       return;

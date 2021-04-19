@@ -5,7 +5,7 @@ import 'package:tgp_flutter/ui/base_state.dart';
 
 import 'outline_border_button.dart';
 
-class OtpTextFormField extends StatefulWidget{
+class OtpTextFormField extends StatefulWidget {
   final String hintText;
   final ValueChanged<String> onChanged;
   final TextEditingController controller;
@@ -13,14 +13,9 @@ class OtpTextFormField extends StatefulWidget{
   final Function getOtpCode;
   final bool isEnabled;
 
-  OtpTextFormField({Key key,
-    this.hintText,
-    this.onChanged,
-    this.controller,
-    this.textInputAction,
-    this.getOtpCode,
-    this.isEnabled
-  }) : super(key: key);
+  OtpTextFormField(
+      {Key key, this.hintText, this.onChanged, this.controller, this.textInputAction, this.getOtpCode, this.isEnabled})
+      : super(key: key);
 
   @override
   _OtpTextFormFieldState createState() => _OtpTextFormFieldState();
@@ -37,62 +32,51 @@ class _OtpTextFormFieldState extends BaseState<OtpTextFormField> {
         elevation: 5,
         //margin:EdgeInsets.only(top:15.auto,),
         child: Container(
-          margin: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-          child:  Row(
+          margin: EdgeInsets.only(top: 15.auto, bottom: 15.auto, left: 15.auto, right: 10.auto),
+          //EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+          child: Row(
             children: [
-              Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Container(
-                      width: context.screenWidth-145.auto,
-                      alignment: Alignment.topLeft,
-                      child: Text(
-                        getTranslatedText("otp"),
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 9.auto
-                        ),
-                        textAlign: TextAlign.start,
-                      ),
+              Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+                Container(
+                  width: context.screenWidth - 140.auto,
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    getTranslatedText("otp"),
+                    style: TextStyle(color: Colors.black, fontSize: 9.auto),
+                    textAlign: TextAlign.start,
+                  ),
+                ),
+                Container(
+                  width: context.screenWidth - 140.auto,
+                  child: TextFormField(
+                    autofocus: false,
+                    onChanged: (value) => widget.onChanged(value),
+                    controller: widget.controller,
+                    keyboardType: TextInputType.text,
+                    textInputAction: widget.textInputAction,
+                    style: TextStyle(color: CustomColor.theme_value_text_color, fontSize: 13.auto),
+                    decoration: InputDecoration(
+                      isDense: true,
+                      border: InputBorder.none,
+                      hintText: widget.hintText,
+                      hintStyle: TextStyle(color: CustomColor.very_light_pink_two, fontSize: 13.auto),
                     ),
-                    Container(
-                      width:context.screenWidth-145.auto,
-                      child: TextFormField(
-                        autofocus: false,
-                        onChanged: (value) => widget.onChanged(value),
-                        controller: widget.controller,
-                        keyboardType: TextInputType.text,
-                        textInputAction: widget.textInputAction,
-                        style: TextStyle(
-                            color: CustomColor.theme_value_text_color,
-                            fontSize: 13.auto
-                        ),
-                        decoration: InputDecoration(
-                          isDense: true,
-                          border: InputBorder.none,
-                          hintText: widget.hintText,
-                          hintStyle: TextStyle(
-                              color: CustomColor.very_light_pink_two,
-                              fontSize: 13.auto
-                          ),
-                        ),
-                        enabled: widget.isEnabled,
-                      ),
-                    ),
-                  ]
-              ),
+                    enabled: widget.isEnabled,
+                  ),
+                ),
+              ]),
               OutlineBorderButton(
                   title: getTranslatedText("request_otp"),
-                  onClick: ()=> widget.getOtpCode(),
-                  isEnabled:true,
-                  width: 60.auto,
-                  color:CustomColor.theme_bar_gradient_2,
-                  fontSize:10.auto
-                //fontSize: 11.auto,
-              )
+                  onClick: () => widget.getOtpCode(),
+                  isEnabled: true,
+                  width: 86.auto,
+                  height: 29.auto,
+                  color: CustomColor.theme_bar_gradient_2,
+                  fontSize: 11.auto
+                  //fontSize: 11.auto,
+                  )
             ],
           ),
-        )
-    );
+        ));
   }
 }

@@ -8,15 +8,16 @@ import 'package:tgp_flutter/entity/response/login_response.dart';
 import 'package:tgp_flutter/network/api_request_builder.dart';
 import 'package:tgp_flutter/network/event_result.dart';
 
+typedef T ResponseResultConverter<T>(dynamic);
+
 class BaseRepository extends ChangeNotifier {
-  EventResult<T> resolveBaseResponse<T>(http.Response response,
-      [ResponseResultConverter<T> converter, void Function(T) onSuccess]) {
+  EventResult<T> resolveBaseResponse<T>(http.Response response, ResponseResultConverter<T> converter,
+      [void Function(T) onSuccess]) {
     var map = json.decode(response.body);
     print(map);
     var baseResponse = BaseResponse.fromJson(json.decode(response.body));
     if (baseResponse.code == 0) {
-      var result =
-          (converter != null && baseResponse.data != null) ? converter(baseResponse.data) : null;
+      var result = converter(baseResponse.data);
       if (onSuccess != null) onSuccess(result);
       notifyListeners();
       return EventResult.success(result);
@@ -38,8 +39,7 @@ class BaseRepository extends ChangeNotifier {
     }
   }
 
-  EventResult<T> resolveOnlyDataResponse<T>(
-      http.Response response, ResponseResultConverter<T> converter,
+  EventResult<T> resolveOnlyDataResponse<T>(http.Response response, ResponseResultConverter<T> converter,
       [void Function(T) onSuccess]) {
     var map = json.decode(response.body);
     var result = converter(map);
@@ -48,8 +48,7 @@ class BaseRepository extends ChangeNotifier {
     return EventResult.success(result);
   }
 
-  EventResult<T> resolveReportRoundResponse<T>(
-      http.Response response, ResponseResultConverter<T> converter,
+  EventResult<T> resolveReportRoundResponse<T>(http.Response response, ResponseResultConverter<T> converter,
       [void Function(T) onSuccess]) {
     var map = json.decode(response.body);
     if (map["errors"].length == 0) {
@@ -67,10 +66,7 @@ class BaseRepository extends ChangeNotifier {
             isAuthorization: false,
             isJWTAuthRequest: true,
             endPoint: "api/Auth/jwt",
-            params: {
-              "client": "I7nKiimrZQOqnJ6ryjUw74c0Hi64KC6Myunhob4cHh8VOUIuZh4p63czefxyyzbZ",
-              "currency": "CNY"
-            },
+            params: {"client": "I7nKiimrZQOqnJ6ryjUw74c0Hi64KC6Myunhob4cHh8VOUIuZh4p63czefxyyzbZ", "currency": "CNY"},
             converter: (json) => LoginResponse.fromJson(json),
             resolver: resolveResponse)
         .execute();

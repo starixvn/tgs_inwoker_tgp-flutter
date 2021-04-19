@@ -12,12 +12,9 @@ import 'package:tgp_flutter/ui/home/home_view_model.dart';
 class GameViewItem extends StatefulWidget {
   final ScrollController controller;
   final List<dynamic> gameProviderList;
+  final Function(String, GameType) onGameClick;
 
-  GameViewItem({
-    @required
-    this.controller,
-    this.gameProviderList,
-  });
+  GameViewItem({@required this.controller, this.gameProviderList, this.onGameClick});
 
   @override
   _GameViewItemState createState() => _GameViewItemState();
@@ -28,11 +25,10 @@ class _GameViewItemState extends BaseState<GameViewItem> {
   Widget build(BuildContext context) {
     return Expanded(
       child: Container(
-        padding: EdgeInsets.only(right:5.auto,),
-        decoration: BoxDecoration(
-            color: CustomColor.very_light_pink_four,
-            borderRadius: BorderRadius.circular(5.auto)
+        padding: EdgeInsets.only(
+          right: 5.auto,
         ),
+        decoration: BoxDecoration(color: CustomColor.very_light_pink_four, borderRadius: BorderRadius.circular(5.auto)),
         child: RawScrollbar(
           isAlwaysShown: true,
           thumbColor: CustomColor.theme_bar_gradient_2,
@@ -42,41 +38,24 @@ class _GameViewItemState extends BaseState<GameViewItem> {
           child: ListView(
               padding: EdgeInsets.only(right: 5.auto),
               controller: widget.controller,
-              children: widget.gameProviderList.expand((element) => element).toList().map((item) => Container(
-                  padding: EdgeInsets.only(left: (8.5).auto, right: 5.auto, top: (12.5).auto, bottom: 5.auto),
-                  child: GestureDetector(
-                      onTap: (){
-                        _navigateToChildGame(item.code, item.gameType);
-                      },
-                      child: Container(
-                          width: 335.auto,
-                          height: 90.auto,
-                          color: Colors.blue,
-                          alignment: Alignment.center,
-                          child:Text(
-                            item.name,
-                          )
-                      )
-                  )
-              )).toList()
-          ),
+              children: widget.gameProviderList
+                  .expand((element) => element)
+                  .toList()
+                  .map((item) => Container(
+                      padding: EdgeInsets.only(left: (8.5).auto, right: 5.auto, top: (12.5).auto, bottom: 5.auto),
+                      child: GestureDetector(
+                          onTap: () => widget.onGameClick(item.code, item.gameType),
+                          child: Container(
+                              width: 335.auto,
+                              height: 90.auto,
+                              color: Colors.blue,
+                              alignment: Alignment.center,
+                              child: Text(
+                                item.name,
+                              )))))
+                  .toList()),
         ),
       ),
     );
   }
-
-  _navigateToChildGame(String gamePlatformCode, GameType gametype){
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) =>
-                  ChildGame(
-                    gamePlatformCode: gamePlatformCode,
-                    gameType: gametype,
-                  )
-          ));
-    });
-  }
-
 }

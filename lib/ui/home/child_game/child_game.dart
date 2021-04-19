@@ -16,24 +16,20 @@ import 'package:tgp_flutter/ui/home/child_game/child_game_platform_tab_bar_view.
 import 'package:tgp_flutter/ui/home/child_game/child_game_suggestion.dart';
 import 'package:tgp_flutter/ui/home/game/game_view_model.dart';
 
-class ChildGame extends StatefulWidget{
+class ChildGame extends StatefulWidget {
   final String gamePlatformCode;
   final GameType gameType;
 
-  ChildGame({
-    this.gamePlatformCode,
-    this.gameType
-  });
+  ChildGame({this.gamePlatformCode, this.gameType});
 
   @override
   _ChildGameState createState() => _ChildGameState();
 }
 
-class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStateMixin{
+class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStateMixin {
   var _groupTabController;
   var _groupTabIndex = 0;
-  var _groupTabList =
-  [
+  var _groupTabList = [
     "全部游戏",
     "最新游戏",
     "热门游戏",
@@ -47,14 +43,14 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
   var isSearching = false, isVisibleSuggestionList = false;
 
   @override
-  void initState(){
+  void initState() {
     _groupTabController = TabController(length: _groupTabList.length, vsync: this, initialIndex: _groupTabIndex);
     _focusNode.addListener(_onFocusNodeListener);
     _initData();
     super.initState();
   }
 
-  _initData() async{
+  _initData() async {
     _vm.getGameList(widget.gamePlatformCode, widget.gameType);
     await _vm.getGameProviderList();
     _vm.getPlatformList(widget.gameType);
@@ -70,110 +66,105 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
             return Scaffold(
               resizeToAvoidBottomInset: false,
               backgroundColor: Colors.grey[100],
-              appBar: AppBar(
-                automaticallyImplyLeading: false,
-                centerTitle: true,
-                flexibleSpace: Container(
-                  decoration: gradientDecoration,
-                ),
-                leading: IconButton(
-                  icon: Icon(Icons.arrow_back),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                ),
-                title: isSearching
-                    ?_buildSearchTextField()
-                    :Text(
-                  _getAppTitle(),
-                  style: TextStyle(fontSize: 16.auto),
-                ),
-                actions: [
-                  _getAction()
-                ],
-              ),
-              body:  _vm.filteredGameList == null ||_vm.gameProviderList==null
-                  ? Center(child: CircularProgressIndicator(),)
+              appBar: _buildAppBar(),
+              body: _vm.filteredGameList == null || _vm.gameProviderList == null
+                  ? Center(
+                      child: CircularProgressIndicator(),
+                    )
                   : Stack(
-                children: [
-                  _buildChildGame(),
-                  _buildOverlay(),
-                  ChildGameSuggestion(
-                    isVisible: isVisibleSuggestionList,
-                    recommendList: _vm.recommendGameList,
-                  )
-                ],
-              ),
-
+                      children: [
+                        _buildChildGame(),
+                        _buildOverlay(),
+                        ChildGameSuggestion(
+                          isVisible: isVisibleSuggestionList,
+                          recommendList: _vm.recommendGameList,
+                        )
+                      ],
+                    ),
             );
-          }
-      ),
+          }),
     );
   }
 
-  _buildChildGame() => Column(
-    children: [
-      Container(
-        color: CustomColor.theme_button_disable_bg,
-        constraints: BoxConstraints(maxHeight: 35.auto),
-        width: context.screenWidth,
-        child: TabBar(
-          controller: _groupTabController,
-          isScrollable: true,
-          unselectedLabelColor: Colors.white,
-          labelColor: CustomColor.theme_label_text_highlight_color,
-          indicatorColor: CustomColor.theme_label_text_highlight_color,
-          indicatorWeight: 3,
-          onTap: (index){
-            setState(() {
-              _groupTabIndex = index;
-              _filterGameList(category: index);
-            });
+  _buildAppBar() => AppBar(
+        automaticallyImplyLeading: false,
+        centerTitle: true,
+        flexibleSpace: Container(
+          decoration: gradientDecoration,
+        ),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
           },
-          unselectedLabelStyle: TextStyle(
-              color: CustomColor.grey
-          ),
-          tabs: _groupTabList.map((item) {
-            return Tab(
-              child: Text(item,
-                  style: TextStyle(
-                    fontFamily: 'PingFang',
-                    fontSize: 14.auto,
-                  )),
-            );
-          }).toList(),
         ),
-      ),
-      Expanded(
-        child: ChildGamePlatform(
-          platformList: _vm.platformList,
-          gameList: _vm.filteredGameList,
-          isSearching: isSearching,
-        ),
-      ),
-    ],
-  );
+        title: isSearching
+            ? _buildSearchTextField()
+            : Text(
+                _getAppTitle(),
+                style: TextStyle(fontSize: 16.auto),
+              ),
+        actions: [_getAction()],
+      );
 
-  _buildOverlay() =>  Visibility(
-    visible: isSearching,
-    child: ColorFiltered(
-      colorFilter: ColorFilter.mode(
-          Colors.black54,
-          BlendMode.srcOut
-      ),
-      child: Stack(
+  _buildChildGame() => Column(
         children: [
           Container(
-            decoration: BoxDecoration(
-              color: Colors.transparent,
+            color: CustomColor.theme_button_disable_bg,
+            constraints: BoxConstraints(maxHeight: 35.auto),
+            width: context.screenWidth,
+            child: TabBar(
+              controller: _groupTabController,
+              isScrollable: true,
+              unselectedLabelColor: Colors.white,
+              labelColor: CustomColor.theme_label_text_highlight_color,
+              indicatorColor: CustomColor.theme_label_text_highlight_color,
+              indicatorWeight: 3,
+              onTap: (index) {
+                setState(() {
+                  _groupTabIndex = index;
+                  _filterGameList(category: index);
+                });
+              },
+              unselectedLabelStyle: TextStyle(color: CustomColor.grey),
+              tabs: _groupTabList.map((item) {
+                return Tab(
+                  child: Text(item,
+                      style: TextStyle(
+                        fontFamily: 'PingFang',
+                        fontSize: 14.auto,
+                      )),
+                );
+              }).toList(),
+            ),
+          ),
+          Expanded(
+            child: ChildGamePlatform(
+              platformList: _vm.platformList,
+              gameList: _vm.filteredGameList,
+              isSearching: isSearching,
             ),
           ),
         ],
-      ),
-    ),
-  );
+      );
 
-  _buildSearchTextField() =>  Card(
+  _buildOverlay() => Visibility(
+        visible: isSearching,
+        child: ColorFiltered(
+          colorFilter: ColorFilter.mode(Colors.black54, BlendMode.srcOut),
+          child: Stack(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.transparent,
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+
+  _buildSearchTextField() => Card(
       semanticContainer: true,
       clipBehavior: Clip.antiAliasWithSaveLayer,
       shape: RoundedRectangleBorder(
@@ -182,45 +173,38 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
       elevation: 5,
       //margin:EdgeInsets.only(top:15.auto,),
       child: Container(
-        child:  Row(
+        child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Container(
-                    width: 110.auto,
-                    padding: EdgeInsets.symmetric(horizontal: 10.auto),
-                    child: TextFormField(
-                      controller: searchController,
-                      decoration: InputDecoration(
-                        isDense: true,
-                        border: InputBorder.none,
-                        hintText: "搜索关键词",
-                        hintStyle: TextStyle(
-                            color: CustomColor.very_light_pink_two,
-                            fontSize: 13.auto
-                        ),
-                      ),
-                      focusNode: _focusNode,
-                      autofocus: true,
-                      onChanged: (value) => _onTextChange(),
-                    ),
+            Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+              Container(
+                width: 110.auto,
+                padding: EdgeInsets.symmetric(horizontal: 10.auto),
+                child: TextFormField(
+                  controller: searchController,
+                  decoration: InputDecoration(
+                    isDense: true,
+                    border: InputBorder.none,
+                    hintText: "搜索关键词",
+                    hintStyle: TextStyle(color: CustomColor.very_light_pink_two, fontSize: 13.auto),
                   ),
-                ]
-            ),
+                  focusNode: _focusNode,
+                  autofocus: true,
+                  onChanged: (value) => _onTextChange(),
+                ),
+              ),
+            ]),
             Icon(
               Icons.search,
               color: CustomColor.theme_bar_gradient_2,
             )
           ],
         ),
-      )
-  );
+      ));
 
-  _getAppTitle(){
-    if(widget.gameType != null){
-      switch(widget.gameType){
+  _getAppTitle() {
+    if (widget.gameType != null) {
+      switch (widget.gameType) {
         case GameType.Sportsbook:
           return getTranslatedText("cat_sport");
           break;
@@ -237,30 +221,27 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
     }
   }
 
-  _getAction(){
-    if(isSearching){
+  _getAction() {
+    if (isSearching) {
+      //if in searching mode
       return InkWell(
-        onTap: (){
+        onTap: () {
           setState(() {
-            isSearching=false;
+            isSearching = false;
             isVisibleSuggestionList = false;
             searchController.text = "";
           });
           _vm.filter(searchQuery: "");
         },
-        child: Container(
-            padding: EdgeInsets.only(right: 8.auto),
-            alignment: Alignment.center,
-            child: Text("取消")
-        ),
+        child: Container(padding: EdgeInsets.only(right: 8.auto), alignment: Alignment.center, child: Text("取消")),
       );
-
-    }else{
-      if(_vm.mSearchQuery.isEmpty){
+    } else {
+      if (_vm.mSearchQuery.isEmpty) {
+        // if not in searching mode and search controller text is empty
         return InkWell(
-          onTap: (){
+          onTap: () {
             setState(() {
-              isSearching=true;
+              isSearching = true;
               isVisibleSuggestionList = true;
             });
           },
@@ -271,24 +252,21 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
             ),
           ),
         );
-      }else{
+      } else {
+        // if not in searching mode and search controller text is not empty
         return InkWell(
-          onTap: (){
+          onTap: () {
             _vm.filter(searchQuery: "");
           },
-          child: Container(
-              padding: EdgeInsets.only(right: 8.auto),
-              alignment: Alignment.center,
-              child: Text("取消搜索")
-          ),
+          child: Container(padding: EdgeInsets.only(right: 8.auto), alignment: Alignment.center, child: Text("取消搜索")),
         );
       }
     }
   }
 
-  _onFocusNodeListener(){
-    if(!_focusNode.hasFocus){
-      isSearching=false;
+  _onFocusNodeListener() {
+    if (!_focusNode.hasFocus) {
+      isSearching = false;
       isVisibleSuggestionList = false;
       WidgetsBinding.instance.addPostFrameCallback((_) {
         searchController.text = "";
@@ -296,21 +274,18 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
     }
   }
 
-  _onTextChange(){
-    if(searchController.text.isNotEmpty){
+  _onTextChange() {
+    if (searchController.text.isNotEmpty) {
       _filterGameList(searchQuery: searchController.text);
     }
   }
 
-
-  _filterGameList({int category, String searchQuery}) async{
+  _filterGameList({int category, String searchQuery}) async {
     await _vm.filter(category: category, platform: widget.gamePlatformCode, searchQuery: searchQuery);
   }
 
-  _handleApiState(){
-    handleApiState(_vm.getGameApiState, isAutoHideLoading:false,onSuccess: (){
-    });
-    handleApiState(_vm.getGameProviderListApiState, isAutoHideLoading:false,onSuccess: (){
-    });
+  _handleApiState() {
+    handleApiState(_vm.getGameApiState, isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getGameProviderListApiState, isAutoHideLoading: false, onSuccess: () {});
   }
 }

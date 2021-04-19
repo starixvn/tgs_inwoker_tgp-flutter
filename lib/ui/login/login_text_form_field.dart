@@ -3,7 +3,7 @@ import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
 
-class LoginTextFormField extends StatefulWidget{
+class LoginTextFormField extends StatefulWidget {
   final Widget icon;
   final String hintText;
   final ValueChanged<String> onFieldSubmitted;
@@ -15,7 +15,8 @@ class LoginTextFormField extends StatefulWidget{
   final TextInputType textInputType;
   final TextInputAction textInputAction;
 
-  LoginTextFormField({Key key,
+  LoginTextFormField({
+    Key key,
     this.icon,
     this.hintText,
     this.onChanged,
@@ -36,14 +37,9 @@ class _LoginTextFormFieldState extends BaseState<LoginTextFormField> {
   Widget build(BuildContext context) {
     return Container(
       height: 40.auto,
-      padding: EdgeInsets.symmetric(horizontal: 10.auto, vertical: 5.auto),
-      decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border.all(
-              color: CustomColor.very_light_pink_two,
-              width: 2
-          )
-      ),
+      padding: EdgeInsets.symmetric(horizontal: 10.auto),
+      decoration:
+          BoxDecoration(color: Colors.white, border: Border.all(color: CustomColor.very_light_pink_two, width: 2)),
       child: Row(
         children: [
           Container(
@@ -58,17 +54,12 @@ class _LoginTextFormFieldState extends BaseState<LoginTextFormField> {
               onFieldSubmitted: (value) => widget.onChanged(value),
               keyboardType: widget.textInputType,
               textInputAction: widget.textInputAction,
-              style: TextStyle(
-                  color: CustomColor.theme_value_text_color,
-                  fontSize: 13.auto
-              ),
+              style: TextStyle(color: CustomColor.theme_value_text_color, fontSize: 13.auto),
               decoration: InputDecoration(
+                isDense: true,
                 border: InputBorder.none,
                 hintText: widget.hintText,
-                hintStyle: TextStyle(
-                    color: CustomColor.very_light_pink_two,
-                    fontSize: 13.auto
-                ),
+                hintStyle: TextStyle(color: CustomColor.very_light_pink_two, fontSize: 13.auto),
               ),
             ),
           )

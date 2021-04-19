@@ -1,8 +1,8 @@
-
 import 'package:tgp_flutter/entity/game.dart';
 import 'package:tgp_flutter/entity/game_provider.dart';
 import 'package:tgp_flutter/entity/response/game_url_response.dart';
 import 'package:tgp_flutter/entity/user_profile.dart';
+import 'package:tgp_flutter/network/api_request_builder.dart';
 import 'package:tgp_flutter/network/event_result.dart';
 import 'package:tgp_flutter/network/services/api_service.dart';
 
@@ -20,78 +20,98 @@ class AuthenticationRepository extends BaseRepository {
   }
 
   Future<EventResult<String>> emailVerify(String email) async {
-    var response = await apiPost(
-        "api/player/email",
-        {
-          "email": email,
-        });
-    return resolveBaseResponse(response, (json) => json as String);
+    return await ApiRequestBuilder<String>(
+            method: HttpMethod.POST,
+            endPoint: "api/Player/email",
+            params: {
+              "email": email,
+            },
+            converter: (json) => json as String,
+            resolver: resolveResponse,
+            jwtRefresher: jwtAuth)
+        .execute();
   }
 
-  Future<EventResult<String>> verifyCode(String securityKey, String validateCode,{bool isPhone=false}) async {
-    var response = await apiPut(
-        isPhone?"api/player/phone": "api/player/email",
-        {
-          "securitykey": securityKey,
-          "validatecode": validateCode
-        });
-    return resolveBaseResponse(response, (json) => json as String);
+  Future<EventResult<String>> verifyCode(String securityKey, String validateCode, {bool isPhone = false}) async {
+    return await ApiRequestBuilder<String>(
+            method: HttpMethod.PUT,
+            endPoint: isPhone ? "api/player/phone" : "api/player/email",
+            params: {"securitykey": securityKey, "validatecode": validateCode},
+            converter: (json) => json as String,
+            resolver: resolveBaseResponse,
+            jwtRefresher: jwtAuth)
+        .execute();
   }
 
   Future<EventResult<String>> phoneVerify(String phone) async {
-    var response = await apiPost(
-        "api/player/phone",
-        {
-          "phone": phone,
-        });
-    return resolveBaseResponse(response, (json) => json as String);
+    return await ApiRequestBuilder<String>(
+            method: HttpMethod.POST,
+            endPoint: "api/player/phone",
+            params: {
+              "phone": phone,
+            },
+            converter: (json) => json as String,
+            resolver: resolveBaseResponse,
+            jwtRefresher: jwtAuth)
+        .execute();
   }
 
   Future<EventResult<String>> getForgotPasswordCode(String phone) async {
-    var response = await apiPost(
-        "api/player/password/forgot",
-        {
-          "phone": phone,
-        }, false);
-    return resolveBaseResponse(response, (json) => json as String);
+    return await ApiRequestBuilder<String>(
+            method: HttpMethod.POST,
+            isAuthorization: false,
+            endPoint: "api/player/password/forgot",
+            params: {
+              "phone": phone,
+            },
+            converter: (json) => json as String,
+            resolver: resolveBaseResponse,
+            jwtRefresher: jwtAuth)
+        .execute();
   }
 
   Future<EventResult<String>> resetPassword(String securityKey, String validateCode, String newPassword) async {
-    var response = await apiPost(
-        "api/player/password/reset",
-        {
-          "securitykey": securityKey,
-          "validatecode": validateCode,
-          "newpwd": newPassword
-        },false);
-    return resolveBaseResponse(response, (json) => json as String);
+    return await ApiRequestBuilder<String>(
+            method: HttpMethod.POST,
+            isAuthorization: false,
+            endPoint: "api/player/password/reset",
+            params: {"securitykey": securityKey, "validatecode": validateCode, "newpwd": newPassword},
+            converter: (json) => json as String,
+            resolver: resolveBaseResponse,
+            jwtRefresher: jwtAuth)
+        .execute();
   }
 
-  Future<EventResult<dynamic>> addPayPassword(String password) async{
-    var response = await apiPost(
-        "api/pay/password",
-        {
-          "pwd": password
-        });
-    return resolveBaseResponse(response,(json) => json as dynamic);
+  Future<EventResult<String>> addPayPassword(String password) async {
+    return await ApiRequestBuilder<String>(
+            method: HttpMethod.POST,
+            endPoint: "api/pay/password",
+            params: {"pwd": password},
+            converter: (json) => json as String,
+            resolver: resolveBaseResponse,
+            jwtRefresher: jwtAuth)
+        .execute();
   }
 
-  Future<EventResult<dynamic>> getPayPasswordCode() async{
-    var response = await apiPost(
-        "api/pay/password/validate-code",
-        {
-        });
-    return resolveBaseResponse(response,(json) => json as dynamic);
+  Future<EventResult<String>> getPayPasswordCode() async {
+    return await ApiRequestBuilder<String>(
+            method: HttpMethod.POST,
+            endPoint: "api/pay/password/validate-code",
+            params: {},
+            converter: (json) => json as String,
+            resolver: resolveBaseResponse,
+            jwtRefresher: jwtAuth)
+        .execute();
   }
 
-  Future<EventResult<dynamic>> payPasswordVerify (String password, String  code, String securityKey) async{
-    var response = await apiPatch(
-        "api/pay/password",
-        {
-          "newpwd": password,
-          "validatecode": code,
-          "securitykey": securityKey
-        });
-    return resolveBaseResponse(response,(json) => json as dynamic);
+  Future<EventResult<String>> payPasswordVerify(String password, String code, String securityKey) async {
+    return await ApiRequestBuilder<String>(
+            method: HttpMethod.PATCH,
+            endPoint: "api/pay/password",
+            params: {"newpwd": password, "validatecode": code, "securitykey": securityKey},
+            converter: (json) => json as String,
+            resolver: resolveBaseResponse,
+            jwtRefresher: jwtAuth)
+        .execute();
   }
 }

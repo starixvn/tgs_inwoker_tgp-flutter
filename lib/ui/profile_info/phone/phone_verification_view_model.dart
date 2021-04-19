@@ -27,10 +27,10 @@ class PhoneVerificationViewModel extends BaseViewModel{
 
   phoneVerify(String verificationCode) async{
     setLoading();
-    phoneVerifyApiState = await authRepo.verifyCode(securityKey, verificationCode, isPhone: true);
-    if(phoneVerifyApiState.isSuccess){
-      await userRepo.getBasicInfo();
-    }
+    var _status = await authRepo.verifyCode(securityKey, verificationCode, isPhone: true);
+    if(_status.isSuccess){
+      phoneVerifyApiState = await userRepo.getBasicInfo();
+    }else phoneVerifyApiState = _status;
     setLoading(false);
     return phoneVerifyApiState;
   }

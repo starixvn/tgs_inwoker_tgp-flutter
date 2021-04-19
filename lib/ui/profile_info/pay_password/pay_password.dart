@@ -14,8 +14,7 @@ import 'package:tgp_flutter/ui/profile_info/password/edit_password_view_model.da
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/ui/profile_info/pay_password/pay_password_view_model.dart';
 
-
-class PayPassword extends StatefulWidget{
+class PayPassword extends StatefulWidget {
   @override
   _PayPasswordState createState() => _PayPasswordState();
 }
@@ -27,7 +26,6 @@ class _PayPasswordState extends BaseState<PayPassword> {
       _confirmPasswordController = TextEditingController();
   var isButtonEnabled = false;
   InputValidationProvider validate = new InputValidationProvider();
-
 
   @override
   void initState() {
@@ -41,77 +39,78 @@ class _PayPasswordState extends BaseState<PayPassword> {
           _handleApiState();
           return Scaffold(
               resizeToAvoidBottomInset: false,
-              appBar: AppBar(
-                automaticallyImplyLeading: false,
-                flexibleSpace: Container(
-                  decoration: gradientDecoration,
-                ),
-                centerTitle: true,
-                leading: IconButton(
-                  icon: Icon(Icons.arrow_back),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                ),
-                title: Text(
-                  _vm.userProfile.isSetPayPassword?getTranslatedText("edit_pay_password"): getTranslatedText("add_pay_password"),
-                  style: TextStyle(fontSize: 16.auto),
-                ),
-              ),
-              body: _vm.userProfile==null
-                  ? Center(child: CircularProgressIndicator(),)
+              appBar: _buildAppBar(),
+              body: _vm.userProfile == null
+                  ? Center(
+                      child: CircularProgressIndicator(),
+                    )
                   : Container(
-                  padding: EdgeInsets.only(top: 10.auto, left: 10.auto, right: 10.auto),
-                  child: Column(
-                    children:[
-                      Visibility(
-                          visible: _vm.userProfile.isSetPayPassword,
-                          child: _buildTextFormField("old_password", "enter_old_password_hint", _oldPasswordController,false)
-                      ),
-                      _buildTextFormField("new_password", "enter_new_password_hint", _newPasswordController,false),
-                      _buildTextFormField("confirm_new_password", "confirm_new_password_hint", _confirmPasswordController,true),
-                      _buildButton()
-                      //_buildFooterText()
-                    ],
-                  )
-              )
-          );
+                      padding: EdgeInsets.only(top: 10.auto, left: 10.auto, right: 10.auto),
+                      child: Column(
+                        children: [
+                          Visibility(
+                              visible: _vm.userProfile.isSetPayPassword,
+                              child: _buildTextFormField(
+                                  "old_password", "enter_old_password_hint", _oldPasswordController, false)),
+                          _buildTextFormField("new_password", "enter_new_password_hint", _newPasswordController, false),
+                          _buildTextFormField(
+                              "confirm_new_password", "confirm_new_password_hint", _confirmPasswordController, true),
+                          _buildButton()
+                          //_buildFooterText()
+                        ],
+                      )));
         });
   }
 
-  _buildTextFormField(String title, String hint, TextEditingController controller, bool isLast)=> Container(
-    margin: EdgeInsets.only(top: 15.auto),
-    child: CustomTextFormField(
-      title: getTranslatedText(title),
-      hintText: getTranslatedText(hint),
-      onChanged: (value) => _onTextChange(),
-      onFieldSubmitted: (value){},
-      controller: controller,
-      focusNode: null,
-      width: context.screenWidth-70.auto,
-      textInputType: TextInputType.visiblePassword,
-      textInputAction: isLast?TextInputAction.done:TextInputAction.next,
-    ),
-  );
+  _buildAppBar() => AppBar(
+        automaticallyImplyLeading: false,
+        flexibleSpace: Container(
+          decoration: gradientDecoration,
+        ),
+        centerTitle: true,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        title: Text(
+          _vm.userProfile.isSetPayPassword
+              ? getTranslatedText("edit_pay_password")
+              : getTranslatedText("add_pay_password"),
+          style: TextStyle(fontSize: 16.auto),
+        ),
+      );
+
+  _buildTextFormField(String title, String hint, TextEditingController controller, bool isLast) => Container(
+        margin: EdgeInsets.only(top: 15.auto),
+        child: CustomTextFormField(
+          title: getTranslatedText(title),
+          hintText: getTranslatedText(hint),
+          onChanged: (value) => _onTextChange(),
+          onFieldSubmitted: (value) {},
+          controller: controller,
+          focusNode: null,
+          width: context.screenWidth - 70.auto,
+          textInputType: TextInputType.visiblePassword,
+          textInputAction: isLast ? TextInputAction.done : TextInputAction.next,
+        ),
+      );
 
   _buildButton() => Container(
       width: context.screenWidth,
-      padding:  EdgeInsets.only(top: 50.auto,bottom: 20.auto),
+      padding: EdgeInsets.only(top: 50.auto, bottom: 20.auto),
       child: ColorButton(
         text: Text(
           getTranslatedText("confirm"),
           textAlign: TextAlign.center,
-          style: TextStyle(
-              color: Colors.white,
-              fontSize: 16.auto
-          ),
+          style: TextStyle(color: Colors.white, fontSize: 16.auto),
         ),
-        onClick: () =>_onClick(),
+        onClick: () => _onClick(),
         isEnabled: isButtonEnabled,
         color: CustomColor.theme_bar_gradient_2,
-        radius: 9.6 ,
-      )
-  );
+        radius: 9.6,
+      ));
 
   /*_buildFooterText(){
     var _footerText1, _footerText2;
@@ -150,49 +149,45 @@ class _PayPasswordState extends BaseState<PayPassword> {
     );
   }*/
 
-  _onTextChange(){
+  _onTextChange() {
     setState(() {
-      if(!_vm.userProfile.isSetPayPassword){
-        if(_newPasswordController.text.isNotEmpty &&
-            _confirmPasswordController.text.isNotEmpty
-        ){
-
+      if (!_vm.userProfile.isSetPayPassword) {
+        if (_newPasswordController.text.isNotEmpty && _confirmPasswordController.text.isNotEmpty) {
           isButtonEnabled = true;
         }
-      } else if (_vm.userProfile.isSetPayPassword){
-        if(_oldPasswordController.text.isNotEmpty &&
+      } else if (_vm.userProfile.isSetPayPassword) {
+        if (_oldPasswordController.text.isNotEmpty &&
             _newPasswordController.text.isNotEmpty &&
-            _confirmPasswordController.text.isNotEmpty
-        ){
+            _confirmPasswordController.text.isNotEmpty) {
           isButtonEnabled = true;
         }
-      }else{
+      } else {
         isButtonEnabled = false;
       }
     });
   }
 
   _onClick() async {
-    if(!validate.validatePasswordLength(_newPasswordController.text)) {
+    if (!validate.validatePasswordLength(_newPasswordController.text)) {
       setState(() {
         CustomToast.show("密码由6-20个英文字母或者数字组成");
       });
-    }else if(_newPasswordController.text != _confirmPasswordController.text){
+    } else if (_newPasswordController.text != _confirmPasswordController.text) {
       setState(() {
         CustomToast.show("确认密码与密码不一致");
       });
-    }else{
+    } else {
       CustomProgressDialog.show(context);
-      if(_vm.userProfile.isSetPayPassword){
+      if (_vm.userProfile.isSetPayPassword) {
         //_vm.EditPayPassword(_oldPasswordController.text, _newPasswordController.text);
-      }else{
+      } else {
         _vm.addPayPassword(_newPasswordController.text);
       }
     }
   }
 
-  _handleApiState(){
-    handleApiState(_vm.addPayPasswordApiState, onSuccess: (){
+  _handleApiState() {
+    handleApiState(_vm.addPayPasswordApiState, onSuccess: () {
       CustomToast.show("success");
       WidgetsBinding.instance.addPostFrameCallback((_) {
         Navigator.pop(context);
@@ -200,5 +195,3 @@ class _PayPasswordState extends BaseState<PayPassword> {
     });
   }
 }
-
-

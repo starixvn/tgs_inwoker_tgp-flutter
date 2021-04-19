@@ -20,29 +20,28 @@ import 'package:tgp_flutter/ui/profile_info/pay_password/pay_password_view_model
 import 'package:tgp_flutter/ui/profile_info/phone/phone_verification_view_model.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 
-class ResetPayPassword extends StatefulWidget{
+class ResetPayPassword extends StatefulWidget {
   @override
   _ResetPayPasswordState createState() => _ResetPayPasswordState();
 }
 
-class _ResetPayPasswordState  extends BaseState<ResetPayPassword> {
+class _ResetPayPasswordState extends BaseState<ResetPayPassword> {
   var _vm = PayPasswordViewModel();
   TextEditingController _payPasswordController = TextEditingController(),
       _confirmPayPasswordController = TextEditingController(),
       _phoneController = TextEditingController(),
       _otpController = TextEditingController();
-  var isButtonEnabled = false, isResetPassword = false,  isCodeVisible = false, isOtpEnabled = false;
+  var isButtonEnabled = false, isResetPassword = false, isCodeVisible = false, isOtpEnabled = false;
   InputValidationProvider validate = new InputValidationProvider();
-
 
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if(_vm.userProfile.phone!=null&& _vm.userProfile.phone.isNotEmpty) {
+      if (_vm.userProfile.phone != null && _vm.userProfile.phone.isNotEmpty) {
         setState(() {
           _phoneController.text = _vm.userProfile.phone;
         });
-      }else{
+      } else {
         Navigator.of(context).pushNamed("/phone_verification");
       }
     });
@@ -56,118 +55,115 @@ class _ResetPayPasswordState  extends BaseState<ResetPayPassword> {
           _handleApiState();
           return Scaffold(
               resizeToAvoidBottomInset: false,
-              appBar: AppBar(
-                automaticallyImplyLeading: false,
-                flexibleSpace: Container(
-                  decoration: gradientDecoration,
-                ),
-                centerTitle: true,
-                leading: IconButton(
-                  icon: Icon(Icons.arrow_back),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                ),
-                title: Text(getTranslatedText("reset_pay_password"),
-                  style: TextStyle(fontSize: 16.auto),
-                ),
-              ),
+              appBar: _buildAppBar(),
               body: Container(
                   padding: EdgeInsets.only(top: 10.auto, left: 10.auto, right: 10.auto),
                   child: Column(
                     children: [
                       _buildPasswordTextFormField("new_pay_password", "enter_new_pay_password", _payPasswordController),
-                      _buildPasswordTextFormField("confirm_pay_password", "confirm_pay_password_hint", _confirmPayPasswordController),
+                      _buildPasswordTextFormField(
+                          "confirm_pay_password", "confirm_pay_password_hint", _confirmPayPasswordController),
                       _buildTextFormField("phone_number", "enter_phone_hint", _phoneController),
                       _buildOtpTextFormField(),
                       _buildButton()
                     ],
-                  )
-              )
-          );
+                  )));
         });
   }
 
-  _buildTextFormField(String title, String hint, TextEditingController controller)=> Container(
-    margin: EdgeInsets.only(top: 15.auto),
-    child: CustomTextFormField(
-      title: getTranslatedText(title),
-      hintText: getTranslatedText(hint),
-      onChanged: (value) => _onTextChange(),
-      onFieldSubmitted: (value){},
-      controller: controller,
-      focusNode: null,
-      width: context.screenWidth-70.auto,
-      textInputType: TextInputType.number,
-      textInputAction: TextInputAction.next,
-      enabled: false,
-    ),
-  );
+  _buildAppBar() => AppBar(
+        automaticallyImplyLeading: false,
+        flexibleSpace: Container(
+          decoration: gradientDecoration,
+        ),
+        centerTitle: true,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        title: Text(
+          getTranslatedText("reset_pay_password"),
+          style: TextStyle(fontSize: 16.auto),
+        ),
+      );
 
-  _buildPasswordTextFormField(String title, String hint, TextEditingController controller)=> Container(
-    margin: EdgeInsets.only(top: 15.auto),
-    child: CustomTextFormField(
-      title: getTranslatedText(title),
-      hintText: getTranslatedText(hint),
-      onChanged: (value) => _onTextChange(),
-      onFieldSubmitted: (value){},
-      controller: controller,
-      focusNode: null,
-      width: context.screenWidth-70.auto,
-      textInputType: TextInputType.visiblePassword,
-      textInputAction: TextInputAction.done,
-    ),
-  );
+  _buildTextFormField(String title, String hint, TextEditingController controller) => Container(
+        margin: EdgeInsets.only(top: 15.auto),
+        child: CustomTextFormField(
+          title: getTranslatedText(title),
+          hintText: getTranslatedText(hint),
+          onChanged: (value) => _onTextChange(),
+          onFieldSubmitted: (value) {},
+          controller: controller,
+          focusNode: null,
+          width: context.screenWidth - 70.auto,
+          textInputType: TextInputType.number,
+          textInputAction: TextInputAction.next,
+          enabled: false,
+        ),
+      );
 
-  _buildOtpTextFormField() =>  Opacity(
-    opacity: isOtpEnabled?1:0.3,
-    child: Container(
-      margin: EdgeInsets.only(top: 15.auto),
-      child: OtpTextFormField(
-        hintText: getTranslatedText("enter_phone_otp_hint"),
-        onChanged:(value) => _onTextChange(),
-        controller: _otpController,
-        textInputAction: TextInputAction.done,
-        getOtpCode:() {
-          _getSmsCode();
-        },
-      ),
-    ),
-  );
+  _buildPasswordTextFormField(String title, String hint, TextEditingController controller) => Container(
+        margin: EdgeInsets.only(top: 15.auto),
+        child: CustomTextFormField(
+          title: getTranslatedText(title),
+          hintText: getTranslatedText(hint),
+          onChanged: (value) => _onTextChange(),
+          onFieldSubmitted: (value) {},
+          controller: controller,
+          focusNode: null,
+          width: context.screenWidth - 70.auto,
+          textInputType: TextInputType.visiblePassword,
+          textInputAction: TextInputAction.done,
+        ),
+      );
+
+  _buildOtpTextFormField() => Opacity(
+        opacity: isOtpEnabled ? 1 : 0.3,
+        child: Container(
+          margin: EdgeInsets.only(top: 15.auto),
+          child: OtpTextFormField(
+            hintText: getTranslatedText("enter_phone_otp_hint"),
+            onChanged: (value) => _onTextChange(),
+            controller: _otpController,
+            textInputAction: TextInputAction.done,
+            getOtpCode: () {
+              _getSmsCode();
+            },
+          ),
+        ),
+      );
 
   _buildButton() => Container(
       width: context.screenWidth,
-      padding:  EdgeInsets.only(top: 50.auto,bottom: 20.auto),
+      padding: EdgeInsets.only(top: 50.auto, bottom: 20.auto),
       child: ColorButton(
         text: Text(
           getTranslatedText("confirm_edit"),
           textAlign: TextAlign.center,
-          style: TextStyle(
-              color: Colors.white,
-              fontSize: 16.auto
-          ),
+          style: TextStyle(color: Colors.white, fontSize: 16.auto),
         ),
-        onClick: (){
+        onClick: () {
           _onClick();
         },
         isEnabled: isButtonEnabled,
         color: CustomColor.theme_bar_gradient_2,
-        radius: 9.6 ,
-      )
-  );
+        radius: 9.6,
+      ));
 
   _getSmsCode() {
     CustomProgressDialog.show(context);
     _vm.getPayPasswordCode();
   }
 
-  _onTextChange(){
-    if(_payPasswordController.text.isNotEmpty && _confirmPayPasswordController.text.isNotEmpty){
+  _onTextChange() {
+    if (_payPasswordController.text.isNotEmpty && _confirmPayPasswordController.text.isNotEmpty) {
       setState(() {
         isButtonEnabled = true;
       });
-    }
-    else{
+    } else {
       setState(() {
         isButtonEnabled = false;
       });
@@ -175,28 +171,23 @@ class _ResetPayPasswordState  extends BaseState<ResetPayPassword> {
   }
 
   _onClick() async {
-    if(_payPasswordController.text != _confirmPayPasswordController.text) {
+    if (_payPasswordController.text != _confirmPayPasswordController.text) {
       setState(() {
         CustomToast.show("确认提款密码与提款密码不一致");
       });
-    }
-    else{
+    } else {
       CustomProgressDialog.show(context);
       _vm.payPasswordVerify(_payPasswordController.text, _otpController.text);
     }
   }
 
-  _handleApiState(){
-   handleApiState(_vm.getPayPasswordCodeApiState, onSuccess: (){
-
+  _handleApiState() {
+    handleApiState(_vm.getPayPasswordCodeApiState, onSuccess: () {});
+    handleApiState(_vm.payPasswordVerifyApiState, onSuccess: () {
+      CustomToast.show("Success");
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.pop(context);
+      });
     });
-   handleApiState(_vm.payPasswordVerifyApiState, onSuccess: (){
-     CustomToast.show("Success");
-     WidgetsBinding.instance.addPostFrameCallback((_) {
-       Navigator.pop(context);
-     });
-   });
   }
 }
-
-

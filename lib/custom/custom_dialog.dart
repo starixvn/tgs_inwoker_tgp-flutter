@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:tgp_flutter/custom/color_button.dart';
+import 'package:tgp_flutter/custom/outline_border_button.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
+import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
 
-class CustomDialog extends StatelessWidget{
+class CustomDialog extends StatelessWidget {
   final String title, description, buttonText1, buttonText2;
   final Function onClick;
 
@@ -26,13 +29,13 @@ class CustomDialog extends StatelessWidget{
     );
   }
 
-  dialogContent(BuildContext context){
+  dialogContent(BuildContext context) {
     return Stack(
       children: [
         Container(
           padding: EdgeInsets.symmetric(
-            vertical: context.screenHeight/30,
-            horizontal: context.screenWidth/20,
+            vertical: context.screenHeight / 30,
+            horizontal: context.screenWidth / 20,
           ),
           decoration: new BoxDecoration(
             color: Colors.white,
@@ -46,22 +49,22 @@ class CustomDialog extends StatelessWidget{
               ),
             ],
           ),
-          child:Column(
+          child: Column(
             mainAxisSize: MainAxisSize.min, // To make the card compact
             children: <Widget>[
-              title ==null?
-              Container():
-              Container(
-                padding: EdgeInsets.only(bottom: 13.auto, left: 10.auto),
-                alignment: Alignment.topLeft,
-                child:Text(
-                  title,
-                  style: TextStyle(
-                    fontSize: 18.auto,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
+              title == null
+                  ? Container()
+                  : Container(
+                      padding: EdgeInsets.only(bottom: 13.auto, left: 10.auto),
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                        title,
+                        style: TextStyle(
+                          fontSize: 18.auto,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
               Container(
                 padding: EdgeInsets.only(bottom: 20.auto, left: 10.auto, right: 10.auto),
                 alignment: Alignment.topLeft,
@@ -73,15 +76,12 @@ class CustomDialog extends StatelessWidget{
                   ),
                 ),
               ),
-              buttonText2 ==null?
-              _buildDoneButton(context) :
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  _buildDoneButton(context),
-                  _buildBackButton(context)
-                ],
-              )
+              buttonText2 == null
+                  ? _buildDoneButton(context)
+                  : Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [_buildDoneButton(context), _buildBackButton(context)],
+                    )
             ],
           ),
         ),
@@ -89,46 +89,27 @@ class CustomDialog extends StatelessWidget{
     );
   }
 
-  _buildDoneButton(BuildContext context) => FlatButton(
-    //minWidth:context.screenWidth/ 3.5,
-    //height:context.screenHeight / 15,
-    onPressed: () => this.onClick(),
-    shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(45)),
-    padding: EdgeInsets.all(0.0),
-    child: Ink(
-      decoration: roundGradientDecoration,
-      child: Container(
-        constraints:
-        BoxConstraints(
-          maxWidth: context.screenWidth / 3.5,
-          maxHeight: context.screenHeight/ 15,
-        ),
-        alignment: Alignment.center,
-        child: Text(
+  _buildDoneButton(BuildContext context) => ColorButton(
+        onClick: () => this.onClick(),
+        text: Text(
           buttonText1,
           textAlign: TextAlign.center,
-          style: TextStyle(
-              color: Colors.white),
+          style: TextStyle(color: Colors.white),
         ),
-      ),
-    ),
-  );
+        isEnabled: true,
+        radius: 45.auto,
+        width: context.screenWidth / 3.5,
+        height: context.screenHeight / 18,
+        color: CustomColor.theme_bar_gradient_2,
+      );
 
-  _buildBackButton(BuildContext context) =>FlatButton(
-    // minWidth: context.screenWidth / 3.5,
-    // height:  context.screenHeight / 15,
-    //padding: EdgeInsets.all(12),
-    onPressed:()=> Navigator.pop(context),
-    child: Text(buttonText2?? "uyy"),
-    textColor: Colors.red,
-    shape: RoundedRectangleBorder(
-      side: BorderSide(
-          color: Colors.red,
-          width: 1.0
-      ),
-      borderRadius: BorderRadius.all(Radius.circular(45)),
-    ),
-    color: Colors.white,
-  );
+  _buildBackButton(BuildContext context) => OutlineBorderButton(
+        onClick: () => Navigator.pop(context),
+        title: buttonText2,
+        isEnabled: true,
+        width: context.screenWidth / 3.5,
+        height: context.screenHeight / 18,
+        fontSize: 13.auto,
+        color: Colors.white,
+      );
 }

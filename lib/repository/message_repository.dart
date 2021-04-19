@@ -1,9 +1,9 @@
-
 import 'package:tgp_flutter/entity/game.dart';
 import 'package:tgp_flutter/entity/game_provider.dart';
 import 'package:tgp_flutter/entity/response/game_url_response.dart';
 import 'package:tgp_flutter/entity/response/message_response.dart';
 import 'package:tgp_flutter/entity/user_profile.dart';
+import 'package:tgp_flutter/network/api_request_builder.dart';
 import 'package:tgp_flutter/network/event_result.dart';
 import 'package:tgp_flutter/network/services/api_service.dart';
 
@@ -21,16 +21,17 @@ class MessageRepository extends BaseRepository {
     return _singleton;
   }
 
-  Future<EventResult<MessageResponse>> getMessageList(
-      int page,
-      int rows
-      ) async {
-    var response = await apiGet(
-        "api/letter",
-        content:{
+  Future<EventResult<MessageResponse>> getMessageList(int page, int rows) async {
+    return await ApiRequestBuilder<MessageResponse>(
+        method: HttpMethod.GET,
+        endPoint: "api/letter",
+        params: {
           "page": page.toString(),
           "rows": rows.toString(),
-        });
-    return resolveBaseResponse(response, (json) => MessageResponse.fromJson(json));
+        },
+        converter: (json) => MessageResponse.fromJson(json),
+        resolver: resolveBaseResponse,
+        jwtRefresher: jwtAuth)
+        .execute();
   }
 }

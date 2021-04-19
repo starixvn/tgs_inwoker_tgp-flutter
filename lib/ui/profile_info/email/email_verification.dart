@@ -16,15 +16,14 @@ import 'package:tgp_flutter/ui/profile_info/email/email_verification_view_model.
 import 'package:tgp_flutter/ui/profile_info/phone/phone_verification_view_model.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 
-class EmailVerification extends StatefulWidget{
+class EmailVerification extends StatefulWidget {
   @override
   _EmailVerificationState createState() => _EmailVerificationState();
 }
 
 class _EmailVerificationState extends BaseState<EmailVerification> {
   var _vm = EmailVerificationViewModel();
-  TextEditingController _emailController = TextEditingController(),
-      _otpController = TextEditingController();
+  TextEditingController _emailController = TextEditingController(), _otpController = TextEditingController();
   var isButtonEnabled = false, isOtpEnabled = false, isTextFieldEnabled = false;
   var buttonText;
   InputValidationProvider validate = new InputValidationProvider();
@@ -44,27 +43,11 @@ class _EmailVerificationState extends BaseState<EmailVerification> {
           _handleApiState();
           return Scaffold(
               resizeToAvoidBottomInset: false,
-              appBar: AppBar(
-                automaticallyImplyLeading: false,
-                flexibleSpace: Container(
-                  decoration: gradientDecoration,
-                ),
-                centerTitle: true,
-                leading: IconButton(
-                  icon: Icon(Icons.arrow_back),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                ),
-                title: Text(getTranslatedText("email"),
-                  style: TextStyle(fontSize: 16.auto),
-                ),
-              ),
+              appBar: _buildAppBar(),
               body: /*userProfile == null?
                   Center(child: CircularProgressIndicator(),):*/
-              Container(
-                margin: EdgeInsets.only(
-                    left: 10.auto, right: 10.auto, top: 10.auto),
+                  Container(
+                margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 10.auto),
                 child: Column(
                   children: [
                     //CustomTabBar(index:1),
@@ -73,97 +56,109 @@ class _EmailVerificationState extends BaseState<EmailVerification> {
                     _buildButton()
                   ],
                 ),
-              )
-          );
+              ));
         });
   }
 
-  _buildTextFormField() =>  Container(
-    margin: EdgeInsets.only(top: 15.auto),
-    child: CustomTextFormField(
-      title: getTranslatedText("email"),
-      hintText: getTranslatedText("email_hint"),
-      onChanged: (value) => _onTextChange(),
-      onFieldSubmitted: (value){},
-      controller: _emailController,
-      focusNode: null,
-      width: context.screenWidth-70.auto,
-      textInputType: TextInputType.number,
-      textInputAction: TextInputAction.next,
-      enabled: isTextFieldEnabled,
-    ),
-  );
-
-  _buildOtpTextFormField() =>  Visibility(
-    visible:_vm.userProfile.email==null,
-    child: Opacity(
-      opacity: isOtpEnabled?1:0.4,
-      child: Container(
-        margin: EdgeInsets.only(top: 15.auto),
-        child: OtpTextFormField(
-          hintText: getTranslatedText("email_otp_hint"),
-          onChanged:(value) => _onTextChange(),
-          controller: _otpController,
-          textInputAction: TextInputAction.done,
-          getOtpCode:() {
-            _getSmsCode();
-          },
-          isEnabled: isOtpEnabled,
+  _buildAppBar() => AppBar(
+        automaticallyImplyLeading: false,
+        flexibleSpace: Container(
+          decoration: gradientDecoration,
         ),
-      ),
-    ),
-  );
+        centerTitle: true,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        title: Text(
+          getTranslatedText("email"),
+          style: TextStyle(fontSize: 16.auto),
+        ),
+      );
+
+  _buildTextFormField() => Container(
+        margin: EdgeInsets.only(top: 15.auto),
+        child: CustomTextFormField(
+          title: getTranslatedText("email"),
+          hintText: getTranslatedText("email_hint"),
+          onChanged: (value) => _onTextChange(),
+          onFieldSubmitted: (value) {},
+          controller: _emailController,
+          focusNode: null,
+          width: context.screenWidth - 70.auto,
+          textInputType: TextInputType.number,
+          textInputAction: TextInputAction.next,
+          enabled: isTextFieldEnabled,
+        ),
+      );
+
+  _buildOtpTextFormField() => Visibility(
+        visible: _vm.userProfile.email == null,
+        child: Opacity(
+          opacity: isOtpEnabled ? 1 : 0.4,
+          child: Container(
+            margin: EdgeInsets.only(top: 15.auto),
+            child: OtpTextFormField(
+              hintText: getTranslatedText("email_otp_hint"),
+              onChanged: (value) => _onTextChange(),
+              controller: _otpController,
+              textInputAction: TextInputAction.done,
+              getOtpCode: () {
+                _getSmsCode();
+              },
+              isEnabled: isOtpEnabled,
+            ),
+          ),
+        ),
+      );
 
   _buildButton() => Container(
       width: context.screenWidth,
       margin: EdgeInsets.only(top: 30.auto, bottom: 20.auto),
       child: ColorButton(
         text: Text(
-          buttonText??"",
+          buttonText ?? "",
           textAlign: TextAlign.center,
-          style: TextStyle(
-              color: Colors.white,
-              fontSize: 16.auto
-          ),
+          style: TextStyle(color: Colors.white, fontSize: 16.auto),
         ),
-        onClick: (){
+        onClick: () {
           _onClick();
         },
         isEnabled: isButtonEnabled,
         color: CustomColor.theme_bar_gradient_2,
-        radius: 9.6 ,
-      )
-  );
+        radius: 9.6,
+      ));
 
-  _onTextChange(){
+  _onTextChange() {
     setState(() {
-      if(_otpController.text.isNotEmpty && _emailController.text.isNotEmpty){
+      if (_otpController.text.isNotEmpty && _emailController.text.isNotEmpty) {
         isButtonEnabled = true;
-      }else if(_emailController.text.isNotEmpty){
+      } else if (_emailController.text.isNotEmpty) {
         isOtpEnabled = true;
-      } else{
+      } else {
         isButtonEnabled = false;
         isOtpEnabled = false;
       }
     });
   }
 
-  _getUserProfile(){
-      var _email = _vm.userProfile.email;
-      setState(() {
-        if(_email !=null){
-          if(_email.isNotEmpty){
-            _emailController.text = _email;
-            buttonText = getTranslatedText("verified");
-            isButtonEnabled = false;
-            isTextFieldEnabled = false;
-          }
+  _getUserProfile() {
+    var _email = _vm.userProfile.email;
+    setState(() {
+      if (_email != null) {
+        if (_email.isNotEmpty) {
+          _emailController.text = _email;
+          buttonText = getTranslatedText("verified");
+          isButtonEnabled = false;
+          isTextFieldEnabled = false;
         }
-        else{
-          buttonText = getTranslatedText("done");
-          isTextFieldEnabled = true;
-        }
-      });
+      } else {
+        buttonText = getTranslatedText("done");
+        isTextFieldEnabled = true;
+      }
+    });
   }
 
   _getSmsCode() {
@@ -182,14 +177,11 @@ class _EmailVerificationState extends BaseState<EmailVerification> {
     _vm.emailVerify(_otpController.text);
   }
 
-  _handleApiState(){
-    handleApiState(_vm.getEmailCodeApiState, onSuccess: (){
-
-    });
-    handleApiState(_vm.emailVerifyApiState, onSuccess: (){
+  _handleApiState() {
+    handleApiState(_vm.getEmailCodeApiState, onSuccess: () {});
+    handleApiState(_vm.emailVerifyApiState, onSuccess: () {
       CustomToast.show("Success");
       _getUserProfile();
     });
   }
 }
-

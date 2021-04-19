@@ -10,61 +10,59 @@ class GradientButton extends StatelessWidget {
   final double radius;
   final double height;
   final double fontSize;
+  final double width;
 
-  GradientButton({Key key,
-    @required this.title,
-    @required this.onClick,
-    @required this.isEnabled,
-    @required this.radius,
-    @required this.height,
-    this.fontSize
-
-  }) : super(key: key);
+  GradientButton(
+      {Key key,
+      @required this.title,
+      @required this.onClick,
+      @required this.isEnabled,
+      @required this.radius,
+      @required this.height,
+      this.fontSize,
+        this.width
+      })
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return isEnabled ? TextButton(
-      onPressed: () => this.onClick(),
-        child: Container(
-          alignment: Alignment.center,
-          height: height.auto,
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  CustomColor.theme_bar_gradient_1,
-                  CustomColor.theme_bar_gradient_2
-                ],
-                begin: Alignment.bottomCenter,
-                end: Alignment.topCenter,
-              ),
-            borderRadius: BorderRadius.circular((radius).auto),
-          ),
-          padding: EdgeInsets.symmetric(horizontal: 8.auto),
-          child: Text(
-            title,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                color: Colors.white,
-                fontSize: fontSize??16.auto
+    return isEnabled
+        ? TextButton(
+            onPressed: () => this.onClick(),
+            style: ButtonStyle(
+              padding: MaterialStateProperty.all(EdgeInsets.zero),
             ),
-          ),
-
-      ),
-    ) :TextButton(
-      onPressed: null,
-      style:ButtonStyle(
-        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-            RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular((radius).auto),
-            )
-        ),
-      ),
-      child: Text(
-        title,
-        textAlign: TextAlign.center,
-        style: TextStyle(
-            color: Colors.white),
-      ),
-    );
+            child: Container(
+              alignment: Alignment.center,
+              height: height.auto,
+              width: width??context.screenWidth,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [CustomColor.theme_bar_gradient_1, CustomColor.theme_bar_gradient_2],
+                  begin: Alignment.bottomCenter,
+                  end: Alignment.topCenter,
+                ),
+                borderRadius: BorderRadius.circular((radius).auto),
+              ),
+              child: Text(
+                title,
+                style: TextStyle(color: Colors.white, fontSize: fontSize ?? 16.auto),
+              ),
+            ),
+          )
+        : TextButton(
+            onPressed: null,
+            style: ButtonStyle(
+              padding: MaterialStateProperty.all(EdgeInsets.zero),
+              shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular((radius).auto),
+              )),
+            ),
+            child: Text(
+              title,
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.white),
+            ),
+          );
   }
 }

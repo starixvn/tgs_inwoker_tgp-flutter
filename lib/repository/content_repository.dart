@@ -1,9 +1,9 @@
-
 import 'package:tgp_flutter/entity/game.dart';
 import 'package:tgp_flutter/entity/game_provider.dart';
 import 'package:tgp_flutter/entity/game_type.dart';
 import 'package:tgp_flutter/entity/response/game_url_response.dart';
 import 'package:tgp_flutter/entity/user_profile.dart';
+import 'package:tgp_flutter/network/api_request_builder.dart';
 import 'package:tgp_flutter/network/event_result.dart';
 import 'package:tgp_flutter/network/services/api_service.dart';
 
@@ -22,58 +22,61 @@ class ContentRepository extends BaseRepository {
   }
 
   Future<EventResult<List<GameProvider>>> getGameProviderList() async {
-    var response = await apiGet(
-        "api/GameProvider/list",
-        content:{
-          "platformtype": "1",
-          "language": "en-US",
-          "currency": "CNY",
-        });
-    return resolveBaseResponse(response, (json) {
-      return (json as List<dynamic>).map((e) =>
-          GameProvider.fromJson(e)
-      ).toList();
-    });
+    return await ApiRequestBuilder<List<GameProvider>>(
+            method: HttpMethod.GET,
+            endPoint: "api/GameProvider/list",
+            params: {
+              "platformtype": "1",
+              "language": "en-US",
+              "currency": "CNY",
+            },
+            converter: (json) => (json as List<dynamic>).map((e) => GameProvider.fromJson(e)).toList(),
+            resolver: resolveBaseResponse,
+            jwtRefresher: jwtAuth)
+        .execute();
   }
 
-  Future<EventResult<List<Game>>> getGameList(
-      String gamePlatformCode,
-      GameType gameType) async {
-    var response = await apiGet(
-        "api/Game/list",
-        content:{
-          "gpcode": gamePlatformCode,
-          "gametypes": gameType.getJsonValue.toString(),
-          "platformtype": "1",
-          "language": "en-US",
-          "currency": "CNY"
-        },
-        isAuthorization: false
-    );
-    return resolveBaseResponse(response, (json) {
-      return (json as List<dynamic>).map((e) =>
-          Game.fromJson(e)
-      ).toList();
-    });
+  Future<EventResult<List<Game>>> getGameList(String gamePlatformCode, GameType gameType) async {
+    return await ApiRequestBuilder<List<Game>>(
+            method: HttpMethod.GET,
+            endPoint: "api/Game/list",
+            params: {
+              "gpcode": gamePlatformCode,
+              "gametypes": gameType.getJsonValue.toString(),
+              "platformtype": "1",
+              "language": "en-US",
+              "currency": "CNY"
+            },
+            converter: (json) => (json as List<dynamic>).map((e) => Game.fromJson(e)).toList(),
+            resolver: resolveBaseResponse,
+            jwtRefresher: jwtAuth)
+        .execute();
   }
 
-  Future<EventResult<GameUrlResponse>> getGameUrl(String gamePlatformCode,
-      int gameId) async {
-    var response = await apiGet(
-        "api/Game/geturl",
-        content:{
-          "gpcode": gamePlatformCode,
-          "gid": gameId.toString(),
-          "language": "en-US",
-        });
-    return resolveResponse(response, (json) => GameUrlResponse.fromJson(json));
+  Future<EventResult<GameUrlResponse>> getGameUrl(String gamePlatformCode, int gameId) async {
+    return await ApiRequestBuilder<GameUrlResponse>(
+            method: HttpMethod.GET,
+            endPoint: "api/Game/geturl",
+            params: {
+              "gpcode": gamePlatformCode,
+              "gid": gameId.toString(),
+              "language": "en-US",
+            },
+            converter: (json) => GameUrlResponse.fromJson(json),
+            resolver: resolveResponse,
+            jwtRefresher: jwtAuth)
+        .execute();
   }
 
   Future<EventResult<String>> getAnnouncement() async {
-    var response = await apiGet(
-        "api/announcement/list",
-      isAuthorization: false
-    );
-    return resolveOnlyDataResponse(response, (json) => (json as String));
+    return await ApiRequestBuilder<String>(
+            method: HttpMethod.GET,
+            isAuthorization: false,
+            endPoint: "api/Game/list",
+            params: {},
+            converter: (json) => (json as String),
+            resolver: resolveOnlyDataResponse,
+            jwtRefresher: jwtAuth)
+        .execute();
   }
 }

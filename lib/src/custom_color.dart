@@ -16,4 +16,7 @@ class CustomColor{
 
   static const Color grey = Color(0xff686868);
   static const Color black = Color(0xff2b2b2b);
+  static const Color grey_five = Color(0xff7f7f7f);
+  static const Color faded_red = Color(0xffe73f42);
+
 }

@@ -3,7 +3,7 @@ import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
 
-class LoginPasswordTextFormField extends StatefulWidget{
+class LoginPasswordTextFormField extends StatefulWidget {
   final Widget icon;
   final String hintText;
   final ValueChanged<String> onFieldSubmitted;
@@ -16,7 +16,8 @@ class LoginPasswordTextFormField extends StatefulWidget{
   final TextInputAction textInputAction;
   final bool obscurePassword;
 
-  LoginPasswordTextFormField({Key key,
+  LoginPasswordTextFormField({
+    Key key,
     this.icon,
     this.hintText,
     this.onChanged,
@@ -38,15 +39,11 @@ class _LoginPasswordTextFormFieldState extends BaseState<LoginPasswordTextFormFi
   Widget build(BuildContext context) {
     return Container(
       height: 40.auto,
-      padding: EdgeInsets.symmetric(horizontal: 10.auto, vertical: 5.auto),
-      decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border.all(
-              color: CustomColor.very_light_pink_two,
-              width: 2
-          )
-      ),
+      padding: EdgeInsets.symmetric(horizontal: 10.auto),
+      decoration:
+          BoxDecoration(color: Colors.white, border: Border.all(color: CustomColor.very_light_pink_two, width: 2)),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
             height: 20.auto,
@@ -62,29 +59,20 @@ class _LoginPasswordTextFormFieldState extends BaseState<LoginPasswordTextFormFi
               keyboardType: widget.textInputType,
               textInputAction: widget.textInputAction,
               obscureText: widget.obscurePassword,
-              style: TextStyle(
-                  color: CustomColor.theme_value_text_color,
-                  fontSize: 13.auto
-              ),
+              style: TextStyle(color: CustomColor.theme_value_text_color, fontSize: 13.auto),
               decoration: InputDecoration(
+                isDense: true,
                 border: InputBorder.none,
                 hintText: widget.hintText,
-                hintStyle: TextStyle(
-                    color: CustomColor.very_light_pink_two,
-                    fontSize: 13.auto
-                ),
-                suffixIcon:  IconButton(
+                hintStyle: TextStyle(color: CustomColor.very_light_pink_two, fontSize: 13.auto),
+                suffixIcon: IconButton(
                   iconSize: 18.auto,
                   padding: EdgeInsets.only(bottom: 0),
                   splashColor: Colors.transparent,
                   highlightColor: Colors.transparent,
-                  icon: Icon(
-                      widget.obscurePassword
-                          ? Icons.visibility_off
-                          : Icons.visibility,
-                      color: CustomColor.very_light_pink_two
-                  ),
-                  onPressed:()=> widget.onShowPassword(),
+                  icon: Icon(widget.obscurePassword ? Icons.visibility_off : Icons.visibility,
+                      color: CustomColor.very_light_pink_two),
+                  onPressed: () => widget.onShowPassword(),
                 ),
               ),
             ),

@@ -8,14 +8,17 @@ import 'package:tgp_flutter/repository/content_repository.dart';
 import 'package:tgp_flutter/repository/user_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
-class HomeViewModel extends BaseViewModel{
+class HomeViewModel extends BaseViewModel {
   final userRepo = UserRepository.getSingleton();
 
   @override
   List<BaseRepository> get repoList => [userRepo];
+
   get userProfile => userRepo.userProfile;
+
+  get wallet => userRepo.wallet;
   bool isNotLogin = false, isExpired = false;
+  var getWalletBalanceApiState, getBasicInfoApiState;
 
   resumeIfNeed() async {
     setLoading();
@@ -24,15 +27,16 @@ class HomeViewModel extends BaseViewModel{
     if (token != null) {
       print(token);
       await userRepo.getBasicInfo();
-      if (userProfile == null) isExpired = true;
-      print("Token: "+token);
-    }
-    else isNotLogin = true;
+      if(userProfile ==null) isExpired = true;
+      print("Token: " + token);
+      print("Authorization: " + prefs.getString("auth_token"));
+    } else
+      isNotLogin = true;
     setLoading(false);
     notifyListeners();
   }
 
-  markIsNotLogin(){
-    isNotLogin=false;
+  markIsNotLogin() {
+    isNotLogin = false;
   }
 }

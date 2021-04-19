@@ -10,8 +10,8 @@ class TransactionViewModel extends BaseViewModel {
   final contentRepo = ContentRepository.getSingleton();
   var getTransactionApiState, getGameProviderApiState;
   var page = 1, rows =20;
-  var pStartDate = DateTime.now();
-  var pEndDate = DateTime.now();
+  var pStartDate = DateTime.now(), pEndDate = DateTime.now();
+  var startDate = DateTime.now(), endDate = DateTime.now();
   List<BetTransaction> betTransactionList;
   var endRecord = false;
 
@@ -21,12 +21,6 @@ class TransactionViewModel extends BaseViewModel {
   List<BaseRepository> get repoList => [userRepo, contentRepo];
 
   getTransaction({
-    DateTime startDate,
-    DateTime endDate,
-    /*int orderBy,
-      {bool isDesc,
-        String sortBy,
-        bool showAll = false}*/
     bool isLoadMore = false
   }) async{
     setLoading();
@@ -40,12 +34,6 @@ class TransactionViewModel extends BaseViewModel {
       getTransactionApiState = null;
       betTransactionList = null;
     }
-    if (startDate != null) pStartDate = startDate;
-    if (endDate != null) pEndDate = endDate;
-
-    print("======");
-    print(pStartDate);
-    print(pEndDate);
     getTransactionApiState = await userRepo.getTransaction(pStartDate, pEndDate, page, rows/*, orderBy, isDesc, sortBy, showAll*/);
 
     List<BetTransaction> list=[];
@@ -59,9 +47,10 @@ class TransactionViewModel extends BaseViewModel {
     return getTransactionApiState;
   }
 
-  filter(DateTime startDate){
-    pStartDate = startDate;
-    pEndDate = DateTime.now();
+  setDate({DateTime startDate, endDate}){
+    if (startDate != null) pStartDate = startDate;
+    if (endDate != null) pEndDate = endDate;
+    notifyListeners();
   }
 
   getGameProviderList() async{

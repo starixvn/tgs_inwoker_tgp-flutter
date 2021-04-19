@@ -5,8 +5,7 @@ import 'package:http/http.dart' as http;
 import 'event_result.dart';
 
 typedef T ResponseResultConverter<T>(dynamic);
-typedef EventResult<T> ResponseResolver<T>(
-    http.Response response, ResponseResultConverter<T> converter,
+typedef EventResult<T> ResponseResolver<T>(http.Response response, ResponseResultConverter<T> converter,
     [ResultConsumer consumer]);
 typedef Future JwtRefresher();
 typedef void ResultConsumer(T);
@@ -38,7 +37,7 @@ class ApiRequestBuilder<T> {
 
   Future<EventResult<T>> execute() async {
     var response = await request(method, endPoint, params, isAuthorization);
-    var result = resolver(response, converter,consumer);
+    var result = resolver(response, converter, consumer);
     if (result.errorCode == 101 && retryCounter < 2 && !isJWTAuthRequest) {
       retryCounter++;
       await jwtRefresher();

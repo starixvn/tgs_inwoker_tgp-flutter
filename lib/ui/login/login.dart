@@ -5,13 +5,12 @@ import 'package:tgp_flutter/ui/login/login_tab.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/ui/login/login_view_model.dart';
 
-
-class Login extends StatefulWidget{
+class Login extends StatefulWidget {
   @override
   _LoginState createState() => _LoginState();
 }
 
-class _LoginState extends BaseState<Login>{
+class _LoginState extends BaseState<Login> {
   var _vm = LoginViewModel();
 
   @override
@@ -26,39 +25,27 @@ class _LoginState extends BaseState<Login>{
         height: context.screenHeight,
         width: context.screenWidth,
         decoration: BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage("images/login_bg.png"),
-              fit: BoxFit.fill
-          ),
+          image: DecorationImage(image: AssetImage("images/login_bg.png"), fit: BoxFit.fill),
         ),
         child: Column(
           children: [
-            Container(
-                margin: EdgeInsets.only(top: ScreenUtil
-                    .getInstance()
-                    .statusBarHeight),
-                child: Image.asset(
-                  "images/ic_logo.png",
-                  height: 100.auto,
-                  fit: BoxFit.contain,
-                )
-            ),
+            _buildLogoImage(),
             Expanded(
                 child: Container(
-                  margin: EdgeInsets.symmetric(horizontal: 27.auto),
-                  child: LoginTab(),
-                )
-            )
+              margin: EdgeInsets.symmetric(horizontal: 27.auto),
+              child: LoginTab(),
+            ))
           ],
         ),
       ),
     );
   }
+
+  _buildLogoImage() => Container(
+      margin: EdgeInsets.only(top: ScreenUtil.getInstance().statusBarHeight),
+      child: Image.asset(
+        "images/ic_logo.png",
+        height: 100.auto,
+        fit: BoxFit.contain,
+      ));
 }
-
-
-
-
-
-
-

@@ -12,10 +12,10 @@ class QQAccountViewModel extends BaseViewModel{
 
   setQQAccount(String qq) async{
     setLoading();
-    setQQApiState = await userRepo.setQQAccount(qq);
-    if(setQQApiState.isSuccess){
-      await userRepo.getBasicInfo();
-    }
+    var _status = await userRepo.setQQAccount(qq);
+    if(_status.isSuccess){
+      setQQApiState = await userRepo.getBasicInfo();
+    }else setQQApiState = _status;
     setLoading(false);
     return setQQApiState;
   }

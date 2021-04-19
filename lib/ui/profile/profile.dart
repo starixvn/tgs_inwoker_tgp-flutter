@@ -14,7 +14,7 @@ import 'package:tgp_flutter/ui/profile/profile_top_item.dart';
 import 'package:tgp_flutter/ui/profile/profile_view_model.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 
-class Profile extends StatefulWidget{
+class Profile extends StatefulWidget {
   @override
   _ProfileState createState() => _ProfileState();
 }
@@ -27,11 +27,10 @@ class _ProfileState extends BaseState<Profile> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if(_vm.userProfile !=null) {
+      if (_vm.userProfile != null) {
         _vm.getWalletBalance();
         //_getVipDetails();
-      }
-      else{
+      } else {
         Navigator.of(context).pushNamed("/login");
       }
     });
@@ -46,63 +45,51 @@ class _ProfileState extends BaseState<Profile> {
           return Scaffold(
               resizeToAvoidBottomInset: false,
               backgroundColor: Colors.white,
-              body: _vm.userProfile==null || _vm.wallet == null
-                  ? Center(child: CircularProgressIndicator(),)
-                  :Container(
-                padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  image: DecorationImage(
-                    colorFilter: ColorFilter.mode(
-                        CustomColor.theme_bar_gradient_2, BlendMode.color
-                    ),
-                    image: AssetImage(
-                        "images/profile/profile_top_background.png"),
-                    fit: BoxFit.fitWidth,
-                    alignment: Alignment.topCenter,
-                  ),
-                ),
-                child: Column(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(
-                            top: 10.auto, left: 50.auto, right: 50.auto, bottom: 20.auto),
-                        child: Row(
-                          children: [
-                            Container(
-                                width: 65.auto,
-                                height: 65.auto,
-                                decoration: new BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    image: new DecorationImage(
-                                        fit: BoxFit.fill,
-                                        image: AssetImage(
-                                            "images/profile/profile_image.png"
-                                        )
-                                    )
-                                )
-                            ),
-                            _buildUserDetails(),
-                          ],
-                        ),
-                      ),
-                      _buildProfileTopItem(),
-                      _buildGridViewLayout(),
-                    ]
-                ),
-              )
-            // : Container()
-          );
-        }
-    );
+              body: _vm.userProfile == null || _vm.wallet == null
+                  ? Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : _buildUserInfoContainer());
+        });
   }
 
-  _buildUserDetails() => Container(
-    margin: EdgeInsets.only(left: 20.auto),
-    child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(_vm.userProfile.username??"",
+  _buildUserInfoContainer() => Container(
+        padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          image: DecorationImage(
+            colorFilter: ColorFilter.mode(CustomColor.theme_bar_gradient_2, BlendMode.color),
+            image: AssetImage("images/profile/profile_top_background.png"),
+            fit: BoxFit.fitWidth,
+            alignment: Alignment.topCenter,
+          ),
+        ),
+        child: Column(children: [
+          Padding(
+            padding: EdgeInsets.only(top: 10.auto, left: 50.auto, right: 50.auto, bottom: 10.auto),
+            child: Row(
+              children: [
+                Container(
+                    width: 65.auto,
+                    height: 65.auto,
+                    decoration: new BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: new DecorationImage(
+                            fit: BoxFit.fill, image: AssetImage("images/profile/profile_image.png")))),
+                _buildUserInfoText(),
+              ],
+            ),
+          ),
+          _buildProfileTopItem(),
+          _buildGridViewLayout(),
+        ]),
+      );
+
+  _buildUserInfoText() => Container(
+        margin: EdgeInsets.only(left: 20.auto),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Text(
+            _vm.userProfile.username ?? "",
             style: TextStyle(
               color: Colors.white,
               fontSize: (19.2).auto,
@@ -110,117 +97,116 @@ class _ProfileState extends BaseState<Profile> {
             textAlign: TextAlign.left,
           ),
           Padding(
-            padding: EdgeInsets.only(
-                top: 3.auto, bottom: 3.auto),
+            padding: EdgeInsets.only(top: 3.auto, bottom: 3.auto),
             //"¥ ${widget.userProfile?.balance}",
-            child: Text(getTranslatedText("main_wallet")+" :  ¥ ${Format().currencyWithDecimalFormat(_vm.wallet.main)}",
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: (11.2).auto
-              ),
+            child: Text(
+              getTranslatedText("main_wallet") + " :  ¥ ${Format().currencyWithDecimalFormat(_vm.wallet?.main ?? 0.0)}",
+              style: TextStyle(color: Colors.white, fontSize: (11.2).auto),
               textAlign: TextAlign.start,
             ),
-          ), Text(getTranslatedText("total_balance")+" : ¥ 0.00",//"总资金  "+(_vm.totalBalance != null ? "¥ "+ Format().currencyWithDecimalFormat(_vm.totalBalance) : "-"),
-            style: TextStyle(
-                color: Colors.white,
-                fontSize: (11.2).auto
-            ),
+          ),
+          Text(
+            getTranslatedText("total_balance") + " : ¥ 0.00",
+            //"总资金  "+(_vm.totalBalance != null ? "¥ "+ Format().currencyWithDecimalFormat(_vm.totalBalance) : "-"),
+            style: TextStyle(color: Colors.white, fontSize: (11.2).auto),
             textAlign: TextAlign.start,
           )
-        ]
-    ),
-  );
+        ]),
+      );
 
   _buildProfileTopItem() => Container(
-    margin: EdgeInsets.only(left: 15.auto, right:15.auto),
-    child: Card(
-      semanticContainer: true,
-      clipBehavior: Clip.antiAlias,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
-      ),
-      elevation: 5,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          ProfileTopItem(title:getTranslatedText("deposit") ,imagePath:"ic_deposit", routePath:"deposit"),
-          ProfileTopItem(title:getTranslatedText("transfer"),imagePath:"ic_transfer", routePath:"wallet_transfer"),
-          ProfileTopItem(title:getTranslatedText("withdrawal"),imagePath:"ic_withdraw", routePath:"withdraw"),
-        ],
-      ),
-    ),
-  );
-
-  _buildGridViewLayout() => Expanded(
-    child: ScrollConfiguration(
-      behavior: MyBehavior(),
-      child: ListView(
-        padding: EdgeInsets.only(
-            left: 25.auto, right: 25.auto, bottom: 10.auto, top:20.auto),
-        shrinkWrap: true,
-        primary: false,
-        physics: AlwaysScrollableScrollPhysics(),
-        children: [
-          GridView.count(
-            padding: EdgeInsets.only(bottom: 30.auto),
-            crossAxisCount: 3,
-            shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            crossAxisSpacing: 15.auto,
-            mainAxisSpacing: 15.auto,
+        margin: EdgeInsets.only(left: 15.auto, right: 15.auto),
+        child: Card(
+          semanticContainer: true,
+          clipBehavior: Clip.antiAlias,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          elevation: 5,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              ProfileBottomItem(title: getTranslatedText("profile_detail"), imagePath:"ic_profile_user_detail", routePath:"profile_info", navigationID: 0,),
-              ProfileBottomItem(title: getTranslatedText("message_center"), imagePath:"ic_message",routePath:"message", navigationID: 0,),
-              ProfileBottomItem(title: getTranslatedText("transfer_history"), imagePath:"ic_account_detail",routePath:"transaction", navigationID: 0,),
-              ProfileBottomItem(title: getTranslatedText("bet_history"), imagePath:"ic_bet_transaction",routePath:"transaction", navigationID: 1,),
-              ProfileBottomItem(title: getTranslatedText("manage_card"), imagePath:"ic_card_detail",routePath:"main_card", navigationID: 0,),
-              ProfileBottomItem(title: getTranslatedText("refer_friend"), imagePath:"ic_refer_friend",routePath:"refer_friend", navigationID: 0,),
-              ProfileBottomItem(title: getTranslatedText("frequent_question"), imagePath:"ic_profile_question",routePath:"frequent_question", navigationID: 0,),
-              ProfileBottomItem(title: getTranslatedText("language"), imagePath:"ic_lang",routePath:"language", navigationID: 0,),
+              ProfileTopItem(title: getTranslatedText("deposit"), imagePath: "ic_deposit", routePath: "deposit"),
+              ProfileTopItem(
+                  title: getTranslatedText("transfer"), imagePath: "ic_transfer", routePath: "wallet_transfer"),
+              ProfileTopItem(title: getTranslatedText("withdrawal"), imagePath: "ic_withdraw", routePath: "withdraw"),
             ],
           ),
-          _buildLogoutButton()
-        ],
-      ),
-    ),
-  );
+        ),
+      );
+
+  _buildGridViewLayout() => Expanded(
+        child: ScrollConfiguration(
+          behavior: MyBehavior(),
+          child: ListView(
+            padding: EdgeInsets.only(left: 25.auto, right: 25.auto, bottom: 10.auto, top: 20.auto),
+            shrinkWrap: true,
+            primary: false,
+            physics: AlwaysScrollableScrollPhysics(),
+            children: [
+              GridView.count(
+                padding: EdgeInsets.only(bottom: 30.auto),
+                crossAxisCount: 3,
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                crossAxisSpacing: 15.auto,
+                mainAxisSpacing: 15.auto,
+                children: [
+                  _buildProfileBottomItem("profile_detail", "ic_profile_user_detail", "profile_info", 0),
+                  _buildProfileBottomItem("message_center", "ic_message", "message", 0),
+                  _buildProfileBottomItem("transfer_history", "ic_account_detail", "transaction", 0),
+                  _buildProfileBottomItem("bet_history", "ic_bet_transaction", "transaction", 1),
+                  _buildProfileBottomItem("manage_card", "ic_card_detail", "main_card", 0),
+                  _buildProfileBottomItem("refer_friend", "ic_refer_friend", "refer_friend", 0),
+                  _buildProfileBottomItem("frequent_question", "ic_profile_question", "frequent_question", 0),
+                  _buildProfileBottomItem("language", "ic_lang", "language", 0),
+                ],
+              ),
+              _buildLogoutButton()
+            ],
+          ),
+        ),
+      );
+
+  _buildProfileBottomItem(String title, String imagePath, String routePath, int navigationID) => ProfileBottomItem(
+        title: getTranslatedText(title),
+        imagePath: imagePath,
+        routePath: routePath,
+        navigationID: navigationID,
+      );
 
   _buildLogoutButton() => Container(
       padding: EdgeInsets.only(bottom: 10.auto),
       child: ColorButton(
-        text:Text(
+        text: Text(
           getTranslatedText("logout"),
           textAlign: TextAlign.center,
-          style: TextStyle(
-              color: Colors.white,
-              fontSize: 16.auto
-          ),
+          style: TextStyle(color: Colors.white, fontSize: 16.auto),
         ),
         onClick: () => _logout(),
         isEnabled: true,
         color: CustomColor.theme_bar_gradient_2,
-        radius:9.4,
-      )
-  );
+        radius: 9.4,
+      ));
 
-  _handleApiState() {
-    handleApiState(_vm.logoutApiState, onSuccess:(){
-      _navigateToLogin();
-    });
-    handleApiState(_vm.getWalletBalanceApiState, isAutoHideLoading:false, onSuccess:(){
-
-    });
+  _logout() {
+    CustomProgressDialog.show(context);
+    _vm.logout();
   }
 
-  _navigateToLogin(){
-    WidgetsBinding.instance.addPostFrameCallback((_){
+  _navigateToLogin() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       //navigate to login and remove all previous route,
       Navigator.of(context).pushNamedAndRemoveUntil('/login', (Route<dynamic> route) => false);
     });
   }
 
-  _logout() {
-    CustomProgressDialog.show(context);
-    _vm.logout();
+  _handleApiState() {
+    handleApiState(_vm.logoutApiState, onSuccess: () {
+      _navigateToLogin();
+    }, onError: (error, errorCode) {
+      _navigateToLogin();
+    });
+    handleApiState(_vm.getWalletBalanceApiState, isAutoHideLoading: false, onSuccess: () {});
   }
 }
