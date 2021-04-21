@@ -1,4 +1,5 @@
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tgp_flutter/entity/http_method.dart';
 import 'package:tgp_flutter/entity/response/login_response.dart';
 import 'package:tgp_flutter/network/services/api_service.dart';
 import 'package:http/http.dart' as http;
@@ -9,8 +10,6 @@ typedef EventResult<T> ResponseResolver<T>(http.Response response, ResponseResul
     [ResultConsumer consumer]);
 typedef Future JwtRefresher();
 typedef void ResultConsumer(T);
-
-enum HttpMethod { POST, GET, DELETE, PATCH, PUT }
 
 class ApiRequestBuilder<T> {
   bool isAuthorization;
@@ -36,7 +35,7 @@ class ApiRequestBuilder<T> {
       this.consumer});
 
   Future<EventResult<T>> execute() async {
-    var response = await request(method, endPoint, params, isAuthorization);
+    var response = await api(method, endPoint, content:params, isAuthorization: isAuthorization);
     var result = resolver(response, converter, consumer);
     if (result.errorCode == 101 && retryCounter < 2 && !isJWTAuthRequest) {
       retryCounter++;
@@ -46,7 +45,7 @@ class ApiRequestBuilder<T> {
     return result;
   }
 
-  Future request(HttpMethod method, String endPoint, dynamic params, bool isAuthorization) {
+/*  Future request(HttpMethod method, String endPoint, dynamic params, bool isAuthorization) {
     switch (method) {
       case HttpMethod.POST:
         return apiPost(endPoint, params, isAuthorization);
@@ -61,5 +60,5 @@ class ApiRequestBuilder<T> {
       default:
         return apiPost(endPoint, params, isAuthorization);
     }
-  }
+  }*/
 }

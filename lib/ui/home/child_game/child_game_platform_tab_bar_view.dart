@@ -32,6 +32,7 @@ class _ChildGamePlatformTabBarViewState extends BaseState<ChildGamePlatformTabBa
               borderRadius: BorderRadius.circular(15.0),
             ),
             child: ChildGameItem(
+              str: widget.gameList.length.toString(),
               game: widget.gameList[index],
               isFavourite: true,
               isDisabled: widget.isDisabled,

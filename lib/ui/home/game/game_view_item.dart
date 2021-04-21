@@ -12,7 +12,7 @@ import 'package:tgp_flutter/ui/home/home_view_model.dart';
 class GameViewItem extends StatefulWidget {
   final ScrollController controller;
   final List<dynamic> gameProviderList;
-  final Function(String, GameType) onGameClick;
+  final Function(GameProvider2) onGameClick;
 
   GameViewItem({@required this.controller, this.gameProviderList, this.onGameClick});
 
@@ -44,7 +44,7 @@ class _GameViewItemState extends BaseState<GameViewItem> {
                   .map((item) => Container(
                       padding: EdgeInsets.only(left: (8.5).auto, right: 5.auto, top: (12.5).auto, bottom: 5.auto),
                       child: GestureDetector(
-                          onTap: () => widget.onGameClick(item.code, item.gameType),
+                          onTap: () => widget.onGameClick(item),
                           child: Container(
                               width: 335.auto,
                               height: 90.auto,

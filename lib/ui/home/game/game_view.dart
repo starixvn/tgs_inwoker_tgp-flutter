@@ -1,8 +1,10 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter/custom/custom_dialog.dart';
+import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/entity/game.dart';
 import 'package:tgp_flutter/entity/game_provider.dart';
+import 'package:tgp_flutter/entity/game_provider2.dart';
 import 'package:tgp_flutter/entity/game_type.dart';
 import 'package:tgp_flutter/entity/user_profile.dart';
 import 'package:tgp_flutter/localizations/language_provider.dart';
@@ -85,7 +87,7 @@ class _GameViewState extends BaseState<GameView> {
                           child: GameViewItem(
                             controller: _controller,
                             gameProviderList: _gameProviderList,
-                            onGameClick: (code, gameType) => _onGameClick(code, gameType),
+                            onGameClick: (game) => _onGameClick(game),
                           ),
                         )
                       ],
@@ -168,7 +170,7 @@ class _GameViewState extends BaseState<GameView> {
     });
   }
 
-  _onGameClick(String code, GameType gameType) {
+  _onGameClick(GameProvider2 gameProvider) {
     if (_vm.userProfile == null) {
       showDialog(
         context: context,
@@ -181,7 +183,7 @@ class _GameViewState extends BaseState<GameView> {
         ),
       );
     } else
-      _navigateToChildGame(code, gameType);
+      _navigate(gameProvider.code, gameProvider.gameType);
   }
 
   navigateToLogin() {
@@ -190,32 +192,31 @@ class _GameViewState extends BaseState<GameView> {
     });
   }
 
-  _navigateToChildGame(String gamePlatformCode, GameType gametype) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => ChildGame(
-                    gamePlatformCode: gamePlatformCode,
-                    gameType: gametype,
-                  )));
-    });
+  _navigate(String gamePlatformCode, GameType gameType) async {
+    if (gameType == GameType.Slot || gameType == GameType.TableGame) {
+      //navigate to child game
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => ChildGame(
+                      gamePlatformCode: gamePlatformCode,
+                      gameType: gameType,
+                    )));
+      });
+    } else {
+      //navigate to game web
+      CustomProgressDialog.show(context);
+      await _vm.getGameList(gamePlatformCode, gameType);
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => GameWeb(game: _vm.gameListMap[gamePlatformCode].first)));
+      });
+    }
   }
-
-/*  _navigateToGameWeb(Game game){
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) =>
-                  GameWeb(
-                      game:game
-                  )
-          ));
-    });
-  }*/
 
   _handleApiState() {
     handleApiState(_vm.getGameProviderListApiState, isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getGameApiState, onSuccess: () {});
   }
 }

@@ -19,7 +19,10 @@ class GameViewModel extends BaseViewModel {
   EventResult getGameApiState, getGameUrlApiState, getGameProviderListApiState;
   List<List<GameType>> gameTypeList;
   List<Game> _gameList, filteredGameList;
-  var mCategory = 0, mPlatform, mSearchQuery = "";
+  Map<String, List<Game>> gameListMap = new Map<String, List<Game>>();
+  int mCategory = 0;
+  String mPlatform, mSearchQuery = "";
+  GameType mGameType;
   var url;
   List<GameProvider2> platformList, gameProviderList = [];
 
@@ -47,9 +50,7 @@ class GameViewModel extends BaseViewModel {
     setLoading();
     getGameApiState = await contentRepo.getGameList(gamePlatformCode, gameType);
     if (getGameApiState.isSuccess) {
-      _gameList = getGameApiState.result;
-      mPlatform = gamePlatformCode;
-      filter();
+      gameListMap[gamePlatformCode] = getGameApiState.result;
     }
     setLoading(false);
     return getGameApiState;
@@ -69,50 +70,67 @@ class GameViewModel extends BaseViewModel {
     if (_gameList != null)
       return _gameList.where((element) => element.tag.isRecommend == true).take(6).toList();
     else
-      return [];
+      return <Game>[];
   }
 
-  filter({int category, String platform, String searchQuery}) {
+  filter({int category, int platform, String searchQuery, String gamePlatformCode, GameType gameType}) async {
+    if (gamePlatformCode != null && gameType != null) {
+      mGameType = gameType;
+      mPlatform = gamePlatformCode;
+      await getGameList(gamePlatformCode, gameType);
+    }
     if (category != null) mCategory = category;
-    if (platform != null) mPlatform = platform;
+    if (platform != null) mPlatform = platform == 0 ? null : platformList[platform - 1].code;
     if (searchQuery != null) mSearchQuery = searchQuery;
 
-    filteredGameList = _filterSearch(_filterTab(_filterCategory()));
+    var platformGameList = await _filterPlatform();
+    filteredGameList = _filterSearch(_filterCategory(platformGameList));
     notifyListeners();
   }
 
-  _filterCategory() {
+  List<Game> _filterCategory(List<Game> gameList) {
     switch (mCategory) {
       case 0:
         //all game list
-        return _gameList;
-        break;
+        return gameList;
       case 1:
         //new game list
-        var list = _gameList.where((element) => element.tag.isNew == true).toList();
+        var list = gameList.where((element) => element.tag.isNew == true).toList();
         return list;
-        break;
       case 2:
         //hot game list
-        var list = _gameList.where((element) => element.tag.isHot == true).toList();
+        var list = gameList.where((element) => element.tag.isHot == true).toList();
         return list;
-        break;
       default:
-        return _gameList;
-        break;
+        return gameList;
     }
   }
 
-  _filterTab(List<Game> gameList) {
+  _filterPlatform() async {
     if (mPlatform == null || mPlatform.isEmpty) {
-      return gameList;
+      //get all game list
+      List<Game> _list = await _addGameList(_gameList);
+      return _list;
     } else {
-      var list = gameList.where((element) => element.gamePlatformCode == mPlatform).toList();
-      return list;
+      if (gameListMap[mPlatform] == null) {
+        await getGameList(mPlatform, mGameType);
+      }
+      return gameListMap[mPlatform];
     }
   }
 
-  _filterSearch(List<Game> gameList) {
+  _addGameList(List<Game> list) async {
+    var task = <Future>[];
+    platformList.forEach((platform) {
+      if (gameListMap[platform.code] == null) {
+        task.add(getGameList(platform.code, mGameType));
+      }
+    });
+    await Future.wait(task);
+    return gameListMap.values.expand((element) => element).toList();
+  }
+
+  List<Game> _filterSearch(List<Game> gameList) {
     if (mSearchQuery == null || mSearchQuery.isEmpty) {
       return gameList;
     } else {

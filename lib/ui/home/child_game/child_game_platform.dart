@@ -12,8 +12,10 @@ class ChildGamePlatform extends StatefulWidget {
   final List<GameProvider2> platformList;
   final List<Game> gameList;
   final bool isSearching;
+  final Function(int) onFilterPlatform;
+  final String initialPlatformCode;
 
-  ChildGamePlatform({this.platformList, this.gameList, this.isSearching});
+  ChildGamePlatform({this.platformList, this.gameList, this.isSearching, this.onFilterPlatform, this.initialPlatformCode});
 
   @override
   _ChildGamePlatformState createState() => _ChildGamePlatformState();
@@ -26,12 +28,19 @@ class _ChildGamePlatformState extends BaseState<ChildGamePlatform> with SingleTi
 
   @override
   void initState() {
-    widget.platformList.forEach((element) {
-      _platformTabList.add(element.name);
-    });
+    initData();
     _platformTabController =
         TabController(length: widget.platformList.length + 1, vsync: this, initialIndex: platformTabIndex);
     super.initState();
+  }
+
+  initData(){
+    widget.platformList.asMap().forEach((index, value)  {
+      _platformTabList.add(value.name);
+      if(value.code == widget.initialPlatformCode){
+        platformTabIndex = index+1;
+      }
+    });;
   }
 
   Widget build(BuildContext context) {
@@ -55,11 +64,7 @@ class _ChildGamePlatformState extends BaseState<ChildGamePlatform> with SingleTi
           unselectedLabelColor: CustomColor.theme_button_disable_bg,
           labelColor: CustomColor.theme_button_disable_bg,
           indicatorWeight: 3,
-          onTap: (index) {
-            setState(() {
-              platformTabIndex = index;
-            });
-          },
+          onTap: (index) => widget.onFilterPlatform(index),
           indicator: ShapeDecoration(
             shape: RoundedRectangleBorder(
               side: BorderSide(color: CustomColor.theme_button_disable_bg),

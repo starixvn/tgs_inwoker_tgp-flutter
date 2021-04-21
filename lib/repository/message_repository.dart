@@ -1,5 +1,6 @@
 import 'package:tgp_flutter/entity/game.dart';
 import 'package:tgp_flutter/entity/game_provider.dart';
+import 'package:tgp_flutter/entity/http_method.dart';
 import 'package:tgp_flutter/entity/response/game_url_response.dart';
 import 'package:tgp_flutter/entity/response/message_response.dart';
 import 'package:tgp_flutter/entity/user_profile.dart';

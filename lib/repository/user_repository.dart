@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:tgp_flutter/entity/http_method.dart';
 import 'package:tgp_flutter/entity/response/check_username_response.dart';
 import 'package:tgp_flutter/entity/response/edit_password_response.dart';
 import 'package:tgp_flutter/entity/response/get_transaction_response.dart';

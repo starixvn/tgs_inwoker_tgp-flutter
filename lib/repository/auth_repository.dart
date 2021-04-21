@@ -1,5 +1,6 @@
 import 'package:tgp_flutter/entity/game.dart';
 import 'package:tgp_flutter/entity/game_provider.dart';
+import 'package:tgp_flutter/entity/http_method.dart';
 import 'package:tgp_flutter/entity/response/game_url_response.dart';
 import 'package:tgp_flutter/entity/user_profile.dart';
 import 'package:tgp_flutter/network/api_request_builder.dart';
@@ -21,7 +22,6 @@ class AuthenticationRepository extends BaseRepository {
 
   Future<EventResult<String>> emailVerify(String email) async {
     return await ApiRequestBuilder<String>(
-            method: HttpMethod.POST,
             endPoint: "api/Player/email",
             params: {
               "email": email,
@@ -45,7 +45,6 @@ class AuthenticationRepository extends BaseRepository {
 
   Future<EventResult<String>> phoneVerify(String phone) async {
     return await ApiRequestBuilder<String>(
-            method: HttpMethod.POST,
             endPoint: "api/player/phone",
             params: {
               "phone": phone,
@@ -58,7 +57,6 @@ class AuthenticationRepository extends BaseRepository {
 
   Future<EventResult<String>> getForgotPasswordCode(String phone) async {
     return await ApiRequestBuilder<String>(
-            method: HttpMethod.POST,
             isAuthorization: false,
             endPoint: "api/player/password/forgot",
             params: {
@@ -72,7 +70,6 @@ class AuthenticationRepository extends BaseRepository {
 
   Future<EventResult<String>> resetPassword(String securityKey, String validateCode, String newPassword) async {
     return await ApiRequestBuilder<String>(
-            method: HttpMethod.POST,
             isAuthorization: false,
             endPoint: "api/player/password/reset",
             params: {"securitykey": securityKey, "validatecode": validateCode, "newpwd": newPassword},
@@ -84,7 +81,6 @@ class AuthenticationRepository extends BaseRepository {
 
   Future<EventResult<String>> addPayPassword(String password) async {
     return await ApiRequestBuilder<String>(
-            method: HttpMethod.POST,
             endPoint: "api/pay/password",
             params: {"pwd": password},
             converter: (json) => json as String,
@@ -95,7 +91,6 @@ class AuthenticationRepository extends BaseRepository {
 
   Future<EventResult<String>> getPayPasswordCode() async {
     return await ApiRequestBuilder<String>(
-            method: HttpMethod.POST,
             endPoint: "api/pay/password/validate-code",
             params: {},
             converter: (json) => json as String,

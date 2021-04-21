@@ -51,9 +51,9 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
   }
 
   _initData() async {
-    _vm.getGameList(widget.gamePlatformCode, widget.gameType);
     await _vm.getGameProviderList();
     _vm.getPlatformList(widget.gameType);
+    _vm.filter(gamePlatformCode: widget.gamePlatformCode, gameType: widget.gameType);
   }
 
   Widget build(BuildContext context) {
@@ -123,8 +123,8 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
               onTap: (index) {
                 setState(() {
                   _groupTabIndex = index;
-                  _filterGameList(category: index);
                 });
+                _vm.filter(category: index);
               },
               unselectedLabelStyle: TextStyle(color: CustomColor.grey),
               tabs: _groupTabList.map((item) {
@@ -143,6 +143,10 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
               platformList: _vm.platformList,
               gameList: _vm.filteredGameList,
               isSearching: isSearching,
+              onFilterPlatform: (index) {
+                _vm.filter(platform: index);
+              },
+              initialPlatformCode: widget.gamePlatformCode
             ),
           ),
         ],
@@ -276,13 +280,13 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
 
   _onTextChange() {
     if (searchController.text.isNotEmpty) {
-      _filterGameList(searchQuery: searchController.text);
+      setState(() {
+        isVisibleSuggestionList = false;
+      });
+      _vm.filter(searchQuery: searchController.text);
     }
   }
 
-  _filterGameList({int category, String searchQuery}) async {
-    await _vm.filter(category: category, platform: widget.gamePlatformCode, searchQuery: searchQuery);
-  }
 
   _handleApiState() {
     handleApiState(_vm.getGameApiState, isAutoHideLoading: false, onSuccess: () {});

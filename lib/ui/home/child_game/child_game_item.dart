@@ -18,8 +18,9 @@ class ChildGameItem extends StatefulWidget {
   final bool isFavourite;
   final Game game;
   final bool isDisabled;
+  final String str;
 
-  ChildGameItem({this.isFavourite, this.game, this.isDisabled});
+  ChildGameItem({this.isFavourite, this.game, this.isDisabled, this.str});
 
   @override
   _ChildGameItemState createState() => _ChildGameItemState();
@@ -75,7 +76,7 @@ class _ChildGameItemState extends BaseState<ChildGameItem> {
                 child: AutoSizeText(
                   widget.game.name,
                   style: TextStyle(color: Colors.white),
-                  minFontSize: 10,
+                  minFontSize: 3,
                   stepGranularity: 1,
                   maxLines: 1,
                 ),

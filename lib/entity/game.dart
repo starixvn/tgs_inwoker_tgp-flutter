@@ -26,6 +26,9 @@ class Game {
      case "SBO":
        return "SBOBET";
        break;
+     case "PP":
+       return "PragmaticPlay";
+       break;
      default:
        return "Habanero";
        break;

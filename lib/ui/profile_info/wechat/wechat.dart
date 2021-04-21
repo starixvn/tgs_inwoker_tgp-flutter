@@ -73,7 +73,7 @@ class _WechatState extends BaseState<Wechat> {
         focusNode: null,
         width: context.screenWidth - 70.auto,
         textInputType: TextInputType.number,
-        textInputAction: TextInputAction.next,
+        textInputAction: TextInputAction.done,
         enabled: isTextFieldEnabled,
       );
 
