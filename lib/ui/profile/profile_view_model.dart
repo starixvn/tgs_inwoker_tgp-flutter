@@ -1,37 +1,40 @@
-
 import 'package:tgp_flutter/base_viewmodel.dart';
 import 'package:tgp_flutter/network/event_result.dart';
 import 'package:tgp_flutter/repository/base_repository.dart';
 import 'package:tgp_flutter/repository/user_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
-class ProfileViewModel extends BaseViewModel{
+class ProfileViewModel extends BaseViewModel {
   final userRepo = UserRepository.getSingleton();
 
   var logoutApiState, getWalletBalanceApiState;
+
   //get totalBalance => _computeTotalBalance();
 
   @override
-  List<BaseRepository> get repoList => [userRepo,];
+  List<BaseRepository> get repoList => [
+        userRepo,
+      ];
+
   get userProfile => userRepo.userProfile;
+
   get wallet => userRepo.wallet;
 
-  logout() async{
+  logout() async {
     setLoading();
-    logoutApiState  = await userRepo.logout();
+    logoutApiState = await userRepo.logout();
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.remove("token");
     setLoading(false);
     return logoutApiState;
   }
 
-  getWalletBalance()async{
+/*  getWalletBalance()async{
     setLoading();
     getWalletBalanceApiState = await userRepo.getWalletBalance();
     setLoading(false);
     return getWalletBalanceApiState;
-  }
+  }*/
 
 /*getTotalBalance(){
     WalletRepository.getSingleton().getAllWallet();

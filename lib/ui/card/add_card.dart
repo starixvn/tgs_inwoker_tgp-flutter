@@ -4,6 +4,7 @@ import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/custom/custom_text_form_field.dart';
 import 'package:tgp_flutter/custom/custom_toast.dart';
 import 'package:tgp_flutter/extension/format.dart';
+import 'package:tgp_flutter/extension/navigate_without_animation.dart';
 import 'package:tgp_flutter/my_behavior.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
@@ -43,7 +44,7 @@ class _AddCardState extends BaseState<AddCard> {
                 leading: IconButton(
                     icon: Icon(Icons.arrow_back),
                     onPressed: () {
-                      Navigator.pop(context);
+                      Navigator.pop(context,NavigateWithoutAnimation(),);
                     }
                 ),
                 title: Text("管理银行卡",
@@ -171,7 +172,7 @@ class _AddCardState extends BaseState<AddCard> {
   }
 
   _onClick(){
-    /*CustomProgressDialog.show(context);
+    /* ProgressDialog.show(context);
     _vm.addCard(_bankNumController.text, _passController.text);*/
   }
 
@@ -181,13 +182,13 @@ class _AddCardState extends BaseState<AddCard> {
     }
     if ((_vm.addCardApiState?.isError ?? false)) {
       CustomToast.show(_vm.addCardApiState.error);
-      CustomProgressDialog.hide();
+       ProgressDialog.hide();
       FocusScope.of(context).requestFocus(FocusNode());
       _vm.resetApiState(isAddCardApiState: true);
     }
     if((_vm.addCardApiState?.isSuccess ?? false)){
       _vm.resetApiState(isAddCardApiState: true);
-      CustomProgressDialog.hide();
+       ProgressDialog.hide();
       WidgetsBinding.instance.addPostFrameCallback((_) {
         Navigator.of(context).pushReplacementNamed('/main_card');
         Navigator.of(context).popAndPushNamed("/main_card");

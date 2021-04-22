@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/custom/custom_toast.dart';
 import 'package:tgp_flutter/entity/game.dart';
+import 'package:tgp_flutter/extension/navigate_without_animation.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
@@ -78,7 +79,7 @@ class _ChildGameSuggestionState extends BaseState<ChildGameSuggestion> {
 
   _navigateToGameWeb(Game game) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => GameWeb(game: game)));
+      Navigator.push(context, NavigateWithoutAnimation(widget: GameWeb(game: game)));
     });
   }
 }

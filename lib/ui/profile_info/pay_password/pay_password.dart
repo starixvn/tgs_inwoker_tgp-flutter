@@ -6,6 +6,7 @@ import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/custom/custom_text_form_field.dart';
 import 'package:tgp_flutter/custom/custom_toast.dart';
 import 'package:tgp_flutter/data/provider/input_validation_provider.dart';
+import 'package:tgp_flutter/extension/navigate_without_animation.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
@@ -41,9 +42,7 @@ class _PayPasswordState extends BaseState<PayPassword> {
               resizeToAvoidBottomInset: false,
               appBar: _buildAppBar(),
               body: _vm.userProfile == null
-                  ? Center(
-                      child: CircularProgressIndicator(),
-                    )
+                  ? buildProgressDialog()
                   : Container(
                       padding: EdgeInsets.only(top: 10.auto, left: 10.auto, right: 10.auto),
                       child: Column(
@@ -71,7 +70,7 @@ class _PayPasswordState extends BaseState<PayPassword> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.pop(context, NavigateWithoutAnimation());
           },
         ),
         title: Text(
@@ -133,7 +132,7 @@ class _PayPasswordState extends BaseState<PayPassword> {
         ),
         InkWell(
           onTap: isEditPayPasswordVerified?(){
-            Navigator.of(context).pushNamed("/edit_email");
+            Navigator.of(context).push(NavigateWithoutAnimation(widget: route));("/edit_email");
           }:(){
             //customer service
           },
@@ -177,7 +176,7 @@ class _PayPasswordState extends BaseState<PayPassword> {
         CustomToast.show("确认密码与密码不一致");
       });
     } else {
-      CustomProgressDialog.show(context);
+      ProgressDialog.show(context);
       if (_vm.userProfile.isSetPayPassword) {
         //_vm.EditPayPassword(_oldPasswordController.text, _newPasswordController.text);
       } else {
@@ -190,7 +189,7 @@ class _PayPasswordState extends BaseState<PayPassword> {
     handleApiState(_vm.addPayPasswordApiState, onSuccess: () {
       CustomToast.show("success");
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        Navigator.pop(context);
+        Navigator.pop(context, NavigateWithoutAnimation());
       });
     });
   }

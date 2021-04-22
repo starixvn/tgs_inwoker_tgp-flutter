@@ -4,6 +4,7 @@ import 'package:tgp_flutter/custom/color_button.dart';
 import 'package:tgp_flutter/entity/user_profile.dart';
 import 'package:tgp_flutter/entity/wallet.dart';
 import 'package:tgp_flutter/extension/format.dart';
+import 'package:tgp_flutter/extension/navigate_without_animation.dart';
 import 'package:tgp_flutter/localizations/language_provider.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
@@ -11,6 +12,10 @@ import 'package:gradient_text/gradient_text.dart';
 import 'package:outline_gradient_button/outline_gradient_button.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
+import 'package:tgp_flutter/ui/deposit/deposit.dart';
+import 'package:tgp_flutter/ui/login/login.dart';
+import 'package:tgp_flutter/ui/transfer/wallet_transfer.dart';
+import 'package:tgp_flutter/ui/withdraw/withdraw.dart';
 
 class HomeUserInfoView extends StatefulWidget {
   final UserProfile userProfile;
@@ -81,9 +86,9 @@ class _HomeUserInfoViewState extends BaseState<HomeUserInfoView> {
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                _buildHomeIcon("ic_deposit", getTranslatedText("deposit"), "deposit"),
-                _buildHomeIcon("ic_transfer", getTranslatedText("transfer"), "wallet_transfer"),
-                _buildHomeIcon("ic_withdraw", getTranslatedText("withdrawal"), "withdraw")
+                _buildHomeIcon("ic_deposit", getTranslatedText("deposit"), Deposit()),
+                _buildHomeIcon("ic_transfer", getTranslatedText("transfer"), WalletTransfer()),
+                _buildHomeIcon("ic_withdraw", getTranslatedText("withdrawal"), Withdraw())
               ],
             ),
           ],
@@ -144,17 +149,17 @@ class _HomeUserInfoViewState extends BaseState<HomeUserInfoView> {
     );
   }
 
-  _buildHomeIcon(String imagePath, String title, String routePath) => InkWell(
+  _buildHomeIcon(String imagePath, String title, Widget route) => InkWell(
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
         onTap: () {
           if (widget.userProfile == null) {
             WidgetsBinding.instance.addPostFrameCallback((_) {
-              Navigator.of(context).pushNamed("/login");
+              Navigator.of(context).push(NavigateWithoutAnimation(widget: Login()));
             });
           } else {
             WidgetsBinding.instance.addPostFrameCallback((_) {
-              Navigator.of(context).pushNamed("/$routePath");
+              Navigator.of(context).push(NavigateWithoutAnimation(widget: route));
             });
           }
         },

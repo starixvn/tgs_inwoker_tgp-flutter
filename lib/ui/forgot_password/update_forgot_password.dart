@@ -6,11 +6,13 @@ import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/custom/custom_text_form_field.dart';
 import 'package:tgp_flutter/custom/custom_toast.dart';
 import 'package:tgp_flutter/data/provider/input_validation_provider.dart';
+import 'package:tgp_flutter/extension/navigate_without_animation.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
 import 'package:tgp_flutter/ui/forgot_password/forgot_password_view_model.dart';
+import 'package:tgp_flutter/ui/login/login.dart';
 import 'package:tgp_flutter/ui/profile_info/password/edit_password_view_model.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 
@@ -52,7 +54,7 @@ class _UpdateForgotPasswordState extends BaseState<UpdateForgotPassword> {
                 leading: IconButton(
                   icon: Icon(Icons.arrow_back),
                   onPressed: () {
-                    Navigator.pop(context);
+                    Navigator.pop(context, NavigateWithoutAnimation());
                   },
                 ),
                 title: Text(
@@ -116,7 +118,7 @@ class _UpdateForgotPasswordState extends BaseState<UpdateForgotPassword> {
         ),
         InkWell(
           onTap: isUpdateForgotPasswordVerified?(){
-            Navigator.of(context).pushNamed("/edit_email");
+            Navigator.of(context).push(NavigateWithoutAnimation(widget: route));("/edit_email");
           }:(){
             //customer service
           },
@@ -168,7 +170,7 @@ class _UpdateForgotPasswordState extends BaseState<UpdateForgotPassword> {
         CustomToast.show("确认密码与密码不一致");
       });
     } else {
-      CustomProgressDialog.show(context);
+      ProgressDialog.show(context);
       _vm.resetPassword(widget.securityKey, widget.code, _newPasswordController.text);
     }
   }
@@ -176,7 +178,10 @@ class _UpdateForgotPasswordState extends BaseState<UpdateForgotPassword> {
   _handleApiState() {
     handleApiState(_vm.resetPasswordApiState, onSuccess: () {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        Navigator.popUntil(context, ModalRoute.withName("/login"));
+        var count = 0;
+        Navigator.popUntil(context, (route) {
+          return count++ == 2;
+        });
       });
     });
   }

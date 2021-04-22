@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter/custom/color_button.dart';
 import 'package:tgp_flutter/custom/outline_border_button.dart';
+import 'package:tgp_flutter/extension/navigate_without_animation.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
@@ -62,8 +63,14 @@ class _LeaveGameDialogState extends BaseState<LeaveGameDialog> {
         flex: 1,
         child: InkWell(
           onTap: () {
-            Navigator.pop(context);
-            Navigator.pop(context);
+            Navigator.pop(
+              context,
+              NavigateWithoutAnimation(),
+            );
+            Navigator.pop(
+              context,
+              NavigateWithoutAnimation(),
+            );
           },
           child: Container(
             alignment: Alignment.center,
@@ -82,7 +89,10 @@ class _LeaveGameDialogState extends BaseState<LeaveGameDialog> {
   _buildContinuePlayingButton() => Expanded(
         flex: 1,
         child: InkWell(
-          onTap: () => Navigator.pop(context),
+          onTap: () => Navigator.pop(
+            context,
+            NavigateWithoutAnimation(),
+          ),
           child: Container(
             alignment: Alignment.center,
             margin: EdgeInsets.only(right: 17.5.auto),

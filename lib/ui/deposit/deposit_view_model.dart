@@ -1,4 +1,3 @@
-
 import 'package:collection/collection.dart';
 import 'package:tgp_flutter/base_viewmodel.dart';
 import 'package:tgp_flutter/network/event_result.dart';
@@ -6,23 +5,16 @@ import 'package:tgp_flutter/repository/base_repository.dart';
 import 'package:tgp_flutter/repository/content_repository.dart';
 import 'package:tgp_flutter/repository/user_repository.dart';
 
-class DepositViewModel extends BaseViewModel{
-  /*final contentRepo = ContentRepository.getSingleton();
-
-  final walletRepo = WalletRepository.getSingleton();*/
+class DepositViewModel extends BaseViewModel {
+  final userRepo = UserRepository.getSingleton();
 
   @override
   List<BaseRepository> get repoList => [];
- /* var getDepositActsApiState,depositApiState, depositStatusApiState;
-  List<PaymentChannel> paymentChannel;
-  List<DepositBonusGroup> depositActsList;
-  bool isDepositHandled = false;
-  DepositResponse depositResponse;
-  Order order;
+  var getDepositActsApiState, depositApiState, depositStatusApiState;
 
-  get mainAccountBalance => walletRepo.mainAccountWalletBalance;
+  get wallet => userRepo.wallet;
 
-  getPayment() async{
+/* getPayment() async{
     var value = await contentRepo.getPayment();
     paymentChannel =
         groupBy(value.result.payments, (obj) => obj.typeClass)
@@ -80,4 +72,3 @@ class DepositViewModel extends BaseViewModel{
     return depositStatusApiState ;
   }*/
 }
-

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:tgp_flutter/extension/navigate_without_animation.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 
-class WithdrawDialog extends StatelessWidget{
-
+class WithdrawDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return Dialog(
       shape: RoundedRectangleBorder(
@@ -15,13 +15,13 @@ class WithdrawDialog extends StatelessWidget{
     );
   }
 
-  dialogContent(BuildContext context){
+  dialogContent(BuildContext context) {
     return Stack(
       children: [
         Container(
           padding: EdgeInsets.symmetric(
-            vertical: context.screenHeight/30,
-            horizontal: context.screenWidth/20,
+            vertical: context.screenHeight / 30,
+            horizontal: context.screenWidth / 20,
           ),
           decoration: new BoxDecoration(
             color: Colors.white,
@@ -35,12 +35,12 @@ class WithdrawDialog extends StatelessWidget{
               ),
             ],
           ),
-          child:Column(
+          child: Column(
             mainAxisSize: MainAxisSize.min, // To make the card compact
             children: <Widget>[
               Align(
                 alignment: Alignment.topLeft,
-                child:Text(
+                child: Text(
                   "红利限额",
                   style: TextStyle(
                     fontSize: 18.auto,
@@ -50,13 +50,10 @@ class WithdrawDialog extends StatelessWidget{
               ),
               _dialogText(),
               FlatButton(
-                minWidth: context.screenWidth/ 3.5,
-                height:context.screenHeight / 15,
-                onPressed: () => {
-                  Navigator.of(context).pop()
-                },
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(45)),
+                minWidth: context.screenWidth / 3.5,
+                height: context.screenHeight / 15,
+                onPressed: () => {Navigator.of(context).pop(NavigateWithoutAnimation())},
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(45)),
                 padding: EdgeInsets.all(0.0),
                 child: Ink(
                   decoration: BoxDecoration(
@@ -71,17 +68,15 @@ class WithdrawDialog extends StatelessWidget{
                       ),
                       borderRadius: BorderRadius.all(Radius.circular(45))),
                   child: Container(
-                    constraints:
-                    BoxConstraints(
+                    constraints: BoxConstraints(
                       maxWidth: context.screenWidth / 3.5,
-                      maxHeight: context.screenHeight/ 15,
+                      maxHeight: context.screenHeight / 15,
                     ),
                     alignment: Alignment.center,
                     child: Text(
                       "确认",
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: Colors.black),
+                      style: TextStyle(color: Colors.black),
                     ),
                   ),
                 ),
@@ -94,57 +89,45 @@ class WithdrawDialog extends StatelessWidget{
   }
 
   _dialogText() => Container(
-    child: Row(
-      children: [
-        Spacer(),
-        Column(
+        child: Row(
           children: [
-            Text(
-              "体育",
-              style: TextStyle(
-                  fontSize: 12.auto
-              ),
+            Spacer(),
+            Column(
+              children: [
+                Text(
+                  "体育",
+                  style: TextStyle(fontSize: 12.auto),
+                ),
+                Text(
+                  "彩票",
+                  style: TextStyle(fontSize: 12.auto),
+                ),
+                Text(
+                  "真人",
+                  style: TextStyle(fontSize: 12.auto),
+                ),
+              ],
             ),
-            Text(
-              "彩票",
-              style: TextStyle(
-                  fontSize: 12.auto
-              ),),
-            Text(
-              "真人",
-              style: TextStyle(
-                  fontSize: 12.auto
-              ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "190550.00",
+                  style: TextStyle(color: Colors.red, fontSize: 12.auto),
+                ),
+                Text(
+                  "595.00",
+                  style: TextStyle(color: Colors.red, fontSize: 12.auto),
+                ),
+                Text(
+                  "0.00",
+                  style: TextStyle(color: Colors.red, fontSize: 12.auto),
+                ),
+              ],
             ),
+            Spacer(),
           ],
         ),
-        Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "190550.00",
-              style: TextStyle(
-                  color: Colors.red,
-                  fontSize: 12.auto
-              ),
-            ),
-            Text("595.00",
-              style: TextStyle(
-                  color: Colors.red,
-                  fontSize: 12.auto
-              ),
-            ),
-            Text("0.00",
-              style: TextStyle(
-                  color: Colors.red,
-                  fontSize: 12.auto
-              ),
-            ),
-          ],
-        ),
-        Spacer(),
-      ],
-    ),
-  );
+      );
 }

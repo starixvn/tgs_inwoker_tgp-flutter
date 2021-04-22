@@ -14,15 +14,14 @@ import 'package:tgp_flutter/ui/base_state.dart';
 import 'package:tgp_flutter/ui/profile_info/real_name/real_name_verification_view_model.dart';
 import 'package:tgp_flutter/ui/profile_info/security/security_answer_view_model.dart';
 
-class BaseEditSecurityAnswer extends StatefulWidget{
+class BaseEditSecurityAnswer extends StatefulWidget {
   @override
   _BaseEditSecurityAnswerState createState() => _BaseEditSecurityAnswerState();
 }
 
 class _BaseEditSecurityAnswerState extends BaseState<BaseEditSecurityAnswer> {
   var _vm = SecurityAnswerViewModel();
-  TextEditingController _emailController = TextEditingController(),
-      _otpController = TextEditingController();
+  TextEditingController _emailController = TextEditingController(), _otpController = TextEditingController();
   var isButtonEnabled = false, isReset = false;
   var name, cardNumber, buttonText;
   var userProfile;
@@ -40,9 +39,7 @@ class _BaseEditSecurityAnswerState extends BaseState<BaseEditSecurityAnswer> {
         model: _vm,
         builder: (ctx, vm, _) {
           _handleApiState();
-          return Column(
-
-          );
+          return Column();
         });
   }
 
@@ -56,40 +53,39 @@ class _BaseEditSecurityAnswerState extends BaseState<BaseEditSecurityAnswer> {
     }
   }
 
-  _getUserProfile(){
+  _getUserProfile() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {
-        userProfile =  _vm.userProfile;
-        if(_vm.userProfile.memberName.isNotEmpty){
+        userProfile = _vm.userProfile;
+        if (_vm.userProfile.memberName.isNotEmpty) {
           _emailController.text = _vm.userProfile.memberName;
         }
-        if(_vm.userProfile.memberCardNo.isNotEmpty) {
+        if (_vm.userProfile.memberCardNo.isNotEmpty) {
           _otpController.text = _vm.userProfile.memberCardNo;
         }
       });
     });
   }
 
-  _onTextChange(){
-    if(_emailController.text.isNotEmpty && _otpController.text.isNotEmpty){
+  _onTextChange() {
+    if (_emailController.text.isNotEmpty && _otpController.text.isNotEmpty) {
       setState(() {
         isButtonEnabled = true;
       });
-    }
-    else{
+    } else {
       setState(() {
         isButtonEnabled = false;
       });
     }
   }
 
-  _onClick() async{
-    /*CustomProgressDialog.show(context);
+  _onClick() async {
+    /* ProgressDialog.show(context);
     _vm.updateSecurityQuestion(securityQuestion.securityQuestionID, securityQuestion.answer, isReset);
     if(_vm.updateSecurityQuestionApiState.isSuccess){
       await _vm.getBasicInfo();
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        CustomProgressDialog.hide();
+         ProgressDialog.hide();
         setState(() {
           userProfile = _vm.getBasicInfoApiState.result;
         });
@@ -98,13 +94,13 @@ class _BaseEditSecurityAnswerState extends BaseState<BaseEditSecurityAnswer> {
     }*/
   }
 
-  _handleApiState(){
+  _handleApiState() {
     /*if (_vm.idVerifyApiState == null) {
       return;
     }
     if ((_vm.idVerifyApiState?.isError ?? false)) {
       CustomToast.show(_vm.idVerifyApiState.error);
-      CustomProgressDialog.hide();
+       ProgressDialog.hide();
       FocusScope.of(context).requestFocus(FocusNode());
       _vm.resetApiState(isIdVerifyApiState: true);
     }*/

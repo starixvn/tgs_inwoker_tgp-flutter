@@ -8,6 +8,7 @@ import 'package:tgp_flutter/custom/custom_toast.dart';
 import 'package:tgp_flutter/custom/gradient_button.dart';
 import 'package:tgp_flutter/custom/red_button.dart';
 import 'package:tgp_flutter/extension/format.dart';
+import 'package:tgp_flutter/extension/navigate_without_animation.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
@@ -90,7 +91,7 @@ class _WalletTransferState extends BaseState<WalletTransfer> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.pop(context, NavigateWithoutAnimation());
           },
         ),
         actions: [
@@ -100,7 +101,7 @@ class _WalletTransferState extends BaseState<WalletTransfer> {
             child: IconButton(
               icon: Image.asset("images/ic_refresh.png"),
               onPressed: () {
-                CustomProgressDialog.show(context);
+                ProgressDialog.show(context);
                 //_vm.getAllWallet();
               },
             ),
@@ -158,7 +159,7 @@ class _WalletTransferState extends BaseState<WalletTransfer> {
                 _vm.transferAllToMainWallet();
                 _vm.getAllWallet();
                 updateData();
-                CustomProgressDialog.show(context);
+                 ProgressDialog.show(context);
               });*/
                 },
                 radius: 4.8,
@@ -288,7 +289,7 @@ class _WalletTransferState extends BaseState<WalletTransfer> {
                     if(fromWallet!=null && value.id == fromWallet.id) CustomToast.show("不能转账去同样的钱包！");
                     else setToWallet(value);
                   }*/
-                  Navigator.pop(context);
+                  Navigator.pop(context, NavigateWithoutAnimation());
                 });
               });
         });
@@ -379,7 +380,7 @@ class _WalletTransferState extends BaseState<WalletTransfer> {
       CustomToast.show(_vm.transferWalletApiState.error);
     }
     if(!(_vm.isLoading)){
-      CustomProgressDialog.hide();
+       ProgressDialog.hide();
     }*/
   }
 
@@ -401,7 +402,7 @@ class _WalletTransferState extends BaseState<WalletTransfer> {
       return;
     }else{
       setState(() {
-        CustomProgressDialog.show(context);
+         ProgressDialog.show(context);
         _vm.transferWallet(fromWallet.id, toWallet.id, double.parse(amount.text));
         _vm.getAllWallet();
         updateData();

@@ -9,19 +9,13 @@ import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
 
-class TransactionCellItem extends StatefulWidget{
+class TransactionCellItem extends StatefulWidget {
   final List list;
   final TransactionCellItemType type;
   final bool isLoading;
   final bool isEndRecord;
 
-  TransactionCellItem({Key key,
-    this.list,
-    this.type,
-    this.isLoading,
-    this.isEndRecord
-  }) : super(key: key);
-
+  TransactionCellItem({Key key, this.list, this.type, this.isLoading, this.isEndRecord}) : super(key: key);
 
   @override
   _TransactionCellItemState createState() => _TransactionCellItemState();
@@ -32,12 +26,12 @@ class _TransactionCellItemState extends BaseState<TransactionCellItem> {
 
   Widget build(BuildContext context) {
     //only one item
-    if(widget.type == TransactionCellItemType.SINGLE){
+    if (widget.type == TransactionCellItemType.SINGLE) {
       return Container(
         padding: EdgeInsets.only(bottom: 10.auto),
         child: Container(
-          padding: EdgeInsets.only(top:5.auto,bottom: 10.auto),
-          decoration:BoxDecoration(
+          padding: EdgeInsets.only(top: 5.auto, bottom: 10.auto),
+          decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.all(Radius.circular(10)),
           ),
@@ -46,97 +40,75 @@ class _TransactionCellItemState extends BaseState<TransactionCellItem> {
       );
     }
     //top item
-    else if(widget.type == TransactionCellItemType.TOP){
+    else if (widget.type == TransactionCellItemType.TOP) {
       return Container(
-          padding: EdgeInsets.only(top:5.auto),
-          decoration:BoxDecoration(
+          padding: EdgeInsets.only(top: 5.auto),
+          decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(10) ,topRight: Radius.circular(10)
-            ),
+            borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
           ),
-          child: _getTransactionCellItem()
-      );
+          child: _getTransactionCellItem());
     }
     //bottom item
-    else if(widget.type == TransactionCellItemType.BOTTOM){
-      return Column(
-          children: [
-            Container(
+    else if (widget.type == TransactionCellItemType.BOTTOM) {
+      return Column(children: [
+        Container(
+          padding: EdgeInsets.only(bottom: 10.auto),
+          child: Container(
               padding: EdgeInsets.only(bottom: 10.auto),
-              child: Container(
-                  padding: EdgeInsets.only(bottom: 10.auto),
-                  decoration:BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(10) ,bottomRight: Radius.circular(10)
-                    ),
-                  ),
-                  child: _getTransactionCellItem(isLast: true)
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10)),
               ),
-            ),
-            /*widget.isLoading?Container(
+              child: _getTransactionCellItem(isLast: true)),
+        ),
+        /*widget.isLoading?Container(
             height: 50,
             width: 50,
             padding: EdgeInsets.only(bottom: 10.auto),
             child: CircularProgressIndicator(),
           ):Container(),*/
-            widget.isEndRecord?
-            Container(
-              padding: EdgeInsets.only(bottom: 10.auto),
-              child: Text(
-                "没有跟多了",
-                style: TextStyle(
-                    fontSize: 12.auto,
-                    color: CustomColor.grey
+        widget.isEndRecord
+            ? Container(
+                padding: EdgeInsets.only(bottom: 10.auto),
+                child: Text(
+                  "没有更多了",
+                  style: TextStyle(fontSize: 12.auto, color: CustomColor.grey),
                 ),
-              ),
-            )
-                :Container()
-          ]
-      );
-    }
-
-    else{
-      return Container(
-          color: Colors.white,
-          child: _getTransactionCellItem()
-      );
+              )
+            : Container()
+      ]);
+    } else {
+      return Container(color: Colors.white, child: _getTransactionCellItem());
     }
   }
 
-  _getTransactionCellItem({bool isLast = false}) =>
-      Column(
-          children:[
-            Container(
-              margin: EdgeInsets.only(top:5.auto),
-              child: Row(
-                  children:
-                  List.generate(widget.list.length, (index) {
-                    return Expanded(
-                      //first header (time) flex number is 2, others will be 1
-                      flex: index == 0 ? 2: 1,
-                      child:AutoSizeText(
-                        widget.list[index],
-                        style: TextStyle(
-                            fontSize: 12,
-                            color: Colors.grey[700]
-                        ),
-                        textAlign: TextAlign.center,
-                        minFontSize: 10,
-                        stepGranularity: 1,
-                      ),
-                    );
-                  }).toList()
+  _getTransactionCellItem({bool isLast = false}) => Column(children: [
+        Container(
+          margin: EdgeInsets.only(top: 5.auto),
+          child: Row(
+              children: List.generate(widget.list.length, (index) {
+            return Expanded(
+              //first header (time) flex number is 2, others will be 1
+              flex: index == 0 || index == 1 ? 4 : 3,
+              child: AutoSizeText(
+                widget.list[index],
+                style: TextStyle(fontSize: 12, color: Colors.grey[700]),
+                textAlign: TextAlign.center,
+                minFontSize: 5,
+                stepGranularity: 1,
               ),
-            ),
-            isLast?Container():Divider(
-              thickness: (1.0).auto,
-              color: CustomColor.very_light_pink_four,
-            )
-          ]
-      )
-  /* Column(
+            );
+          }).toList()),
+        ),
+        isLast
+            ? Container()
+            : Divider(
+                thickness: (1.0).auto,
+                color: CustomColor.very_light_pink_four,
+              )
+      ])
+      /* Column(
       children:[
         Container(
           margin: EdgeInsets.only(top:5.auto),
@@ -187,18 +159,16 @@ class _TransactionCellItemState extends BaseState<TransactionCellItem> {
           color: CustomColor.very_light_pink_four,
         )
       ]
-  )*/;
+  )*/
+      ;
 
   _buildCellItem(String text) => AutoSizeText(
-    text,
-    style: TextStyle(
-        fontSize: 12.auto,
-        color: Colors.grey[700]
-    ),
-    textAlign: TextAlign.center,
-    minFontSize: 10,
-    stepGranularity: 1,
-  );
+        text,
+        style: TextStyle(fontSize: 12.auto, color: Colors.grey[700]),
+        textAlign: TextAlign.center,
+        minFontSize: 10,
+        stepGranularity: 1,
+      );
 
 /*  _getDisplayText() {
     text1 = value.createdOn;
@@ -207,4 +177,3 @@ class _TransactionCellItemState extends BaseState<TransactionCellItem> {
 
   }*/
 }
-

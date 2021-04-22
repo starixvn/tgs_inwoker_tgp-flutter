@@ -11,12 +11,14 @@ import 'package:tgp_flutter/custom/outline_border_button.dart';
 import 'package:tgp_flutter/data/provider/input_validation_provider.dart';
 import 'package:tgp_flutter/entity/event_type.dart';
 import 'package:tgp_flutter/entity/user_profile.dart';
+import 'package:tgp_flutter/extension/navigate_without_animation.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
 import 'package:tgp_flutter/ui/profile_info/email/email_verification_view_model.dart';
 import 'package:tgp_flutter/ui/profile_info/pay_password/pay_password_view_model.dart';
+import 'package:tgp_flutter/ui/profile_info/phone/phone_verification.dart';
 import 'package:tgp_flutter/ui/profile_info/phone/phone_verification_view_model.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 
@@ -42,7 +44,7 @@ class _ResetPayPasswordState extends BaseState<ResetPayPassword> {
           _phoneController.text = _vm.userProfile.phone;
         });
       } else {
-        Navigator.of(context).pushNamed("/phone_verification");
+        Navigator.of(context).push(NavigateWithoutAnimation(widget: PhoneVerification()));
       }
     });
     super.initState();
@@ -80,7 +82,7 @@ class _ResetPayPasswordState extends BaseState<ResetPayPassword> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.pop(context, NavigateWithoutAnimation());
           },
         ),
         title: Text(
@@ -154,7 +156,7 @@ class _ResetPayPasswordState extends BaseState<ResetPayPassword> {
       ));
 
   _getSmsCode() {
-    CustomProgressDialog.show(context);
+    ProgressDialog.show(context);
     _vm.getPayPasswordCode();
   }
 
@@ -176,7 +178,7 @@ class _ResetPayPasswordState extends BaseState<ResetPayPassword> {
         CustomToast.show("确认提款密码与提款密码不一致");
       });
     } else {
-      CustomProgressDialog.show(context);
+      ProgressDialog.show(context);
       _vm.payPasswordVerify(_payPasswordController.text, _otpController.text);
     }
   }
@@ -186,7 +188,7 @@ class _ResetPayPasswordState extends BaseState<ResetPayPassword> {
     handleApiState(_vm.payPasswordVerifyApiState, onSuccess: () {
       CustomToast.show("Success");
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        Navigator.pop(context);
+        Navigator.pop(context, NavigateWithoutAnimation());
       });
     });
   }

@@ -49,7 +49,7 @@ class _GameWebState extends BaseState<GameWeb> {
             resizeToAvoidBottomInset: false,
             backgroundColor: Colors.white,
             appBar: _buildAppBar(),
-            body: isLoading || _vm.url == null ? Center(child: CircularProgressIndicator()) : _buildWebView(),
+            body: isLoading || _vm.url == null ? buildProgressDialog() : _buildWebView(),
           );
         });
   }

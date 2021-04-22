@@ -6,9 +6,11 @@ import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/custom/custom_toast.dart';
 import 'package:tgp_flutter/custom/gradient_button.dart';
 import 'package:tgp_flutter/data/provider/input_validation_provider.dart';
+import 'package:tgp_flutter/extension/navigate_without_animation.dart';
 import 'package:tgp_flutter/localizations/language_provider.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
+import 'package:tgp_flutter/ui/home/home.dart';
 import 'package:tgp_flutter/ui/login/login_password_text_form_field.dart';
 import 'package:tgp_flutter/ui/login/login_text_form_field.dart';
 import 'package:tgp_flutter/ui/login/login_view_model.dart';
@@ -185,7 +187,7 @@ class _RegisterContentState extends BaseState<RegisterContent> {
         CustomToast.show(getTranslatedText("confirm_pay_error_msg"));
       });
     } else {
-      CustomProgressDialog.show(context);
+      ProgressDialog.show(context);
       _checkUsername();
     }
   }
@@ -204,7 +206,7 @@ class _RegisterContentState extends BaseState<RegisterContent> {
           CustomToast.show("Username is existed");
         });
       } else {
-        CustomProgressDialog.show(context);
+        ProgressDialog.show(context);
         _vm.register(username.text, password.text, confirmPassword.text, "CNY", invitationCode.text);
       }
     });
@@ -212,7 +214,7 @@ class _RegisterContentState extends BaseState<RegisterContent> {
 
   _navigateToHome() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Navigator.of(context).pushNamed("/home");
+      Navigator.of(context).push(NavigateWithoutAnimation(widget: Home()));
     });
   }
 }

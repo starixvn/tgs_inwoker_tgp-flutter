@@ -7,6 +7,7 @@ import 'package:tgp_flutter/entity/game_provider.dart';
 import 'package:tgp_flutter/entity/game_provider2.dart';
 import 'package:tgp_flutter/entity/game_type.dart';
 import 'package:tgp_flutter/entity/user_profile.dart';
+import 'package:tgp_flutter/extension/navigate_without_animation.dart';
 import 'package:tgp_flutter/localizations/language_provider.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
@@ -19,6 +20,7 @@ import 'package:tgp_flutter/ui/home/child_game/child_game.dart';
 import 'package:tgp_flutter/ui/home/game/game_view_item.dart';
 import 'package:tgp_flutter/ui/home/game/game_view_model.dart';
 import 'package:tgp_flutter/ui/home/game/game_web_view.dart';
+import 'package:tgp_flutter/ui/login/login.dart';
 
 class GameView extends StatefulWidget {
   final List<Map<String, String>> tabList;
@@ -63,9 +65,7 @@ class _GameViewState extends BaseState<GameView> {
         builder: (ctx, vm, _) {
           _handleApiState();
           return _vm.gameProviderList == null
-              ? Center(
-                  child: CircularProgressIndicator(),
-                )
+              ? buildProgressDialog()
               : Expanded(
                   child: Container(
                     margin: EdgeInsets.only(left: 10.auto, right: 10.auto, bottom: 5.auto),
@@ -188,7 +188,7 @@ class _GameViewState extends BaseState<GameView> {
 
   navigateToLogin() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Navigator.of(context).pushNamed("/login");
+      Navigator.of(context).push(NavigateWithoutAnimation(widget: Login()));
     });
   }
 
@@ -198,19 +198,19 @@ class _GameViewState extends BaseState<GameView> {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         Navigator.push(
             context,
-            MaterialPageRoute(
-                builder: (context) => ChildGame(
-                      gamePlatformCode: gamePlatformCode,
-                      gameType: gameType,
-                    )));
+            NavigateWithoutAnimation(
+                widget: ChildGame(
+              gamePlatformCode: gamePlatformCode,
+              gameType: gameType,
+            )));
       });
     } else {
       //navigate to game web
-      CustomProgressDialog.show(context);
+      ProgressDialog.show(context);
       await _vm.getGameList(gamePlatformCode, gameType);
       WidgetsBinding.instance.addPostFrameCallback((_) {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => GameWeb(game: _vm.gameListMap[gamePlatformCode].first)));
+            context, NavigateWithoutAnimation(widget: GameWeb(game: _vm.gameListMap[gamePlatformCode].first)));
       });
     }
   }

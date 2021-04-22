@@ -8,6 +8,7 @@ import 'package:tgp_flutter/custom/otp_text_form_field.dart';
 import 'package:tgp_flutter/custom/outline_border_button.dart';
 import 'package:tgp_flutter/data/provider/input_validation_provider.dart';
 import 'package:tgp_flutter/entity/event_type.dart';
+import 'package:tgp_flutter/extension/navigate_without_animation.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
@@ -69,7 +70,7 @@ class _EmailVerificationState extends BaseState<EmailVerification> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.pop(context, NavigateWithoutAnimation());
           },
         ),
         title: Text(
@@ -167,13 +168,13 @@ class _EmailVerificationState extends BaseState<EmailVerification> {
         CustomToast.show("邮箱地址格式不正确");
       });
     } else {
-      CustomProgressDialog.show(context);
+      ProgressDialog.show(context);
       _vm.getEmailCode(_emailController.text);
     }
   }
 
   _onClick() async {
-    CustomProgressDialog.show(context);
+    ProgressDialog.show(context);
     _vm.emailVerify(_otpController.text);
   }
 

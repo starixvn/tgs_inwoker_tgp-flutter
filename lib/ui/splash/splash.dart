@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/custom/custom_toast.dart';
+import 'package:tgp_flutter/extension/navigate_without_animation.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/main.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
@@ -10,8 +11,7 @@ import 'package:tgp_flutter/ui/base_state.dart';
 import 'package:tgp_flutter/ui/home/home.dart';
 import 'package:tgp_flutter/ui/splash/splash_view_model.dart';
 
-
-class Splash extends StatefulWidget{
+class Splash extends StatefulWidget {
   @override
   _SplashState createState() => _SplashState();
 }
@@ -43,53 +43,33 @@ class _SplashState extends BaseState<Splash> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Container(
-                          width: context.screenWidth / 1.5,
-                          child: Image.asset("images/ic_logo.png")
-                      ),
+                      Container(width: context.screenWidth / 1.5, child: Image.asset("images/ic_logo.png")),
                       Container(
                         margin: EdgeInsets.all(10.auto),
                         alignment: Alignment.bottomCenter,
-                        child: CircularProgressIndicator(
-
-                        ),
+                        child: CircularProgressIndicator(),
                       )
                     ],
                   ),
                 ),
-              )
-          );
+              ));
         });
   }
 
   _handleApiState() {
-    handleApiState(_vm.authApiState, onSuccess: ()
-    {
+    handleApiState(_vm.authApiState, onSuccess: () {
       _navigateToHome();
-    },
-        isAutoHideLoading: false,
-      onError: (_){
-
-      }
-    );
+    }, isAutoHideLoading: false, onError: (_) {});
   }
 
   _navigateToHome() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(
-              builder: (context) =>
-                  MyHomePage(
-                    isFirstRun: true,
-                  )
-          ), (Route<dynamic> route) => false);
+          NavigateWithoutAnimation(
+              widget: MyHomePage(
+            isFirstRun: true,
+          )),
+          (Route<dynamic> route) => false);
     });
   }
 }
-
-
-
-
-
-
-

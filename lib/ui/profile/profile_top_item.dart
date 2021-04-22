@@ -1,22 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/custom/custom_toast.dart';
+import 'package:tgp_flutter/extension/navigate_without_animation.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
 
-
-class ProfileTopItem extends StatefulWidget{
+class ProfileTopItem extends StatefulWidget {
   final String title;
   final String imagePath;
-  final String routePath;
+  final Widget route;
 
-  ProfileTopItem({Key key,
+  ProfileTopItem({
+    Key key,
     this.title,
     this.imagePath,
-    this.routePath,
+    this.route,
   }) : super(key: key);
+
   @override
   _ProfileTopItemState createState() => _ProfileTopItemState();
 }
@@ -28,7 +30,7 @@ class _ProfileTopItemState extends BaseState<ProfileTopItem> {
       child: InkWell(
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
-        onTap:() => _navigate(),
+        onTap: () => _navigate(),
         child: Column(
           children: [
             ImageIcon(
@@ -37,9 +39,7 @@ class _ProfileTopItemState extends BaseState<ProfileTopItem> {
             ),
             Text(
               widget.title,
-              style: TextStyle(
-                  fontSize: 15.auto
-              ),
+              style: TextStyle(fontSize: 15.auto),
             )
           ],
         ),
@@ -48,6 +48,6 @@ class _ProfileTopItemState extends BaseState<ProfileTopItem> {
   }
 
   _navigate() => WidgetsBinding.instance.addPostFrameCallback((_) {
-    Navigator.of(context).pushNamed("/${widget.routePath}");
-  });
+        Navigator.of(context).push(NavigateWithoutAnimation(widget: widget.route));
+      });
 }

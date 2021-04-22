@@ -6,7 +6,6 @@ import 'package:tgp_flutter/entity/language.dart';
 import 'package:tgp_flutter/localizations/language_provider.dart';
 import 'package:tgp_flutter/localizations/my_localizations.dart';
 import 'package:tgp_flutter/my_behavior.dart';
-import 'package:tgp_flutter/route/route_path.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
@@ -105,40 +104,7 @@ class _MyAppState extends BaseState<MyApp> {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: appTitle,
-        initialRoute: '/',
-        routes: {
-          RoutePath.empty: (context) => Splash(),
-          RoutePath.home: (context) => MyHomePage(),
-          RoutePath.login: (context) => Login(),
-          RoutePath.menu: (context) => Menu(),
-          RoutePath.profile: (context) => Profile(),
-          RoutePath.promotion: (context) => PromotionPage(),
-          RoutePath.childGame: (context) => ChildGame(),
-          RoutePath.deposit: (context) => Deposit(),
-          RoutePath.walletTransfer: (context) => WalletTransfer(),
-          RoutePath.withdraw: (context) => Withdraw(),
-          RoutePath.transaction: (context) => Transaction(),
-          RoutePath.mainCard: (context) => MainCard(),
-          RoutePath.message: (context) => MessageView(),
-          RoutePath.frequentQuestion: (context) => FrequentQuestion(),
-          RoutePath.referFriend: (context) => ReferFriend(),
-          RoutePath.profileInfo: (context) => ProfileInfo(),
-          RoutePath.realNameVerification: (context) => RealNameVerification(),
-          RoutePath.phoneVerification: (context) => PhoneVerification(),
-          RoutePath.emailVerification: (context) => EmailVerification(),
-          RoutePath.qqAccount: (context) => QQAccount(),
-          RoutePath.wechat: (context) => Wechat(),
-          RoutePath.address: (context) => Address(),
-          RoutePath.editPassword: (context) => EditPassword(),
-          RoutePath.resetPayPassword: (context) => ResetPayPassword(),
-          RoutePath.payPassword: (context) => PayPassword(),
-          RoutePath.securityAnswer: (context) => SecurityAnswer(),
-          RoutePath.editSecurityAnswer: (context) => EditSecurityAnswer(),
-          RoutePath.editSecurityAnswerBySecurityAnswer: (context) => EditSecurityAnswerBySecurityAnswer(),
-          RoutePath.forgotPassword: (context) => ForgotPassword(),
-          RoutePath.language:(context) => LanguageView(),
-          RoutePath.addCard:(context) => AddCard(),
-        },
+        home: MyHomePage(),
         localizationsDelegates: [
           MyLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,

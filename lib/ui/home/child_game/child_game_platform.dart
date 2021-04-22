@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -12,10 +13,11 @@ class ChildGamePlatform extends StatefulWidget {
   final List<GameProvider2> platformList;
   final List<Game> gameList;
   final bool isSearching;
-  final Function(int) onFilterPlatform;
+  final Function(String) onFilterPlatform;
   final String initialPlatformCode;
 
-  ChildGamePlatform({this.platformList, this.gameList, this.isSearching, this.onFilterPlatform, this.initialPlatformCode});
+  ChildGamePlatform(
+      {this.platformList, this.gameList, this.isSearching, this.onFilterPlatform, this.initialPlatformCode});
 
   @override
   _ChildGamePlatformState createState() => _ChildGamePlatformState();
@@ -24,7 +26,9 @@ class ChildGamePlatform extends StatefulWidget {
 class _ChildGamePlatformState extends BaseState<ChildGamePlatform> with SingleTickerProviderStateMixin {
   var _platformTabController;
   var platformTabIndex = 0;
-  var _platformTabList = ["全部"];
+  List<Map<String, String>> _platformTabList = [
+    {"name": "全部", "code": "ALL"}
+  ];
 
   @override
   void initState() {
@@ -34,13 +38,13 @@ class _ChildGamePlatformState extends BaseState<ChildGamePlatform> with SingleTi
     super.initState();
   }
 
-  initData(){
-    widget.platformList.asMap().forEach((index, value)  {
-      _platformTabList.add(value.name);
-      if(value.code == widget.initialPlatformCode){
-        platformTabIndex = index+1;
+  initData() {
+    widget.platformList.asMap().forEach((index, value) {
+      _platformTabList.add({"name": value.name, "code": value.code});
+      if (value.code == widget.initialPlatformCode) {
+        platformTabIndex = index + 1;
       }
-    });;
+    });
   }
 
   Widget build(BuildContext context) {
@@ -64,7 +68,7 @@ class _ChildGamePlatformState extends BaseState<ChildGamePlatform> with SingleTi
           unselectedLabelColor: CustomColor.theme_button_disable_bg,
           labelColor: CustomColor.theme_button_disable_bg,
           indicatorWeight: 3,
-          onTap: (index) => widget.onFilterPlatform(index),
+          onTap: (index) => widget.onFilterPlatform(_platformTabList[index]["code"]),
           indicator: ShapeDecoration(
             shape: RoundedRectangleBorder(
               side: BorderSide(color: CustomColor.theme_button_disable_bg),
@@ -74,7 +78,7 @@ class _ChildGamePlatformState extends BaseState<ChildGamePlatform> with SingleTi
           unselectedLabelStyle: TextStyle(color: CustomColor.theme_button_disable_bg),
           tabs: _platformTabList.map((item) {
             return Tab(
-              child: Text(item,
+              child: Text(item["name"],
                   style: TextStyle(
                     fontFamily: 'PingFang',
                     fontSize: 14.auto,

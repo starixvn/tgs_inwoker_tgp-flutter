@@ -27,7 +27,8 @@ class HomeViewModel extends BaseViewModel {
     if (token != null) {
       print(token);
       await userRepo.getBasicInfo();
-      if(userProfile ==null) isExpired = true;
+      await userRepo.getWalletBalance();
+      if (userProfile == null) isExpired = true;
       print("Token: " + token);
       print("Authorization: " + prefs.getString("auth_token"));
     } else

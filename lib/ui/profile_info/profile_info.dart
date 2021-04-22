@@ -1,13 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter/entity/profile_info_item.dart';
 import 'package:tgp_flutter/entity/user_profile.dart';
+import 'package:tgp_flutter/extension/navigate_without_animation.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/my_behavior.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
+import 'package:tgp_flutter/ui/profile_info/email/email_verification.dart';
+import 'package:tgp_flutter/ui/profile_info/password/edit_password.dart';
+import 'package:tgp_flutter/ui/profile_info/pay_password/pay_password.dart';
+import 'package:tgp_flutter/ui/profile_info/pay_password/reset_pay_password.dart';
+import 'package:tgp_flutter/ui/profile_info/phone/phone_verification.dart';
 import 'package:tgp_flutter/ui/profile_info/profile_info_view_model.dart';
+import 'package:tgp_flutter/ui/profile_info/qq_account/qq_account.dart';
+import 'package:tgp_flutter/ui/profile_info/real_name/real_name_verification.dart';
+import 'package:tgp_flutter/ui/profile_info/wechat/wechat.dart';
 
 class ProfileInfo extends StatefulWidget {
   @override
@@ -44,7 +53,7 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
                           _buildInfoCard(
                             "basic_info",
                             [ProfileInfoItem.REALNAME, ProfileInfoItem.PHONE_NUMBER, ProfileInfoItem.EMAIL],
-                            ["real_ name_verification", "phone_verification", "email_verification"],
+                            [RealNameVerification(), PhoneVerification(), EmailVerification()],
                             itemDescriptionList: [
                               _getItemText(_vm.userProfile.realname),
                               _getItemText(_vm.userProfile.phone),
@@ -54,7 +63,7 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
                           _buildInfoCard(
                             "other_info",
                             [ProfileInfoItem.QQ_NUMBER, ProfileInfoItem.WECHAT_NUMBER],
-                            ["qq_account", "wechat"],
+                            [QQAccount(), Wechat()],
                             itemDescriptionList: [
                               _getItemText(_vm.userProfile.qq),
                               _getItemText(_vm.userProfile.wechat),
@@ -71,9 +80,9 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
                                   ProfileInfoItem.RESET_PAY_PASSWORD
                                 ],
                                 [
-                                  "edit_password",
-                                  "pay_password",
-                                  "reset_pay_password"
+                                  EditPassword(),
+                                  PayPassword(),
+                                  ResetPayPassword()
                                   // if no security will navigate to security answer, else will navigate to edit security answer
                                 ],
                                 isSecurity: true),
@@ -94,7 +103,7 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.pop(context, NavigateWithoutAnimation());
           },
         ),
         title: Text(
@@ -103,7 +112,7 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
         ),
       );
 
-  _buildInfoCard(String title, List<ProfileInfoItem> itemList, List<String> pathList,
+  _buildInfoCard(String title, List<ProfileInfoItem> itemList, List<Widget> pathList,
           {List<String> itemDescriptionList, bool isSecurity = false}) =>
       Container(
         margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 15.auto),
@@ -146,9 +155,9 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
         ),
       );
 
-  _buildInfoItem(String imagePath, String itemTitle, String routePath, {String itemDescription}) => InkWell(
+  _buildInfoItem(String imagePath, String itemTitle, Widget route, {String itemDescription}) => InkWell(
         onTap: () {
-          Navigator.of(context).pushNamed("/$routePath");
+          Navigator.of(context).push(NavigateWithoutAnimation(widget: route));
         },
         highlightColor: Colors.transparent,
         child: Container(
@@ -194,9 +203,9 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
         ),
       );
 
-  _buildInfoItemWithoutText(String imagePath, String itemTitle, String routePath) => InkWell(
+  _buildInfoItemWithoutText(String imagePath, String itemTitle, Widget route) => InkWell(
         onTap: () {
-          Navigator.of(context).pushNamed("/$routePath");
+          Navigator.of(context).push(NavigateWithoutAnimation(widget: route));
         },
         highlightColor: Colors.transparent,
         child: Container(

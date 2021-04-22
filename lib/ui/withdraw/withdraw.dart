@@ -7,6 +7,7 @@ import 'package:tgp_flutter/custom/custom_text_form_field.dart';
 import 'package:tgp_flutter/custom/custom_toast.dart';
 import 'package:tgp_flutter/custom/red_button.dart';
 import 'package:tgp_flutter/extension/format.dart';
+import 'package:tgp_flutter/extension/navigate_without_animation.dart';
 import 'package:tgp_flutter/my_behavior.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
@@ -84,7 +85,7 @@ class _WithdrawState extends BaseState<Withdraw> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.pop(context, NavigateWithoutAnimation());
           },
         ),
         flexibleSpace: Container(
@@ -215,7 +216,7 @@ class _WithdrawState extends BaseState<Withdraw> {
               onChanged: (value) {
                 setState(() {
                   selectedBankCard = value;
-                  Navigator.pop(context);
+                  Navigator.pop(context, NavigateWithoutAnimation());
                 });
               }
           );
@@ -298,7 +299,7 @@ class _WithdrawState extends BaseState<Withdraw> {
   }
 
   onNextButtonClick() {
-    CustomProgressDialog.show(context);
+    ProgressDialog.show(context);
     //_vm.withdraw(selectedBankCard.id, int.parse(_textEditingController.text));
   }
 
@@ -309,7 +310,7 @@ class _WithdrawState extends BaseState<Withdraw> {
     }
     if ((_vm.withdrawalApiState?.isError ?? false)) {
       CustomToast.show(_vm.withdrawalApiState.error);
-      CustomProgressDialog.hide();
+       ProgressDialog.hide();
       FocusScope.of(context).requestFocus(FocusNode());
       _vm.resetApiState(isWithdrawalApiState: true);
     }
@@ -318,7 +319,7 @@ class _WithdrawState extends BaseState<Withdraw> {
       _vm.resetApiState(isGetWithdrawalInfoApiState: true);
     }
     if((_vm.withdrawalApiState?.isSuccess ?? false)){
-      CustomProgressDialog.hide();
+       ProgressDialog.hide();
       FocusScope.of(context).requestFocus(FocusNode());
       _vm.resetApiState(isWithdrawalApiState: true);
     }*/

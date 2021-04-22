@@ -5,11 +5,13 @@ import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/custom/custom_toast.dart';
 import 'package:tgp_flutter/custom/gradient_button.dart';
 import 'package:tgp_flutter/entity/language.dart';
+import 'package:tgp_flutter/extension/navigate_without_animation.dart';
 import 'package:tgp_flutter/localizations/language_provider.dart';
 import 'package:tgp_flutter/main.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
+import 'package:tgp_flutter/ui/forgot_password/forgot_password.dart';
 import 'package:tgp_flutter/ui/home/home.dart';
 import 'package:tgp_flutter/ui/login/login_password_text_form_field.dart';
 import 'package:tgp_flutter/ui/login/login_text_form_field.dart';
@@ -121,7 +123,7 @@ class _LoginContentState extends BaseState<LoginContent> {
         children: [
           InkWell(
             onTap: () {
-              Navigator.of(context).pushNamed("/forgot_password");
+              Navigator.of(context).push(NavigateWithoutAnimation(widget: ForgotPassword()));
             },
             child: Text(
               getTranslatedText("forgot_password_with_question_mark"),
@@ -214,7 +216,7 @@ class _LoginContentState extends BaseState<LoginContent> {
         CustomToast.show(getTranslatedText("enter_password_hint"));
       });
     } else {
-      CustomProgressDialog.show(context);
+      ProgressDialog.show(context);
       _vm.login(username.text, password.text, _isRememberMe);
     }
   }
@@ -222,10 +224,10 @@ class _LoginContentState extends BaseState<LoginContent> {
   _navigateToHome() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(
-              builder: (context) => MyHomePage(
-                    isFirstRun: false,
-                  )),
+          NavigateWithoutAnimation(
+              widget: MyHomePage(
+            isFirstRun: false,
+          )),
           (Route<dynamic> route) => false);
     });
   }

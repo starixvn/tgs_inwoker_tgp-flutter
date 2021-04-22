@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter/custom/color_button.dart';
 import 'package:tgp_flutter/custom/outline_border_button.dart';
+import 'package:tgp_flutter/extension/navigate_without_animation.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
@@ -104,7 +105,10 @@ class CustomDialog extends StatelessWidget {
       );
 
   _buildBackButton(BuildContext context) => OutlineBorderButton(
-        onClick: () => Navigator.pop(context),
+        onClick: () => Navigator.pop(
+          context,
+          NavigateWithoutAnimation(),
+        ),
         title: buttonText2,
         isEnabled: true,
         width: context.screenWidth / 3.5,

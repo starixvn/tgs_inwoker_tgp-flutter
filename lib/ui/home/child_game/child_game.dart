@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/entity/game.dart';
 import 'package:tgp_flutter/entity/game_type.dart';
+import 'package:tgp_flutter/extension/navigate_without_animation.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/my_behavior.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
@@ -68,9 +69,7 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
               backgroundColor: Colors.grey[100],
               appBar: _buildAppBar(),
               body: _vm.filteredGameList == null || _vm.gameProviderList == null
-                  ? Center(
-                      child: CircularProgressIndicator(),
-                    )
+                  ? buildProgressDialog()
                   : Stack(
                       children: [
                         _buildChildGame(),
@@ -95,7 +94,7 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.pop(context, NavigateWithoutAnimation());
           },
         ),
         title: isSearching
@@ -140,14 +139,13 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
           ),
           Expanded(
             child: ChildGamePlatform(
-              platformList: _vm.platformList,
-              gameList: _vm.filteredGameList,
-              isSearching: isSearching,
-              onFilterPlatform: (index) {
-                _vm.filter(platform: index);
-              },
-              initialPlatformCode: widget.gamePlatformCode
-            ),
+                platformList: _vm.platformList,
+                gameList: _vm.filteredGameList,
+                isSearching: isSearching,
+                onFilterPlatform: (code) {
+                  _vm.filter(gamePlatformCode: code);
+                },
+                initialPlatformCode: widget.gamePlatformCode),
           ),
         ],
       );
@@ -286,7 +284,6 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
       _vm.filter(searchQuery: searchController.text);
     }
   }
-
 
   _handleApiState() {
     handleApiState(_vm.getGameApiState, isAutoHideLoading: false, onSuccess: () {});

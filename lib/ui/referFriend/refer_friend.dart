@@ -1,12 +1,16 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter/custom/color_button.dart';
+import 'package:tgp_flutter/extension/navigate_without_animation.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/my_behavior.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
+import 'package:tgp_flutter/ui/message/message_view.dart';
 import 'package:tgp_flutter/ui/profile/profile_bottom_item.dart';
+import 'package:tgp_flutter/ui/profile_info/profile_info.dart';
+import 'package:tgp_flutter/ui/transaction/transaction.dart';
 
 class ReferFriend extends StatefulWidget {
   @override
@@ -47,22 +51,22 @@ class _ReferFriendState extends BaseState<ReferFriend> {
   }
 
   _buildAppBar() => AppBar(
-    automaticallyImplyLeading: false,
-    centerTitle: true,
-    flexibleSpace: Container(
-      decoration: gradientDecoration,
-    ),
-    leading: IconButton(
-      icon: Icon(Icons.arrow_back),
-      onPressed: () {
-        Navigator.pop(context);
-      },
-    ),
-    title: Text(
-      "推荐朋友",
-      style: TextStyle(fontSize: 16.auto),
-    ),
-  );
+        automaticallyImplyLeading: false,
+        centerTitle: true,
+        flexibleSpace: Container(
+          decoration: gradientDecoration,
+        ),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context, NavigateWithoutAnimation());
+          },
+        ),
+        title: Text(
+          "推荐朋友",
+          style: TextStyle(fontSize: 16.auto),
+        ),
+      );
 
   _buildReferIdText() => Container(
         decoration: BoxDecoration(
@@ -156,20 +160,17 @@ class _ReferFriendState extends BaseState<ReferFriend> {
                   ProfileBottomItem(
                     title: getTranslatedText("profile_detail"),
                     imagePath: "ic_profile_user_detail",
-                    routePath: "profile_info",
-                    navigationID: 0,
+                    route: ProfileInfo(),
                   ),
                   ProfileBottomItem(
                     title: getTranslatedText("message_center"),
                     imagePath: "ic_message",
-                    routePath: "message",
-                    navigationID: 0,
+                    route: MessageView(),
                   ),
                   ProfileBottomItem(
                     title: getTranslatedText("transfer_history"),
                     imagePath: "ic_account_detail",
-                    routePath: "transaction",
-                    navigationID: 0,
+                    route: Transaction(),
                   ),
                 ],
               ),

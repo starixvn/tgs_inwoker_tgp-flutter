@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:flutter/material.dart';
 import 'package:tgp_flutter/base_viewmodel.dart';
 import 'package:tgp_flutter/entity/game.dart';
 import 'package:tgp_flutter/entity/game_provider2.dart';
@@ -73,14 +74,14 @@ class GameViewModel extends BaseViewModel {
       return <Game>[];
   }
 
-  filter({int category, int platform, String searchQuery, String gamePlatformCode, GameType gameType}) async {
+  filter({int category, String searchQuery, String gamePlatformCode, GameType gameType}) async {
     if (gamePlatformCode != null && gameType != null) {
       mGameType = gameType;
       mPlatform = gamePlatformCode;
       await getGameList(gamePlatformCode, gameType);
     }
     if (category != null) mCategory = category;
-    if (platform != null) mPlatform = platform == 0 ? null : platformList[platform - 1].code;
+    if (gamePlatformCode != null) mPlatform = gamePlatformCode;
     if (searchQuery != null) mSearchQuery = searchQuery;
 
     var platformGameList = await _filterPlatform();
@@ -107,7 +108,7 @@ class GameViewModel extends BaseViewModel {
   }
 
   _filterPlatform() async {
-    if (mPlatform == null || mPlatform.isEmpty) {
+    if (mPlatform == "ALL") {
       //get all game list
       List<Game> _list = await _addGameList(_gameList);
       return _list;

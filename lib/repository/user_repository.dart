@@ -202,7 +202,7 @@ class UserRepository extends BaseRepository {
             method: HttpMethod.GET,
             endPoint: "api/Wallet",
             converter: (json) => Wallet.fromJson(json),
-            resolver: resolveResponse,
+            resolver: resolveBaseResponse,
             consumer: (result) => wallet = result,
             jwtRefresher: jwtAuth)
         .execute();

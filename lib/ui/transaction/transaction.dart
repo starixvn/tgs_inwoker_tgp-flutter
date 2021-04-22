@@ -3,6 +3,7 @@ import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/entity/account_transaction.dart';
 import 'package:tgp_flutter/entity/bet_transaction.dart';
 import 'package:tgp_flutter/entity/daily_transaction.dart';
+import 'package:tgp_flutter/extension/navigate_without_animation.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/my_behavior.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
@@ -13,48 +14,35 @@ import 'package:tgp_flutter/ui/transaction/bet_transaction_view.dart';
 import 'package:tgp_flutter/ui/transaction/transaction_details.dart';
 import 'package:tgp_flutter/ui/transaction/transaction_view_model.dart';
 
-
-class Transaction extends StatefulWidget{
+class Transaction extends StatefulWidget {
   final int tabIndex;
 
-  Transaction({Key key,
-    this.tabIndex
-  }) : super(key: key);
+  Transaction({Key key, this.tabIndex}) : super(key: key);
 
   @override
   _TransactionState createState() => _TransactionState();
 }
 
-class _TransactionState extends BaseState<Transaction> with SingleTickerProviderStateMixin{
+class _TransactionState extends BaseState<Transaction> with SingleTickerProviderStateMixin {
   var _tabController;
   var currentTabIndex = 0;
-  var tabList =
-  [{
-    "id": "0",
-    "text": "转换记录"},
-    {
-      "id": "1",
-      "text": "投注明细"},
-    {
-      "id": "2",
-      "text": "提现记录"},
-    {
-      "id": "3",
-      "text": "充值记录"},
-    {
-      "id": "4",
-      "text": "返水记录"},
+  var tabList = [
+    {"id": "0", "text": "转换记录"},
+    {"id": "1", "text": "投注明细"},
+    {"id": "2", "text": "提现记录"},
+    {"id": "3", "text": "充值记录"},
+    {"id": "4", "text": "返水记录"},
   ];
   var accountTransactionList;
 
   @override
   void initState() {
-    _tabController = TabController(length:tabList.length, vsync: this, initialIndex: (widget.tabIndex)?? 0);
+    _tabController = TabController(length: tabList.length, vsync: this, initialIndex: (widget.tabIndex) ?? 0);
     super.initState();
   }
 
   @override
-  void dispose(){
+  void dispose() {
     _tabController.dispose();
     super.dispose();
   }
@@ -72,7 +60,7 @@ class _TransactionState extends BaseState<Transaction> with SingleTickerProvider
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.pop(context, NavigateWithoutAnimation());
           },
         ),
         title: Text(
@@ -86,11 +74,8 @@ class _TransactionState extends BaseState<Transaction> with SingleTickerProvider
               alignment: Alignment.center,
               child: Text(
                 "¥ 0.00",
-                style: TextStyle(
-                    fontSize: 16.auto,
-                    color: Colors.white),
-              )
-          ),
+                style: TextStyle(fontSize: 16.auto, color: Colors.white),
+              )),
         ),
       ),
       body: Column(
@@ -100,19 +85,17 @@ class _TransactionState extends BaseState<Transaction> with SingleTickerProvider
             color: Colors.black87,
             child: TabBar(
               controller: _tabController,
-              isScrollable : true,
+              isScrollable: true,
               unselectedLabelColor: Colors.white,
               labelColor: CustomColor.theme_label_text_highlight_color,
               indicatorColor: CustomColor.theme_label_text_highlight_color,
               indicatorWeight: 3,
-              onTap: (index){
+              onTap: (index) {
                 setState(() {
                   currentTabIndex = index;
                 });
               },
-              unselectedLabelStyle: TextStyle(
-                  color: CustomColor.grey
-              ),
+              unselectedLabelStyle: TextStyle(color: CustomColor.grey),
               tabs: tabList.map((item) {
                 return Tab(
                   child: Text(item["text"],
@@ -129,37 +112,15 @@ class _TransactionState extends BaseState<Transaction> with SingleTickerProvider
               controller: _tabController,
               children: [
                 TransactionDetails<AccountTransaction>(
-                    transactionHeaderList: [
-                      "bet_time",
-                      "platform",
-                      "bet_amount",
-                      "win_loss"
-                    ]
-                ),
+                    transactionHeaderList: ["bet_time", "platform", "bet_amount", "win_loss"]),
                 BetTransactionView(),
                 TransactionDetails<AccountTransaction>(
-                    transactionHeaderList: [
-                      "bet_time",
-                      "platform",
-                      "bet_amount",
-                      "win_loss"
-                    ]
-                ),
+                    transactionHeaderList: ["bet_time", "platform", "bet_amount", "win_loss"]),
                 TransactionDetails<BetTransaction>(
-                  transactionHeaderList: [
-                    "bet_time",
-                    "platform",
-                    "bet_amount",
-                    "win_loss"
-                  ],
+                  transactionHeaderList: ["bet_time", "platform", "bet_amount", "win_loss"],
                 ),
                 TransactionDetails<DailyTransaction>(
-                  transactionHeaderList: [
-                    "bet_time",
-                    "platform",
-                    "bet_amount",
-                    "win_loss"
-                  ],
+                  transactionHeaderList: ["bet_time", "platform", "bet_amount", "win_loss"],
                 ),
               ],
             ),

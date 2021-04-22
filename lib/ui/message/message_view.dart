@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter/entity/message.dart';
+import 'package:tgp_flutter/extension/navigate_without_animation.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
@@ -10,7 +11,7 @@ import 'package:tgp_flutter/ui/message/message_view_model.dart';
 
 import 'message_item.dart';
 
-class MessageView extends StatefulWidget{
+class MessageView extends StatefulWidget {
   @override
   _MessageViewState createState() => _MessageViewState();
 }
@@ -44,10 +45,11 @@ class _MessageViewState extends BaseState<MessageView> {
               leading: IconButton(
                 icon: Icon(Icons.arrow_back),
                 onPressed: () {
-                  Navigator.pop(context);
+                  Navigator.pop(context, NavigateWithoutAnimation());
                 },
               ),
-              title: Text(getTranslatedText("message_center"),
+              title: Text(
+                getTranslatedText("message_center"),
                 style: TextStyle(fontSize: 16.auto),
               ),
               actions: [
@@ -64,87 +66,73 @@ class _MessageViewState extends BaseState<MessageView> {
                       child: Text(
                         isEditing ? "取消" : "编辑",
                         style: TextStyle(fontSize: 12.auto),
-                      )
-                  ),
+                      )),
                 ),
               ],
             ),
             bottomNavigationBar: _buildBottomNavigationBar(),
-            body: _vm.messageList ==null
-                ?Center(child: CircularProgressIndicator(),)
-                :Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                children: List.generate(_vm.messageList.length, (index) {
-                  return Container(
-                    child: MessageItem(
-                      message: _vm.messageList[index],
-                      isEditing: isEditing,
-                      onSelected: (isSelected, message) => _onSelected(isSelected, message),
+            body: _vm.messageList == null
+                ? buildProgressDialog()
+                : Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: List.generate(_vm.messageList.length, (index) {
+                        return Container(
+                          child: MessageItem(
+                            message: _vm.messageList[index],
+                            isEditing: isEditing,
+                            onSelected: (isSelected, message) => _onSelected(isSelected, message),
+                          ),
+                        );
+                      }),
                     ),
-                  );
-                }),
-              ),
-            ),
+                  ),
           );
         });
   }
 
   _buildBottomNavigationBar() => Visibility(
-    visible: !(selectedMessageList==null|| selectedMessageList.isEmpty),
-    child: BottomAppBar(
-        color: CustomColor.theme_button_disable_bg,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            InkWell(
-              onTap: (){
-
-              },
-              child: Container(
-                padding: EdgeInsets.only(top: 10.auto, bottom: 10.auto, left: 15.auto),
-                child: Text(
-                  "标示已读",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 12.auto
+        visible: !(selectedMessageList == null || selectedMessageList.isEmpty),
+        child: BottomAppBar(
+            color: CustomColor.theme_button_disable_bg,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                InkWell(
+                  onTap: () {},
+                  child: Container(
+                    padding: EdgeInsets.only(top: 10.auto, bottom: 10.auto, left: 15.auto),
+                    child: Text(
+                      "标示已读",
+                      style: TextStyle(color: Colors.white, fontSize: 12.auto),
+                    ),
                   ),
                 ),
-              ),
-            ),
-            InkWell(
-              onTap: (){
-
-              },
-              child: Container(
-                padding: EdgeInsets.only(top: 10.auto, bottom: 10.auto, right: 15.auto),
-                child: Text(
-                  "删除",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 12.auto
+                InkWell(
+                  onTap: () {},
+                  child: Container(
+                    padding: EdgeInsets.only(top: 10.auto, bottom: 10.auto, right: 15.auto),
+                    child: Text(
+                      "删除",
+                      style: TextStyle(color: Colors.white, fontSize: 12.auto),
+                    ),
                   ),
                 ),
-              ),
-            ),
-          ],
-        )
-    ),
-  );
+              ],
+            )),
+      );
 
-  _onSelected(bool isSelected, Message _selectedMessage){
+  _onSelected(bool isSelected, Message _selectedMessage) {
     setState(() {
-      if(isSelected) selectedMessageList.add(_selectedMessage);
+      if (isSelected)
+        selectedMessageList.add(_selectedMessage);
       else {
         selectedMessageList.removeWhere((element) => element.id == _selectedMessage.id);
       }
     });
   }
 
-  _handleApiState(){
-    handleApiState(_vm.getMessageListApiState, isAutoHideLoading: false, onSuccess:(){
-    });
+  _handleApiState() {
+    handleApiState(_vm.getMessageListApiState, isAutoHideLoading: false, onSuccess: () {});
   }
 }
-
-

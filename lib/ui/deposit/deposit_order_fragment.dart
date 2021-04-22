@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:tgp_flutter/extension/navigate_without_animation.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
@@ -11,14 +12,15 @@ import 'package:tgp_flutter/ui/base_state.dart';
 import 'deposit_view_model.dart';
 import 'deposit_web.dart';
 
-class DepositOrderFragment extends StatefulWidget{
+class DepositOrderFragment extends StatefulWidget {
   //final Order order;
   final String params;
 
-  DepositOrderFragment({Key key,
-    // this.order,
-    this.params
-  }) : super(key: key);
+  DepositOrderFragment(
+      {Key key,
+      // this.order,
+      this.params})
+      : super(key: key);
 
   @override
   _DepositOrderFragmentState createState() => _DepositOrderFragmentState();
@@ -65,26 +67,22 @@ class _DepositOrderFragmentState extends BaseState<DepositOrderFragment> with Ti
                 centerTitle: true,
                 title: Text(
                   "存款",
-                  style: TextStyle(
-                      fontSize: 20.auto,
-                      color: CustomColor.grey
-                  ),
+                  style: TextStyle(fontSize: 20.auto, color: CustomColor.grey),
                 ),
                 leading: IconButton(
                   icon: Icon(Icons.arrow_back),
                   onPressed: () {
-                    Navigator.pop(context);
+                    Navigator.pop(context, NavigateWithoutAnimation());
                   },
                 ),
               ),
               body:
-              //_vm.isLoading ? Center(child: CircularProgressIndicator(),) :
-              ListView(
+                  //_vm.isLoading ? Center(child: CircularProgressIndicator(),) :
+                  ListView(
                 children: [
                   Container(
                     decoration: BoxDecoration(color: Colors.white),
-                    padding: EdgeInsets.only(
-                        left: 15.auto, right: 15.auto, top: 15.auto),
+                    padding: EdgeInsets.only(left: 15.auto, right: 15.auto, top: 15.auto),
                     child: Column(
                       children: [
                         Container(
@@ -92,10 +90,7 @@ class _DepositOrderFragmentState extends BaseState<DepositOrderFragment> with Ti
                           alignment: Alignment.centerLeft,
                           child: Text(
                             "金额",
-                            style: TextStyle(
-                                fontSize: 13.auto,
-                                color: CustomColor.grey
-                            ),
+                            style: TextStyle(fontSize: 13.auto, color: CustomColor.grey),
                             textAlign: TextAlign.left,
                           ),
                         ),
@@ -104,11 +99,8 @@ class _DepositOrderFragmentState extends BaseState<DepositOrderFragment> with Ti
                           child: Text(
                             "¥ 0.00",
                             //"¥ ${widget.order.amount}",
-                            style: TextStyle(
-                                fontSize: (38.5).auto,
-                                color: CustomColor.grey,
-                                fontWeight: FontWeight.w400
-                            ),
+                            style:
+                                TextStyle(fontSize: (38.5).auto, color: CustomColor.grey, fontWeight: FontWeight.w400),
                             //"¥ $amount"
                           ),
                         ),
@@ -119,9 +111,9 @@ class _DepositOrderFragmentState extends BaseState<DepositOrderFragment> with Ti
                         _buildText("下单时间", " "),
                         _buildText("存款方式", ""),
                         _buildText("订单编号", ""),
-                        _isTransferVisible?_buildText("银行", ""):Container(),
-                        _isTransferVisible?_buildText("账户", ""):Container(),
-                        _isTransferVisible?_buildText("账号", ""):Container(),
+                        _isTransferVisible ? _buildText("银行", "") : Container(),
+                        _isTransferVisible ? _buildText("账户", "") : Container(),
+                        _isTransferVisible ? _buildText("账号", "") : Container(),
                         Container(
                           margin: EdgeInsets.only(top: 15.auto),
                           child: Row(
@@ -129,10 +121,7 @@ class _DepositOrderFragmentState extends BaseState<DepositOrderFragment> with Ti
                             children: [
                               Text(
                                 "距离此订单有效期",
-                                style: TextStyle(
-                                    fontSize: 13.auto,
-                                    color: CustomColor.grey
-                                ),
+                                style: TextStyle(fontSize: 13.auto, color: CustomColor.grey),
                               ),
                               /*CountdownTimer(
                                 animation: StepTween(
@@ -143,17 +132,22 @@ class _DepositOrderFragmentState extends BaseState<DepositOrderFragment> with Ti
                             ],
                           ),
                         ),
-                        _isQrCodeVisible?Container(
-                            margin: EdgeInsets.only(top: 15.auto),
-                            alignment: Alignment.center,
-                            child:  Container() /*Image.memory(Base64Decoder().convert((widget.order.qrcode).substring((widget.order.qrcode).indexOf(",")+1)),
+                        _isQrCodeVisible
+                            ? Container(
+                                margin: EdgeInsets.only(top: 15.auto),
+                                alignment: Alignment.center,
+                                child:
+                                    Container() /*Image.memory(Base64Decoder().convert((widget.order.qrcode).substring((widget.order.qrcode).indexOf(",")+1)),
                               height: 120.auto,
                               width: 120.auto,)*/
-                        ):Container(),
+                                )
+                            : Container(),
                       ],
                     ),
                   ),
-                  Image.asset("images/order_bg.png",),
+                  Image.asset(
+                    "images/order_bg.png",
+                  ),
                   Container(
                     margin: EdgeInsets.only(left: 15.auto, right: 15.auto),
                     child: Row(
@@ -162,68 +156,54 @@ class _DepositOrderFragmentState extends BaseState<DepositOrderFragment> with Ti
                         RaisedButton(
                           onPressed: () => cancel(),
                           color: CustomColor.grey,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(45)),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(45)),
                           child: Container(
                             padding: EdgeInsets.symmetric(horizontal: 10.auto),
                             child: Text(
                               "取消订单",
                               textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: Colors.white),
+                              style: TextStyle(color: Colors.white),
                             ),
                           ),
                         ),
                         RaisedButton(
-                            onPressed: () =>
-                            {
-                              //_vm.depositStatus(widget.order.id, false)
-                            },
+                            onPressed: () => {
+                                  //_vm.depositStatus(widget.order.id, false)
+                                },
                             color: CustomColor.grey,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(45)),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(45)),
                             child: Container(
                               padding: EdgeInsets.symmetric(horizontal: 10.auto),
                               child: Text(
                                 "到账核对",
                                 textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: Colors.white),
+                                style: TextStyle(color: Colors.white),
                               ),
-                            )
-                        ),
+                            )),
                       ],
                     ),
                   )
                 ],
-              )
-          );
-        }
-    );
+              ));
+        });
   }
 
   _buildText(String title, String content) => Container(
-    margin: EdgeInsets.only(top: 15.auto),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          title,
-          style: TextStyle(
-              fontSize: 13.auto,
-              color: CustomColor.grey
-          ),
+        margin: EdgeInsets.only(top: 15.auto),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              title,
+              style: TextStyle(fontSize: 13.auto, color: CustomColor.grey),
+            ),
+            Text(
+              content,
+              style: TextStyle(fontSize: 13.auto, color: Colors.black),
+            )
+          ],
         ),
-        Text(
-          content,
-          style: TextStyle(
-              fontSize: 13.auto,
-              color: Colors.black
-          ),
-        )
-      ],
-    ),
-  );
+      );
 
   _handleApiState() {
     /*if (_vm.depositStatusApiState == null) return;
@@ -237,7 +217,7 @@ class _DepositOrderFragmentState extends BaseState<DepositOrderFragment> with Ti
     }*/
   }
 
-  _checkPaymentType(){
+  _checkPaymentType() {
     /*if(widget.order.isQrcode ==1){
       _isQrCodeVisible = true;
     }
@@ -265,7 +245,7 @@ class _DepositOrderFragmentState extends BaseState<DepositOrderFragment> with Ti
     }*/
   }
 
-  cancel(){
+  cancel() {
     setState(() {
       _isNavigatedToWeb = true;
       //_vm.depositStatus(widget.order.id, true);

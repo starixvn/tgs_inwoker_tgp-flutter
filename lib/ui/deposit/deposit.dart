@@ -2,6 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/extension/format.dart';
+import 'package:tgp_flutter/extension/navigate_without_animation.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
@@ -10,26 +11,15 @@ import 'package:tgp_flutter/ui/deposit/deposit_method.dart';
 import 'package:tgp_flutter/ui/deposit/deposit_view_model.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 
-class Deposit extends StatefulWidget{
+class Deposit extends StatefulWidget {
   @override
   _DepositState createState() => _DepositState();
 }
 
 class _DepositState extends BaseState<Deposit> {
   DepositViewModel _vm = DepositViewModel();
-  var tabList =
-  [{
-    "id": "0",
-    "text": "支付宝"},
-    {
-      "id": "1",
-      "text": "支付宝H5"},
-    {
-      "id": "2",
-      "text": "银行收银台"},
-    {
-      "id": "3",
-      "text": "在线支付"}
+  var tabList = [
+    {"id": "0", "text": "人工支付"}
   ];
   var currentTabIndex = 0;
   var text = "";
@@ -45,42 +35,15 @@ class _DepositState extends BaseState<Deposit> {
         model: _vm,
         builder: (ctx, vm, _) {
           return Scaffold(
-              resizeToAvoidBottomInset: false,
-              backgroundColor: Colors.white,
-              appBar: AppBar(
-                automaticallyImplyLeading: false,
-                centerTitle: true,
-                flexibleSpace: Container(
-                  decoration: gradientDecoration,
-                ),
-                leading: IconButton(
-                  icon: Icon(Icons.arrow_back),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                ),
-                actions: [
-                  Container(
-                      margin: EdgeInsets.only(right: 15.auto),
-                      alignment: Alignment.center,
-                      child:Text(
-                          /*_vm.mainAccountBalance ==null?"-":"¥ ${Format().currencyWithDecimalFormat(
-                              _vm.mainAccountBalance)}",*/
-                          "¥ 0.00",
-                        style: TextStyle(
-                          color: CustomColor.theme_label_text_highlight_color
-                        ),
-                      )
-                  ),
-                ],
-                title: Text(getTranslatedText("deposit"),
-                  style: TextStyle(fontSize: 20.auto),),
-              ),
-              body: /*_vm.paymentChannel == null ||_vm.mainAccountBalance==null||_vm.isLoading ?
+            resizeToAvoidBottomInset: false,
+            backgroundColor: Colors.white,
+            appBar: _buildAppBar(),
+            body:
+                /*_vm.paymentChannel == null ||_vm.mainAccountBalance==null||_vm.isLoading ?
               Center(child: CircularProgressIndicator(),):*/
-              DefaultTabController(
-                length: 3,
-                child:Column(
+                DefaultTabController(
+              length: tabList.length,
+              child: Column(
                 children: [
                   Container(
                     width: context.screenWidth,
@@ -89,45 +52,65 @@ class _DepositState extends BaseState<Deposit> {
                       isScrollable: true,
                       unselectedLabelColor: Colors.white,
                       labelColor: CustomColor.theme_label_text_highlight_color,
-                      indicatorColor: CustomColor.theme_label_text_highlight_color ,
+                      indicatorColor: CustomColor.theme_label_text_highlight_color,
                       indicatorWeight: 3,
                       onTap: (index) {
                         setState(() {
                           currentTabIndex = index;
                         });
                       },
-                      unselectedLabelStyle: TextStyle(
-                          color: Colors.white
-                      ),
-                      tabs: List.generate(3,(index){
+                      unselectedLabelStyle: TextStyle(color: Colors.white),
+                      tabs: List.generate(tabList.length, (index) {
                         return Tab(
-                          child:Text( "银行支付",
+                          child: Text(
+                            tabList[index]["text"],
                             style: TextStyle(
                               fontFamily: 'PingFang',
                               fontSize: 14.auto,
                             ),
                             textAlign: TextAlign.center,
-
                           ),
                         );
                       }).toList(),
                     ),
                   ),
                   Expanded(
-                    child: TabBarView(
-                      children: List.generate(3,(index){
-                        return DepositMethod(
-                          //paymentList: _vm.paymentChannel[index].paymentList,
-                          vm: _vm,
-                        );
-                      }).toList(),
+                    child: DepositMethod(
+                      //paymentList: _vm.paymentChannel[index].paymentList,
+                      vm: _vm,
                     ),
                   )
                 ],
               ),
             ),
           );
-        }
-    );
+        });
   }
+
+  _buildAppBar() => AppBar(
+        automaticallyImplyLeading: false,
+        centerTitle: true,
+        flexibleSpace: Container(
+          decoration: gradientDecoration,
+        ),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context, NavigateWithoutAnimation());
+          },
+        ),
+        actions: [
+          Container(
+              margin: EdgeInsets.only(right: 15.auto),
+              alignment: Alignment.center,
+              child: Text(
+                "¥ ${Format().currencyWithDecimalFormat(_vm.wallet?.main ?? 0.0)}",
+                style: TextStyle(color: CustomColor.theme_label_text_highlight_color),
+              )),
+        ],
+        title: Text(
+          getTranslatedText("deposit"),
+          style: TextStyle(fontSize: 20.auto),
+        ),
+      );
 }

@@ -1,23 +1,18 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:tgp_flutter/extension/navigate_without_animation.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
 import 'package:tgp_flutter/ui/transaction/transaction.dart';
 
-class MenuItem extends StatefulWidget{
+class MenuItem extends StatefulWidget {
   final String image;
   final String text;
-  final String navigationPath;
-  final int navigationID;
+  final Widget route;
 
-  MenuItem({
-    this.image,
-    this.text,
-    this.navigationPath,
-    this.navigationID
-  });
+  MenuItem({this.image, this.text, this.route});
 
   @override
   _MenuItemState createState() => _MenuItemState();
@@ -25,6 +20,7 @@ class MenuItem extends StatefulWidget{
 
 class _MenuItemState extends BaseState<MenuItem> {
   var tabIndex;
+
   @override
   void initState() {
     super.initState();
@@ -49,17 +45,13 @@ class _MenuItemState extends BaseState<MenuItem> {
                 side: BorderSide(
                   color: Colors.white,
                   width: 1.0,
-                )
-            ),
+                )),
           ),
           Container(
             margin: EdgeInsets.symmetric(vertical: 10.auto),
             child: Text(
               widget.text,
-              style: TextStyle(
-                  fontSize: 10.auto,
-                  color: Colors.white
-              ),
+              style: TextStyle(fontSize: 10.auto, color: Colors.white),
             ),
           )
         ],
@@ -67,18 +59,7 @@ class _MenuItemState extends BaseState<MenuItem> {
     );
   }
 
-  _onClick(){
-    if(widget.navigationID==0){
-      Navigator.of(context).pushNamed("/${widget.navigationPath}");
-    }else {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) =>
-                  Transaction(
-                    tabIndex: widget.navigationID,
-                  )
-          ));
-    }
+  _onClick() {
+    Navigator.of(context).push(NavigateWithoutAnimation(widget: widget.route));
   }
 }

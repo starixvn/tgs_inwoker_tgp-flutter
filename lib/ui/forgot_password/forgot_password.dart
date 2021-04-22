@@ -8,6 +8,7 @@ import 'package:tgp_flutter/custom/otp_text_form_field.dart';
 import 'package:tgp_flutter/custom/outline_border_button.dart';
 import 'package:tgp_flutter/data/provider/input_validation_provider.dart';
 import 'package:tgp_flutter/entity/event_type.dart';
+import 'package:tgp_flutter/extension/navigate_without_animation.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
@@ -49,7 +50,7 @@ class _ForgotPasswordState extends BaseState<ForgotPassword> {
                 leading: IconButton(
                   icon: Icon(Icons.arrow_back),
                   onPressed: () {
-                    Navigator.pop(context);
+                    Navigator.pop(context, NavigateWithoutAnimation());
                   },
                 ),
                 title: Text(
@@ -140,7 +141,7 @@ class _ForgotPasswordState extends BaseState<ForgotPassword> {
         CustomToast.show("手机号码格式不正确");
       });
     } else {
-      CustomProgressDialog.show(context);
+      ProgressDialog.show(context);
       _vm.getForgotPasswordCode(_phoneController.text);
     }
   }
@@ -152,7 +153,7 @@ class _ForgotPasswordState extends BaseState<ForgotPassword> {
   _navigateToUpdatePassword() {
     Navigator.push(
         context,
-        MaterialPageRoute(
-            builder: (context) => UpdateForgotPassword(code: _otpController.text, securityKey: _vm.securityKey)));
+        NavigateWithoutAnimation(
+            widget: UpdateForgotPassword(code: _otpController.text, securityKey: _vm.securityKey)));
   }
 }

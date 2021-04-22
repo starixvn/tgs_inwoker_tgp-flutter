@@ -6,6 +6,7 @@ import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/custom/custom_text_form_field.dart';
 import 'package:tgp_flutter/custom/custom_toast.dart';
 import 'package:tgp_flutter/entity/user_profile.dart';
+import 'package:tgp_flutter/extension/navigate_without_animation.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
@@ -13,21 +14,20 @@ import 'package:tgp_flutter/ui/base_state.dart';
 import 'package:tgp_flutter/ui/profile_info/real_name/real_name_verification_view_model.dart';
 import 'package:tgp_flutter/ui/profile_info/security/security_answer_view_model.dart';
 
-class EditSecurityAnswerViaPhone extends StatefulWidget{
+class EditSecurityAnswerViaPhone extends StatefulWidget {
   @override
   _EditSecurityAnswerViaPhoneState createState() => _EditSecurityAnswerViaPhoneState();
 }
 
-class _EditSecurityAnswerViaPhoneState  extends BaseState<EditSecurityAnswerViaPhone> {
+class _EditSecurityAnswerViaPhoneState extends BaseState<EditSecurityAnswerViaPhone> {
   var _vm = SecurityAnswerViewModel();
-  TextEditingController _realNameController = TextEditingController(),
-      _cardNoController = TextEditingController();
+  TextEditingController _realNameController = TextEditingController(), _cardNoController = TextEditingController();
   var isButtonEnabled = false, isReset = false;
   var name, cardNumber, buttonText;
   var userProfile;
-  var list = [{
-    "ddd","sss"
-  }];
+  var list = [
+    {"ddd", "sss"}
+  ];
   var securityQuestion;
 
   @override
@@ -42,20 +42,19 @@ class _EditSecurityAnswerViaPhoneState  extends BaseState<EditSecurityAnswerViaP
         builder: (ctx, vm, _) {
           _handleApiState();
           return Container(
-                  decoration: BoxDecoration(
-                      color: Colors.grey[100],
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(10.0),
-                        topRight: Radius.circular(10.0),
-                      )
-                  ),
-                  child: /*userProfile == null?
+              decoration: BoxDecoration(
+                  color: Colors.grey[100],
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(10.0),
+                    topRight: Radius.circular(10.0),
+                  )),
+              child: /*userProfile == null?
                   Center(child: CircularProgressIndicator(),):*/
                   Container(
-                    margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 20.auto),
-                    child: Column(
-                      children: [
-                        /* CustomTextFormField(
+                margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 20.auto),
+                child: Column(
+                  children: [
+                    /* CustomTextFormField(
                           title: ,
                           hintText: "请选择安全问题",
                           onChanged: (value) => _onTextChange(),
@@ -67,106 +66,100 @@ class _EditSecurityAnswerViaPhoneState  extends BaseState<EditSecurityAnswerViaP
                           textInputAction: TextInputAction.next,
                           enabled: (_vm.userProfile.memberName.isEmpty)? true: false,
                         ),*/
-                        CustomPicker(
-                          title: "安全问题",
-                          displayText: "请选择安全问题",
-                          list: list,
-                          isHintText: true,
-                          width: context.screenWidth,
-                          onClick: list.isEmpty? null:(){
-                            _buildBottomSheet("安全问题", list);
-                          },
-                        ),
-                        CustomTextFormField(
-                          title: "问题答案",
-                          hintText: "请输入答案",
-                          onChanged: (value) => _onTextChange(),
-                          onFieldSubmitted: (value){},
-                          controller: _cardNoController,
-                          focusNode: null,
-                          width: context.screenWidth-70.auto,
-                          textInputType: TextInputType.number,
-                          textInputAction: TextInputAction.next,
-                          //enabled: /*(_vm.userProfile.memberCardNo.isEmpty)? true:*/ false,
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(top: 30.auto, bottom: 20.auto),
-                          child: ColorButton(
-                            text: Text(
-                              "完成",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16.auto
-                              ),
-                            ),
-                            onClick: (){
-                              _onClick();
+                    CustomPicker(
+                      title: "安全问题",
+                      displayText: "请选择安全问题",
+                      list: list,
+                      isHintText: true,
+                      width: context.screenWidth,
+                      onClick: list.isEmpty
+                          ? null
+                          : () {
+                              _buildBottomSheet("安全问题", list);
                             },
-                            isEnabled: isButtonEnabled,
-                            color: CustomColor.theme_bar_gradient_2,
-                            radius: 9.6 ,
-                          )
-                        ),
-
-                      ],
                     ),
-                  )
-
-          );
+                    CustomTextFormField(
+                      title: "问题答案",
+                      hintText: "请输入答案",
+                      onChanged: (value) => _onTextChange(),
+                      onFieldSubmitted: (value) {},
+                      controller: _cardNoController,
+                      focusNode: null,
+                      width: context.screenWidth - 70.auto,
+                      textInputType: TextInputType.number,
+                      textInputAction: TextInputAction.next,
+                      //enabled: /*(_vm.userProfile.memberCardNo.isEmpty)? true:*/ false,
+                    ),
+                    Container(
+                        margin: EdgeInsets.only(top: 30.auto, bottom: 20.auto),
+                        child: ColorButton(
+                          text: Text(
+                            "完成",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: Colors.white, fontSize: 16.auto),
+                          ),
+                          onClick: () {
+                            _onClick();
+                          },
+                          isEnabled: isButtonEnabled,
+                          color: CustomColor.theme_bar_gradient_2,
+                          radius: 9.6,
+                        )),
+                  ],
+                ),
+              ));
         });
   }
 
-  _buildBottomSheet(String title, List<dynamic> list){
+  _buildBottomSheet(String title, List<dynamic> list) {
     showModalBottomSheet(
         context: context,
-        builder: (BuildContext bc){
-          return CustomPickerDialog(title: title, list: list,
-              onChanged: (value){
+        builder: (BuildContext bc) {
+          return CustomPickerDialog(
+              title: title,
+              list: list,
+              onChanged: (value) {
                 setState(() {
                   securityQuestion = value;
-                  Navigator.pop(context);
+                  Navigator.pop(context, NavigateWithoutAnimation());
                 });
-              }
-          );
-        }
-    );
+              });
+        });
   }
 
-  _getUserProfile(){
+  _getUserProfile() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {
-        userProfile =  _vm.userProfile;
-        if(_vm.userProfile.memberName.isNotEmpty){
+        userProfile = _vm.userProfile;
+        if (_vm.userProfile.memberName.isNotEmpty) {
           _realNameController.text = _vm.userProfile.memberName;
         }
-        if(_vm.userProfile.memberCardNo.isNotEmpty) {
+        if (_vm.userProfile.memberCardNo.isNotEmpty) {
           _cardNoController.text = _vm.userProfile.memberCardNo;
         }
       });
     });
   }
 
-  _onTextChange(){
-    if(_realNameController.text.isNotEmpty && _cardNoController.text.isNotEmpty){
+  _onTextChange() {
+    if (_realNameController.text.isNotEmpty && _cardNoController.text.isNotEmpty) {
       setState(() {
         isButtonEnabled = true;
       });
-    }
-    else{
+    } else {
       setState(() {
         isButtonEnabled = false;
       });
     }
   }
 
-  _onClick() async{
-    /*CustomProgressDialog.show(context);
+  _onClick() async {
+    /* ProgressDialog.show(context);
     _vm.updateSecurityQuestion(securityQuestion.securityQuestionID, securityQuestion.answer, isReset);
     if(_vm.updateSecurityQuestionApiState.isSuccess){
       await _vm.getBasicInfo();
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        CustomProgressDialog.hide();
+         ProgressDialog.hide();
         setState(() {
           userProfile = _vm.getBasicInfoApiState.result;
         });
@@ -175,13 +168,13 @@ class _EditSecurityAnswerViaPhoneState  extends BaseState<EditSecurityAnswerViaP
     }*/
   }
 
-  _handleApiState(){
+  _handleApiState() {
     /*if (_vm.idVerifyApiState == null) {
       return;
     }
     if ((_vm.idVerifyApiState?.isError ?? false)) {
       CustomToast.show(_vm.idVerifyApiState.error);
-      CustomProgressDialog.hide();
+       ProgressDialog.hide();
       FocusScope.of(context).requestFocus(FocusNode());
       _vm.resetApiState(isIdVerifyApiState: true);
     }*/

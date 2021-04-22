@@ -9,16 +9,18 @@ import 'package:tgp_flutter/custom/custom_toast.dart';
 import 'package:tgp_flutter/custom/outline_border_button.dart';
 import 'package:tgp_flutter/data/provider/input_validation_provider.dart';
 import 'package:tgp_flutter/entity/event_type.dart';
+import 'package:tgp_flutter/extension/navigate_without_animation.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
 import 'package:tgp_flutter/ui/profile_info/address/address_view_model.dart';
+import 'package:tgp_flutter/ui/profile_info/email/email_verification.dart';
 import 'package:tgp_flutter/ui/profile_info/email/email_verification_view_model.dart';
 import 'package:tgp_flutter/ui/profile_info/phone/phone_verification_view_model.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 
-class Address extends StatefulWidget{
+class Address extends StatefulWidget {
   @override
   _AddressState createState() => _AddressState();
 }
@@ -32,7 +34,6 @@ class _AddressState extends BaseState<Address> {
   var name, cardNumber, buttonText;
   var userProfile;
   InputValidationProvider validate = new InputValidationProvider();
-
 
   @override
   void initState() {
@@ -68,83 +69,66 @@ class _AddressState extends BaseState<Address> {
                 leading: IconButton(
                   icon: Icon(Icons.arrow_back),
                   onPressed: () {
-                    Navigator.pop(context);
+                    Navigator.pop(context, NavigateWithoutAnimation());
                   },
                 ),
-                title: Text("收货地址",
+                title: Text(
+                  "收货地址",
                   style: TextStyle(fontSize: 16.auto),
                 ),
               ),
               body: Column(
                 children: [
-                  _buildTextFormField(
-                      "收件人",
-                      "请输入收件人",
-                      _nameController,
-                      false
-                  ),
-                  _buildTextFormField(
-                      "手机号码",
-                      "请输入手机号码",
-                      _contactController,
-                      false
-                  ),
-                  _buildTextFormField(
-                      "地址",
-                      "请填写真实地址，用于发放活动礼品",
-                      _addressController,
-                      true
-                  ),
+                  _buildTextFormField("收件人", "请输入收件人", _nameController, false),
+                  _buildTextFormField("手机号码", "请输入手机号码", _contactController, false),
+                  _buildTextFormField("地址", "请填写真实地址，用于发放活动礼品", _addressController, true),
                   _buildButton(),
                   _buildFooterText()
                 ],
-              )
-          );
+              ));
         });
   }
 
   _buildTextFormField(String title, String hint, TextEditingController controller, bool isLast) => Container(
-    margin: EdgeInsets.only(top: 15.auto),
-    child: CustomTextFormField(
-      title: title,
-      hintText: hint,
-      onChanged: (value) => _onTextChange(),
-      onFieldSubmitted: (value){},
-      controller: controller,
-      focusNode: null,
-      width: context.screenWidth-70.auto,
-      textInputType: TextInputType.text,
-      textInputAction: isLast?TextInputAction.done:TextInputAction.next,
-    ),
-  );
+        margin: EdgeInsets.only(top: 15.auto),
+        child: CustomTextFormField(
+          title: title,
+          hintText: hint,
+          onChanged: (value) => _onTextChange(),
+          onFieldSubmitted: (value) {},
+          controller: controller,
+          focusNode: null,
+          width: context.screenWidth - 70.auto,
+          textInputType: TextInputType.text,
+          textInputAction: isLast ? TextInputAction.done : TextInputAction.next,
+        ),
+      );
 
-  _buildButton()=> Container(
+  _buildButton() => Container(
       width: context.screenWidth,
-      padding:  EdgeInsets.only(top: 50.auto,bottom: 20.auto),
+      padding: EdgeInsets.only(top: 50.auto, bottom: 20.auto),
       child: ColorButton(
         text: Text(
-          isAddressVerified?"已验证":"确认",
+          isAddressVerified ? "已验证" : "确认",
           textAlign: TextAlign.center,
-          style: TextStyle(
-              color: Colors.white,
-              fontSize: 16.auto
-          ),
+          style: TextStyle(color: Colors.white, fontSize: 16.auto),
         ),
-        onClick: isAddressVerified?null:(){
-          _onClick();
-        },
+        onClick: isAddressVerified
+            ? null
+            : () {
+                _onClick();
+              },
         isEnabled: isButtonEnabled,
         color: CustomColor.theme_bar_gradient_2,
-        radius: 9.6 ,
-      )
-  );
+        radius: 9.6,
+      ));
 
-  _buildFooterText(){
+  _buildFooterText() {
     var _footerText1, _footerText2;
-    if(isAddressVerified){
+    if (isAddressVerified) {
       _footerText1 = "如需修改号码，请点击";
       _footerText2 = "这里";
-    }else{
+    } else {
       _footerText1 = "如有任何问题，请联系";
       _footerText2 = "线上客服";
     }
@@ -153,39 +137,31 @@ class _AddressState extends BaseState<Address> {
       children: [
         Text(
           _footerText1,
-          style: TextStyle(
-              fontSize: 12.auto,
-              color: CustomColor.theme_title_text_color
-          ),
+          style: TextStyle(fontSize: 12.auto, color: CustomColor.theme_title_text_color),
         ),
         InkWell(
-          onTap: isAddressVerified?(){
-            Navigator.of(context).pushNamed("/edit_email");
-          }:(){
-            //customer service
-          },
+          onTap: isAddressVerified
+              ? () {
+                  Navigator.of(context).push(NavigateWithoutAnimation(widget: EmailVerification()));
+                }
+              : () {
+                  //customer service
+                },
           child: Text(
             _footerText2,
-            style: TextStyle(
-                fontSize: 12.auto,
-                color: CustomColor.theme_bar_gradient_2
-            ),
+            style: TextStyle(fontSize: 12.auto, color: CustomColor.theme_bar_gradient_2),
           ),
         )
       ],
     );
   }
 
-  _onTextChange(){
-    if(_addressController.text.isNotEmpty &&
-        _nameController.text.isNotEmpty &&
-        _contactController.text.isNotEmpty
-    ){
+  _onTextChange() {
+    if (_addressController.text.isNotEmpty && _nameController.text.isNotEmpty && _contactController.text.isNotEmpty) {
       setState(() {
         isButtonEnabled = true;
       });
-    }
-    else{
+    } else {
       setState(() {
         isButtonEnabled = false;
       });
@@ -193,18 +169,17 @@ class _AddressState extends BaseState<Address> {
   }
 
   _onClick() async {
-    CustomProgressDialog.show(context);
+    ProgressDialog.show(context);
     if (!validate.validateChinaPhoneNumber(_contactController.text)) {
       setState(() {
         CustomToast.show("手机号码格式不正确");
       });
-    }
-    else{
+    } else {
       /*_vm.updateAddress(_nameController.text, _contactController.text, _addressController.text, "");
       if (_vm.updateAddressApiState.isSuccess) {
         await _vm.getBasicInfo();
         WidgetsBinding.instance.addPostFrameCallback((_) {
-          CustomProgressDialog.hide();
+           ProgressDialog.hide();
           setState(() {
             userProfile = _vm.getBasicInfoApiState.result;
           });
@@ -214,18 +189,16 @@ class _AddressState extends BaseState<Address> {
     }
   }
 
-  _handleApiState(){
+  _handleApiState() {
     /*if (_vm.updateAddressApiState == null
         && _vm.getBasicInfoApiState == null) {
       return;
     }
     if ((_vm.updateAddressApiState?.isError ?? false)) {
       CustomToast.show(_vm.updateAddressApiState.error);
-      CustomProgressDialog.hide();
+       ProgressDialog.hide();
       FocusScope.of(context).requestFocus(FocusNode());
       _vm.resetApiState(isUpdateAddressApiState: true);
     }*/
   }
 }
-
-

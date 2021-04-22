@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:tgp_flutter/extension/navigate_without_animation.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/my_behavior.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
@@ -7,7 +8,7 @@ import 'package:tgp_flutter/ui/base_state.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
 import 'package:tgp_flutter/ui/frequent_question/frequent_question_item.dart';
 
-class FrequentQuestion extends StatefulWidget{
+class FrequentQuestion extends StatefulWidget {
   @override
   _FrequentQuestionState createState() => _FrequentQuestionState();
 }
@@ -35,10 +36,11 @@ class _FrequentQuestionState extends BaseState<FrequentQuestion> {
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.pop(context, NavigateWithoutAnimation());
             },
           ),
-          title: Text(getTranslatedText("frequent_question"),
+          title: Text(
+            getTranslatedText("frequent_question"),
             style: TextStyle(fontSize: 16.auto),
           ),
         ),
@@ -54,7 +56,8 @@ class _FrequentQuestionState extends BaseState<FrequentQuestion> {
               FrequentQuestionItem(
                 number: "二",
                 title: "如何保障我账号里的资金安全？",
-                description: "会员账号注册成功后，请牢记密码，切勿透露给他人，建议不要在网吧等公共场所登录游戏。会员取款时，我们只允许将钱汇入您开户时绑定的银行账号上。千万不要对要求您提供个人资料及更改密码的电子邮件作出回应。环亚娱乐不会要求客户在电邮上提供私人资料及账户密码，如您有任何疑问或怀疑，请立即联络我们的客服查询。",
+                description:
+                    "会员账号注册成功后，请牢记密码，切勿透露给他人，建议不要在网吧等公共场所登录游戏。会员取款时，我们只允许将钱汇入您开户时绑定的银行账号上。千万不要对要求您提供个人资料及更改密码的电子邮件作出回应。环亚娱乐不会要求客户在电邮上提供私人资料及账户密码，如您有任何疑问或怀疑，请立即联络我们的客服查询。",
               ),
               FrequentQuestionItem(
                 number: "三",
@@ -84,7 +87,8 @@ class _FrequentQuestionState extends BaseState<FrequentQuestion> {
               FrequentQuestionItem(
                 number: "七",
                 title: "取款时长需要多久？",
-                description: "单日提款限额内的取款申请：银行工作时间(周一至五9:00-17:00）1小时内到账；其它非银行工作时间，600万内的取款2小时内到账，如高于600万的部分，最晚于次日11:00前到账，单日取款无上限封顶。单日取款次数是没有限制，您可在一天内无限次取款，不收取任何手续费用。",
+                description:
+                    "单日提款限额内的取款申请：银行工作时间(周一至五9:00-17:00）1小时内到账；其它非银行工作时间，600万内的取款2小时内到账，如高于600万的部分，最晚于次日11:00前到账，单日取款无上限封顶。单日取款次数是没有限制，您可在一天内无限次取款，不收取任何手续费用。",
               ),
               FrequentQuestionItem(
                 number: "八",
@@ -94,7 +98,8 @@ class _FrequentQuestionState extends BaseState<FrequentQuestion> {
               FrequentQuestionItem(
                 number: "九",
                 title: "如何证明游戏结果是实时、公平公正的？",
-                description: "您好，我们的网站坚持公平公正的原则，受法律监管并接受监管。所有开奖结果绝对安全公平，所以请您放心。黄金城娱乐场是把赌场实景通过视频直接传输的，100%与现场同步，是完全公平、公正、公开的。",
+                description:
+                    "您好，我们的网站坚持公平公正的原则，受法律监管并接受监管。所有开奖结果绝对安全公平，所以请您放心。黄金城娱乐场是把赌场实景通过视频直接传输的，100%与现场同步，是完全公平、公正、公开的。",
               ),
             ],
           ),
@@ -103,5 +108,3 @@ class _FrequentQuestionState extends BaseState<FrequentQuestion> {
     );
   }
 }
-
-

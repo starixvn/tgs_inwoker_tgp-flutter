@@ -1,18 +1,20 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:tgp_flutter/extension/navigate_without_animation.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
 //import 'package:webview_flutter/webview_flutter.dart';
 
-class DepositWeb extends StatefulWidget{
+class DepositWeb extends StatefulWidget {
   final String url;
   final String typeTitle;
   final String params;
 
-  DepositWeb({Key key,
+  DepositWeb({
+    Key key,
     this.url,
     this.typeTitle,
     this.params,
@@ -42,21 +44,21 @@ class _DepositWebState extends BaseState<DepositWeb> {
         appBar: AppBar(
           automaticallyImplyLeading: false,
           flexibleSpace: Container(
-          decoration: gradientDecoration,
-        ),
+            decoration: gradientDecoration,
+          ),
           centerTitle: true,
           title: Text(
-            widget.typeTitle??"",
-            style: TextStyle(fontSize: 20.auto),),
+            widget.typeTitle ?? "",
+            style: TextStyle(fontSize: 20.auto),
+          ),
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.pop(context, NavigateWithoutAnimation());
             },
           ),
         ),
-        body: widget.url==null?Center(child: CircularProgressIndicator()):
-            Container()
+        body: widget.url == null ? Center(child: CircularProgressIndicator()) : Container()
         /*InAppWebView(
             initialUrl: widget.url,
             initialOptions: InAppWebViewGroupOptions(
@@ -91,6 +93,6 @@ class _DepositWebState extends BaseState<DepositWeb> {
             },
           ),*/
 
-    );
+        );
   }
 }

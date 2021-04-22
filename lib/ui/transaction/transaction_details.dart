@@ -13,6 +13,7 @@ import 'package:tgp_flutter/entity/transaction_cell_item_type.dart';
 import 'package:tgp_flutter/entity/transaction_status_type.dart';
 import 'package:tgp_flutter/entity/transaction_third_party.dart';
 import 'package:tgp_flutter/entity/transaction_third_party_type.dart';
+import 'package:tgp_flutter/extension/navigate_without_animation.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
@@ -28,7 +29,8 @@ import '../../my_behavior.dart';
 class TransactionDetails<T> extends StatefulWidget {
   final List<String> transactionHeaderList;
 
-  TransactionDetails({Key key,
+  TransactionDetails({
+    Key key,
     this.transactionHeaderList,
   }) : super(key: key);
 
@@ -36,7 +38,7 @@ class TransactionDetails<T> extends StatefulWidget {
   TransactionDetailsState<T> createState() => TransactionDetailsState<T>();
 }
 
-class TransactionDetailsState<T> extends BaseState<TransactionDetails<T>>{
+class TransactionDetailsState<T> extends BaseState<TransactionDetails<T>> {
   TransactionViewModel _vm = TransactionViewModel();
   var startDate, endDate;
   var isToday = false, isWeek = false, isMonth = false, isLoading = false;
@@ -49,7 +51,7 @@ class TransactionDetailsState<T> extends BaseState<TransactionDetails<T>>{
   var isEndRecord = false;
   RefreshController _refreshController = RefreshController();
 
-  void initState(){
+  void initState() {
     startDate = DateTime.now();
     endDate = DateTime.now();
     isToday = true;
@@ -71,77 +73,72 @@ class TransactionDetailsState<T> extends BaseState<TransactionDetails<T>>{
             height: context.screenHeight,
             child: ScrollConfiguration(
                 behavior: MyBehavior(),
-                child:
-                SmartRefresher(
+                child: SmartRefresher(
                   controller: _refreshController,
                   enablePullDown: true,
                   onRefresh: () {
-                    getTransaction(
-                        isLoadMore: false);
+                    getTransaction(isLoadMore: false);
                     _refreshController.refreshCompleted();
                   },
-                  child: /*transactionList == null?
+                  child:
+                      /*transactionList == null?
                   Center(
                     child: CircularProgressIndicator(),
                   ) :*/
-                  CustomScrollView(
-                    controller: _controller2,
-                    slivers: [
+                      CustomScrollView(controller: _controller2, slivers: [
                     SliverAppBar(
-                    automaticallyImplyLeading: false,
-                    pinned: true,
-                    floating: false,
-                    expandedHeight: 240.auto,
-                    backgroundColor: Colors.white,
-                    flexibleSpace: FlexibleSpaceBar(
-                      collapseMode: CollapseMode.pin,
-                      background: Column(
-                          children: [
-                            _getCalendarItem(),
-                            TransactionFilterButtonItem(
-                              /*isToday: isToday,
+                      automaticallyImplyLeading: false,
+                      pinned: true,
+                      floating: false,
+                      expandedHeight: 240.auto,
+                      backgroundColor: Colors.white,
+                      flexibleSpace: FlexibleSpaceBar(
+                        collapseMode: CollapseMode.pin,
+                        background: Column(children: [
+                          _getCalendarItem(),
+                          TransactionFilterButtonItem(
+                            /*isToday: isToday,
                               isWeek: isWeek,
                               isMonth: isMonth,*/
-                              onTextChanged:(value) {
-                                //this.getTransaction();
-                                onFilter(
-                                  today: value==1?true:false,
-                                  week: value==2?true:false,
-                                  month: value==3?true:false,
-                                );
-                                getTransaction();
-                                //CustomProgressDialog.show(context);
-                              },
-                            ),
-                            _getPickerBox()
-                          ]
+                            onTextChanged: (value) {
+                              //this.getTransaction();
+                              onFilter(
+                                today: value == 1 ? true : false,
+                                week: value == 2 ? true : false,
+                                month: value == 3 ? true : false,
+                              );
+                              getTransaction();
+                              // ProgressDialog.show(context);
+                            },
+                          ),
+                          _getPickerBox()
+                        ]),
                       ),
-                    ),
-                    bottom: PreferredSize(
-                      preferredSize: Size.zero,
-                      child: Center(
-                        child: TransactionHeaderItem(
-                          headerList: widget.transactionHeaderList,
+                      bottom: PreferredSize(
+                        preferredSize: Size.zero,
+                        child: Center(
+                          child: TransactionHeaderItem(
+                            headerList: widget.transactionHeaderList,
+                          ),
                         ),
                       ),
+                      toolbarHeight: 40.auto,
+                      elevation: 0,
                     ),
-                    toolbarHeight: 40.auto,
-                    elevation: 0,
-                  ),
-                  SliverPadding(
-                    padding: EdgeInsets.only(left: 10.auto, right:10.auto, top: 5.auto),
-                    sliver: SliverList(
-                        delegate: SliverChildListDelegate(
-                          // transactionList.length==0?
-                            List.generate(1, (index) => Container(
-                                margin: EdgeInsets.only(top:60.auto),
-                                child: ImageIcon(
-                                  AssetImage("images/transaction/ic_no_record.png"),
-                                  size: 75.auto,
-                                )
-                            ),
-                            )
-                        )/*: List.generate(0, (index) {
+                    SliverPadding(
+                      padding: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 5.auto),
+                      sliver: SliverList(
+                          delegate: SliverChildListDelegate(
+                              // transactionList.length==0?
+                              List.generate(
+                        1,
+                        (index) => Container(
+                            margin: EdgeInsets.only(top: 60.auto),
+                            child: ImageIcon(
+                              AssetImage("images/transaction/ic_no_record.png"),
+                              size: 75.auto,
+                            )),
+                      )) /*: List.generate(0, (index) {
                                   return Container(
                                     child: TransactionCellItem<T>(
                                         //value: transactionList[index],
@@ -151,57 +148,55 @@ class TransactionDetailsState<T> extends BaseState<TransactionDetails<T>>{
                                     ),
                                   );
                                 }).toList()*/
+                          ),
                     ),
-                  ),
-                ]
-            ),
-          )
-          ),
+                  ]),
+                )),
           );
         });
   }
 
-  _getCalendarItem()=> Container(
-    padding: EdgeInsets.all(10.auto),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        TransactionDateItem(
-          date: startDate,
-          title: "开始时间",
-          onDateChanged: (value){
-            setState(() {
-              startDate = value;
-              onFilter();
-              getTransaction(startDate: value);
-              CustomProgressDialog.show(context);
-            });
-          },
+  _getCalendarItem() => Container(
+        padding: EdgeInsets.all(10.auto),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            TransactionDateItem(
+              date: startDate,
+              title: "开始时间",
+              onDateChanged: (value) {
+                setState(() {
+                  startDate = value;
+                  onFilter();
+                  getTransaction(startDate: value);
+                  ProgressDialog.show(context);
+                });
+              },
+            ),
+            Container(
+              alignment: Alignment.center,
+              margin: EdgeInsets.only(top: 20.auto),
+              width: 5.auto,
+              height: 1,
+              color: CustomColor.grey,
+            ),
+            TransactionDateItem(
+              date: endDate,
+              title: "结束时间",
+              onDateChanged: (value) {
+                setState(() {
+                  endDate = value;
+                  onFilter();
+                  getTransaction(endDate: value);
+                  ProgressDialog.show(context);
+                });
+              },
+            ),
+          ],
         ),
-        Container(
-          alignment: Alignment.center,
-          margin: EdgeInsets.only(top: 20.auto),
-          width: 5.auto,
-          height: 1,
-          color: CustomColor.grey,
-        ),
-        TransactionDateItem(
-          date: endDate,
-          title: "结束时间",
-          onDateChanged: (value){
-            setState(() {
-              endDate = value;
-              onFilter();
-              getTransaction(endDate: value);
-              CustomProgressDialog.show(context);
-            });
-          },
-        ),
-      ],
-    ),
-  );
+      );
 
-  _getTransactionItemType(int index){
+  _getTransactionItemType(int index) {
     /*if(transactionList.length == 1){
       return TransactionCellItemType.SINGLE;
     }else{
@@ -217,21 +212,20 @@ class TransactionDetailsState<T> extends BaseState<TransactionDetails<T>>{
     }*/
   }
 
-  _getPickerBox(){
-    if(T == AccountTransaction){
+  _getPickerBox() {
+    if (T == AccountTransaction) {
       return _getAccountTransactionPickerBox();
-    }
-    else if(T == BetTransaction){
+    } else if (T == BetTransaction) {
       return _getBetTransactionPickerBox();
-    }
-    else if(T == DailyTransaction){
+    } else if (T == DailyTransaction) {
       return _getDailyTransactionBox();
     }
   }
 
-  _getAccountTransactionPickerBox(){
-    var actionList = TransactionActionType.values.where(
-            (e) => e!=TransactionActionType.SUMMARY && e!=TransactionActionType.BET).toList();
+  _getAccountTransactionPickerBox() {
+    var actionList = TransactionActionType.values
+        .where((e) => e != TransactionActionType.SUMMARY && e != TransactionActionType.BET)
+        .toList();
     var statusList = TransactionStatusType.values;
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 10.auto),
@@ -240,30 +234,28 @@ class TransactionDetailsState<T> extends BaseState<TransactionDetails<T>>{
         children: [
           CustomPicker(
               title: "交易类别",
-              displayText: pickerText1 == null?"全部": pickerText1,
+              displayText: pickerText1 == null ? "全部" : pickerText1,
               list: actionList,
               isHintText: true,
               width: context.screenWidth / 2 - 60.auto,
-              onClick:() {
+              onClick: () {
                 _buildPickerDialog("交易类别", actionList);
-              }
-          ),
+              }),
           CustomPicker(
               title: "交易状态",
-              displayText: pickerText2 == null?"全部": pickerText2,
+              displayText: pickerText2 == null ? "全部" : pickerText2,
               list: statusList,
               isHintText: true,
               width: context.screenWidth / 2 - 60.auto,
-              onClick:() {
+              onClick: () {
                 _buildPickerDialog("交易状态", statusList);
-              }
-          ),
+              }),
         ],
       ),
     );
   }
 
-  _getBetTransactionPickerBox(){
+  _getBetTransactionPickerBox() {
     var thirdPartyTypeList = TransactionThirdPartyType.values;
     var statusList = TransactionBetStatusType.values;
     return Container(
@@ -273,40 +265,37 @@ class TransactionDetailsState<T> extends BaseState<TransactionDetails<T>>{
         children: [
           CustomPicker(
               title: "投注类别",
-              displayText: pickerText1 == null? thirdPartyTypeList[0].displayName: pickerText1,
+              displayText: pickerText1 == null ? thirdPartyTypeList[0].displayName : pickerText1,
               list: thirdPartyTypeList,
               isHintText: true,
               width: context.screenWidth / 3 - 55.auto,
-              onClick:() {
+              onClick: () {
                 _buildPickerDialog("投注类别", thirdPartyTypeList);
-              }
-          ),
+              }),
           CustomPicker(
               title: "投注馆别",
               displayText: _getThirdPartyText(),
               list: thirdPartyIdList,
               isHintText: true,
               width: context.screenWidth / 3 - 55.auto,
-              onClick:() {
+              onClick: () {
                 _buildPickerDialog("投注馆别", thirdPartyIdList);
-              }
-          ),
+              }),
           CustomPicker(
               title: "投注状态",
-              displayText: pickerText3 == null?statusList[0].displayName: pickerText3,
+              displayText: pickerText3 == null ? statusList[0].displayName : pickerText3,
               list: statusList,
               isHintText: true,
               width: context.screenWidth / 3 - 55.auto,
-              onClick:() {
+              onClick: () {
                 _buildPickerDialog("投注状态", statusList);
-              }
-          ),
+              }),
         ],
       ),
     );
   }
 
-  _getDailyTransactionBox(){
+  _getDailyTransactionBox() {
     var thirdPartyTypeList = TransactionThirdPartyType.values;
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 10.auto),
@@ -315,81 +304,74 @@ class TransactionDetailsState<T> extends BaseState<TransactionDetails<T>>{
         children: [
           CustomPicker(
               title: "投注类别",
-              displayText: pickerText1 == null?"全部": pickerText1,
+              displayText: pickerText1 == null ? "全部" : pickerText1,
               list: thirdPartyTypeList,
               isHintText: true,
               width: context.screenWidth / 2 - 60.auto,
-              onClick:() {
+              onClick: () {
                 _buildPickerDialog("投注类别", thirdPartyTypeList);
-              }
-          ),
+              }),
           CustomPicker(
               title: "投注馆别",
-              displayText: pickerText2 == null?"全部": pickerText2,
+              displayText: pickerText2 == null ? "全部" : pickerText2,
               list: thirdPartyIdList,
               isHintText: true,
               width: context.screenWidth / 2 - 60.auto,
-              onClick:() {
+              onClick: () {
                 _buildPickerDialog("投注馆别", thirdPartyIdList);
-              }
-          ),
+              }),
         ],
       ),
     );
   }
 
-  _buildPickerDialog(String title, List<dynamic> list){
+  _buildPickerDialog(String title, List<dynamic> list) {
     showModalBottomSheet(
         context: context,
-        isScrollControlled:true,
-        builder: (BuildContext bc){
-          return CustomPickerDialog(title: title, list: list,
-              onChanged: (value){
+        isScrollControlled: true,
+        builder: (BuildContext bc) {
+          return CustomPickerDialog(
+              title: title,
+              list: list,
+              onChanged: (value) {
                 setState(() {
-                  if(T == AccountTransaction){
-                    if(value is TransactionActionType){
+                  if (T == AccountTransaction) {
+                    if (value is TransactionActionType) {
                       pickerText1 = value.displayName;
                       getTransaction(action: value);
-                    }
-                    else if(value is TransactionStatusType){
+                    } else if (value is TransactionStatusType) {
                       pickerText2 = value.displayName;
                       getTransaction(status: value);
                     }
-                  }
-                  else if(T == BetTransaction){
-                    if(value is TransactionThirdPartyType){
+                  } else if (T == BetTransaction) {
+                    if (value is TransactionThirdPartyType) {
                       pickerText1 = value.displayName;
                       getTransaction(transactionThirdPartyType: value);
                       filterThirdParty(value);
-                    }
-                    else if(value is TransactionBetStatusType){
+                    } else if (value is TransactionBetStatusType) {
                       pickerText3 = value.displayName;
                       getTransaction(transactionBetStatusType: value);
-                    }
-                    else if(value is TransactionThirdParty){
+                    } else if (value is TransactionThirdParty) {
                       pickerText2 = value.name;
                       getTransaction(thirdPartyId: value.id);
                     }
-                  }
-                  else if(T == DailyTransaction){
-                    if(value is TransactionThirdPartyType){
+                  } else if (T == DailyTransaction) {
+                    if (value is TransactionThirdPartyType) {
                       pickerText1 = value.displayName;
                       getTransaction(transactionThirdPartyType: value);
                       filterThirdParty(value);
                     }
                     //third party
-                    else if(value is TransactionThirdParty){
+                    else if (value is TransactionThirdParty) {
                       pickerText2 = value.name;
                       getTransaction(thirdPartyId: value.id);
                     }
                   }
-                  Navigator.pop(context);
-                  CustomProgressDialog.show(context);
+                  Navigator.pop(context, NavigateWithoutAnimation());
+                  ProgressDialog.show(context);
                 });
-              }
-          );
-        }
-    );
+              });
+        });
   }
 
   onFilter({bool today = false, week = false, month = false}) {
@@ -398,13 +380,13 @@ class TransactionDetailsState<T> extends BaseState<TransactionDetails<T>>{
       isToday = today;
       isWeek = week;
       isMonth = month;
-      if(today){
+      if (today) {
         startDate = currentDate;
         endDate = currentDate;
-      }else if(week){
+      } else if (week) {
         startDate = DateTime(currentDate.year, currentDate.month, currentDate.day - 7);
         endDate = currentDate;
-      }else if(month){
+      } else if (month) {
         startDate = DateTime(currentDate.year, currentDate.month - 1, currentDate.day);
         endDate = currentDate;
       }
@@ -412,17 +394,16 @@ class TransactionDetailsState<T> extends BaseState<TransactionDetails<T>>{
     //_vm.filter(startDate);
   }
 
-  getTransaction({
-    DateTime startDate,
-    DateTime endDate,
-    TransactionActionType action,
-    TransactionStatusType status,
-    int thirdPartyId,
-    int thirdPartyParentId,
-    TransactionThirdPartyType transactionThirdPartyType,
-    TransactionBetStatusType transactionBetStatusType,
-    bool isLoadMore
-  }) async{
+  getTransaction(
+      {DateTime startDate,
+      DateTime endDate,
+      TransactionActionType action,
+      TransactionStatusType status,
+      int thirdPartyId,
+      int thirdPartyParentId,
+      TransactionThirdPartyType transactionThirdPartyType,
+      TransactionBetStatusType transactionBetStatusType,
+      bool isLoadMore}) async {
     /* if(T == AccountTransaction){
       await _vm.getMoneyTransaction(
           startDate: startDate,
@@ -467,10 +448,10 @@ class TransactionDetailsState<T> extends BaseState<TransactionDetails<T>>{
         isEndRecord = _vm.endRecord;
       });
     }
-    CustomProgressDialog.hide();*/
+     ProgressDialog.hide();*/
   }
 
-  _handleApiState(){
+  _handleApiState() {
     /*if (_vm.accountTransactionApiState == null &&
         _vm.betTransactionApiState == null &&
         _vm.dailyTransactionApiState == null ) {
@@ -491,7 +472,7 @@ class TransactionDetailsState<T> extends BaseState<TransactionDetails<T>>{
     bool isAccountTransaction = false,
     bool isBetTransaction = false,
     bool isDailyTransaction = false,
-  }){
+  }) {
     /*_vm.resetApiState(
         isAccountTransaction: isAccountTransaction,
         isBetTransaction: isBetTransaction,
@@ -499,7 +480,7 @@ class TransactionDetailsState<T> extends BaseState<TransactionDetails<T>>{
     );*/
   }
 
-  _getThirdPartyText(){
+  _getThirdPartyText() {
     return "";
     /*if(pickerText2 == null){
       if(thirdPartyIdList == null) {
@@ -509,7 +490,7 @@ class TransactionDetailsState<T> extends BaseState<TransactionDetails<T>>{
     }else return pickerText2;*/
   }
 
-  filterThirdParty(TransactionThirdPartyType type) async{
+  filterThirdParty(TransactionThirdPartyType type) async {
     /*await _vm.filterThirdParty(type:type);
     setState(() {
       thirdPartyIdList =_vm.thirdPartyIdList;
@@ -517,8 +498,8 @@ class TransactionDetailsState<T> extends BaseState<TransactionDetails<T>>{
     });*/
   }
 
-  _scrollListener(){
-    if(_controller2.offset >= _controller2.position.maxScrollExtent){
+  _scrollListener() {
+    if (_controller2.offset >= _controller2.position.maxScrollExtent) {
       getTransaction(isLoadMore: true);
       setState(() {
         isLoading = true;
