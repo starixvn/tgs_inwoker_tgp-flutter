@@ -42,16 +42,28 @@ enum GameType {
 }
 
 extension GameTypeExtension on GameType {
-  static const name = {
-    GameType.Sportsbook: "cat_sport",
-    GameType.ESports: "cat_laohu",
-    GameType.LiveDealer: "cat_livecasino",
-    GameType.CardGame: "cat_qipai",
-    GameType.Fishing: "cat_fish",
-    GameType.Lottery: " cat_lottery",
-    GameType.Slot: " cat_slotgame",
-    GameType.TableGame: " cat_table",
-  };
+  String getName(BuildContext context) {
+    switch(this){
+      case GameType.Sportsbook:
+        return getTranslatedText(context, "cat_sport");
+      case GameType.ESports: 
+        return getTranslatedText(context,  "cat_laohu");
+      case GameType.LiveDealer: 
+        return getTranslatedText(context,  "cat_livecasino");
+      case GameType.CardGame:
+        return getTranslatedText(context,  "cat_qipai");
+      case GameType.Fishing:
+        return getTranslatedText(context,  "cat_fish");
+      case GameType.Lottery:
+        return getTranslatedText(context,  "cat_lottery");
+      case GameType.Slot: 
+        return getTranslatedText(context,  "cat_slotgame");
+      case GameType.TableGame: 
+        return getTranslatedText(context,  "cat_table");
+      default :
+        return "";
+    }
+  }
 
   static const json = {
     GameType.Sportsbook: 1,
@@ -64,9 +76,21 @@ extension GameTypeExtension on GameType {
     GameType.TableGame: 16,
   };
 
-  String getDisplayName(BuildContext context) => getTranslatedText(context, name[this]);
+  String getImagePath() {
+    switch(this){
+      case GameType.Slot:
+        return   "slotGame" ;
+      case GameType.TableGame:
+        return   "tableGame" ;
+      case GameType.Sportsbook:
+        return   "sports" ;
+      default :
+        return "";
+    }
+  }
 
   int get getJsonValue => json[this];
 
   getTranslatedText(BuildContext context, String key) => LanguageProvider().getTranslated(context, key);
+
 }

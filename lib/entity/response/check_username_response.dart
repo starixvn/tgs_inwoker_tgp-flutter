@@ -5,12 +5,8 @@ part 'check_username_response.g.dart';
 @JsonSerializable()
 
 class CheckUsernameResponse {
-  CheckUsernameResponse(this.code, this.msg, this.isExist);
+  CheckUsernameResponse(this.isExist);
 
-  @JsonKey(name: 'err')
-  int code;
-  @JsonKey(name: 'errmsg')
-  String msg;
   @JsonKey(name: 'isexist')
   bool isExist;
 

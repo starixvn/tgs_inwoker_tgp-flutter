@@ -18,14 +18,14 @@ class GameViewModel extends BaseViewModel {
   @override
   List<BaseRepository> get repoList => [contentRepo];
   EventResult getGameApiState, getGameUrlApiState, getGameProviderListApiState;
-  List<List<GameType>> gameTypeList;
   List<Game> _gameList, filteredGameList;
   Map<String, List<Game>> gameListMap = new Map<String, List<Game>>();
   int mCategory = 0;
   String mPlatform, mSearchQuery = "";
   GameType mGameType;
   var url;
-  List<GameProvider2> platformList, gameProviderList = [];
+  List<GameProvider2> platformList;
+  List<List<GameProvider2>> gameProviderList;
 
   get userProfile => userRepo.userProfile;
 
@@ -35,13 +35,19 @@ class GameViewModel extends BaseViewModel {
     setLoading();
     getGameProviderListApiState = await contentRepo.getGameProviderList();
     if (getGameProviderListApiState.isSuccess) {
+      List<GameProvider2> list = [];
       getGameProviderListApiState.result.forEach((e) {
         e.gameTypes.forEach((element) {
           if (!(element == GameType.VirtualSports || element == GameType.VirtualSportsLobby)) {
-            gameProviderList.add(GameProvider2(element, e.code, e.name, e.description, e.status));
+            list.add(GameProvider2(element, e.code, e.name, e.description, e.status));
           }
         });
       });
+      gameProviderList = [
+        list.where((element) => element.gameType == GameType.Sportsbook).toList(),
+        list.where((element) => element.gameType == GameType.Slot).toList(),
+        list.where((element) => element.gameType == GameType.TableGame).toList(),
+      ];
     }
     setLoading(false);
     return getGameProviderListApiState;
@@ -141,7 +147,8 @@ class GameViewModel extends BaseViewModel {
   }
 
   getPlatformList(GameType gameType) {
-    platformList = gameProviderList.where((element) => element.gameType == gameType).toList();
+    List<GameProvider2> list = gameProviderList.expand((e) => e).toList();
+    platformList = list.where((element) => element.gameType == gameType).toList();
     notifyListeners();
   }
 }

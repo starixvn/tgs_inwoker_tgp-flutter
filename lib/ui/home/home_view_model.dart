@@ -10,15 +10,16 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeViewModel extends BaseViewModel {
   final userRepo = UserRepository.getSingleton();
+  final contentRepo = ContentRepository.getSingleton();
 
   @override
-  List<BaseRepository> get repoList => [userRepo];
+  List<BaseRepository> get repoList => [userRepo, contentRepo];
 
   get userProfile => userRepo.userProfile;
 
   get wallet => userRepo.wallet;
   bool isNotLogin = false, isExpired = false;
-  var getWalletBalanceApiState, getBasicInfoApiState;
+  var getWalletBalanceApiState, getBasicInfoApiState, getAnnouncementApiState;
 
   resumeIfNeed() async {
     setLoading();
@@ -39,5 +40,15 @@ class HomeViewModel extends BaseViewModel {
 
   markIsNotLogin() {
     isNotLogin = false;
+  }
+
+  getAnnouncement() async {
+    setLoading();
+    getAnnouncementApiState = await contentRepo.getAnnouncement();
+    if (getAnnouncementApiState.isSuccess) {
+
+    }
+    setLoading(false);
+    return getAnnouncementApiState;
   }
 }

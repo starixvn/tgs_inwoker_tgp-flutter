@@ -5,12 +5,8 @@ part 'login_response.g.dart';
 @JsonSerializable()
 
 class LoginResponse {
-  LoginResponse(this.code, this.msg, this.token, this.expires);
+  LoginResponse(this.token, this.expires);
 
-  @JsonKey(name: 'err')
-  int code;
-  @JsonKey(name: 'errmsg')
-  String msg;
   String token;
   int expires;
 

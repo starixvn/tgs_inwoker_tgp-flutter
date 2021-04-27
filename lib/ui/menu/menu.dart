@@ -5,6 +5,7 @@ import 'package:tgp_flutter/entity/message.dart';
 import 'package:tgp_flutter/extension/navigate_without_animation.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/localizations/language_provider.dart';
+import 'package:tgp_flutter/main.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
 import 'package:tgp_flutter/ui/card/main_card.dart';
@@ -93,7 +94,7 @@ class _MenuState extends BaseState<Menu> {
                 child: InkWell(
                   onTap: () {
                     Navigator.of(context)
-                        .pushAndRemoveUntil(NavigateWithoutAnimation(widget: Home()), (Route<dynamic> route) => false);
+                        .pushAndRemoveUntil(NavigateWithoutAnimation(widget: MyHomePage()), (Route<dynamic> route) => false);
                   },
                   child: ImageIcon(
                     AssetImage("images/menu/ic_menu_close.png"),

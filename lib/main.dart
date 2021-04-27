@@ -1,55 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tgp_flutter/entity/language.dart';
 import 'package:tgp_flutter/localizations/language_provider.dart';
 import 'package:tgp_flutter/localizations/my_localizations.dart';
 import 'package:tgp_flutter/my_behavior.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
-import 'package:tgp_flutter/ui/card/add_card.dart';
-import 'package:tgp_flutter/ui/card/main_card.dart';
-import 'package:tgp_flutter/ui/deposit/deposit.dart';
-import 'package:tgp_flutter/ui/forgot_password/forgot_password.dart';
-import 'package:tgp_flutter/ui/frequent_question/frequent_question.dart';
-import 'package:tgp_flutter/ui/home/child_game/child_game.dart';
 import 'package:tgp_flutter/ui/home/home.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
-import 'package:tgp_flutter/ui/home/home_view_model.dart';
-import 'package:tgp_flutter/ui/language/language_view.dart';
 import 'package:tgp_flutter/ui/login/login.dart';
-import 'package:tgp_flutter/ui/login/login_content.dart';
-import 'package:tgp_flutter/ui/login/login_view_model.dart';
 import 'package:tgp_flutter/ui/menu/menu.dart';
 import 'package:flutter/services.dart';
-import 'package:tgp_flutter/ui/message/message_view.dart';
 import 'package:tgp_flutter/ui/profile/profile.dart';
-import 'package:tgp_flutter/ui/profile_info/address/address.dart';
-import 'package:tgp_flutter/ui/profile_info/email/email_verification.dart';
-import 'package:tgp_flutter/ui/profile_info/email/email_verification.dart';
-import 'package:tgp_flutter/ui/profile_info/password/edit_password.dart';
-import 'package:tgp_flutter/ui/profile_info/pay_password/pay_password.dart';
-import 'package:tgp_flutter/ui/profile_info/pay_password/reset_pay_password.dart';
-import 'package:tgp_flutter/ui/profile_info/phone/phone_verification.dart';
-import 'package:tgp_flutter/ui/profile_info/phone/phone_verification.dart';
-import 'package:tgp_flutter/ui/profile_info/profile_info.dart';
-import 'package:tgp_flutter/ui/profile_info/qq_account/qq_account.dart';
-import 'package:tgp_flutter/ui/profile_info/real_name/real_name_verification.dart';
-import 'package:tgp_flutter/ui/profile_info/security/edit_security_answer.dart';
-import 'package:tgp_flutter/ui/profile_info/security/edit_security_answer_by_security_answer.dart';
-import 'package:tgp_flutter/ui/profile_info/security/security_answer.dart';
-import 'package:tgp_flutter/ui/profile_info/wechat/wechat.dart';
 import 'package:tgp_flutter/ui/promotion/promotion_page.dart';
-import 'package:tgp_flutter/ui/referFriend/refer_friend.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart' as DotEnv;
 import 'package:tgp_flutter/ui/splash/splash.dart';
-import 'package:tgp_flutter/ui/splash/splash_view_model.dart';
-import 'package:tgp_flutter/ui/transaction/transaction.dart';
-import 'package:tgp_flutter/ui/transfer/wallet_transfer.dart';
-import 'package:tgp_flutter/ui/withdraw/withdraw.dart';
 
-void main() {
+Future main() async {
+  //await DotEnv.load();
+  await DotEnv.load(fileName: ".env");
   runApp(MyApp());
 }
 class MyApp extends StatefulWidget{
@@ -104,7 +73,7 @@ class _MyAppState extends BaseState<MyApp> {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: appTitle,
-        home: MyHomePage(),
+        home:Splash(),
         localizationsDelegates: [
           MyLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,

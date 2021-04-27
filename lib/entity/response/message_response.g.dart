@@ -8,8 +8,6 @@ part of 'message_response.dart';
 
 MessageResponse _$MessageResponseFromJson(Map<String, dynamic> json) {
   return MessageResponse(
-    json['err'] as int,
-    json['errmsg'] as String,
     json['totalcount'] as int,
     (json['items'] as List)
         ?.map((e) =>
@@ -20,8 +18,6 @@ MessageResponse _$MessageResponseFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$MessageResponseToJson(MessageResponse instance) =>
     <String, dynamic>{
-      'err': instance.code,
-      'errmsg': instance.msg,
       'totalcount': instance.totalCount,
       'items': instance.items,
     };

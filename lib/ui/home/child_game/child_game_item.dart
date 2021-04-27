@@ -1,10 +1,12 @@
 import 'dart:ui';
 
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/custom/custom_toast.dart';
 import 'package:tgp_flutter/entity/game.dart';
+import 'package:tgp_flutter/entity/game_type.dart';
 import 'package:tgp_flutter/extension/navigate_without_animation.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
@@ -14,6 +16,7 @@ import 'package:tgp_flutter/ui/base_state.dart';
 import 'package:tgp_flutter/ui/home/game/game_view_model.dart';
 import 'package:tgp_flutter/ui/home/game/game_web_view.dart';
 import 'package:tgp_flutter/ui/home/home_view_model.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart' as DotEnv;
 
 class ChildGameItem extends StatefulWidget {
   final bool isFavourite;
@@ -48,13 +51,22 @@ class _ChildGameItemState extends BaseState<ChildGameItem> {
     );
   }
 
-  _buildImage() => Expanded(
-      flex: 4,
-      child: Image.asset(
-        "images/child_game_image/${widget.game.gamePlatformCode.toLowerCase()}/${widget.game.code.replaceAll(RegExp("_"), "")}.png",
-        width: 165.5.auto,
-        fit: BoxFit.cover,
-      ));
+  _buildImage() {
+    var imagePath = widget.game.type.getImagePath();
+    var gamePlatformCode = widget.game.gamePlatformCode.toLowerCase();
+    var gameName = widget.game.code.replaceAll(RegExp("_"), "");
+    var imageUrl = DotEnv.env["imageUrl"] + imagePath + "/" + gamePlatformCode + "/" + gameName + ".png";
+    return Expanded(
+        flex: 4,
+        child: CachedNetworkImage(
+            placeholder: (context, url) => Container(
+                  color: CustomColor.very_light_pink_four,
+                ),
+            imageUrl: imageUrl,
+            //handling error
+            width: 165.5.auto,
+            fit: BoxFit.cover));
+  }
 
   _buildImageTitleAndFavouriteIcon() => Expanded(
         flex: 1,

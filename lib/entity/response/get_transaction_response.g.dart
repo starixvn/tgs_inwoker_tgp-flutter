@@ -24,7 +24,7 @@ Map<String, dynamic> _$GetTransactionResponseToJson<T>(
   Object Function(T value) toJsonT,
 ) =>
     <String, dynamic>{
-      'errors': instance.code,
+      'errors': instance.errors,
       'valid': instance.valid,
       'message': instance.msg,
       'totalCount': instance.totalCount,

@@ -32,7 +32,7 @@ class ContentRepository extends BaseRepository {
               "currency": "CNY",
             },
             converter: (json) => (json as List<dynamic>).map((e) => GameProvider.fromJson(e)).toList(),
-            resolver: resolveBaseResponse,
+            consumer: (result) => gameProviderList = result,
             jwtRefresher: jwtAuth)
         .execute();
   }
@@ -49,7 +49,6 @@ class ContentRepository extends BaseRepository {
               "currency": "CNY"
             },
             converter: (json) => (json as List<dynamic>).map((e) => Game.fromJson(e)).toList(),
-            resolver: resolveBaseResponse,
             jwtRefresher: jwtAuth)
         .execute();
   }
@@ -64,19 +63,16 @@ class ContentRepository extends BaseRepository {
               "language": "en-US",
             },
             converter: (json) => GameUrlResponse.fromJson(json),
-            resolver: resolveResponse,
             jwtRefresher: jwtAuth)
         .execute();
   }
 
-  Future<EventResult<String>> getAnnouncement() async {
-    return await ApiRequestBuilder<String>(
+  Future<EventResult<dynamic>> getAnnouncement() async {
+    return await ApiRequestBuilder<dynamic>(
             method: HttpMethod.GET,
             isAuthorization: false,
             endPoint: "api/Game/list",
             params: {},
-            converter: (json) => (json as String),
-            resolver: resolveOnlyDataResponse,
             jwtRefresher: jwtAuth)
         .execute();
   }

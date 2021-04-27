@@ -6,12 +6,8 @@ part 'message_response.g.dart';
 @JsonSerializable()
 
 class MessageResponse {
-  MessageResponse(this.code, this.msg, this.totalCount, this.items);
+  MessageResponse(this.totalCount, this.items);
 
-  @JsonKey(name: 'err')
-  int code;
-  @JsonKey(name: 'errmsg')
-  String msg;
   @JsonKey(name: 'totalcount')
   int totalCount;
   List<Message> items;

@@ -36,7 +36,6 @@ class UserRepository extends BaseRepository {
               "platformtype": 1,
             },
             converter: (json) => LoginResponse.fromJson(json),
-            resolver: resolveResponse,
             jwtRefresher: jwtAuth)
         .execute();
   }
@@ -56,7 +55,6 @@ class UserRepository extends BaseRepository {
               "testplayer": true
             },
             converter: (json) => RegisterResponse.fromJson(json),
-            resolver: resolveResponse,
             jwtRefresher: jwtAuth)
         .execute();
   }
@@ -66,19 +64,14 @@ class UserRepository extends BaseRepository {
             method: HttpMethod.GET,
             endPoint: "api/Player/info",
             converter: (json) => UserProfile.fromJson(json),
-            resolver: resolveBaseResponse,
             consumer: (result) => userProfile = result,
             jwtRefresher: jwtAuth)
         .execute();
   }
 
-  Future<EventResult<String>> logout() async {
-    var apiState = await ApiRequestBuilder<String>(
-            method: HttpMethod.DELETE,
-            endPoint: "api/Player/logout",
-            converter: (json) => (json as String),
-            resolver: resolveBaseResponse,
-            jwtRefresher: jwtAuth)
+  Future<EventResult<dynamic>> logout() async {
+    var apiState = await ApiRequestBuilder<dynamic>(
+            method: HttpMethod.DELETE, endPoint: "api/Player/logout", jwtRefresher: jwtAuth)
         .execute();
     userProfile = null;
     return apiState;
@@ -96,7 +89,6 @@ class UserRepository extends BaseRepository {
               "username": username,
             },
             converter: (json) => CheckUsernameResponse.fromJson(json),
-            resolver: resolveResponse,
             jwtRefresher: jwtAuth)
         .execute();
   }
@@ -108,8 +100,6 @@ class UserRepository extends BaseRepository {
             params: {
               "qq": qq,
             },
-            converter: (json) => json as dynamic,
-            resolver: resolveBaseResponse,
             jwtRefresher: jwtAuth)
         .execute();
   }
@@ -121,8 +111,6 @@ class UserRepository extends BaseRepository {
             params: {
               "wechat": wechat,
             },
-            converter: (json) => json as dynamic,
-            resolver: resolveResponse,
             jwtRefresher: jwtAuth)
         .execute();
   }
@@ -136,7 +124,6 @@ class UserRepository extends BaseRepository {
               "newpwd": newPassword,
             },
             converter: (json) => EditPasswordResponse.fromJson(json),
-            resolver: resolveResponse,
             jwtRefresher: jwtAuth)
         .execute();
   }
@@ -149,8 +136,6 @@ class UserRepository extends BaseRepository {
               "id": id,
               "realname": realname,
             },
-            converter: (json) => json as dynamic,
-            resolver: resolveResponse,
             jwtRefresher: jwtAuth)
         .execute();
   }
@@ -162,8 +147,6 @@ class UserRepository extends BaseRepository {
             params: {
               "id": id,
             },
-            converter: (json) => json as dynamic,
-            resolver: resolveResponse,
             jwtRefresher: jwtAuth)
         .execute();
   }
@@ -192,7 +175,6 @@ class UserRepository extends BaseRepository {
           "ShowAll":showAll.toString(),*/
             },
             converter: (json) => GetTransactionResponse.fromJson(json, (res) => BetTransaction.fromJson(res)),
-            resolver: resolveReportRoundResponse,
             jwtRefresher: jwtAuth)
         .execute();
   }
@@ -202,7 +184,6 @@ class UserRepository extends BaseRepository {
             method: HttpMethod.GET,
             endPoint: "api/Wallet",
             converter: (json) => Wallet.fromJson(json),
-            resolver: resolveBaseResponse,
             consumer: (result) => wallet = result,
             jwtRefresher: jwtAuth)
         .execute();
@@ -211,7 +192,7 @@ class UserRepository extends BaseRepository {
         method: HttpMethod.GET,
         endPoint: "api/Player/info",
         converter: (json) => UserProfile.fromJson(json),
-        resolver: resolveBaseResponse,
+
         consumer: (result) => userProfile = result,
         jwtRefresher: jwtAuth)
         .execute();*/

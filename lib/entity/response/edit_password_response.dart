@@ -4,12 +4,9 @@ part 'edit_password_response.g.dart';
 @JsonSerializable()
 
 class EditPasswordResponse {
-  EditPasswordResponse(this.code, this.msg, this.playerCode, this.updateTime);
+  EditPasswordResponse(this.playerCode, this.updateTime);
 
-  @JsonKey(name: 'err')
-  int code;
-  @JsonKey(name: 'errmsg')
-  String msg;
+
   @JsonKey(name: 'playercode')
   String playerCode;
   @JsonKey(name: 'updatetime')

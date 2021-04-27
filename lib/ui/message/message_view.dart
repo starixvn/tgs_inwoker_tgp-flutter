@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/entity/message.dart';
 import 'package:tgp_flutter/extension/navigate_without_animation.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
@@ -17,14 +18,18 @@ class MessageView extends StatefulWidget {
 }
 
 class _MessageViewState extends BaseState<MessageView> {
-  var isEditing = false, isSelected = false;
+  var isEditing = false, isSelected = false, isLoading = false, isEndRecord = false;
   var _vm = MessageViewModel();
-  var messageList;
-  List<Message> selectedMessageList = [];
+  List<String> selectedMessageList = [];
+  ScrollController _controller = ScrollController();
 
   @override
   void initState() {
-    _vm.getMessageList();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ProgressDialog.show(context);
+      _vm.getMessageList();
+    });
+    _controller.addListener(_scrollListener);
     super.initState();
   }
 
@@ -72,21 +77,32 @@ class _MessageViewState extends BaseState<MessageView> {
             ),
             bottomNavigationBar: _buildBottomNavigationBar(),
             body: _vm.messageList == null
-                ? buildProgressDialog()
-                : Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
+                ? Container()
+                : ListView(controller: _controller, padding: EdgeInsets.all(8.0), children: [
+                    Column(
                       children: List.generate(_vm.messageList.length, (index) {
-                        return Container(
-                          child: MessageItem(
+                        return MessageItem(
                             message: _vm.messageList[index],
                             isEditing: isEditing,
-                            onSelected: (isSelected, message) => _onSelected(isSelected, message),
-                          ),
-                        );
+                            onSelected: (message) => _onSelected(message),
+                            onReadMessage: (id) {
+                              ProgressDialog.show(context);
+                              _vm.readMessage([id]);
+                            },
+                            selectedMessageList: selectedMessageList ?? []);
                       }),
                     ),
-                  ),
+                    Visibility(visible: isLoading, child: CircularProgressIndicator()),
+                    Visibility(
+                        visible: _vm.endRecord,
+                        child: Container(
+                          padding: EdgeInsets.only(bottom: 10.auto),
+                          child: Text(
+                            "没有更多了",
+                            style: TextStyle(fontSize: 12.auto, color: CustomColor.grey),
+                          ),
+                        ))
+                  ]),
           );
         });
   }
@@ -99,7 +115,14 @@ class _MessageViewState extends BaseState<MessageView> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    ProgressDialog.show(context);
+                    _vm.readMessage(selectedMessageList);
+                    setState(() {
+                      selectedMessageList = [];
+                      isEditing = false;
+                    });
+                  },
                   child: Container(
                     padding: EdgeInsets.only(top: 10.auto, bottom: 10.auto, left: 15.auto),
                     child: Text(
@@ -122,17 +145,27 @@ class _MessageViewState extends BaseState<MessageView> {
             )),
       );
 
-  _onSelected(bool isSelected, Message _selectedMessage) {
+  _onSelected(Message _selectedMessage) {
     setState(() {
+      isSelected = !isSelected;
       if (isSelected)
-        selectedMessageList.add(_selectedMessage);
+        selectedMessageList.add(_selectedMessage.id);
       else {
-        selectedMessageList.removeWhere((element) => element.id == _selectedMessage.id);
+        selectedMessageList.removeWhere((element) => element == _selectedMessage.id);
       }
     });
   }
 
+  _scrollListener() {
+    if (_controller.offset >= _controller.position.maxScrollExtent) {
+      setState(() {
+        isLoading = true;
+      });
+    }
+  }
+
   _handleApiState() {
-    handleApiState(_vm.getMessageListApiState, isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getMessageListApiState, onSuccess: () {});
+    handleApiState(_vm.readMessageApiState, onSuccess: () {});
   }
 }

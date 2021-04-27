@@ -7,20 +7,45 @@ import 'package:tgp_flutter/repository/message_repository.dart';
 
 class MessageViewModel extends BaseViewModel {
   final messageRepo = MessageRepository.getSingleton();
-  EventResult getMessageListApiState;
+  EventResult getMessageListApiState, readMessageApiState;
   List<Message> messageList;
-  var page = 1, rows=10;
+  var page = 1, rows = 10;
+
+  bool endRecord;
 
   @override
   List<BaseRepository> get repoList => [messageRepo];
 
-  getMessageList() async {
+  getMessageList({isLoadMore = false}) async {
     setLoading();
+
+    if (isLoadMore) {
+      if (page * rows < getMessageListApiState.result.totalCount)
+        page++;
+      else
+        return;
+    } else
+      page = 1;
+
     getMessageListApiState = await messageRepo.getMessageList(page, rows);
-    if(getMessageListApiState.isSuccess){
-      messageList = getMessageListApiState.result.items;
+    List<Message> list = [];
+    if (getMessageListApiState.isSuccess) {
+      list = getMessageListApiState.result.items;
+      if (messageList == null) messageList = [];
+      messageList.addAll(list);
+      endRecord = messageList.length >= getMessageListApiState.result.totalCount ? true : false;
     }
     setLoading(false);
     return getMessageListApiState;
+  }
+
+  readMessage(List<String> idList) async {
+    setLoading();
+    var state = await messageRepo.readMessage(idList);
+    if (state.isSuccess) {
+      readMessageApiState = await getMessageList();
+    }
+    setLoading(false);
+    return readMessageApiState;
   }
 }

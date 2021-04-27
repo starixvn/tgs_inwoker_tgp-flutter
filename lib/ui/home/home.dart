@@ -35,17 +35,6 @@ class _HomeState extends BaseState<Home> {
   var currentTabIndex = "0";
   var tabList;
   UserProfile user;
-
-  //livegame =4, qipai =5, slotgame =4, sport =2, lottery =1
-  var gameList = [
-    ['livegame_ag.png', 'livegame_bbin.png', 'livegame_dg.png', 'livegame_mg.png'],
-    ['qipai_ky.png', 'qipai_ap.png', 'qipai_as.png', 'qipai_bole.png', 'qipai_leyou.png'],
-    ['sport_stt.png', 'sport_sabah.png'],
-    ['lottery_633.png'],
-    ['slotgame_mg.png', 'slotgame_jdb.png', 'slotgame_ag.png', 'slotgame_bbin.png'],
-    ['sport_stt.png', 'sport_sabah.png'],
-    ['lottery_633.png'],
-  ];
   var tab = [
     {"id": "0", "text": "cat_sport"},
     {"id": "1", "text": "cat_slotgame"},

@@ -4,12 +4,14 @@ import 'dart:developer';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tgp_flutter/entity/http_method.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart' as DotEnv;
 
 api(HttpMethod method, final endPoint, {final content, isAuthorization = true}) async {
   var header = await _getHeader(isAuthorization);
-  var url = "https://dev.operator.tgsdev.gq/" + endPoint;
- /* var body = "?"+Uri(queryParameters: content).query;
-  print("Api->${method.getName}:${url+body}");*/
+  var url = DotEnv.env["url"] + endPoint;
+ // var body = "?"+Uri(queryParameters: content).query;
+  print("Api->${method.getName}:$url");
+  print(content);
   http.Response response;
   switch (method) {
     case HttpMethod.POST:

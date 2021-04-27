@@ -5,10 +5,10 @@ part 'BaseResponse.g.dart';
 @JsonSerializable()
 
 class BaseResponse {
-  BaseResponse(this.code, this.data, this.msg);
+  BaseResponse(this.error, this.data, this.msg);
 
   @JsonKey(name: 'err')
-  int code;
+  int error;
   dynamic data;
   @JsonKey(name: 'errmsg')
   String msg;

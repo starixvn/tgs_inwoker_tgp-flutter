@@ -24,14 +24,22 @@ class MessageRepository extends BaseRepository {
 
   Future<EventResult<MessageResponse>> getMessageList(int page, int rows) async {
     return await ApiRequestBuilder<MessageResponse>(
-        method: HttpMethod.GET,
+            method: HttpMethod.GET,
+            endPoint: "api/letter",
+            params: {
+              "page": page.toString(),
+              "rows": rows.toString(),
+            },
+            converter: (json) => MessageResponse.fromJson(json),
+            jwtRefresher: jwtAuth)
+        .execute();
+  }
+
+  Future<EventResult<dynamic>> readMessage (List<String> id) async {
+    return await ApiRequestBuilder<dynamic>(
+        method: HttpMethod.POST,
         endPoint: "api/letter",
-        params: {
-          "page": page.toString(),
-          "rows": rows.toString(),
-        },
-        converter: (json) => MessageResponse.fromJson(json),
-        resolver: resolveBaseResponse,
+        params: id,
         jwtRefresher: jwtAuth)
         .execute();
   }

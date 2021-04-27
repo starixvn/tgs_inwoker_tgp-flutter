@@ -206,20 +206,7 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
 
   _getAppTitle() {
     if (widget.gameType != null) {
-      switch (widget.gameType) {
-        case GameType.Sportsbook:
-          return getTranslatedText("cat_sport");
-          break;
-        case GameType.Slot:
-          return getTranslatedText("cat_slotgame");
-          break;
-        case GameType.TableGame:
-          return getTranslatedText("cat_table");
-          break;
-        default:
-          return "Game";
-          break;
-      }
+      return widget.gameType.getName(context);
     }
   }
 

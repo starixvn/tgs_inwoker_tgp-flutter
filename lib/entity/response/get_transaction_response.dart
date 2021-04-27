@@ -5,15 +5,15 @@ part 'get_transaction_response.g.dart';
 @JsonSerializable(genericArgumentFactories: true)
 
 class GetTransactionResponse<T> {
-  GetTransactionResponse(this.code, this.msg, this.valid, this.totalCount, this.items);
+  GetTransactionResponse(this.errors, this.msg, this.valid, this.totalCount, this.items);
 
-  @JsonKey(name: 'errors')
-  List<String> code;
+  List<String> errors;
   bool valid;
   @JsonKey(name: 'message')
   String msg;
   int totalCount;
   List<T> items;
+
 
   /*factory GetTransactionResponse.fromJson(Map<String, dynamic> json) =>
       _$GetTransactionResponseFromJson(json);

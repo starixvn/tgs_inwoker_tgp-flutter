@@ -1,5 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:tgp_flutter/entity/game_tag.dart';
+import 'package:tgp_flutter/entity/game_type.dart';
 part 'game.g.dart';
 
 @JsonSerializable()
@@ -15,7 +16,7 @@ class Game {
   String gamePlatformCode;
   @JsonKey(name:"isactive")
   bool isActive;
-  int type;
+  GameType type;
   GameTag tag;
 
  String gamePlatformName(){

@@ -20,8 +20,7 @@ class LanguageProvider{
   Future<Locale> getLocale() async {
     SharedPreferences _prefs = await SharedPreferences.getInstance();
     String languageCode = _prefs.getString("LANGUAGE_CODE");
-    list.singleWhere((e) => e.code == languageCode);
-    return _locale(list.singleWhere((e) => e.code == languageCode));
+    return _locale(languageCode != null ? list.singleWhere((e) => e.code == languageCode) : null);
   }
 
   Locale _locale(Language language) {

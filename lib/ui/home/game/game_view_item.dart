@@ -45,17 +45,53 @@ class _GameViewItemState extends BaseState<GameViewItem> {
                       padding: EdgeInsets.only(left: (8.5).auto, right: 5.auto, top: (12.5).auto, bottom: 5.auto),
                       child: GestureDetector(
                           onTap: () => widget.onGameClick(item),
-                          child: Container(
-                              width: 335.auto,
-                              height: 90.auto,
-                              color: Colors.blue,
-                              alignment: Alignment.center,
-                              child: Text(
-                                item.name,
-                              )))))
+                          child: _buildImage(item))))
                   .toList()),
         ),
       ),
     );
   }
+
+  _getImagePath(GameProvider2 gameProvider) {
+    var gameType = gameProvider.gameType.getImagePath();
+    var gamePlatformCode = gameProvider.code.toLowerCase();
+    var imagePath = "images/game/${gameType}_${gamePlatformCode}.png";
+    return imagePath;
+  }
+  
+  _buildImage(GameProvider2 gameProvider) => Stack(
+    children: [
+      AspectRatio(
+        aspectRatio: 750/330,
+        child: Container(
+            color: Colors.blue,
+            alignment: Alignment.center,
+            child: Image.asset(
+              _getImagePath(gameProvider),
+              fit: BoxFit.cover,
+            )),
+      ),
+      Positioned(
+        bottom: context.screenWidth/30,
+        left: context.screenWidth/10,
+        child: Container(
+          width: 70.auto,
+          padding: EdgeInsets.all(10.auto),
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage("images/game/btn_start_game.png")
+            )
+          ),
+          child: Text(
+            "立即体验",
+            style: TextStyle(
+              fontSize: 8.auto,
+              fontWeight: FontWeight.bold
+            ),
+          ),
+        ),
+      )
+    ],
+  );
 }

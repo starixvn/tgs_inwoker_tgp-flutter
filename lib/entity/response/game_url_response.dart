@@ -5,12 +5,9 @@ part 'game_url_response.g.dart';
 @JsonSerializable()
 
 class GameUrlResponse {
-  GameUrlResponse(this.code, this.msg, this.url);
+  GameUrlResponse( this.url);
 
-  @JsonKey(name: 'err')
-  int code;
-  @JsonKey(name: 'errmsg')
-  String msg;
+
   String url;
 
   factory GameUrlResponse.fromJson(Map<String, dynamic> json) => _$GameUrlResponseFromJson(json);

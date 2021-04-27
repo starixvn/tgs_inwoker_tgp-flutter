@@ -40,7 +40,6 @@ class _GameViewState extends BaseState<GameView> {
   var key = GlobalKey();
   var _vm = GameViewModel();
   var gameName;
-  var _gameProviderList = [];
 
   @override
   void initState() {
@@ -53,13 +52,6 @@ class _GameViewState extends BaseState<GameView> {
 
   @override
   Widget build(BuildContext context) {
-    if (_vm.gameProviderList != null) {
-      _gameProviderList = [
-        _vm.gameProviderList.where((element) => element.gameType == GameType.Sportsbook),
-        _vm.gameProviderList.where((element) => element.gameType == GameType.Slot),
-        _vm.gameProviderList.where((element) => element.gameType == GameType.TableGame),
-      ];
-    }
     return ProviderWidget<GameViewModel>(
         model: _vm,
         builder: (ctx, vm, _) {
@@ -86,7 +78,7 @@ class _GameViewState extends BaseState<GameView> {
                           key: key,
                           child: GameViewItem(
                             controller: _controller,
-                            gameProviderList: _gameProviderList,
+                            gameProviderList: _vm.gameProviderList,
                             onGameClick: (game) => _onGameClick(game),
                           ),
                         )
@@ -142,7 +134,7 @@ class _GameViewState extends BaseState<GameView> {
 
     _vm.gameProviderList.asMap().forEach((i, element) {
       if (tabIndex > i) {
-        des += itemHeight * _gameProviderList[i].length;
+        des += itemHeight * _vm.gameProviderList[i].length;
       }
     });
     setState(() {
@@ -157,12 +149,12 @@ class _GameViewState extends BaseState<GameView> {
     var des = 0.0;
     var index = 0;
 
-    _gameProviderList.asMap().forEach((i, element) {
+    _vm.gameProviderList.asMap().forEach((i, element) {
       if (_controller.offset >= des) {
-        des += scrollTab * _gameProviderList[i].length;
+        des += scrollTab * _vm.gameProviderList[i].length;
         index = i;
       } else if (_controller.offset >= _controller.position.maxScrollExtent) {
-        index = _gameProviderList.length - 1;
+        index = _vm.gameProviderList.length - 1;
       }
     });
     setState(() {

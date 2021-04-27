@@ -14,7 +14,7 @@ Game _$GameFromJson(Map<String, dynamic> json) {
     ..description = json['description'] as String
     ..gamePlatformCode = json['gpcode'] as String
     ..isActive = json['isactive'] as bool
-    ..type = json['type'] as int
+    ..type = _$enumDecodeNullable(_$GameTypeEnumMap, json['type'])
     ..tag = json['tag'] == null
         ? null
         : GameTag.fromJson(json['tag'] as Map<String, dynamic>);
@@ -27,6 +27,57 @@ Map<String, dynamic> _$GameToJson(Game instance) => <String, dynamic>{
       'description': instance.description,
       'gpcode': instance.gamePlatformCode,
       'isactive': instance.isActive,
-      'type': instance.type,
+      'type': _$GameTypeEnumMap[instance.type],
       'tag': instance.tag,
     };
+
+T _$enumDecode<T>(
+  Map<T, dynamic> enumValues,
+  dynamic source, {
+  T unknownValue,
+}) {
+  if (source == null) {
+    throw ArgumentError('A value must be provided. Supported values: '
+        '${enumValues.values.join(', ')}');
+  }
+
+  final value = enumValues.entries
+      .singleWhere((e) => e.value == source, orElse: () => null)
+      ?.key;
+
+  if (value == null && unknownValue == null) {
+    throw ArgumentError('`$source` is not one of the supported values: '
+        '${enumValues.values.join(', ')}');
+  }
+  return value ?? unknownValue;
+}
+
+T _$enumDecodeNullable<T>(
+  Map<T, dynamic> enumValues,
+  dynamic source, {
+  T unknownValue,
+}) {
+  if (source == null) {
+    return null;
+  }
+  return _$enumDecode<T>(enumValues, source, unknownValue: unknownValue);
+}
+
+const _$GameTypeEnumMap = {
+  GameType.Sportsbook: 1,
+  GameType.VirtualSports: 2,
+  GameType.VirtualSportsLobby: 3,
+  GameType.ESports: 4,
+  GameType.LiveDealer: 5,
+  GameType.LiveDealerLobby: 6,
+  GameType.CardGame: 7,
+  GameType.CardGameLobby: 8,
+  GameType.Fishing: 9,
+  GameType.FishingLobby: 10,
+  GameType.Arcade: 11,
+  GameType.ArcadeLobby: 12,
+  GameType.Lottery: 13,
+  GameType.LotteryLobby: 14,
+  GameType.Slot: 15,
+  GameType.TableGame: 16,
+};

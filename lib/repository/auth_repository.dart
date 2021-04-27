@@ -20,92 +20,72 @@ class AuthenticationRepository extends BaseRepository {
     return _singleton;
   }
 
-  Future<EventResult<String>> emailVerify(String email) async {
-    return await ApiRequestBuilder<String>(
+  Future<EventResult<dynamic>> emailVerify(String email) async {
+    return await ApiRequestBuilder<dynamic>(
             endPoint: "api/Player/email",
             params: {
               "email": email,
             },
-            converter: (json) => json as String,
-            resolver: resolveResponse,
             jwtRefresher: jwtAuth)
         .execute();
   }
 
-  Future<EventResult<String>> verifyCode(String securityKey, String validateCode, {bool isPhone = false}) async {
-    return await ApiRequestBuilder<String>(
+  Future<EventResult<dynamic>> verifyCode(String securityKey, String validateCode, {bool isPhone = false}) async {
+    return await ApiRequestBuilder<dynamic>(
             method: HttpMethod.PUT,
             endPoint: isPhone ? "api/player/phone" : "api/player/email",
             params: {"securitykey": securityKey, "validatecode": validateCode},
-            converter: (json) => json as String,
-            resolver: resolveBaseResponse,
             jwtRefresher: jwtAuth)
         .execute();
   }
 
-  Future<EventResult<String>> phoneVerify(String phone) async {
-    return await ApiRequestBuilder<String>(
+  Future<EventResult<dynamic>> phoneVerify(String phone) async {
+    return await ApiRequestBuilder<dynamic>(
             endPoint: "api/player/phone",
             params: {
               "phone": phone,
             },
-            converter: (json) => json as String,
-            resolver: resolveBaseResponse,
             jwtRefresher: jwtAuth)
         .execute();
   }
 
-  Future<EventResult<String>> getForgotPasswordCode(String phone) async {
-    return await ApiRequestBuilder<String>(
+  Future<EventResult<dynamic>> getForgotPasswordCode(String phone) async {
+    return await ApiRequestBuilder<dynamic>(
             isAuthorization: false,
             endPoint: "api/player/password/forgot",
             params: {
               "phone": phone,
             },
-            converter: (json) => json as String,
-            resolver: resolveBaseResponse,
             jwtRefresher: jwtAuth)
         .execute();
   }
 
-  Future<EventResult<String>> resetPassword(String securityKey, String validateCode, String newPassword) async {
-    return await ApiRequestBuilder<String>(
+  Future<EventResult<dynamic>> resetPassword(String securityKey, String validateCode, String newPassword) async {
+    return await ApiRequestBuilder<dynamic>(
             isAuthorization: false,
             endPoint: "api/player/password/reset",
             params: {"securitykey": securityKey, "validatecode": validateCode, "newpwd": newPassword},
-            converter: (json) => json as String,
-            resolver: resolveBaseResponse,
             jwtRefresher: jwtAuth)
         .execute();
   }
 
   Future<EventResult<String>> addPayPassword(String password) async {
     return await ApiRequestBuilder<String>(
-            endPoint: "api/pay/password",
-            params: {"pwd": password},
-            converter: (json) => json as String,
-            resolver: resolveBaseResponse,
-            jwtRefresher: jwtAuth)
+            endPoint: "api/pay/password", params: {"pwd": password}, jwtRefresher: jwtAuth)
         .execute();
   }
 
-  Future<EventResult<String>> getPayPasswordCode() async {
-    return await ApiRequestBuilder<String>(
-            endPoint: "api/pay/password/validate-code",
-            params: {},
-            converter: (json) => json as String,
-            resolver: resolveBaseResponse,
-            jwtRefresher: jwtAuth)
+  Future<EventResult<dynamic>> getPayPasswordCode() async {
+    return await ApiRequestBuilder<dynamic>(
+            endPoint: "api/pay/password/validate-code", params: {}, jwtRefresher: jwtAuth)
         .execute();
   }
 
-  Future<EventResult<String>> payPasswordVerify(String password, String code, String securityKey) async {
-    return await ApiRequestBuilder<String>(
+  Future<EventResult<dynamic>> payPasswordVerify(String password, String code, String securityKey) async {
+    return await ApiRequestBuilder<dynamic>(
             method: HttpMethod.PATCH,
             endPoint: "api/pay/password",
             params: {"newpwd": password, "validatecode": code, "securitykey": securityKey},
-            converter: (json) => json as String,
-            resolver: resolveBaseResponse,
             jwtRefresher: jwtAuth)
         .execute();
   }

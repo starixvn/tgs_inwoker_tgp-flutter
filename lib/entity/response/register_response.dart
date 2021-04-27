@@ -5,12 +5,8 @@ part 'register_response.g.dart';
 @JsonSerializable()
 
 class RegisterResponse {
-  RegisterResponse(this.code, this.msg, this.uid, this.isNew);
+  RegisterResponse(this.uid, this.isNew);
 
-  @JsonKey(name: 'err')
-  int code;
-  @JsonKey(name: 'errmsg')
-  String msg;
   String uid;
   @JsonKey(name: 'isnew')
   bool isNew;
