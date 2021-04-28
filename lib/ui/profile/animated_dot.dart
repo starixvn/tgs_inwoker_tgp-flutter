@@ -1,0 +1,79 @@
+import 'package:animated_widgets/widgets/opacity_animated.dart';
+import 'package:animated_widgets/widgets/rotation_animated.dart';
+import 'package:animated_widgets/widgets/shake_animated_widget.dart';
+import 'package:animated_widgets/widgets/size_animated.dart';
+import 'package:auto_size_text/auto_size_text.dart';
+import 'package:flutter/material.dart';
+import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
+import 'package:tgp_flutter/custom/custom_toast.dart';
+import 'package:tgp_flutter/extension/navigate_without_animation.dart';
+import 'package:tgp_flutter/extension/screen_apis.dart';
+import 'package:tgp_flutter/provider/provider_widget.dart';
+import 'package:tgp_flutter/src/custom_color.dart';
+import 'package:tgp_flutter/ui/base_state.dart';
+import 'package:tgp_flutter/ui/transaction/transaction.dart';
+
+class AnimatedDot extends StatefulWidget {
+  final double size;
+  final Color color;
+
+  AnimatedDot({Key key, this.size = 10, this.color = CustomColor.theme_bar_gradient_2})
+      : super(key: key);
+
+  @override
+  _AnimatedDotState createState() => _AnimatedDotState();
+}
+
+class _AnimatedDotState extends BaseState<AnimatedDot> with TickerProviderStateMixin {
+  AnimationController _controller;
+  Animation scaleAnimation;
+  int bounceCount = 0;
+
+  @override
+  void initState() {
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 180),
+      vsync: this,
+    );
+    scaleAnimation = Tween(begin: 1.0, end: 1.2)
+        .animate(CurvedAnimation(parent: _controller, curve: Curves.linear))
+          ..addStatusListener((status) {
+            if (status == AnimationStatus.completed) {
+              _controller.reverse();
+            } else if (status == AnimationStatus.dismissed) {
+              bounceCount++;
+              if (bounceCount >= 2) {
+                bounceCount = 0;
+                Future.delayed(Duration(milliseconds: 3000), () {
+                  if (_controller != null) _controller.forward(from: 0.0);
+                });
+              } else {
+                _controller.forward(from: 0.0);
+              }
+            }
+          });
+
+    super.initState();
+    _controller.forward(from: 0.0);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    _controller = null;
+    scaleAnimation = null;
+    super.dispose();
+  }
+
+  Widget build(BuildContext context) {
+    return ScaleTransition(
+      scale: scaleAnimation,
+      alignment: Alignment.center,
+      child: Container(
+        width: widget.size.auto,
+        height: widget.size.auto,
+        decoration: BoxDecoration(color: widget.color, shape: BoxShape.circle),
+      ),
+    );
+  }
+}

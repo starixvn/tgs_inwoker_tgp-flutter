@@ -13,38 +13,23 @@ import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
 import 'package:tgp_flutter/ui/transaction/transaction.dart';
 
+import 'animated_dot.dart';
+
 class ProfileBottomItem extends StatefulWidget {
   final String title;
   final String imagePath;
   final Widget route;
   final bool isMessage;
 
-  ProfileBottomItem({Key key, this.title, this.imagePath, this.route, this.isMessage}) : super(key: key);
+  ProfileBottomItem({Key key, this.title, this.imagePath, this.route, this.isMessage})
+      : super(key: key);
 
   @override
   _ProfileBottomItemState createState() => _ProfileBottomItemState();
 }
 
 class _ProfileBottomItemState extends BaseState<ProfileBottomItem> with TickerProviderStateMixin {
-  AnimationController _controller;
-  Tween<double> _tween = Tween(begin: 1, end: 1.2);
   int _count = 0;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-      duration: const Duration(milliseconds: 1000),
-      vsync: this,
-    );
-    _controller.repeat();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _controller.dispose();
-  }
 
   Widget build(BuildContext context) {
     return InkWell(
@@ -62,11 +47,10 @@ class _ProfileBottomItemState extends BaseState<ProfileBottomItem> with TickerPr
             Container(
               //margin: EdgeInsets.symmetric(vertical: 13,horizontal: 10),
               margin: EdgeInsets.only(left: 5.auto, right: 5.auto, top: 10.auto, bottom: 5.auto),
-              child:
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [_buildImageIcon(), _buildProfileBottomItemText()],
-                  ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [_buildImageIcon(), _buildProfileBottomItemText()],
+              ),
             ),
             Visibility(visible: widget.isMessage, child: _buildNotification()),
           ],
@@ -96,16 +80,5 @@ class _ProfileBottomItemState extends BaseState<ProfileBottomItem> with TickerPr
         Navigator.of(context).push(NavigateWithoutAnimation(widget: widget.route));
       });
 
-  _buildNotification() => Positioned(
-      top: 15,
-      right: 20,
-      child: ScaleTransition(
-        scale: _tween.animate(CurvedAnimation(parent: _controller, curve: Curves.bounceInOut)),
-        alignment: Alignment.center,
-        child: Container(
-          width: 10.auto,
-          height: 10.auto,
-          decoration: BoxDecoration(color: Colors.red, shape: BoxShape.circle),
-        ),
-      ));
+  _buildNotification() => Positioned(top: 15, right: 20, child: AnimatedDot());
 }
