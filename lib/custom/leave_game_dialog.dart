@@ -35,7 +35,7 @@ class _LeaveGameDialogState extends BaseState<LeaveGameDialog> {
                 top: context.screenWidth / 6,
                 left: context.screenWidth / 8,
                 child: Text(
-                  "确定离开游戏吗？",
+                  getTranslatedText("confirm_leave_game"),
                   style: TextStyle(
                     fontSize: 13.5.auto,
                     color: Colors.white,
@@ -79,7 +79,7 @@ class _LeaveGameDialogState extends BaseState<LeaveGameDialog> {
             decoration: BoxDecoration(
                 color: Colors.white, borderRadius: BorderRadius.only(bottomLeft: Radius.circular(5.auto))),
             child: Text(
-              "离开",
+              getTranslatedText("leave"),
               style: TextStyle(color: CustomColor.grey_five, fontSize: 11.5.auto),
             ),
           ),
@@ -100,7 +100,7 @@ class _LeaveGameDialogState extends BaseState<LeaveGameDialog> {
             decoration: BoxDecoration(
                 color: Colors.white, borderRadius: BorderRadius.only(bottomRight: Radius.circular(5.auto))),
             child: Text(
-              "再玩一会",
+              getTranslatedText("play_a_while"),
               style: TextStyle(color: CustomColor.faded_red, fontSize: 11.5.auto),
             ),
           ),

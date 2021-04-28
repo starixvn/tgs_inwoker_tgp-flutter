@@ -138,7 +138,7 @@ class _ForgotPasswordState extends BaseState<ForgotPassword> {
   _getSmsCode() {
     if (!validate.validateChinaPhoneNumber(_phoneController.text)) {
       setState(() {
-        CustomToast.show("手机号码格式不正确");
+        CustomToast.show(getTranslatedText("phone_format_error_msg"));
       });
     } else {
       ProgressDialog.show(context);

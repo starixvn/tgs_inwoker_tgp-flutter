@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:tgp_flutter/custom/color_button.dart';
 import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/custom/custom_toast.dart';
 import 'package:tgp_flutter/extension/navigate_without_animation.dart';
@@ -40,15 +42,15 @@ class _SplashState extends BaseState<Splash> {
                 color: Colors.black,
                 child: Center(
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Container(width: context.screenWidth / 1.5, child: Image.asset("images/ic_logo.png")),
                       Container(
-                        margin: EdgeInsets.all(10.auto),
+                        width: context.screenWidth / 2.5,
                         alignment: Alignment.bottomCenter,
-                        child: CircularProgressIndicator(),
-                      )
+                        child: Lottie.asset("loading/loading.json"),
+                      ),
                     ],
                   ),
                 ),

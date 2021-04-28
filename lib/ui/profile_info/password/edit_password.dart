@@ -157,7 +157,7 @@ class _EditPasswordState extends BaseState<EditPassword> {
   _onClick() async {
     if (!validate.validatePasswordLength(_newPasswordController.text)) {
       setState(() {
-        CustomToast.show("密码由6-20个英文字母或者数字组成");
+        CustomToast.show(getTranslatedText("enter_password_error_msg"));
       });
     } else if (_newPasswordController.text != _confirmPasswordController.text) {
       setState(() {

@@ -31,9 +31,9 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
   var _groupTabController;
   var _groupTabIndex = 0;
   var _groupTabList = [
-    "全部游戏",
-    "最新游戏",
-    "热门游戏",
+    "all_game",
+    "new_game",
+    "hot_game",
     /*"收藏游戏",
     "捕鱼游戏",
     "历史游戏"*/
@@ -128,7 +128,7 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
               unselectedLabelStyle: TextStyle(color: CustomColor.grey),
               tabs: _groupTabList.map((item) {
                 return Tab(
-                  child: Text(item,
+                  child: Text(getTranslatedText(item),
                       style: TextStyle(
                         fontFamily: 'PingFang',
                         fontSize: 14.auto,

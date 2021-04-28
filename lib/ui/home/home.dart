@@ -65,7 +65,9 @@ class _HomeState extends BaseState<Home> {
 
   @override
   void initState() {
-    _vm.resumeIfNeed();
+   WidgetsBinding.instance.addPostFrameCallback((_) {
+     _vm.resumeIfNeed();
+   });
     super.initState();
   }
 

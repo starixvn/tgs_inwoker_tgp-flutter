@@ -188,6 +188,16 @@
   "edit_wechat_cs": "If want edit WeChat number, Please contact ",
   "email_hint":"Enter your email address",
   "email_otp_hint":"Enter OTP",
-  "add_pay_password": "Add Pay Password"
+  "add_pay_password": "Add Pay Password",
+  "start_game": "Start",
+  "confirm_leave_game":"Are you sure to leave the game?",
+  "leave": "Leave",
+  "play_a_while": "Play for a while",
+  "all_game": "All Game",
+  "new_game": "New Game",
+  "hot_game": "Hot Game",
+  "edit": "Edit",
+  "phone_format_error_msg": "Format of the phone number is incorrect",
+  "email_format_error_msg": "Format of the email is incorrect"
 }
 

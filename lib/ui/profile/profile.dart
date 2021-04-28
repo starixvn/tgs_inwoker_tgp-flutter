@@ -161,7 +161,7 @@ class _ProfileState extends BaseState<Profile> {
                 mainAxisSpacing: 15.auto,
                 children: [
                   _buildProfileBottomItem("profile_detail", "ic_profile_user_detail", ProfileInfo()),
-                  _buildProfileBottomItem("message_center", "ic_message", MessageView()),
+                  _buildProfileBottomItem("message_center", "ic_message", MessageView(), isMessage: true),
                   _buildProfileBottomItem("transfer_history", "ic_account_detail", Transaction()),
                   _buildProfileBottomItem(
                       "bet_history",
@@ -185,11 +185,13 @@ class _ProfileState extends BaseState<Profile> {
     String title,
     String imagePath,
     Widget route,
+  {bool isMessage = false}
   ) =>
       ProfileBottomItem(
         title: getTranslatedText(title),
         imagePath: imagePath,
         route: route,
+        isMessage: isMessage,
       );
 
   _buildLogoutButton() => Container(

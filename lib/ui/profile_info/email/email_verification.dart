@@ -165,7 +165,7 @@ class _EmailVerificationState extends BaseState<EmailVerification> {
   _getSmsCode() {
     if (!validate.validateEmail(_emailController.text)) {
       setState(() {
-        CustomToast.show("邮箱地址格式不正确");
+        CustomToast.show(getTranslatedText("email_format_error_msg"));
       });
     } else {
       ProgressDialog.show(context);

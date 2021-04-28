@@ -182,11 +182,11 @@ class _CardVerifyWithdrawPasswordState extends BaseState<CardVerifyWithdrawPassw
   _checkValidation() {
     if (!validate.validatePasswordLength(_passwordController.text)) {
       setState(() {
-        CustomToast.show("密码由8-20个英文字母或者数字组成");
+        CustomToast.show(getTranslatedText("enter_password_error_msg"));
       });
     } else if (_passwordController.text != _confirmPasswordController.text) {
       setState(() {
-        CustomToast.show("新密码与确认密码不相符");
+        CustomToast.show(getTranslatedText("confirm_password_error_msg"));
       });
     } else {
       _updateWithdrawPassword();

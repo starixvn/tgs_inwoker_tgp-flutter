@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter/custom/color_button.dart';
 import 'package:tgp_flutter/custom/custom_picker.dart';
-import 'package:tgp_flutter/custom/custom_picker_dialog.dart';
 import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/custom/custom_text_form_field.dart';
-import 'package:tgp_flutter/custom/custom_toast.dart';
-import 'package:tgp_flutter/custom/red_button.dart';
-import 'package:tgp_flutter/extension/format.dart';
 import 'package:tgp_flutter/extension/navigate_without_animation.dart';
 import 'package:tgp_flutter/my_behavior.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
@@ -133,10 +129,19 @@ class _WithdrawState extends BaseState<Withdraw> {
                       ),
                   Container(
                     margin: EdgeInsets.only(right: 10.auto),
-                    child: RedButton(
-                      title: "查看详情",
+                    child: ColorButton(
+                      text: Text(
+                          "查看详情",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 10.auto
+                        ),
+                      ),
                       onClick: this.onDetailsClick,
                       isEnabled: true,
+                        color: Colors.red, radius: 45,
+                      width: 70.auto,
+                      height: 30.auto,
                     ),
                   )
                 ],

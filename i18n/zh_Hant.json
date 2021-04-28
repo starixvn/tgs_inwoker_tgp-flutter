@@ -188,5 +188,16 @@
   "edit_wechat_cs": "如需修改微信號碼，請聯繫",
   "email_hint":"請輸入您的郵箱地址",
   "email_otp_hint":"請輸入您的郵箱驗證碼",
-  "edit_pay_password":"添加提款密碼"
+  "add_pay_password":"添加提款密碼",
+  "start_game": "立即體驗",
+  "confirm_leave_game": "確定離開遊戲嗎",
+  "leave": "離開",
+  "play_a_while": "再玩一會",
+  "all_game": "全部遊戲",
+  "new_game": "熱門遊戲",
+  "hot_game": "最新遊戲",
+  "edit": "編輯",
+  "phone_format_error_msg": "手機號碼格式不正確",
+  "email_format_error_msg": "郵箱地址格式不正確"
+
 }

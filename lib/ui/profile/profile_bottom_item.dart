@@ -1,3 +1,7 @@
+import 'package:animated_widgets/widgets/opacity_animated.dart';
+import 'package:animated_widgets/widgets/rotation_animated.dart';
+import 'package:animated_widgets/widgets/shake_animated_widget.dart';
+import 'package:animated_widgets/widgets/size_animated.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
@@ -13,14 +17,35 @@ class ProfileBottomItem extends StatefulWidget {
   final String title;
   final String imagePath;
   final Widget route;
+  final bool isMessage;
 
-  ProfileBottomItem({Key key, this.title, this.imagePath, this.route}) : super(key: key);
+  ProfileBottomItem({Key key, this.title, this.imagePath, this.route, this.isMessage}) : super(key: key);
 
   @override
   _ProfileBottomItemState createState() => _ProfileBottomItemState();
 }
 
-class _ProfileBottomItemState extends BaseState<ProfileBottomItem> {
+class _ProfileBottomItemState extends BaseState<ProfileBottomItem> with TickerProviderStateMixin {
+  AnimationController _controller;
+  Tween<double> _tween = Tween(begin: 1, end: 1.2);
+  int _count = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 1000),
+      vsync: this,
+    );
+    _controller.repeat();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _controller.dispose();
+  }
+
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () => _navigate(),
@@ -31,13 +56,20 @@ class _ProfileBottomItemState extends BaseState<ProfileBottomItem> {
           borderRadius: BorderRadius.circular(2.9),
         ),
         elevation: 5,
-        child: Container(
-          //margin: EdgeInsets.symmetric(vertical: 13,horizontal: 10),
-          margin: EdgeInsets.only(left: 5.auto, right: 5.auto, top: 10.auto, bottom: 5.auto),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [_buildImageIcon(), _buildProfileBottomItemText()],
-          ),
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            Container(
+              //margin: EdgeInsets.symmetric(vertical: 13,horizontal: 10),
+              margin: EdgeInsets.only(left: 5.auto, right: 5.auto, top: 10.auto, bottom: 5.auto),
+              child:
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [_buildImageIcon(), _buildProfileBottomItemText()],
+                  ),
+            ),
+            Visibility(visible: widget.isMessage, child: _buildNotification()),
+          ],
         ),
       ),
     );
@@ -56,10 +88,24 @@ class _ProfileBottomItemState extends BaseState<ProfileBottomItem> {
           textAlign: TextAlign.center,
           minFontSize: 5,
           stepGranularity: 1,
+          maxLines: 1,
         ),
       );
 
   _navigate() => WidgetsBinding.instance.addPostFrameCallback((_) {
         Navigator.of(context).push(NavigateWithoutAnimation(widget: widget.route));
       });
+
+  _buildNotification() => Positioned(
+      top: 15,
+      right: 20,
+      child: ScaleTransition(
+        scale: _tween.animate(CurvedAnimation(parent: _controller, curve: Curves.bounceInOut)),
+        alignment: Alignment.center,
+        child: Container(
+          width: 10.auto,
+          height: 10.auto,
+          decoration: BoxDecoration(color: Colors.red, shape: BoxShape.circle),
+        ),
+      ));
 }

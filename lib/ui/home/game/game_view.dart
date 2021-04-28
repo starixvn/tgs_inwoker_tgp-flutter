@@ -44,9 +44,7 @@ class _GameViewState extends BaseState<GameView> {
   @override
   void initState() {
     _controller.addListener(_scrollListener);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _vm.getGameProviderList();
-    });
+    _vm.getGameProviderList();
     super.initState();
   }
 

@@ -58,20 +58,23 @@ class _MessageViewState extends BaseState<MessageView> {
                 style: TextStyle(fontSize: 16.auto),
               ),
               actions: [
-                InkWell(
-                  onTap: () {
-                    setState(() {
-                      isEditing = !isEditing;
-                      selectedMessageList = [];
-                    });
-                  },
-                  child: Container(
-                      margin: EdgeInsets.only(right: 15.auto),
-                      alignment: Alignment.center,
-                      child: Text(
-                        isEditing ? "取消" : "编辑",
-                        style: TextStyle(fontSize: 12.auto),
-                      )),
+                Visibility(
+                  visible: _vm.messageList!=null && _vm.messageList.isNotEmpty,
+                  child: InkWell(
+                    onTap: () {
+                      setState(() {
+                        isEditing = !isEditing;
+                        selectedMessageList = [];
+                      });
+                    },
+                    child: Container(
+                        margin: EdgeInsets.only(right: 15.auto),
+                        alignment: Alignment.center,
+                        child: Text(
+                          isEditing ? getTranslatedText("cancel") : getTranslatedText("edit"),
+                          style: TextStyle(fontSize: 12.auto),
+                        )),
+                  ),
                 ),
               ],
             ),
@@ -94,7 +97,7 @@ class _MessageViewState extends BaseState<MessageView> {
                     ),
                     Visibility(visible: isLoading, child: CircularProgressIndicator()),
                     Visibility(
-                        visible: _vm.endRecord,
+                        visible: _vm.endRecord&& _vm.messageList.isNotEmpty,
                         child: Container(
                           padding: EdgeInsets.only(bottom: 10.auto),
                           child: Text(

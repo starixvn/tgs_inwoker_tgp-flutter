@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter/entity/game.dart';
 import 'package:tgp_flutter/entity/game_provider2.dart';
@@ -43,9 +44,7 @@ class _GameViewItemState extends BaseState<GameViewItem> {
                   .toList()
                   .map((item) => Container(
                       padding: EdgeInsets.only(left: (8.5).auto, right: 5.auto, top: (12.5).auto, bottom: 5.auto),
-                      child: GestureDetector(
-                          onTap: () => widget.onGameClick(item),
-                          child: _buildImage(item))))
+                      child: GestureDetector(onTap: () => widget.onGameClick(item), child: _buildImage(item))))
                   .toList()),
         ),
       ),
@@ -58,40 +57,36 @@ class _GameViewItemState extends BaseState<GameViewItem> {
     var imagePath = "images/game/${gameType}_${gamePlatformCode}.png";
     return imagePath;
   }
-  
+
   _buildImage(GameProvider2 gameProvider) => Stack(
-    children: [
-      AspectRatio(
-        aspectRatio: 750/330,
-        child: Container(
-            color: Colors.blue,
-            alignment: Alignment.center,
-            child: Image.asset(
-              _getImagePath(gameProvider),
-              fit: BoxFit.cover,
-            )),
-      ),
-      Positioned(
-        bottom: context.screenWidth/30,
-        left: context.screenWidth/10,
-        child: Container(
-          width: 70.auto,
-          padding: EdgeInsets.all(10.auto),
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage("images/game/btn_start_game.png")
-            )
+        children: [
+          AspectRatio(
+            aspectRatio: 750 / 330,
+            child: Container(
+                color: Colors.blue,
+                alignment: Alignment.center,
+                child: Image.asset(
+                  _getImagePath(gameProvider),
+                  fit: BoxFit.cover,
+                )),
           ),
-          child: Text(
-            "立即体验",
-            style: TextStyle(
-              fontSize: 8.auto,
-              fontWeight: FontWeight.bold
+          Positioned(
+            bottom: context.screenWidth / 30,
+            left: context.screenWidth / 12,
+            child: Container(
+              width: 74.auto,
+              alignment: Alignment.center,
+              padding: EdgeInsets.only(top: 5.auto, bottom: 5.auto),
+              decoration: BoxDecoration(image: DecorationImage(image: AssetImage("images/game/btn_start_game.png"))),
+              child: Text(
+                getTranslatedText("start_game"),
+                style: TextStyle(
+                  fontSize: 10.auto,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
-          ),
-        ),
-      )
-    ],
-  );
+          )
+        ],
+      );
 }

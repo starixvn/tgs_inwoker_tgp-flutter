@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:tgp_flutter/custom/custom_dialog.dart';
 import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/custom/custom_toast.dart';
@@ -54,7 +55,12 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(width: 100, height: 100, child: Image.asset("images/ic_logo.png")),
-            CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(CustomColor.theme_bar_gradient_2))
+            //CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(CustomColor.theme_bar_gradient_2))
+            Lottie.asset(
+              "loading/loading.json",
+              width: 150,
+              height: 150,
+            ),
           ],
         ),
       );

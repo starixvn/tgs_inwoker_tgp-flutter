@@ -1,3 +1,4 @@
+import 'package:lottie/lottie.dart';
 import 'package:ndialog/ndialog.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +25,12 @@ class ProgressDialog {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(width: 100, height: 100, child: Image.asset("images/ic_logo.png")),
-        CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(CustomColor.theme_bar_gradient_2))
+        //CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(CustomColor.theme_bar_gradient_2))
+        Lottie.asset(
+          "loading/loading.json",
+          width: 150,
+          height: 150,
+        ),
       ],
     ));
   }

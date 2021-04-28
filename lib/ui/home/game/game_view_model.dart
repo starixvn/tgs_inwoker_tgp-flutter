@@ -32,23 +32,29 @@ class GameViewModel extends BaseViewModel {
   get recommendGameList => _getRecommendGameList();
 
   getGameProviderList() async {
-    setLoading();
-    getGameProviderListApiState = await contentRepo.getGameProviderList();
-    if (getGameProviderListApiState.isSuccess) {
-      List<GameProvider2> list = [];
-      getGameProviderListApiState.result.forEach((e) {
-        e.gameTypes.forEach((element) {
-          if (!(element == GameType.VirtualSports || element == GameType.VirtualSportsLobby)) {
-            list.add(GameProvider2(element, e.code, e.name, e.description, e.status));
-          }
-        });
-      });
-      gameProviderList = [
-        list.where((element) => element.gameType == GameType.Sportsbook).toList(),
-        list.where((element) => element.gameType == GameType.Slot).toList(),
-        list.where((element) => element.gameType == GameType.TableGame).toList(),
-      ];
+    if (contentRepo.gameProviderList == null) {
+      setLoading();
+      getGameProviderListApiState = await contentRepo.getGameProviderList();
     }
+    if (contentRepo.gameProviderList == null) return;
+
+    List<GameProvider2> list = [];
+    contentRepo.gameProviderList.forEach((e) {
+      e.gameTypes.forEach((element) {
+        if (!(element == GameType.VirtualSports || element == GameType.VirtualSportsLobby)) {
+          list.add(GameProvider2(element, e.code, e.name, e.description, e.status));
+        }
+      });
+    });
+    gameProviderList = [
+      list.where((element) => element.gameType == GameType.Sportsbook).toList(),
+      list.where((element) => element.gameType == GameType.Slot).toList(),
+      list.where((element) => element.gameType == GameType.TableGame).toList(),
+    ];
+    // if (getGameProviderListApiState.isSuccess) {
+    //
+    //
+    // }
     setLoading(false);
     return getGameProviderListApiState;
   }

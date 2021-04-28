@@ -163,11 +163,11 @@ class _UpdateForgotPasswordState extends BaseState<UpdateForgotPassword> {
   _onClick() async {
     if (!validate.validatePasswordLength(_newPasswordController.text)) {
       setState(() {
-        CustomToast.show("密码由6-20个英文字母或者数字组成");
+        CustomToast.show(getTranslatedText("enter_password_error_msg"));
       });
     } else if (_newPasswordController.text != _confirmPasswordController.text) {
       setState(() {
-        CustomToast.show("确认密码与密码不一致");
+        CustomToast.show(getTranslatedText("confirm_password_error_msg"));
       });
     } else {
       ProgressDialog.show(context);
