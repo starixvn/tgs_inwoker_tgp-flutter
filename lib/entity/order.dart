@@ -69,12 +69,12 @@ class Order {
     this.orderTime = orderTime;
   }
 
-  Order.convertByDepositResponseAndPayment(DepositResponse depositResponse, Payment payment){
+/*  Order.convertByDepositResponseAndPayment(DepositResponse depositResponse, Payment payment){
     this.id = depositResponse.order.id;
     this.paymentId = depositResponse.paymentId;
     this.paymentTypeId = 0;
-    this.typeClass = payment.typeClass;
-    this.typeTitle = payment.typeTitle;
+   *//* this.typeClass = payment.typeClass;
+    this.typeTitle = payment.typeTitle;*//*
     this.sn = depositResponse.order.sn;
     this.amount = depositResponse.order.amount;
     this.isQrcode = depositResponse.isQrcode;
@@ -85,7 +85,7 @@ class Order {
     this.expiredTime = depositResponse.expiredTime;
     this.orderTime = depositResponse.order.orderTime;
     this.params = depositResponse.params;
-  }
+  }*/
 
   DepositOrderTransferBank getDepositOrderTransferBank(){
     if(content !=null) return DepositOrderTransferBank.fromJson(content as Map<String, dynamic>);

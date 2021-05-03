@@ -1,4 +1,4 @@
-enum HttpMethod { POST, GET, DELETE, PATCH, PUT }
+enum HttpMethod { POST, GET, DELETE, PATCH, PUT, MULTIPART }
 
 extension HttpMethodExtension on HttpMethod {
   String get getName {

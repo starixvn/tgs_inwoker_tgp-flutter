@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter/entity/game_provider.dart';
+import 'package:tgp_flutter/entity/payment.dart';
 import 'package:tgp_flutter/extension/format.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
 
-class CustomPickerDialog extends StatefulWidget{
+class CustomPickerDialog extends StatefulWidget {
   final String title;
   final List<dynamic> list;
   final ValueChanged<dynamic> onChanged;
 
-  CustomPickerDialog({Key key,
+  CustomPickerDialog({
+    Key key,
     @required this.title,
     this.list,
     this.onChanged,
@@ -24,87 +26,53 @@ class _CustomPickerDialogState extends BaseState<CustomPickerDialog> {
   //var isListEmpty = false;
   Widget build(BuildContext context) {
     return Container(
-      child: Wrap(
-          children: [
-            Container(
-              alignment: Alignment.center,
-              width: context.screenWidth,
-              padding: EdgeInsets.only(bottom: 5),
-              margin: EdgeInsets.only(left: 5, right: 5, top: 5),
-              decoration: BoxDecoration(
-                  border: Border(
-                      bottom: BorderSide(
-                          color: Colors.grey,
-                          width: 1.0
-                      )
-                  )
-              ),
-              child: Text(
-                getTranslatedText(widget.title)??"",
-                style: TextStyle(
-                  fontSize: 13.auto,
-                  color: Colors.red,
-                ),
-                textAlign: TextAlign.center,
-              ),
+      child: Wrap(children: [
+        Container(
+          alignment: Alignment.center,
+          width: context.screenWidth,
+          padding: EdgeInsets.only(bottom: 5),
+          margin: EdgeInsets.only(left: 5, right: 5, top: 5),
+          decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Colors.grey, width: 1.0))),
+          child: Text(
+            getTranslatedText(widget.title) ?? "",
+            style: TextStyle(
+              fontSize: 13.auto,
+              color: Colors.red,
             ),
-            Wrap(
-              children: List.generate(widget.list.length, (index) {
-                return ListTile(
-                  title: _getPickerItem(index),
-                  onTap: () {
-                    widget.onChanged(widget.list[index]);
-                  },
-                  hoverColor: Colors.transparent,
-                  dense: true,
-                );
-              }),
-            ),
-          ]
-      ),
+            textAlign: TextAlign.center,
+          ),
+        ),
+        Wrap(
+          children: List.generate(widget.list.length, (index) {
+            return ListTile(
+              title: _getPickerItem(index),
+              onTap: () {
+                widget.onChanged(widget.list[index]);
+              },
+              hoverColor: Colors.transparent,
+              dense: true,
+            );
+          }),
+        ),
+      ]),
     );
   }
 
-  _getText(int index){
-    /*if(widget.list is List<Payment>){
-      return widget.list[index].title;
-    }
-    else if(widget.list is List<DepositBonus>) {
-      return widget.list[index].bospTitle;
-    }
-    else if(widget.list is List<TransactionActionType>){
-      List<TransactionActionType> list = widget.list;
-      return list[index].displayName;
-    }
-    else if(widget.list is List<TransactionStatusType>){
-      List<TransactionStatusType> list = widget.list;
-      return list[index].displayName;
-    }
-    else if(widget.list is List<TransactionThirdPartyType>){
-      List<TransactionThirdPartyType> list = widget.list;
-      return list[index].displayName;
-    }
-    else if(widget.list is List<TransactionBetStatusType>){
-      List<TransactionBetStatusType> list = widget.list;
-      return list[index].displayName;
-    }
-    //for thirdPartyList
-    else if(widget.list is List<TransactionThirdParty>){
-      return widget.list[index].name;
-    }
-    else*/ if(widget.list is List<GameProvider>){
+  _getText(int index) {
+    if (widget.list is List<Payment>) {
+      var name = widget.list[index].channelName.replaceAll(RegExp("_"), " ");
+      return name;
+    } else if (widget.list is List<GameProvider>) {
       GameProvider game = widget.list[index];
       return game.name;
-    }
-    else return widget.list[index];
+    } else
+      return widget.list[index];
   }
 
-  _getPickerItem(index){
+  _getPickerItem(index) {
     return Text(
       _getText(index),
-      style: TextStyle(
-          fontSize: 13.auto
-      ),
+      style: TextStyle(fontSize: 13.auto),
       textAlign: TextAlign.center,
     );
   }

@@ -11,17 +11,20 @@ import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/ui/login/login.dart';
 import 'package:tgp_flutter/ui/menu/menu.dart';
 import 'package:flutter/services.dart';
+import 'package:tgp_flutter/ui/profile/animated_dot.dart';
 import 'package:tgp_flutter/ui/profile/profile.dart';
 import 'package:tgp_flutter/ui/promotion/promotion_page.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart' as DotEnv;
 import 'package:tgp_flutter/ui/splash/splash.dart';
+
 
 Future main() async {
   //await DotEnv.load();
   await DotEnv.load(fileName: ".env");
   runApp(MyApp());
 }
-class MyApp extends StatefulWidget{
+
+class MyApp extends StatefulWidget {
   @override
   _MyAppState createState() => _MyAppState();
 
@@ -29,7 +32,6 @@ class MyApp extends StatefulWidget{
     _MyAppState state = context.findAncestorStateOfType<_MyAppState>();
     state.setLocale(newLocale);
   }
-
 }
 
 class _MyAppState extends BaseState<MyApp> {
@@ -57,23 +59,20 @@ class _MyAppState extends BaseState<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle(
-            statusBarColor: Colors.transparent,
-        )
-    );
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+    ));
     return GestureDetector(
       onTap: () {
         FocusScopeNode currentFocus = FocusScope.of(context);
-        if (!currentFocus.hasPrimaryFocus &&
-            currentFocus.focusedChild != null) {
+        if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) {
           currentFocus.focusedChild.unfocus();
         }
       },
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: appTitle,
-        home:Splash(),
+        home: Splash(),
         localizationsDelegates: [
           MyLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,
@@ -95,12 +94,11 @@ class _MyAppState extends BaseState<MyApp> {
     );
   }
 }
-class MyHomePage  extends StatefulWidget{
+
+class MyHomePage extends StatefulWidget {
   final bool isFirstRun;
 
-  MyHomePage({
-    this.isFirstRun
-  });
+  MyHomePage({this.isFirstRun});
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -110,6 +108,7 @@ class _MyHomePageState extends BaseState<MyHomePage> {
   int currentBottomIndex = 0;
 
   List _page;
+
   @override
   void initState() {
     super.initState();
@@ -126,22 +125,18 @@ class _MyHomePageState extends BaseState<MyHomePage> {
       Login(),
       Profile(),
     ];
-    return  ScrollConfiguration(
+    return ScrollConfiguration(
       behavior: MyBehavior(),
       child: Scaffold(
-        body:Center(
+        body: Center(
           child: _page[currentBottomIndex],
         ),
-        bottomNavigationBar:
-        Visibility(
-          visible: currentBottomIndex!=2,
+        bottomNavigationBar: Visibility(
+          visible: currentBottomIndex != 2,
           child: Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: [
-                  CustomColor.theme_bar_gradient_1,
-                  CustomColor.theme_bar_gradient_2
-                ],
+                colors: [CustomColor.theme_bar_gradient_1, CustomColor.theme_bar_gradient_2],
                 begin: Alignment.bottomCenter,
                 end: Alignment.topCenter,
               ),
@@ -151,14 +146,13 @@ class _MyHomePageState extends BaseState<MyHomePage> {
               child: Container(
                 decoration: gradientDecoration,
                 child: Row(
-                  mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    _buildBottomBarItem(0,"ic_home",  "home"),
-                    _buildBottomBarItem(1,"ic_promotion", "promotion"),
-                    _buildBottomBarItem(2,"ic_menu", ""),
-                    _buildBottomBarItem(3,"ic_customer_service","customer_service"),
-                    _buildBottomBarItem(4,"ic_profile",  "my_profile"),
+                    _buildBottomBarItem(0, "ic_home", "home"),
+                    _buildBottomBarItem(1, "ic_promotion", "promotion"),
+                    _buildBottomBarItem(2, "ic_menu", ""),
+                    _buildBottomBarItem(3, "ic_customer_service", "customer_service"),
+                    _buildBottomBarItem(4, "ic_profile", "my_profile", isNewMessage: true),
                   ],
                 ),
               ),
@@ -169,51 +163,69 @@ class _MyHomePageState extends BaseState<MyHomePage> {
     );
   }
 
-  _buildBottomBarItem(int index, String imagePath, String title) => Expanded(
-    child:SizedBox(
-      height: 58.auto,
-      child: Material(
-        type: MaterialType.transparency,
-        child: InkWell(
-          onTap: () {
-            setState(() {
-              currentBottomIndex = index;
-            });
-          },
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              index!=2
-                  ? ImageIcon(
-                AssetImage("images/bottom_navigation_bar/$imagePath.png"),
-                size: 23.auto,
-                color: currentBottomIndex==index?Colors.yellow:Colors.white,)
-                  :CircleAvatar(
-                backgroundColor: CustomColor.theme_circle_button_bg,
-                child: ImageIcon(
-                  AssetImage("images/bottom_navigation_bar/$imagePath.png"),
-                  size: 41.auto,
-                  color: currentBottomIndex==index?Colors.yellow:Colors.white,
-                ),
-              ),
-              index==2
-                  ?Container()
-                  :Container(
-                margin: EdgeInsets.only(top: 3.auto),
-                child: Text(
-                  getTranslatedText(title),
-                  style: TextStyle(
-                    fontSize: 11.auto,
-                    color: currentBottomIndex==index?Colors.yellow:Colors.white,
+  _buildBottomBarItem(int index, String imagePath, String title, {bool isNewMessage = false}) => Expanded(
+        child: Stack(
+          children: [
+            _buildNotification(isNewMessage),
+            SizedBox(
+              height: 58.auto,
+              width: context.screenWidth / 5,
+              child: Material(
+                type: MaterialType.transparency,
+                child: InkWell(
+                  onTap: () {
+                    setState(() {
+                      currentBottomIndex = index;
+                    });
+                  },
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      index != 2 ? _buildImageIcon(imagePath, index, isNewMessage) : _buildMenuIcon(imagePath, index),
+                      Visibility(
+                        visible: index != 2,
+                        child: Container(
+                          margin: EdgeInsets.only(top: 3.auto),
+                          child: Text(
+                            getTranslatedText(title) ?? "",
+                            style: TextStyle(
+                              fontSize: 11.auto,
+                              color: currentBottomIndex == index ? Colors.yellow : Colors.white,
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
+      );
 
-      ),
-    ),
-  );
+  _buildImageIcon(String imagePath, int index, bool isNewMessage) => ImageIcon(
+        AssetImage("images/bottom_navigation_bar/$imagePath.png"),
+        size: 23.auto,
+        color: currentBottomIndex == index ? Colors.yellow : Colors.white,
+      );
+
+  _buildMenuIcon(String imagePath, int index) => CircleAvatar(
+        backgroundColor: CustomColor.theme_circle_button_bg,
+        child: ImageIcon(
+          AssetImage("images/bottom_navigation_bar/$imagePath.png"),
+          size: 41.auto,
+          color: currentBottomIndex == index ? Colors.yellow : Colors.white,
+        ),
+      );
+
+  _buildNotification(bool isNewMessage) => Visibility(
+      visible: isNewMessage,
+      child: Positioned(
+          top: context.screenWidth/100,
+          right: context.screenWidth / 30,
+          child: AnimatedDot(
+            color: CustomColor.theme_label_text_highlight_color,
+          )));
 }

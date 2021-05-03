@@ -18,16 +18,16 @@ class Deposit extends StatefulWidget {
 
 class _DepositState extends BaseState<Deposit> {
   DepositViewModel _vm = DepositViewModel();
-  var tabList = [
+  /*var tabList = [
     {"id": "0", "text": "人工支付"}
-  ];
+  ];*/
   var currentTabIndex = 0;
   var text = "";
 
   @override
   void initState() {
     super.initState();
-    //_vm.getPayment();
+    _vm.filterMethod();
   }
 
   Widget build(BuildContext context) {
@@ -38,51 +38,47 @@ class _DepositState extends BaseState<Deposit> {
             resizeToAvoidBottomInset: false,
             backgroundColor: Colors.white,
             appBar: _buildAppBar(),
-            body:
-                /*_vm.paymentChannel == null ||_vm.mainAccountBalance==null||_vm.isLoading ?
-              Center(child: CircularProgressIndicator(),):*/
-                DefaultTabController(
-              length: tabList.length,
-              child: Column(
-                children: [
-                  Container(
-                    width: context.screenWidth,
-                    color: CustomColor.theme_button_disable_bg,
-                    child: TabBar(
-                      isScrollable: true,
-                      unselectedLabelColor: Colors.white,
-                      labelColor: CustomColor.theme_label_text_highlight_color,
-                      indicatorColor: CustomColor.theme_label_text_highlight_color,
-                      indicatorWeight: 3,
-                      onTap: (index) {
-                        setState(() {
-                          currentTabIndex = index;
-                        });
-                      },
-                      unselectedLabelStyle: TextStyle(color: Colors.white),
-                      tabs: List.generate(tabList.length, (index) {
-                        return Tab(
-                          child: Text(
-                            tabList[index]["text"],
-                            style: TextStyle(
-                              fontFamily: 'PingFang',
-                              fontSize: 14.auto,
-                            ),
-                            textAlign: TextAlign.center,
+            body: _vm.depositMethodList == null || _vm.paymentList == null
+                ? buildProgressDialog()
+                : DefaultTabController(
+                    length: _vm.paymentCodeList.keys.length,
+                    child: Column(
+                      children: [
+                        Container(
+                          width: context.screenWidth,
+                          color: CustomColor.theme_button_disable_bg,
+                          child: TabBar(
+                            isScrollable: true,
+                            unselectedLabelColor: Colors.white,
+                            labelColor: CustomColor.theme_label_text_highlight_color,
+                            indicatorColor: CustomColor.theme_label_text_highlight_color,
+                            indicatorWeight: 3,
+                            onTap: (index) {
+                              setState(() {
+                                currentTabIndex = index;
+                              });
+                            },
+                            unselectedLabelStyle: TextStyle(color: Colors.white),
+                            tabs: List.generate(_vm.paymentCodeList.keys.length, (index) {
+                              return Tab(
+                                child: Text(
+                                  _vm.paymentCodeList.keys.toList()[index],
+                                  style: TextStyle(
+                                    fontFamily: 'PingFang',
+                                    fontSize: 14.auto,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              );
+                            }).toList(),
                           ),
-                        );
-                      }).toList(),
+                        ),
+                        Expanded(
+                          child: DepositMethod(),
+                        )
+                      ],
                     ),
                   ),
-                  Expanded(
-                    child: DepositMethod(
-                      //paymentList: _vm.paymentChannel[index].paymentList,
-                      vm: _vm,
-                    ),
-                  )
-                ],
-              ),
-            ),
           );
         });
   }

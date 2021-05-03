@@ -5,134 +5,94 @@ import 'package:tgp_flutter/custom/custom_picker_dialog.dart';
 import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/custom/custom_text_form_field.dart';
 import 'package:tgp_flutter/custom/custom_toast.dart';
+import 'package:tgp_flutter/entity/payment.dart';
+import 'package:tgp_flutter/extension/format.dart';
 import 'package:tgp_flutter/extension/navigate_without_animation.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
+import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
-import 'package:tgp_flutter/ui/deposit/deposit_order_fragment.dart';
+import 'package:tgp_flutter/ui/deposit/deposit_order_view.dart';
 import 'package:tgp_flutter/ui/deposit/deposit_view_model.dart';
 import 'package:tgp_flutter/ui/deposit/deposit_web.dart';
 
 class DepositMethod extends StatefulWidget {
-  final List<dynamic> paymentList;
-  final DepositViewModel vm;
-
-  DepositMethod({this.paymentList, this.vm});
-
   @override
   _DepositMethodState createState() => _DepositMethodState();
 }
 
 class _DepositMethodState extends BaseState<DepositMethod> {
-  String pickerText, bankText, bonusText, depositText;
-  TextEditingController _textEditingController = TextEditingController();
-  var isDepositEnabled = false,
-      isButtonEnabled = false,
-      isBankVisible = false,
-      isDepositVisible = false,
-      isBonusVisible = false;
-  var selectedPayment, selectedBank, selectedDepositBonusGroup, selectedDepositBonus;
+  String methodPickerText, channelPickerText;
+  TextEditingController _amountController = TextEditingController(), _bankNameController = TextEditingController();
+  var isButtonEnabled = false;
+  var selectedPayment;
   var paymentMin, paymentMax;
   int amount;
-  FocusNode _focusNode = FocusNode();
+  FocusNode _focusNode = FocusNode(), _focusNode2  = FocusNode();
   var onClick = false;
+  Payment _payment;
+  var _vm = DepositViewModel();
+  var paymentChannelId;
 
   void initState() {
-    //selectedPayment = widget.paymentList.first;
-    //onSelectedPayment(selectedPayment);
+    methodPickerText = _vm.pMethod;
+    onSelectedMethod(methodPickerText);
     _focusNode.addListener(onTextChange);
     super.initState();
   }
 
   Widget build(BuildContext context) {
-    _handleApiState();
-    return /*widget.vm.isLoading?Center(child: CircularProgressIndicator(),):*/ Container(
-      margin: EdgeInsets.all(10.auto),
-      child: ListView(
-        children: [
-          _buildCard("deposit_channel", ["ooo", "yy"], true, true, false),
-          isBankVisible ? _buildCard("银行卡", [], isBankVisible, isBankVisible, false) : Container(),
-          _buildAmountCard("deposit_amount", "请输入$paymentMin-$paymentMax元"),
-          isDepositVisible ? _buildCard("申请红利", [], true, isDepositEnabled, true) : Container(),
-          //_buildCard("红利阶层", list, isBankVisible),
-          _buildButton(),
-          Container(
-              width: context.screenWidth,
-              margin: EdgeInsets.only(
-                left: 20.auto,
-                right: 20.auto,
-                bottom: 10.auto,
-                top: 15.auto,
-              ),
-              child: Text(
-                "温性提醒 \n "
-                "1.存款完成，请勿关闭操作页面， 以确保账作业顺利。"
-                "\n 2.请您直接在弹出的银行页面上完成存款。"
-                "\n 3.因建行网银接口维护，请该用其他银行存款。",
-                style: TextStyle(color: CustomColor.grey, fontSize: 11.auto),
-              )),
-        ],
-      ),
-    );
+    return ProviderWidget<DepositViewModel>(
+        model: _vm,
+        builder: (ctx, vm, _) {
+          _handleApiState();
+          return /*_vm.isLoading?Center(child: CircularProgressIndicator(),):*/ Container(
+            margin: EdgeInsets.all(10.auto),
+            child: ListView(
+              children: [
+                _buildCard("deposit_method", _vm.depositMethodList.keys.toList(), isDepositMethod: true),
+                _buildCard("deposit_channel", _vm.paymentList),
+                _buildBankNameTextField("银行账号名称", "请输入银行账号名称"),
+                _buildAmountTextField("deposit_amount", paymentMin, paymentMax),
+                _buildButton(),
+                Container(
+                    width: context.screenWidth,
+                    margin: EdgeInsets.only(
+                      left: 20.auto,
+                      right: 20.auto,
+                      bottom: 10.auto,
+                      top: 15.auto,
+                    ),
+                    child: Text(
+                      "温性提醒 \n "
+                      "1.存款完成，请勿关闭操作页面， 以确保账作业顺利。"
+                      "\n 2.请您直接在弹出的银行页面上完成存款。"
+                      "\n 3.因建行网银接口维护，请该用其他银行存款。",
+                      style: TextStyle(color: CustomColor.grey, fontSize: 11.auto),
+                    )),
+              ],
+            ),
+          );
+        });
   }
 
-  /* onSelectedPayment(Payment payment){
-    selectedPayment = payment;
-    setState(() {
-      paymentMin = payment.min;
-      paymentMax = payment.max;
-      pickerText = payment.title;
-    });
-    if(payment.banks !=null && payment.banks.isNotEmpty)
-      onSelectedBank(payment.banks.first);
-  }
-
-  onSelectedBank(PaymentBank paymentBank){
-    selectedBank = paymentBank;
-    if(selectedBank!=null) {
-      isBankVisible = true;
-      pickerText = paymentBank.bankName;
-    }else
-      bankText = "";
-  }
-
-  onSelectedDepositGroup(DepositBonusGroup depositBonusGroup){
-    selectedDepositBonusGroup = depositBonusGroup;
-    if(depositBonusGroup ==null){
-      onSelectedDeposit(null);
-      isBonusVisible = false;
-    }else{
-      //show arlet dialog
-    }
-  }
-
-  onSelectedDeposit(DepositBonus depositBonus){
-    selectedDepositBonus = depositBonus;
-    pickerText = depositBonus.bospTitle;
-    isBonusVisible =true;
-  }*/
-
-  _buildCard(String title, List<dynamic> list, bool isVisible, bool isEnabled, bool isDeposit) {
-    if (isDeposit) _observeDepositList(list);
-    return isVisible
-        ? Container(
-            margin: EdgeInsets.only(top: 10.auto),
-            child: Opacity(
-              opacity: isEnabled ? 1 : 0.5,
-              child: CustomPicker(
-                title: title,
-                displayText: "支付",
-                //isDeposit? depositText??"请选择红利": pickerText?? "",
-                list: list,
-                isHintText: isDeposit ? (depositText == null ? false : true) : true,
-                width: context.screenWidth,
-                onClick: () {
-                  /*!isEnabled|| list==null||list.isEmpty? null:(){
-              _buildBottomSheet(title, list);*/
-                },
-              ),
-            ))
-        : Container();
+  _buildCard(String title, List<dynamic> list, {bool isDepositMethod = false}) {
+    return Container(
+        margin: EdgeInsets.only(top: 10.auto),
+        child: Opacity(
+          opacity: 1,
+          child: CustomPicker(
+            title: title,
+            displayText: isDepositMethod ? methodPickerText : channelPickerText ?? "",
+            //isDeposit? depositText??"请选择红利": pickerText?? "",
+            list: list,
+            isHintText: true,
+            width: context.screenWidth,
+            onClick: () {
+              _buildBottomSheet(title, list);
+            },
+          ),
+        ));
   }
 
   _buildBottomSheet(String title, List<dynamic> list) {
@@ -144,8 +104,14 @@ class _DepositMethodState extends BaseState<DepositMethod> {
               list: list,
               onChanged: (value) {
                 setState(() {
-                  /*if(value is Payment) onSelectedPayment(value as Payment);
-                  else if(value is PaymentBank) onSelectedBank(value as PaymentBank);
+                  if (value is String)
+                    onSelectedMethod(value);
+                  else if (value is Payment) {
+                    onSelectedChannel(
+                      value,
+                    );
+                  }
+                  /*ielse if(value is PaymentBank) onSelectedBank(value as PaymentBank);
                   else if(value is DepositBonusGroup) onSelectedDepositGroup(value as DepositBonusGroup);
                   else if(value is DepositBonus) onSelectedDeposit(value as DepositBonus);*/
                   Navigator.pop(context, NavigateWithoutAnimation());
@@ -154,20 +120,36 @@ class _DepositMethodState extends BaseState<DepositMethod> {
         });
   }
 
-  _buildAmountCard(String title, String hintText) => Container(
+  _buildAmountTextField(String title, double paymentMin, double paymentMax) => Container(
         margin: EdgeInsets.only(top: 10.auto),
         child: CustomTextFormField(
           title: getTranslatedText(title) ?? "",
-          hintText: hintText,
-          onChanged: (value) {
-            onClick = true;
-          },
+          hintText:
+              "请输入${Format().amountFormat(paymentMin) ?? "10.00"}-${Format().amountFormat(paymentMax) ?? "100,000"}元",
+          onChanged: (value){},
           onFieldSubmitted: (value) => onTextChange(),
-          controller: _textEditingController,
+          controller: _amountController,
           focusNode: _focusNode,
           width: context.screenWidth - 70.auto,
           textInputType: TextInputType.number,
           textInputAction: TextInputAction.done,
+        ),
+      );
+
+  _buildBankNameTextField(String title, String hintText) => Container(
+        margin: EdgeInsets.only(top: 10.auto),
+        child: CustomTextFormField(
+          title: title,
+          hintText: hintText,
+          onChanged: (value){},
+          onFieldSubmitted: (value){
+            FocusScope.of(context).requestFocus(_focusNode);
+          },
+          controller: _bankNameController,
+          focusNode: _focusNode2,
+          width: context.screenWidth - 70.auto,
+          textInputType: TextInputType.text,
+          textInputAction: TextInputAction.next,
         ),
       );
 
@@ -178,7 +160,7 @@ class _DepositMethodState extends BaseState<DepositMethod> {
         top: 15.auto,
       ),
       child: ColorButton(
-        onClick: null,
+        onClick:() => _onClick(),
         text: Text(
           "Next",
           textAlign: TextAlign.center,
@@ -189,81 +171,62 @@ class _DepositMethodState extends BaseState<DepositMethod> {
         isEnabled: isButtonEnabled,
       ));
 
-  void onTextChange() {
-    if (!_focusNode.hasFocus && onClick) {
-      amount = int.parse(_textEditingController.text ?? "");
-      if (amount >= paymentMin && amount <= paymentMax) {
+  onTextChange() {
+    if(_amountController.text !=null&& _amountController.text.isNotEmpty){
+      amount = int.parse(_amountController.text);
+      if (amount >= paymentMin &&
+          amount <= paymentMax &&
+          (_bankNameController.text != null || _bankNameController.text.isNotEmpty)) {
         setState(() {
-          ProgressDialog.show(context);
-          isDepositEnabled = true;
           isButtonEnabled = true;
-          //widget.vm.getDepositActs(amount);
         });
-        onClick = false;
       } else {
         setState(() {
-          isDepositEnabled = false;
           isButtonEnabled = false;
         });
       }
     }
   }
 
-  onButtonClick() {
+  _onClick() {
     ProgressDialog.show(context);
-    //widget.vm.deposit(selectedPayment.id, amount, selectedDepositBonus?.bospId, selectedBank?.id,);
+    _vm.getManualDepositId(_bankNameController.text, _amountController.text, _payment.id);
   }
 
-  _observeDepositList(List<dynamic> list) {
-    /*if (list == null || list.isEmpty) {
-      if (widget.vm.isDepositHandled) {
-        setState(() {
-          FocusScope.of(context).requestFocus(FocusNode());
-           ProgressDialog.hide();
-          isDepositEnabled = false;
-          depositText = "无可选择红利";
-        });
-        widget.vm.markIsDepositHandled();
-      }
-    }
-    else {
-      setState(() {
-        FocusScope.of(context).requestFocus(FocusNode());
-         ProgressDialog.hide();
-        isDepositEnabled = true;
-        depositText = list.first.depositBonus.bospTitle;
-      });
-    }*/
+  onSelectedMethod(String method) async {
+    await _vm.filterMethod(method: method);
+    onSelectedChannel(_vm.paymentList.first);
+    setState(() {
+      methodPickerText = method;
+    });
+  }
+
+  onSelectedChannel(Payment payment) {
+    setState(() {
+      _payment = payment;
+      channelPickerText = payment.channelName.replaceAll("_", " ");
+      paymentMin = payment.transferLimit.from;
+      paymentMax = payment.transferLimit.to;
+    });
   }
 
   _handleApiState() {
-    /*if(widget.vm.depositApiState == null&& widget.vm.getDepositActsApiState == null) return;
-    if ((widget.vm.depositApiState?.isError ?? false) ) {
-      CustomToast.show(widget.vm.depositApiState.error);
-      widget.vm.resetApiState(true, false, false);
-    }
-    if ((widget.vm.getDepositActsApiState?.isError ?? false) ) {
-      CustomToast.show(widget.vm.getDepositActsApiState.error);
-      widget.vm.resetApiState(false, true, false);
-    }
-    if(widget.vm.depositApiState?.isSuccess ?? false){
-      WidgetsBinding.instance.addPostFrameCallback((_){
-        var order = Order.convertByDepositResponseAndPayment(widget.vm.depositResponse, selectedPayment);
-        var param = widget.vm.depositResponse.params;
+    handleApiState(_vm.getPaymentApiState, isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getManualDepositIdApiState, onSuccess: () {
+      paymentChannelId = _vm.getManualDepositIdApiState.result;
+    });
+    handleApiState(_vm.getDepositOrderApiState, onSuccess: () {
+      ProgressDialog.hide();
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         Navigator.push(
             context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    DepositOrderFragment(
-                      order: order,
-                      params: param==null?null:"oid=${param.oid}&cid=${param.cid}",
-                    )
-            ));
+            NavigateWithoutAnimation(
+                widget: DepositOrderView(
+                  method: _payment.methodCode,
+                  deposit: _vm.getDepositOrderApiState.result,
+                  id : paymentChannelId
+                )));
       });
-      widget.vm.resetApiState(true, false, false);
-    }
-    if(!(widget.vm.isLoading)){
-       ProgressDialog.hide();
-    }*/
+    });
   }
 }

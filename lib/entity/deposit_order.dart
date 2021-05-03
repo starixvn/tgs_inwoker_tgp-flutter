@@ -7,11 +7,12 @@ part 'deposit_order.g.dart';
 class DepositOrder {
   DepositOrder();
 
-  int id;
-  String sn;
-  @JsonKey(name: "order_time")
-  String orderTime;
-  String amount;
+  String methodName;
+  String channelName;
+  double amount;
+  String bankName;
+  String bankAccountName;
+  String bankAccount;
 
   factory DepositOrder.fromJson(Map<String, dynamic> json) => _$DepositOrderFromJson(json);
   Map<String, dynamic> toJson() => _$DepositOrderToJson(this);

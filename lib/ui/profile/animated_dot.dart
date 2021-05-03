@@ -17,7 +17,7 @@ class AnimatedDot extends StatefulWidget {
   final double size;
   final Color color;
 
-  AnimatedDot({Key key, this.size = 10, this.color = CustomColor.theme_bar_gradient_2})
+  AnimatedDot({Key key, this.size = 10, this.color})
       : super(key: key);
 
   @override
@@ -72,7 +72,7 @@ class _AnimatedDotState extends BaseState<AnimatedDot> with TickerProviderStateM
       child: Container(
         width: widget.size.auto,
         height: widget.size.auto,
-        decoration: BoxDecoration(color: widget.color, shape: BoxShape.circle),
+        decoration: BoxDecoration(color: widget.color?? CustomColor.theme_bar_gradient_2, shape: BoxShape.circle),
       ),
     );
   }

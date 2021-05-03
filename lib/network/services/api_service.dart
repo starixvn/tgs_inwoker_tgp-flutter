@@ -1,31 +1,41 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tgp_flutter/entity/http_method.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart' as DotEnv;
 
-api(HttpMethod method, final endPoint, {final content, isAuthorization = true}) async {
+api(HttpMethod method, final endPoint, {final content, isAuthorization = true, imageContent}) async {
   var header = await _getHeader(isAuthorization);
   var url = DotEnv.env["url"] + endPoint;
- // var body = "?"+Uri(queryParameters: content).query;
+  // var body = "?"+Uri(queryParameters: content).query;
   print("Api->${method.getName}:$url");
   print(content);
   http.Response response;
   switch (method) {
     case HttpMethod.POST:
+      var queryParams = imageContent!=null? "/" + content: "";
       response = await http.post(
-        url,
+        url+queryParams,
         headers: header,
         body: jsonEncode(content),
       );
       break;
     case HttpMethod.GET:
-      response = await http.get(
-        url+"?"+Uri(queryParameters: content).query,
-        headers: header,
-      );
+      {
+        var queryParams;
+        if (content is String)
+          queryParams = "/" + content;
+        else
+          queryParams = "?" + Uri(queryParameters: content).query;
+
+        response = await http.get(
+          url + queryParams,
+          headers: header,
+        );
+      }
       break;
     case HttpMethod.DELETE:
       response = await http.delete(
@@ -46,6 +56,16 @@ api(HttpMethod method, final endPoint, {final content, isAuthorization = true}) 
         headers: header,
         body: jsonEncode(content),
       );
+      break;
+
+    case HttpMethod.MULTIPART:
+      var request = http.MultipartRequest("POST", Uri.parse(url+"/"+content));
+      header.forEach((k, v) {
+        request.headers[k] = v;
+      });
+      request.files.add(await http.MultipartFile.fromPath('file', imageContent));
+      var imageRes = await request.send();
+      response = await http.Response.fromStream(imageRes);
       break;
     default:
       response = await http.post(

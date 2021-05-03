@@ -5,8 +5,11 @@ class Format {
   String doubleToString(double num) {
     if (num == 0.0)
       return "0.00";
-    else
-      return ((num * 100).truncateToDouble() / 100).toString();
+    else {
+      var doubleNum = ((num * 100).truncateToDouble() / 100);
+      var f = new NumberFormat("#,###,###.00", "en_US");
+      return f.format(doubleNum);
+    }
   }
 
   String amountFormat(dynamic amount) {

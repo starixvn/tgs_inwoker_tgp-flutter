@@ -21,16 +21,13 @@ class ProfileBottomItem extends StatefulWidget {
   final Widget route;
   final bool isMessage;
 
-  ProfileBottomItem({Key key, this.title, this.imagePath, this.route, this.isMessage})
-      : super(key: key);
+  ProfileBottomItem({Key key, this.title, this.imagePath, this.route, this.isMessage}) : super(key: key);
 
   @override
   _ProfileBottomItemState createState() => _ProfileBottomItemState();
 }
 
-class _ProfileBottomItemState extends BaseState<ProfileBottomItem> with TickerProviderStateMixin {
-  int _count = 0;
-
+class _ProfileBottomItemState extends BaseState<ProfileBottomItem> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () => _navigate(),
@@ -52,7 +49,7 @@ class _ProfileBottomItemState extends BaseState<ProfileBottomItem> with TickerPr
                 children: [_buildImageIcon(), _buildProfileBottomItemText()],
               ),
             ),
-            Visibility(visible: widget.isMessage, child: _buildNotification()),
+            _buildNotification()
           ],
         ),
       ),
@@ -80,5 +77,12 @@ class _ProfileBottomItemState extends BaseState<ProfileBottomItem> with TickerPr
         Navigator.of(context).push(NavigateWithoutAnimation(widget: widget.route));
       });
 
-  _buildNotification() => Positioned(top: 15, right: 20, child: AnimatedDot());
+  _buildNotification() =>
+      Visibility(visible: widget.isMessage, child: Positioned(top: context.screenWidth / 24, right: context.screenWidth / 18, child: AnimatedDot()));
+
+/*_buildNotification() => Visibility(
+      visible: widget.isMessage,
+      child:
+          Positioned(top: context.screenWidth / 24, right: context.screenWidth / 18, child: NotificationAnimation()));*/
+
 }

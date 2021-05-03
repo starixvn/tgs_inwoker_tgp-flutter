@@ -1,74 +1,75 @@
+import 'dart:io';
+
 import 'package:collection/collection.dart';
+import 'package:flutter/material.dart';
 import 'package:tgp_flutter/base_viewmodel.dart';
+import 'package:tgp_flutter/entity/payment.dart';
 import 'package:tgp_flutter/network/event_result.dart';
 import 'package:tgp_flutter/repository/base_repository.dart';
 import 'package:tgp_flutter/repository/content_repository.dart';
+import 'package:tgp_flutter/repository/deposit_repository.dart';
 import 'package:tgp_flutter/repository/user_repository.dart';
 
 class DepositViewModel extends BaseViewModel {
   final userRepo = UserRepository.getSingleton();
+  final depositRepo = DepositRepository.getSingleton();
 
   @override
   List<BaseRepository> get repoList => [];
-  var getDepositActsApiState, depositApiState, depositStatusApiState;
+  var getPaymentApiState, getManualDepositIdApiState, getDepositOrderApiState, uploadDepositImageApiState;
+  Map<String, List<Payment>> depositMethodList = new Map<String, List<Payment>>();
+  Map<String, List<Payment>> paymentCodeList = new Map<String, List<Payment>>();
+  List<Payment> paymentList;
+  String pMethod = "Crypto";
+  var depositOrder;
 
   get wallet => userRepo.wallet;
 
-/* getPayment() async{
-    var value = await contentRepo.getPayment();
-    paymentChannel =
-        groupBy(value.result.payments, (obj) => obj.typeClass)
-            .entries
-            .map( (e) =>
-            PaymentChannel(e.key, e.value.first.typeTitle, e.value)
-        ).toList();
-  }
-
-  getDepositActs(int amount) async{
-    getDepositActsApiState  = await contentRepo.getDepositActs(amount);
+  getPayment() async {
     setLoading();
-    notifyListeners();
-    isDepositHandled = true;
-    if(getDepositActsApiState.isSuccess){
-      depositActsList =
-          groupBy(getDepositActsApiState.result, (obj) => obj.bonusId)
-              .entries
-              .map( (e) =>
-              DepositBonusGroup(e.value.first, e.value)
-          ).toList();
+    getPaymentApiState = await depositRepo.getPayment();
+    if(getPaymentApiState.isSuccess){
+      List<Payment> list = getPaymentApiState.result;
+      paymentCodeList = groupBy(list, (obj) => obj.paymentCode);
+      depositMethodList = groupBy(paymentCodeList.values.expand((element) => element), (obj) => obj.methodCode);
     }
     setLoading(false);
-    return getDepositActsApiState;
+    return getPaymentApiState;
   }
 
-  markIsDepositHandled(){
-    isDepositHandled = false;
-  }
-
-  deposit(int agentID, int amount, int bospID,String bankID) async{
-    depositApiState = await userRepo.deposit(agentID, amount,null, null);
-    setLoading();
+  filterMethod({String method}) async{
+    await getPayment();
+    if(method !=null) pMethod = method;
+    paymentList = depositMethodList[pMethod];
     notifyListeners();
-    if(depositApiState.isSuccess){
-      depositResponse = depositApiState.result;
+  }
+
+  getManualDepositId(String account,String amount, String paymentId) async{
+    setLoading();
+    getManualDepositIdApiState = await depositRepo.getManualDepositId(account, amount, paymentId);
+    if(getManualDepositIdApiState.isSuccess){
+      getDepositOrder(getManualDepositIdApiState.result);
     }
     setLoading(false);
-    return depositApiState ;
+    return getManualDepositIdApiState;
   }
 
-  resetApiState(bool isDepositApiState, bool isGetDepositActsApiState, bool isDepositStatusApiState){
-    if(isDepositApiState) depositApiState = null;
-    if(isGetDepositActsApiState) getDepositActsApiState = null;
-    if(isDepositStatusApiState) depositStatusApiState = null;
-  }
-
-  depositStatus(int id, bool isCancel)async{
+  getDepositOrder(String id) async{
     setLoading();
-    if(isCancel) depositStatusApiState = await userRepo.cancelDeposit(id);
-    else depositStatusApiState = await userRepo.checkDeposit(id);
-
+    getDepositOrderApiState = await depositRepo.getDepositOrder(id);
+    if(getDepositOrderApiState.isSuccess){
+      depositOrder = getDepositOrderApiState.result;
+    }
     setLoading(false);
-    notifyListeners();
-    return depositStatusApiState ;
-  }*/
+    return getDepositOrderApiState;
+  }
+
+  uploadDepositImage (String imageFile, String id) async{
+    setLoading();
+    uploadDepositImageApiState = await depositRepo.uploadDepositImage(imageFile, id);
+    if(uploadDepositImageApiState.isSuccess){
+    }
+    setLoading(false);
+    return uploadDepositImageApiState;
+  }
 }
