@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:tgp_flutter/custom/color_button.dart';
 import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/custom/custom_toast.dart';
-import 'package:tgp_flutter/extension/navigate_without_animation.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/main.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
@@ -67,10 +66,10 @@ class _SplashState extends BaseState<Splash> {
   _navigateToHome() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Navigator.of(context).pushAndRemoveUntil(
-          NavigateWithoutAnimation(
-              widget: MyHomePage(
-            isFirstRun: true,
-          )),
+          MaterialPageRoute(
+              builder: (context) => MyHomePage(
+                    isFirstRun: true,
+                  )),
           (Route<dynamic> route) => false);
     });
   }

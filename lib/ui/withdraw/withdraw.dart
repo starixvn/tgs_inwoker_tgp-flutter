@@ -3,7 +3,6 @@ import 'package:tgp_flutter/custom/color_button.dart';
 import 'package:tgp_flutter/custom/custom_picker.dart';
 import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/custom/custom_text_form_field.dart';
-import 'package:tgp_flutter/extension/navigate_without_animation.dart';
 import 'package:tgp_flutter/my_behavior.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
@@ -81,7 +80,7 @@ class _WithdrawState extends BaseState<Withdraw> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context, NavigateWithoutAnimation());
+            Navigator.pop(context);
           },
         ),
         flexibleSpace: Container(
@@ -131,15 +130,13 @@ class _WithdrawState extends BaseState<Withdraw> {
                     margin: EdgeInsets.only(right: 10.auto),
                     child: ColorButton(
                       text: Text(
-                          "查看详情",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 10.auto
-                        ),
+                        "查看详情",
+                        style: TextStyle(color: Colors.white, fontSize: 10.auto),
                       ),
                       onClick: this.onDetailsClick,
                       isEnabled: true,
-                        color: Colors.red, radius: 45,
+                      color: Colors.red,
+                      radius: 45,
                       width: 70.auto,
                       height: 30.auto,
                     ),
@@ -221,7 +218,7 @@ class _WithdrawState extends BaseState<Withdraw> {
               onChanged: (value) {
                 setState(() {
                   selectedBankCard = value;
-                  Navigator.pop(context, NavigateWithoutAnimation());
+                  Navigator.pop(context);
                 });
               }
           );

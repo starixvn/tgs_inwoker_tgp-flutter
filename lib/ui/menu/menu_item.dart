@@ -1,7 +1,6 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:tgp_flutter/extension/navigate_without_animation.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
@@ -10,9 +9,10 @@ import 'package:tgp_flutter/ui/transaction/transaction.dart';
 class MenuItem extends StatefulWidget {
   final String image;
   final String text;
-  final Widget route;
+  final String navigationPath;
+  final int navigationID;
 
-  MenuItem({this.image, this.text, this.route});
+  MenuItem({this.image, this.text, this.navigationPath, this.navigationID});
 
   @override
   _MenuItemState createState() => _MenuItemState();
@@ -60,6 +60,15 @@ class _MenuItemState extends BaseState<MenuItem> {
   }
 
   _onClick() {
-    Navigator.of(context).push(NavigateWithoutAnimation(widget: widget.route));
+    if (widget.navigationID == 0) {
+      Navigator.of(context).pushNamed("/${widget.navigationPath}");
+    } else {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => Transaction(
+                    tabIndex: widget.navigationID,
+                  )));
+    }
   }
 }

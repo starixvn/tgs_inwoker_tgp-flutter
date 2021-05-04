@@ -3,7 +3,6 @@ import 'package:lottie/lottie.dart';
 import 'package:tgp_flutter/custom/custom_dialog.dart';
 import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/custom/custom_toast.dart';
-import 'package:tgp_flutter/extension/navigate_without_animation.dart';
 import 'package:tgp_flutter/localizations/language_provider.dart';
 import 'package:tgp_flutter/network/event_result.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
@@ -30,9 +29,7 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
                   description: "请再登录",
                   buttonText1: "登录",
                   buttonText2: "不了",
-                  onClick: () => Navigator.of(context).push(
-                    NavigateWithoutAnimation(widget: Login()),
-                  ),
+                  onClick: () => Navigator.of(context).pushNamed("/login"),
                 ),
               );
             });

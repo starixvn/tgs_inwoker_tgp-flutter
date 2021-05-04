@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:tgp_flutter/custom/round_check_box.dart';
 import 'package:tgp_flutter/entity/message.dart';
 import 'package:tgp_flutter/extension/format.dart';
-import 'package:tgp_flutter/extension/navigate_without_animation.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
@@ -72,10 +71,10 @@ class _MessageItemState extends BaseState<MessageItem> {
               onTap: () {
                 Navigator.push(
                     context,
-                    NavigateWithoutAnimation(
-                        widget: MessageDetails(
-                      message: widget.message,
-                    )));
+                    MaterialPageRoute(
+                        builder: (context) => MessageDetails(
+                              message: widget.message,
+                            )));
                 widget.onReadMessage(widget.message.id);
               },
               child: Card(

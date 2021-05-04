@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/entity/game.dart';
 import 'package:tgp_flutter/entity/game_type.dart';
-import 'package:tgp_flutter/extension/navigate_without_animation.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/my_behavior.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
@@ -94,7 +93,7 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context, NavigateWithoutAnimation());
+            Navigator.pop(context);
           },
         ),
         title: isSearching

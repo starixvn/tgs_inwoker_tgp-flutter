@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tgp_flutter/extension/navigate_without_animation.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 
@@ -52,7 +51,7 @@ class WithdrawDialog extends StatelessWidget {
               FlatButton(
                 minWidth: context.screenWidth / 3.5,
                 height: context.screenHeight / 15,
-                onPressed: () => {Navigator.of(context).pop(NavigateWithoutAnimation())},
+                onPressed: () => {Navigator.of(context).pop()},
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(45)),
                 padding: EdgeInsets.all(0.0),
                 child: Ink(

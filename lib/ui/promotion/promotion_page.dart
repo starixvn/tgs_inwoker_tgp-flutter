@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tgp_flutter/extension/navigate_without_animation.dart';
 import 'package:tgp_flutter/localizations/language_provider.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
@@ -62,8 +61,8 @@ class _PromotionState extends BaseState<PromotionPage> {
               leading: IconButton(
                 icon: Icon(Icons.arrow_back),
                 onPressed: () {
-                  Navigator.of(context)
-                      .pushAndRemoveUntil(NavigateWithoutAnimation(widget: Home()), (Route<dynamic> route) => false);
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(builder: (context) => Home()), (Route<dynamic> route) => false);
                 },
               ),
             ),

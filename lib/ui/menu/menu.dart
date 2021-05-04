@@ -2,7 +2,6 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter/entity/message.dart';
-import 'package:tgp_flutter/extension/navigate_without_animation.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/localizations/language_provider.dart';
 import 'package:tgp_flutter/main.dart';
@@ -44,47 +43,56 @@ class _MenuState extends BaseState<Menu> {
                 MenuItem(
                   image: "ic_menu_deposit",
                   text: getTranslatedText("deposit"),
-                  route: Deposit(),
+                  navigationPath: "deposit",
+                  navigationID: 0,
                 ),
                 MenuItem(
                   image: "ic_menu_transfer",
                   text: getTranslatedText("transfer"),
-                  route: WalletTransfer(),
+                  navigationPath: "wallet_transfer",
+                  navigationID: 0,
                 ),
                 MenuItem(
                   image: "ic_menu_withdraw",
                   text: getTranslatedText("withdrawal"),
-                  route: Withdraw(),
+                  navigationPath: "withdraw",
+                  navigationID: 0,
                 ),
                 MenuItem(
                   image: "ic_menu_transfer_history",
                   text: getTranslatedText("transfer_history"),
-                  route: Transaction(),
+                  navigationPath: "transaction",
+                  navigationID: 0,
                 ),
                 MenuItem(
                   image: "ic_menu_bet_history",
                   text: getTranslatedText("bet_history"),
-                  route: Transaction(tabIndex: 1),
+                  navigationPath: "transaction",
+                  navigationID: 1,
                 ),
                 MenuItem(
                   image: "ic_menu_withdraw_history",
                   text: getTranslatedText("withdrawal_history"),
-                  route: Transaction(tabIndex: 2),
+                  navigationPath: "transaction",
+                  navigationID: 2,
                 ),
                 MenuItem(
                   image: "ic_menu_deposit_history",
                   text: getTranslatedText("deposit_history"),
-                  route: Transaction(tabIndex: 3),
+                  navigationPath: "transaction",
+                  navigationID: 3,
                 ),
                 MenuItem(
                   image: "ic_menu_card",
                   text: getTranslatedText("manage_card"),
-                  route: MainCard(),
+                  navigationPath: "main_card",
+                  navigationID: 0,
                 ),
                 MenuItem(
                   image: "ic_menu_message_center",
                   text: getTranslatedText("message_center"),
-                  route: MessageView(),
+                  navigationPath: "message",
+                  navigationID: 0,
                 ),
               ],
             ),
@@ -93,8 +101,8 @@ class _MenuState extends BaseState<Menu> {
                 alignment: Alignment.bottomCenter,
                 child: InkWell(
                   onTap: () {
-                    Navigator.of(context)
-                        .pushAndRemoveUntil(NavigateWithoutAnimation(widget: MyHomePage()), (Route<dynamic> route) => false);
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(builder: (context) => MyHomePage()), (Route<dynamic> route) => false);
                   },
                   child: ImageIcon(
                     AssetImage("images/menu/ic_menu_close.png"),

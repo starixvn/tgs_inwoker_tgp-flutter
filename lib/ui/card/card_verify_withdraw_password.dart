@@ -6,7 +6,6 @@ import 'package:tgp_flutter/custom/custom_text_form_field.dart';
 import 'package:tgp_flutter/custom/custom_toast.dart';
 import 'package:tgp_flutter/data/provider/input_validation_provider.dart';
 import 'package:tgp_flutter/extension/format.dart';
-import 'package:tgp_flutter/extension/navigate_without_animation.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/my_behavior.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
@@ -51,7 +50,7 @@ class _CardVerifyWithdrawPasswordState extends BaseState<CardVerifyWithdrawPassw
                   leading: IconButton(
                     icon: Icon(Icons.arrow_back),
                     onPressed: () {
-                      Navigator.pop(context, NavigateWithoutAnimation());
+                      Navigator.pop(context);
                     },
                   ),
                   title: Text(
@@ -174,7 +173,7 @@ class _CardVerifyWithdrawPasswordState extends BaseState<CardVerifyWithdrawPassw
         title: "尊敬的用户",
         description: "因风控原因，进行本项操作以前，您需先创建提款密码。",
         buttonText1: "确认",
-        onClick: () => Navigator.pop(context, NavigateWithoutAnimation()),
+        onClick: () => Navigator.pop(context),
       ),
     );
   }
@@ -200,7 +199,7 @@ class _CardVerifyWithdrawPasswordState extends BaseState<CardVerifyWithdrawPassw
        ProgressDialog.hide();
       _vm.resetApiState(isUpdateWithdrawPasswordApiState: true);
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        Navigator.pop(context, NavigateWithoutAnimation());
+        Navigator.pop(context);
       });
     }*/
   }

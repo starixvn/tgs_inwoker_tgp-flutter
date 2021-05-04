@@ -5,7 +5,6 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:tgp_flutter/custom/round_check_box.dart';
 import 'package:tgp_flutter/entity/message.dart';
 import 'package:tgp_flutter/extension/format.dart';
-import 'package:tgp_flutter/extension/navigate_without_animation.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
@@ -42,7 +41,7 @@ class _MessageDetailsState extends BaseState<MessageDetails> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context, NavigateWithoutAnimation());
+            Navigator.pop(context);
           },
         ),
         title: Text(

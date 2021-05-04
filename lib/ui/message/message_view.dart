@@ -2,7 +2,6 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/entity/message.dart';
-import 'package:tgp_flutter/extension/navigate_without_animation.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
@@ -50,7 +49,7 @@ class _MessageViewState extends BaseState<MessageView> {
               leading: IconButton(
                 icon: Icon(Icons.arrow_back),
                 onPressed: () {
-                  Navigator.pop(context, NavigateWithoutAnimation());
+                  Navigator.pop(context);
                 },
               ),
               title: Text(
@@ -59,7 +58,7 @@ class _MessageViewState extends BaseState<MessageView> {
               ),
               actions: [
                 Visibility(
-                  visible: _vm.messageList!=null && _vm.messageList.isNotEmpty,
+                  visible: _vm.messageList != null && _vm.messageList.isNotEmpty,
                   child: InkWell(
                     onTap: () {
                       setState(() {
@@ -97,7 +96,7 @@ class _MessageViewState extends BaseState<MessageView> {
                     ),
                     Visibility(visible: isLoading, child: CircularProgressIndicator()),
                     Visibility(
-                        visible: _vm.endRecord&& _vm.messageList.isNotEmpty,
+                        visible: _vm.endRecord && _vm.messageList.isNotEmpty,
                         child: Container(
                           padding: EdgeInsets.only(bottom: 10.auto),
                           child: Text(

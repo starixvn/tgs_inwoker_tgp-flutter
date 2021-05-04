@@ -3,20 +3,45 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:tgp_flutter/localizations/language_provider.dart';
 import 'package:tgp_flutter/localizations/my_localizations.dart';
 import 'package:tgp_flutter/my_behavior.dart';
+import 'package:tgp_flutter/route_path.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
+import 'package:tgp_flutter/ui/card/add_card.dart';
+import 'package:tgp_flutter/ui/card/main_card.dart';
+import 'package:tgp_flutter/ui/deposit/deposit.dart';
+import 'package:tgp_flutter/ui/forgot_password/forgot_password.dart';
+import 'package:tgp_flutter/ui/frequent_question/frequent_question.dart';
 import 'package:tgp_flutter/ui/home/home.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
+import 'package:tgp_flutter/ui/language/language_view.dart';
 import 'package:tgp_flutter/ui/login/login.dart';
 import 'package:tgp_flutter/ui/menu/menu.dart';
 import 'package:flutter/services.dart';
+import 'package:tgp_flutter/ui/message/message_view.dart';
 import 'package:tgp_flutter/ui/profile/animated_dot.dart';
 import 'package:tgp_flutter/ui/profile/profile.dart';
+import 'package:tgp_flutter/ui/profile_info/address/address.dart';
+import 'package:tgp_flutter/ui/profile_info/email/email_verification.dart';
+import 'package:tgp_flutter/ui/profile_info/password/edit_password.dart';
+import 'package:tgp_flutter/ui/profile_info/pay_password/pay_password.dart';
+import 'package:tgp_flutter/ui/profile_info/pay_password/reset_pay_password.dart';
+import 'package:tgp_flutter/ui/profile_info/phone/phone_verification.dart';
+import 'package:tgp_flutter/ui/profile_info/profile_info.dart';
+import 'package:tgp_flutter/ui/profile_info/qq_account/qq_account.dart';
+import 'package:tgp_flutter/ui/profile_info/real_name/real_name_verification.dart';
+import 'package:tgp_flutter/ui/profile_info/security/edit_security_answer.dart';
+import 'package:tgp_flutter/ui/profile_info/security/edit_security_answer_by_security_answer.dart';
+import 'package:tgp_flutter/ui/profile_info/security/security_answer.dart';
+import 'package:tgp_flutter/ui/profile_info/wechat/wechat.dart';
 import 'package:tgp_flutter/ui/promotion/promotion_page.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart' as DotEnv;
+import 'package:tgp_flutter/ui/referFriend/refer_friend.dart';
 import 'package:tgp_flutter/ui/splash/splash.dart';
-
+import 'package:tgp_flutter/ui/transaction/transaction.dart';
+import 'package:tgp_flutter/ui/withdraw/withdraw.dart';
+import 'package:tgp_flutter/ui/home/child_game/child_game.dart';
+import 'package:tgp_flutter/ui/transfer/wallet_transfer.dart';
 
 Future main() async {
   //await DotEnv.load();
@@ -72,7 +97,40 @@ class _MyAppState extends BaseState<MyApp> {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: appTitle,
-        home: Splash(),
+        initialRoute: '/',
+        routes: {
+          RoutePath.empty: (context) => Splash(),
+          RoutePath.home: (context) => MyHomePage(),
+          RoutePath.login: (context) => Login(),
+          RoutePath.menu: (context) => Menu(),
+          RoutePath.profile: (context) => Profile(),
+          RoutePath.promotion: (context) => PromotionPage(),
+          RoutePath.childGame: (context) => ChildGame(),
+          RoutePath.deposit: (context) => Deposit(),
+          RoutePath.walletTransfer: (context) => WalletTransfer(),
+          RoutePath.withdraw: (context) => Withdraw(),
+          RoutePath.transaction: (context) => Transaction(),
+          RoutePath.mainCard: (context) => MainCard(),
+          RoutePath.message: (context) => MessageView(),
+          RoutePath.frequentQuestion: (context) => FrequentQuestion(),
+          RoutePath.referFriend: (context) => ReferFriend(),
+          RoutePath.profileInfo: (context) => ProfileInfo(),
+          RoutePath.realNameVerification: (context) => RealNameVerification(),
+          RoutePath.phoneVerification: (context) => PhoneVerification(),
+          RoutePath.emailVerification: (context) => EmailVerification(),
+          RoutePath.qqAccount: (context) => QQAccount(),
+          RoutePath.wechat: (context) => Wechat(),
+          RoutePath.address: (context) => Address(),
+          RoutePath.editPassword: (context) => EditPassword(),
+          RoutePath.resetPayPassword: (context) => ResetPayPassword(),
+          RoutePath.payPassword: (context) => PayPassword(),
+          RoutePath.securityAnswer: (context) => SecurityAnswer(),
+          RoutePath.editSecurityAnswer: (context) => EditSecurityAnswer(),
+          RoutePath.editSecurityAnswerBySecurityAnswer: (context) => EditSecurityAnswerBySecurityAnswer(),
+          RoutePath.forgotPassword: (context) => ForgotPassword(),
+          RoutePath.language: (context) => LanguageView(),
+          RoutePath.addCard: (context) => AddCard(),
+        },
         localizationsDelegates: [
           MyLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,
@@ -223,7 +281,7 @@ class _MyHomePageState extends BaseState<MyHomePage> {
   _buildNotification(bool isNewMessage) => Visibility(
       visible: isNewMessage,
       child: Positioned(
-          top: context.screenWidth/100,
+          top: context.screenWidth / 100,
           right: context.screenWidth / 30,
           child: AnimatedDot(
             color: CustomColor.theme_label_text_highlight_color,

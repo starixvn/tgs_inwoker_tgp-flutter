@@ -5,7 +5,6 @@ import 'package:tgp_flutter/custom/custom_toast.dart';
 import 'package:tgp_flutter/entity/language.dart';
 import 'package:tgp_flutter/entity/user_profile.dart';
 import 'package:tgp_flutter/extension/format.dart';
-import 'package:tgp_flutter/extension/navigate_without_animation.dart';
 import 'package:tgp_flutter/localizations/language_provider.dart';
 import 'package:tgp_flutter/my_behavior.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
@@ -44,7 +43,7 @@ class _ProfileState extends BaseState<Profile> {
         //_vm.getWalletBalance();
         //_getVipDetails();
       } else {
-        Navigator.of(context).push(NavigateWithoutAnimation(widget: Login()));
+        Navigator.of(context).pushNamed("/login}");
       }
     });
     super.initState();
@@ -135,9 +134,10 @@ class _ProfileState extends BaseState<Profile> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              ProfileTopItem(title: getTranslatedText("deposit"), imagePath: "ic_deposit", route: Deposit()),
-              ProfileTopItem(title: getTranslatedText("transfer"), imagePath: "ic_transfer", route: WalletTransfer()),
-              ProfileTopItem(title: getTranslatedText("withdrawal"), imagePath: "ic_withdraw", route: Withdraw()),
+              ProfileTopItem(title: getTranslatedText("deposit"), imagePath: "ic_deposit", routePath: "deposit"),
+              ProfileTopItem(
+                  title: getTranslatedText("transfer"), imagePath: "ic_transfer", routePath: "wallet_transfer"),
+              ProfileTopItem(title: getTranslatedText("withdrawal"), imagePath: "ic_withdraw", routePath: "withdraw"),
             ],
           ),
         ),
@@ -160,19 +160,14 @@ class _ProfileState extends BaseState<Profile> {
                 crossAxisSpacing: 15.auto,
                 mainAxisSpacing: 15.auto,
                 children: [
-                  _buildProfileBottomItem("profile_detail", "ic_profile_user_detail", ProfileInfo()),
-                  _buildProfileBottomItem("message_center", "ic_message", MessageView(), isMessage: true),
-                  _buildProfileBottomItem("transfer_history", "ic_account_detail", Transaction()),
-                  _buildProfileBottomItem(
-                      "bet_history",
-                      "ic_bet_transaction",
-                      Transaction(
-                        tabIndex: 1,
-                      )),
-                  _buildProfileBottomItem("manage_card", "ic_card_detail", MainCard()),
-                  _buildProfileBottomItem("refer_friend", "ic_refer_friend", ReferFriend()),
-                  _buildProfileBottomItem("frequent_question", "ic_profile_question", FrequentQuestion()),
-                  _buildProfileBottomItem("language", "ic_lang", LanguageView()),
+                  _buildProfileBottomItem("profile_detail", "ic_profile_user_detail", "profile_info", 0),
+                  _buildProfileBottomItem("message_center", "ic_message", "message", 0, isMessage: true),
+                  _buildProfileBottomItem("transfer_history", "ic_account_detail", "transaction", 0),
+                  _buildProfileBottomItem("bet_history", "ic_bet_transaction", "transaction", 1),
+                  _buildProfileBottomItem("manage_card", "ic_card_detail", "main_card", 0),
+                  _buildProfileBottomItem("refer_friend", "ic_refer_friend", "refer_friend", 0),
+                  _buildProfileBottomItem("frequent_question", "ic_profile_question", "frequent_question", 0),
+                  _buildProfileBottomItem("language", "ic_lang", "language", 0),
                 ],
               ),
               _buildLogoutButton()
@@ -181,16 +176,13 @@ class _ProfileState extends BaseState<Profile> {
         ),
       );
 
-  _buildProfileBottomItem(
-    String title,
-    String imagePath,
-    Widget route,
-  {bool isMessage = false}
-  ) =>
+  _buildProfileBottomItem(String title, String imagePath, String routePath, int navigationID,
+          {bool isMessage = false}) =>
       ProfileBottomItem(
         title: getTranslatedText(title),
         imagePath: imagePath,
-        route: route,
+        routePath: routePath,
+        navigationID: navigationID,
         isMessage: isMessage,
       );
 
@@ -217,7 +209,7 @@ class _ProfileState extends BaseState<Profile> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       //navigate to login and remove all previous route,
       Navigator.of(context)
-          .pushAndRemoveUntil(NavigateWithoutAnimation(widget: Login()), (Route<dynamic> route) => false);
+          .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => Login()), (Route<dynamic> route) => false);
     });
   }
 

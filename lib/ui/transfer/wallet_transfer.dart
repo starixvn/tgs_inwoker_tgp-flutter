@@ -7,7 +7,6 @@ import 'package:tgp_flutter/custom/custom_text_form_field.dart';
 import 'package:tgp_flutter/custom/custom_toast.dart';
 import 'package:tgp_flutter/custom/gradient_button.dart';
 import 'package:tgp_flutter/extension/format.dart';
-import 'package:tgp_flutter/extension/navigate_without_animation.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
@@ -90,7 +89,7 @@ class _WalletTransferState extends BaseState<WalletTransfer> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context, NavigateWithoutAnimation());
+            Navigator.pop(context);
           },
         ),
         actions: [
@@ -288,7 +287,7 @@ class _WalletTransferState extends BaseState<WalletTransfer> {
                     if(fromWallet!=null && value.id == fromWallet.id) CustomToast.show("不能转账去同样的钱包！");
                     else setToWallet(value);
                   }*/
-                  Navigator.pop(context, NavigateWithoutAnimation());
+                  Navigator.pop(context);
                 });
               });
         });

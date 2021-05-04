@@ -1,7 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter/custom/color_button.dart';
-import 'package:tgp_flutter/extension/navigate_without_animation.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/my_behavior.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
@@ -59,7 +58,7 @@ class _ReferFriendState extends BaseState<ReferFriend> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context, NavigateWithoutAnimation());
+            Navigator.pop(context);
           },
         ),
         title: Text(
@@ -160,17 +159,23 @@ class _ReferFriendState extends BaseState<ReferFriend> {
                   ProfileBottomItem(
                     title: getTranslatedText("profile_detail"),
                     imagePath: "ic_profile_user_detail",
-                    route: ProfileInfo(),
+                    routePath: "profile_info",
+                    navigationID: 0,
+                    isMessage: false,
                   ),
                   ProfileBottomItem(
                     title: getTranslatedText("message_center"),
                     imagePath: "ic_message",
-                    route: MessageView(),
+                    routePath: "profile_info",
+                    navigationID: 0,
+                    isMessage: false,
                   ),
                   ProfileBottomItem(
                     title: getTranslatedText("transfer_history"),
                     imagePath: "ic_account_detail",
-                    route: Transaction(),
+                    routePath: "profile_info",
+                    navigationID: 0,
+                    isMessage: false,
                   ),
                 ],
               ),

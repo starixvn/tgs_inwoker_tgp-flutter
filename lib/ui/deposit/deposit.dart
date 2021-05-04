@@ -2,7 +2,6 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/extension/format.dart';
-import 'package:tgp_flutter/extension/navigate_without_animation.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
@@ -18,6 +17,7 @@ class Deposit extends StatefulWidget {
 
 class _DepositState extends BaseState<Deposit> {
   DepositViewModel _vm = DepositViewModel();
+
   /*var tabList = [
     {"id": "0", "text": "人工支付"}
   ];*/
@@ -92,7 +92,7 @@ class _DepositState extends BaseState<Deposit> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context, NavigateWithoutAnimation());
+            Navigator.pop(context);
           },
         ),
         actions: [

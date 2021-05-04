@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter/entity/profile_info_item.dart';
 import 'package:tgp_flutter/entity/user_profile.dart';
-import 'package:tgp_flutter/extension/navigate_without_animation.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/my_behavior.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
@@ -53,7 +52,7 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
                           _buildInfoCard(
                             "basic_info",
                             [ProfileInfoItem.REALNAME, ProfileInfoItem.PHONE_NUMBER, ProfileInfoItem.EMAIL],
-                            [RealNameVerification(), PhoneVerification(), EmailVerification()],
+                            ["real_ name_verification", "phone_verification", "email_verification"],
                             itemDescriptionList: [
                               _getItemText(_vm.userProfile.realname),
                               _getItemText(_vm.userProfile.phone),
@@ -63,7 +62,7 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
                           _buildInfoCard(
                             "other_info",
                             [ProfileInfoItem.QQ_NUMBER, ProfileInfoItem.WECHAT_NUMBER],
-                            [QQAccount(), Wechat()],
+                            ["qq_account", "wechat"],
                             itemDescriptionList: [
                               _getItemText(_vm.userProfile.qq),
                               _getItemText(_vm.userProfile.wechat),
@@ -80,9 +79,9 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
                                   ProfileInfoItem.RESET_PAY_PASSWORD
                                 ],
                                 [
-                                  EditPassword(),
-                                  PayPassword(),
-                                  ResetPayPassword()
+                                  "edit_password",
+                                  "pay_password",
+                                  "reset_pay_password"
                                   // if no security will navigate to security answer, else will navigate to edit security answer
                                 ],
                                 isSecurity: true),
@@ -103,7 +102,7 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context, NavigateWithoutAnimation());
+            Navigator.pop(context);
           },
         ),
         title: Text(
@@ -112,7 +111,7 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
         ),
       );
 
-  _buildInfoCard(String title, List<ProfileInfoItem> itemList, List<Widget> pathList,
+  _buildInfoCard(String title, List<ProfileInfoItem> itemList, List<String> pathList,
           {List<String> itemDescriptionList, bool isSecurity = false}) =>
       Container(
         margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 15.auto),
@@ -155,9 +154,9 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
         ),
       );
 
-  _buildInfoItem(String imagePath, String itemTitle, Widget route, {String itemDescription}) => InkWell(
+  _buildInfoItem(String imagePath, String itemTitle, String routePath, {String itemDescription}) => InkWell(
         onTap: () {
-          Navigator.of(context).push(NavigateWithoutAnimation(widget: route));
+          Navigator.of(context).pushNamed("/$routePath");
         },
         highlightColor: Colors.transparent,
         child: Container(
@@ -203,9 +202,9 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
         ),
       );
 
-  _buildInfoItemWithoutText(String imagePath, String itemTitle, Widget route) => InkWell(
+  _buildInfoItemWithoutText(String imagePath, String itemTitle, String routePath) => InkWell(
         onTap: () {
-          Navigator.of(context).push(NavigateWithoutAnimation(widget: route));
+          Navigator.of(context).pushNamed("/$routePath");
         },
         highlightColor: Colors.transparent,
         child: Container(

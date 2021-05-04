@@ -6,7 +6,6 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/custom/custom_toast.dart';
-import 'package:tgp_flutter/extension/navigate_without_animation.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
@@ -18,10 +17,12 @@ import 'animated_dot.dart';
 class ProfileBottomItem extends StatefulWidget {
   final String title;
   final String imagePath;
-  final Widget route;
+  final String routePath;
+  final int navigationID;
   final bool isMessage;
 
-  ProfileBottomItem({Key key, this.title, this.imagePath, this.route, this.isMessage}) : super(key: key);
+  ProfileBottomItem({Key key, this.title, this.imagePath, this.routePath, this.navigationID, this.isMessage})
+      : super(key: key);
 
   @override
   _ProfileBottomItemState createState() => _ProfileBottomItemState();
@@ -74,15 +75,19 @@ class _ProfileBottomItemState extends BaseState<ProfileBottomItem> {
       );
 
   _navigate() => WidgetsBinding.instance.addPostFrameCallback((_) {
-        Navigator.of(context).push(NavigateWithoutAnimation(widget: widget.route));
+        if (widget.navigationID == 0) {
+          Navigator.of(context).pushNamed("/${widget.routePath}");
+        } else {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => Transaction(
+                        tabIndex: widget.navigationID,
+                      )));
+        }
       });
 
-  _buildNotification() =>
-      Visibility(visible: widget.isMessage, child: Positioned(top: context.screenWidth / 24, right: context.screenWidth / 18, child: AnimatedDot()));
-
-/*_buildNotification() => Visibility(
+  _buildNotification() => Visibility(
       visible: widget.isMessage,
-      child:
-          Positioned(top: context.screenWidth / 24, right: context.screenWidth / 18, child: NotificationAnimation()));*/
-
+      child: Positioned(top: context.screenWidth / 24, right: context.screenWidth / 18, child: AnimatedDot()));
 }

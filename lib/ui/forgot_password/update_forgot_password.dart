@@ -6,7 +6,6 @@ import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/custom/custom_text_form_field.dart';
 import 'package:tgp_flutter/custom/custom_toast.dart';
 import 'package:tgp_flutter/data/provider/input_validation_provider.dart';
-import 'package:tgp_flutter/extension/navigate_without_animation.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
@@ -54,7 +53,7 @@ class _UpdateForgotPasswordState extends BaseState<UpdateForgotPassword> {
                 leading: IconButton(
                   icon: Icon(Icons.arrow_back),
                   onPressed: () {
-                    Navigator.pop(context, NavigateWithoutAnimation());
+                    Navigator.pop(context);
                   },
                 ),
                 title: Text(
@@ -118,7 +117,7 @@ class _UpdateForgotPasswordState extends BaseState<UpdateForgotPassword> {
         ),
         InkWell(
           onTap: isUpdateForgotPasswordVerified?(){
-            Navigator.of(context).push(NavigateWithoutAnimation(widget: route));("/edit_email");
+            Navigator.of(context).push((widget: route));("/edit_email");
           }:(){
             //customer service
           },

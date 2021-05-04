@@ -4,7 +4,6 @@ import 'package:tgp_flutter/custom/color_button.dart';
 import 'package:tgp_flutter/entity/user_profile.dart';
 import 'package:tgp_flutter/entity/wallet.dart';
 import 'package:tgp_flutter/extension/format.dart';
-import 'package:tgp_flutter/extension/navigate_without_animation.dart';
 import 'package:tgp_flutter/localizations/language_provider.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
@@ -86,9 +85,9 @@ class _HomeUserInfoViewState extends BaseState<HomeUserInfoView> {
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                _buildHomeIcon("ic_deposit", getTranslatedText("deposit"), Deposit()),
-                _buildHomeIcon("ic_transfer", getTranslatedText("transfer"), WalletTransfer()),
-                _buildHomeIcon("ic_withdraw", getTranslatedText("withdrawal"), Withdraw())
+                _buildHomeIcon("ic_deposit", getTranslatedText("deposit"), "deposit"),
+                _buildHomeIcon("ic_transfer", getTranslatedText("transfer"), "wallet_transfer"),
+                _buildHomeIcon("ic_withdraw", getTranslatedText("withdrawal"), "withdraw")
               ],
             ),
           ],
@@ -149,17 +148,17 @@ class _HomeUserInfoViewState extends BaseState<HomeUserInfoView> {
     );
   }
 
-  _buildHomeIcon(String imagePath, String title, Widget route) => InkWell(
+  _buildHomeIcon(String imagePath, String title, String routePath) => InkWell(
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
         onTap: () {
           if (widget.userProfile == null) {
             WidgetsBinding.instance.addPostFrameCallback((_) {
-              Navigator.of(context).push(NavigateWithoutAnimation(widget: Login()));
+              Navigator.of(context).pushNamed("/login");
             });
           } else {
             WidgetsBinding.instance.addPostFrameCallback((_) {
-              Navigator.of(context).push(NavigateWithoutAnimation(widget: route));
+              Navigator.of(context).pushNamed("/$routePath");
             });
           }
         },

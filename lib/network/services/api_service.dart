@@ -10,15 +10,13 @@ import 'package:flutter_dotenv/flutter_dotenv.dart' as DotEnv;
 api(HttpMethod method, final endPoint, {final content, isAuthorization = true, imageContent}) async {
   var header = await _getHeader(isAuthorization);
   var url = DotEnv.env["url"] + endPoint;
-  // var body = "?"+Uri(queryParameters: content).query;
   print("Api->${method.getName}:$url");
   print(content);
   http.Response response;
   switch (method) {
     case HttpMethod.POST:
-      var queryParams = imageContent!=null? "/" + content: "";
       response = await http.post(
-        url+queryParams,
+        url,
         headers: header,
         body: jsonEncode(content),
       );
@@ -59,7 +57,7 @@ api(HttpMethod method, final endPoint, {final content, isAuthorization = true, i
       break;
 
     case HttpMethod.MULTIPART:
-      var request = http.MultipartRequest("POST", Uri.parse(url+"/"+content));
+      var request = http.MultipartRequest("POST", Uri.parse(url + "/" + content));
       header.forEach((k, v) {
         request.headers[k] = v;
       });

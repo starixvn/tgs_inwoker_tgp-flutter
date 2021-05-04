@@ -1,7 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter/entity/language.dart';
-import 'package:tgp_flutter/extension/navigate_without_animation.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/localizations/language_provider.dart';
 import 'package:tgp_flutter/main.dart';
@@ -10,7 +9,7 @@ import 'package:tgp_flutter/ui/base_state.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
 import 'package:tgp_flutter/ui/language/language_item.dart';
 
-class LanguageView extends StatefulWidget{
+class LanguageView extends StatefulWidget {
   @override
   _LanguageViewState createState() => _LanguageViewState();
 }
@@ -39,28 +38,28 @@ class _LanguageViewState extends BaseState<LanguageView> {
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
-              Navigator.pop(context, NavigateWithoutAnimation());
+              Navigator.pop(context);
             },
           ),
-          title: Text(getTranslatedText("language"),
+          title: Text(
+            getTranslatedText("language"),
             style: TextStyle(fontSize: 16.auto),
           ),
         ),
         body: ListView(
-          children: List.generate(list.length, (index) =>
-              Container(
-                child: InkWell(
-                  onTap: () => _changeLanguage(list[index]),
-                  child: LanguageItem(
-                    imagePath: list[index].imageRes,
-                    text: list[index].name,
-                    isSelected: deviceLanguage == list[index],
-                  ),
-                ),
-              )
-          ),
-        )
-    );
+          children: List.generate(
+              list.length,
+              (index) => Container(
+                    child: InkWell(
+                      onTap: () => _changeLanguage(list[index]),
+                      child: LanguageItem(
+                        imagePath: list[index].imageRes,
+                        text: list[index].name,
+                        isSelected: deviceLanguage == list[index],
+                      ),
+                    ),
+                  )),
+        ));
   }
 
   void _changeLanguage(Language language) async {
@@ -68,5 +67,3 @@ class _LanguageViewState extends BaseState<LanguageView> {
     MyApp.setLocale(context, _locale);
   }
 }
-
-

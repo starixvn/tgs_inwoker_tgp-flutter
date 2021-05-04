@@ -6,7 +6,6 @@ import 'package:tgp_flutter/custom/color_button.dart';
 import 'package:tgp_flutter/custom/custom_dialog.dart';
 import 'package:tgp_flutter/entity/deposit_order.dart';
 import 'package:tgp_flutter/extension/format.dart';
-import 'package:tgp_flutter/extension/navigate_without_animation.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
@@ -20,8 +19,9 @@ class DepositOrderView extends StatefulWidget {
   final String method;
   final DepositOrder deposit;
   final String id;
+  final String name;
 
-  DepositOrderView({Key key, this.method, this.deposit, this.id}) : super(key: key);
+  DepositOrderView({Key key, this.method, this.deposit, this.id, this.name}) : super(key: key);
 
   @override
   _DepositOrderViewState createState() => _DepositOrderViewState();
@@ -79,18 +79,11 @@ class _DepositOrderViewState extends BaseState<DepositOrderView> {
                         ),
                         _buildText("存款方式", widget.method),
                         _buildText("存款通道", widget.deposit.methodName),
-                        _buildText("订单编号", "ssss"),
-                        _buildText("汇款账户名", widget.deposit.bankAccountName),
+                        //_buildText("订单编号", "ssss"),
+                        _buildText("汇款账户名", widget.name),
                         _buildText("收款银行名称", widget.deposit.channelName),
                         _buildText("收款银行账户", widget.deposit.bankAccountName),
                         _buildText("收款银行账号", widget.deposit.bankAccount),
-                        /*_buildText("存款方式", "人工支付"),
-                        _buildText("存款通道", "银行汇款"),
-                        _buildText("订单编号", "ssss"),
-                        _buildText("汇款账户名", "aaaa"),
-                        _buildText("收款银行名称", "中国建设银行"),
-                        _buildText("收款银行账户", "yewtung"),
-                        _buildText("收款银行账号", "1234567890"),*/
                         _buildUploadTextRow(),
                         uploadImage == null
                             ? Container()
@@ -157,7 +150,7 @@ class _DepositOrderViewState extends BaseState<DepositOrderView> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context, NavigateWithoutAnimation());
+            Navigator.pop(context);
           },
         ),
       );
@@ -230,11 +223,9 @@ class _DepositOrderViewState extends BaseState<DepositOrderView> {
               onClick: () {
                 Navigator.pop(
                   context,
-                  NavigateWithoutAnimation(),
                 );
                 Navigator.pop(
                   context,
-                  NavigateWithoutAnimation(),
                 );
               }),
         );

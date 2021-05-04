@@ -7,7 +7,6 @@ import 'package:tgp_flutter/custom/custom_text_form_field.dart';
 import 'package:tgp_flutter/custom/custom_toast.dart';
 import 'package:tgp_flutter/entity/payment.dart';
 import 'package:tgp_flutter/extension/format.dart';
-import 'package:tgp_flutter/extension/navigate_without_animation.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
@@ -28,7 +27,6 @@ class _DepositMethodState extends BaseState<DepositMethod> {
   var selectedPayment;
   var paymentMin, paymentMax;
   int amount;
-  FocusNode _focusNode = FocusNode(), _focusNode2  = FocusNode();
   var onClick = false;
   Payment _payment;
   var _vm = DepositViewModel();
@@ -37,7 +35,6 @@ class _DepositMethodState extends BaseState<DepositMethod> {
   void initState() {
     methodPickerText = _vm.pMethod;
     onSelectedMethod(methodPickerText);
-    _focusNode.addListener(onTextChange);
     super.initState();
   }
 
@@ -114,7 +111,7 @@ class _DepositMethodState extends BaseState<DepositMethod> {
                   /*ielse if(value is PaymentBank) onSelectedBank(value as PaymentBank);
                   else if(value is DepositBonusGroup) onSelectedDepositGroup(value as DepositBonusGroup);
                   else if(value is DepositBonus) onSelectedDeposit(value as DepositBonus);*/
-                  Navigator.pop(context, NavigateWithoutAnimation());
+                  Navigator.pop(context);
                 });
               });
         });
@@ -126,10 +123,9 @@ class _DepositMethodState extends BaseState<DepositMethod> {
           title: getTranslatedText(title) ?? "",
           hintText:
               "请输入${Format().amountFormat(paymentMin) ?? "10.00"}-${Format().amountFormat(paymentMax) ?? "100,000"}元",
-          onChanged: (value){},
+          onChanged: (value) => onTextChange(),
           onFieldSubmitted: (value) => onTextChange(),
           controller: _amountController,
-          focusNode: _focusNode,
           width: context.screenWidth - 70.auto,
           textInputType: TextInputType.number,
           textInputAction: TextInputAction.done,
@@ -141,12 +137,9 @@ class _DepositMethodState extends BaseState<DepositMethod> {
         child: CustomTextFormField(
           title: title,
           hintText: hintText,
-          onChanged: (value){},
-          onFieldSubmitted: (value){
-            FocusScope.of(context).requestFocus(_focusNode);
-          },
+          onChanged: (value) => onTextChange(),
+          onFieldSubmitted: (value) => onTextChange(),
           controller: _bankNameController,
-          focusNode: _focusNode2,
           width: context.screenWidth - 70.auto,
           textInputType: TextInputType.text,
           textInputAction: TextInputAction.next,
@@ -160,7 +153,7 @@ class _DepositMethodState extends BaseState<DepositMethod> {
         top: 15.auto,
       ),
       child: ColorButton(
-        onClick:() => _onClick(),
+        onClick: () => _onClick(),
         text: Text(
           "Next",
           textAlign: TextAlign.center,
@@ -172,19 +165,20 @@ class _DepositMethodState extends BaseState<DepositMethod> {
       ));
 
   onTextChange() {
-    if(_amountController.text !=null&& _amountController.text.isNotEmpty){
+    if (_amountController.text != null &&
+        _amountController.text.isNotEmpty &&
+        _bankNameController.text != null &&
+        _bankNameController.text.isNotEmpty) {
       amount = int.parse(_amountController.text);
-      if (amount >= paymentMin &&
-          amount <= paymentMax &&
-          (_bankNameController.text != null || _bankNameController.text.isNotEmpty)) {
+      if (amount >= paymentMin && amount <= paymentMax) {
         setState(() {
           isButtonEnabled = true;
         });
-      } else {
-        setState(() {
-          isButtonEnabled = false;
-        });
       }
+    } else {
+      setState(() {
+        isButtonEnabled = false;
+      });
     }
   }
 
@@ -220,12 +214,12 @@ class _DepositMethodState extends BaseState<DepositMethod> {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         Navigator.push(
             context,
-            NavigateWithoutAnimation(
-                widget: DepositOrderView(
-                  method: _payment.methodCode,
-                  deposit: _vm.getDepositOrderApiState.result,
-                  id : paymentChannelId
-                )));
+            MaterialPageRoute(
+                builder: (context) => DepositOrderView(
+                    method: _payment.methodCode,
+                    deposit: _vm.getDepositOrderApiState.result,
+                    id: paymentChannelId,
+                    name: _bankNameController.text)));
       });
     });
   }

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:tgp_flutter/custom/custom_dialog.dart';
 import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/entity/user_profile.dart';
-import 'package:tgp_flutter/extension/navigate_without_animation.dart';
 import 'package:tgp_flutter/localizations/language_provider.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
@@ -65,9 +64,9 @@ class _HomeState extends BaseState<Home> {
 
   @override
   void initState() {
-   WidgetsBinding.instance.addPostFrameCallback((_) {
-     _vm.resumeIfNeed();
-   });
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _vm.resumeIfNeed();
+    });
     super.initState();
   }
 
@@ -167,7 +166,7 @@ class _HomeState extends BaseState<Home> {
 
   navigateToLogin() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Navigator.of(context).push(NavigateWithoutAnimation(widget: Login()));
+      Navigator.of(context).pushNamed("/login");
     });
   }
 

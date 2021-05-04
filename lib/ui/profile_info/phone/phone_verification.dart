@@ -8,7 +8,6 @@ import 'package:tgp_flutter/custom/otp_text_form_field.dart';
 import 'package:tgp_flutter/custom/outline_border_button.dart';
 import 'package:tgp_flutter/data/provider/input_validation_provider.dart';
 import 'package:tgp_flutter/entity/event_type.dart';
-import 'package:tgp_flutter/extension/navigate_without_animation.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
@@ -69,12 +68,8 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
         ),
         centerTitle: true,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            //Navigator.pop(context, NavigateWithoutAnimation());
-            Navigator.pushAndRemoveUntil(context, NavigateWithoutAnimation(widget: ProfileInfo()), (route) => false);
-          },
-        ),
+            icon: Icon(Icons.arrow_back),
+            onPressed: () => Navigator.popUntil(context, ModalRoute.withName('/profile_info'))),
         title: Text(
           getTranslatedText("phone_number"),
           style: TextStyle(fontSize: 16.auto),

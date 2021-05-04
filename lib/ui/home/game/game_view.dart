@@ -7,7 +7,6 @@ import 'package:tgp_flutter/entity/game_provider.dart';
 import 'package:tgp_flutter/entity/game_provider2.dart';
 import 'package:tgp_flutter/entity/game_type.dart';
 import 'package:tgp_flutter/entity/user_profile.dart';
-import 'package:tgp_flutter/extension/navigate_without_animation.dart';
 import 'package:tgp_flutter/localizations/language_provider.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
@@ -178,7 +177,7 @@ class _GameViewState extends BaseState<GameView> {
 
   navigateToLogin() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Navigator.of(context).push(NavigateWithoutAnimation(widget: Login()));
+      Navigator.of(context).pushNamed("/login");
     });
   }
 
@@ -188,11 +187,11 @@ class _GameViewState extends BaseState<GameView> {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         Navigator.push(
             context,
-            NavigateWithoutAnimation(
-                widget: ChildGame(
-              gamePlatformCode: gamePlatformCode,
-              gameType: gameType,
-            )));
+            MaterialPageRoute(
+                builder: (context) => ChildGame(
+                      gamePlatformCode: gamePlatformCode,
+                      gameType: gameType,
+                    )));
       });
     } else {
       //navigate to game web
@@ -200,7 +199,7 @@ class _GameViewState extends BaseState<GameView> {
       await _vm.getGameList(gamePlatformCode, gameType);
       WidgetsBinding.instance.addPostFrameCallback((_) {
         Navigator.push(
-            context, NavigateWithoutAnimation(widget: GameWeb(game: _vm.gameListMap[gamePlatformCode].first)));
+            context, MaterialPageRoute(builder: (context) => GameWeb(game: _vm.gameListMap[gamePlatformCode].first)));
       });
     }
   }

@@ -4,7 +4,6 @@ import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/custom/custom_text_form_field.dart';
 import 'package:tgp_flutter/custom/custom_toast.dart';
 import 'package:tgp_flutter/extension/format.dart';
-import 'package:tgp_flutter/extension/navigate_without_animation.dart';
 import 'package:tgp_flutter/my_behavior.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
@@ -12,7 +11,7 @@ import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
 import 'card_view_model.dart';
 
-class AddCard extends StatefulWidget{
+class AddCard extends StatefulWidget {
   @override
   _AddCardState createState() => _AddCardState();
 }
@@ -44,26 +43,25 @@ class _AddCardState extends BaseState<AddCard> {
                 leading: IconButton(
                     icon: Icon(Icons.arrow_back),
                     onPressed: () {
-                      Navigator.pop(context,NavigateWithoutAnimation(),);
-                    }
-                ),
-                title: Text("管理银行卡",
+                      Navigator.pop(
+                        context,
+                      );
+                    }),
+                title: Text(
+                  "管理银行卡",
                   style: TextStyle(fontSize: 20.auto),
                 ),
                 bottom: PreferredSize(
                   preferredSize: Size.fromHeight(40),
                   child: Container(
-                      margin: EdgeInsets.symmetric(vertical:20.auto),
+                      margin: EdgeInsets.symmetric(vertical: 20.auto),
                       alignment: Alignment.center,
-                      child:Text(
+                      child: Text(
                         "¥ 0.00",
                         /*_vm.mainAccountBalance ==null?"-":"¥ ${Format().currencyWithDecimalFormat(
                             _vm.mainAccountBalance)}"*/
-                        style: TextStyle(
-                            fontSize: 16.auto,
-                            color: Colors.white),
-                      )
-                  ),
+                        style: TextStyle(fontSize: 16.auto, color: Colors.white),
+                      )),
                 ),
                 flexibleSpace: Image(
                   image: AssetImage("images/home_user_info_bottom_bar_background.png"),
@@ -71,20 +69,22 @@ class _AddCardState extends BaseState<AddCard> {
                 ),
                 backgroundColor: Colors.transparent,
               ),
-              body:Container(
-                padding: EdgeInsets.only(left: 10.auto,right: 10.auto, top: 5.auto, bottom: MediaQuery.of(context).viewInsets.bottom,),
+              body: Container(
+                padding: EdgeInsets.only(
+                  left: 10.auto,
+                  right: 10.auto,
+                  top: 5.auto,
+                  bottom: MediaQuery.of(context).viewInsets.bottom,
+                ),
                 child: ListView(
                   children: [
                     Container(
-                        margin: EdgeInsets.only(left:20.auto, bottom: 10.auto),
+                        margin: EdgeInsets.only(left: 20.auto, bottom: 10.auto),
                         alignment: Alignment.topLeft,
                         child: Text(
                           "添加银行卡",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500
-                          ),
-                        )
-                    ),
+                          style: TextStyle(fontWeight: FontWeight.w500),
+                        )),
                     CustomTextFormField(
                       title: "银行卡号",
                       hintText: "请输入银行卡号",
@@ -92,7 +92,7 @@ class _AddCardState extends BaseState<AddCard> {
                       onFieldSubmitted: (value) => _onTextChange(value),
                       controller: _bankNumController,
                       focusNode: null,
-                      width: context.screenWidth-70.auto,
+                      width: context.screenWidth - 70.auto,
                       textInputType: TextInputType.number,
                       textInputAction: TextInputAction.next,
                     ),
@@ -105,7 +105,7 @@ class _AddCardState extends BaseState<AddCard> {
                         onFieldSubmitted: (value) => _onTextChange(value),
                         controller: _passController,
                         focusNode: null,
-                        width: context.screenWidth-70.auto,
+                        width: context.screenWidth - 70.auto,
                         textInputType: TextInputType.visiblePassword,
                         textInputAction: TextInputAction.done,
                       ),
@@ -115,17 +115,14 @@ class _AddCardState extends BaseState<AddCard> {
                       text: Text(
                         "确定",
                         textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16.auto
-                        ),
+                        style: TextStyle(color: Colors.white, fontSize: 16.auto),
                       ),
-                      onClick: (){
+                      onClick: () {
                         _onClick();
                       },
                       isEnabled: isButtonEnabled,
                       color: CustomColor.theme_bar_gradient_2,
-                      radius: 9.6 ,
+                      radius: 9.6,
                     )
                   ],
                 ),
@@ -136,47 +133,44 @@ class _AddCardState extends BaseState<AddCard> {
   }
 
   _getHintText() => Container(
-    margin: EdgeInsets.only(top: 2.auto, bottom: 20.auto),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Image.asset(
-          "images/card/ic_hint.png",
-          width: 15.auto,
-          height: 15.auto,
-        ),
-        Container(
-          margin: EdgeInsets.only(left: 5.auto),
-          child: Text(
-            "资讯加密处理，仅用银行验证",
-            style: TextStyle(
-                fontSize: 9.auto,
-                color: Colors.red
+        margin: EdgeInsets.only(top: 2.auto, bottom: 20.auto),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              "images/card/ic_hint.png",
+              width: 15.auto,
+              height: 15.auto,
             ),
-          ),
-        )
-      ],
-    ),
-  );
+            Container(
+              margin: EdgeInsets.only(left: 5.auto),
+              child: Text(
+                "资讯加密处理，仅用银行验证",
+                style: TextStyle(fontSize: 9.auto, color: Colors.red),
+              ),
+            )
+          ],
+        ),
+      );
 
-  _onTextChange(String value){
-    if(_bankNumController.text.isNotEmpty && _passController.text.isNotEmpty){
+  _onTextChange(String value) {
+    if (_bankNumController.text.isNotEmpty && _passController.text.isNotEmpty) {
       setState(() {
         isButtonEnabled = true;
       });
-    }else{
+    } else {
       setState(() {
         isButtonEnabled = false;
       });
     }
   }
 
-  _onClick(){
+  _onClick() {
     /* ProgressDialog.show(context);
     _vm.addCard(_bankNumController.text, _passController.text);*/
   }
 
-  _handleApiState(){
+  _handleApiState() {
     /*if (_vm.addCardApiState == null) {
       return;
     }

@@ -1,17 +1,9 @@
-import 'package:animated_widgets/widgets/opacity_animated.dart';
-import 'package:animated_widgets/widgets/rotation_animated.dart';
-import 'package:animated_widgets/widgets/shake_animated_widget.dart';
-import 'package:animated_widgets/widgets/size_animated.dart';
-import 'package:auto_size_text/auto_size_text.dart';
+
 import 'package:flutter/material.dart';
-import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
-import 'package:tgp_flutter/custom/custom_toast.dart';
-import 'package:tgp_flutter/extension/navigate_without_animation.dart';
+
 import 'package:tgp_flutter/extension/screen_apis.dart';
-import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
-import 'package:tgp_flutter/ui/transaction/transaction.dart';
 
 class AnimatedDot extends StatefulWidget {
   final double size;

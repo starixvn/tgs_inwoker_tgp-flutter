@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/custom/custom_toast.dart';
-import 'package:tgp_flutter/extension/navigate_without_animation.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
@@ -10,13 +9,13 @@ import 'package:tgp_flutter/ui/base_state.dart';
 class ProfileTopItem extends StatefulWidget {
   final String title;
   final String imagePath;
-  final Widget route;
+  final String routePath;
 
   ProfileTopItem({
     Key key,
     this.title,
     this.imagePath,
-    this.route,
+    this.routePath,
   }) : super(key: key);
 
   @override
@@ -48,6 +47,6 @@ class _ProfileTopItemState extends BaseState<ProfileTopItem> {
   }
 
   _navigate() => WidgetsBinding.instance.addPostFrameCallback((_) {
-        Navigator.of(context).push(NavigateWithoutAnimation(widget: widget.route));
+        Navigator.of(context).pushNamed("/${widget.routePath}");
       });
 }

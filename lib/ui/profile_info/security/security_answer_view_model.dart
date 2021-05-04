@@ -4,20 +4,24 @@ import 'package:tgp_flutter/repository/base_repository.dart';
 import 'package:tgp_flutter/repository/content_repository.dart';
 import 'package:tgp_flutter/repository/user_repository.dart';
 
-
-class SecurityAnswerViewModel extends BaseViewModel{
+class SecurityAnswerViewModel extends BaseViewModel {
   final userRepo = UserRepository.getSingleton();
   final contentRepo = ContentRepository.getSingleton();
+
   //final authRepo = AuthenticationRepository.getSingleton();
-  var getSecurityQuestionApiState, updateSecurityQuestionApiState,
-      resetQuestionByAnswerApiState, resetQuestionApiState,
-      getResetQuestionTokenApiState, getBasicInfoApiState;
+  var getSecurityQuestionApiState,
+      updateSecurityQuestionApiState,
+      resetQuestionByAnswerApiState,
+      resetQuestionApiState,
+      getResetQuestionTokenApiState,
+      getBasicInfoApiState;
 
   @override
   List<BaseRepository> get repoList => [userRepo];
+
   get userProfile => userRepo.userProfile;
 
-  /*getSecurityQuestion() async{
+/*getSecurityQuestion() async{
     setLoading();
     getSecurityQuestionApiState = await contentRepo.getSecurityQuestion();
     setLoading(false);
