@@ -267,13 +267,11 @@ class _MainCardState extends BaseState<MainCard> {
   _initData() async {
     await _vm.getBankCardList();
     if (_vm.bankCardList.length == 0) {
-      if (isNavigatedToAddCard) {
+      var result = await Navigator.of(context).pushNamed("/add_card");
+      if(result == null)//no result mean no card added
         Navigator.pop(context);
-      } else {
-        Navigator.of(context).pushReplacementNamed('/add_card');
-        Navigator.of(context).popAndPushNamed("/add_card");
-        isNavigatedToAddCard = true;
-      }
+      else
+        _initData();//fetch bank list
       return;
     }
   }
