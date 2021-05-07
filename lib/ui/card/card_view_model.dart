@@ -63,9 +63,6 @@ class CardViewModel extends BaseViewModel {
   addBankCard(String address) async {
     setLoading();
     addBankCardApiState = await bankRepo.addBankCard(pWithdrawalInfo.channelId, pBankType, address);
-    if(addBankCardApiState.isSuccess){
-      getBankCardList();
-    }
     setLoading(false);
     return addBankCardApiState;
   }

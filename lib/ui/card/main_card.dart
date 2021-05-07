@@ -210,8 +210,9 @@ class _MainCardState extends BaseState<MainCard> {
   _buildAddCardItem() => Visibility(
     visible: _vm.bankCardList.length!=3,
     child: InkWell(
-          onTap: () {
-            Navigator.of(context).pushNamed("/add_card");
+          onTap: () async{
+            await Navigator.of(context).pushNamed("/add_card");
+            _initData();//reinitdata after pop from  add card
           },
           child: Container(
             margin: EdgeInsets.only(top: 15.auto, left: 5.auto, right: 5.auto, bottom: 20.auto),
