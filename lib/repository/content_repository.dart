@@ -1,3 +1,4 @@
+import 'package:tgp_flutter/entity/announcement.dart';
 import 'package:tgp_flutter/entity/game.dart';
 import 'package:tgp_flutter/entity/game_provider.dart';
 import 'package:tgp_flutter/entity/game_type.dart';
@@ -68,12 +69,12 @@ class ContentRepository extends BaseRepository {
         .execute();
   }
 
-  Future<EventResult<dynamic>> getAnnouncement() async {
-    return await ApiRequestBuilder<dynamic>(
+  Future<EventResult<List<Announcement>>> getAnnouncement() async {
+    return await ApiRequestBuilder<List<Announcement>>(
             method: HttpMethod.GET,
             isAuthorization: false,
-            endPoint: "api/Game/list",
-            params: {},
+            endPoint: "api/announcement/list",
+            converter: (json) => (json as List<dynamic>).map((e) => Announcement.fromJson(e)).toList(),
             jwtRefresher: jwtAuth)
         .execute();
   }

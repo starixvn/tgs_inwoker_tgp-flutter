@@ -1,85 +1,82 @@
+
 import 'package:tgp_flutter/base_viewmodel.dart';
+import 'package:tgp_flutter/entity/bank_type.dart';
+import 'package:tgp_flutter/entity/withdrawal_info.dart';
 import 'package:tgp_flutter/network/event_result.dart';
+import 'package:tgp_flutter/repository/bank_repository.dart';
 import 'package:tgp_flutter/repository/base_repository.dart';
 import 'package:tgp_flutter/repository/content_repository.dart';
 import 'package:tgp_flutter/repository/user_repository.dart';
-
+import 'package:collection/collection.dart';
 
 class CardViewModel extends BaseViewModel {
   final userRepo = UserRepository.getSingleton();
   final contentRepo = ContentRepository.getSingleton();
-  //final walletRepo = WalletRepository.getSingleton();
+  final bankRepo = BankRepository.getSingleton();
 
   @override
-  List<BaseRepository> get repoList => [userRepo, contentRepo,];
-  /*get mainAccountBalance => walletRepo.mainAccountWalletBalance;
-  get userProfile => userRepo.userProfile;
+  List<BaseRepository> get repoList => [
+        userRepo,
+        contentRepo,
+      ];
 
-  var addCardApiState, deleteCardApiState, editSurnameApiState,
-      updateWithdrawPasswordApiState, getBankCardApiState;
+  get wallet => userRepo.wallet;
 
-  getBankCardList() async{
+  var getBankCardListApiState, getWithdrawalInfoListApiState, addBankCardApiState, deleteBankCardApiState;
+  Map<BankType, List<WithdrawalInfo>> bankTypeList = new Map<BankType, List<WithdrawalInfo>>();
+  var bankCardList, withdrawalInfoList;
+  BankType pBankType = BankType.CRYPTO;
+  WithdrawalInfo pWithdrawalInfo;
+
+  getBankCardList() async {
     setLoading();
-    getBankCardApiState = await userRepo.getBankCardList();
+    getBankCardListApiState = await bankRepo.getBankCardList();
+    if(getBankCardListApiState.isSuccess){
+      bankCardList = getBankCardListApiState.result;
+    }
     setLoading(false);
-  return getBankCardApiState;
+    return getBankCardListApiState;
   }
 
-  addCard(String bankAccount, String safePassword) async{
+  getWithdrawalInfoList() async {
     setLoading();
-    addCardApiState  = await userRepo.addCard(bankAccount, safePassword);
-    if(addCardApiState.isSuccess){
+    getWithdrawalInfoListApiState = await bankRepo.getWithdrawalInfoList();
+    if(getWithdrawalInfoListApiState.isSuccess){
+      List<WithdrawalInfo> list = getWithdrawalInfoListApiState.result;
+      bankTypeList = groupBy(list, (obj) => obj.bankType);
+    }
+    setLoading(false);
+    return getWithdrawalInfoListApiState;
+  }
+
+  onSelectedBankType(BankType bankType) async{
+    await getWithdrawalInfoList();
+    pBankType = bankType;
+    withdrawalInfoList = bankTypeList[bankType];
+    notifyListeners();
+  }
+
+  onSelectedWithdrawalInfo(WithdrawalInfo withdrawalInfo){
+    pWithdrawalInfo = withdrawalInfo;
+  }
+
+  addBankCard(String address) async {
+    setLoading();
+    addBankCardApiState = await bankRepo.addBankCard(pWithdrawalInfo.channelId, pBankType, address);
+    if(addBankCardApiState.isSuccess){
       getBankCardList();
     }
     setLoading(false);
-    return addCardApiState;
+    return addBankCardApiState;
   }
 
-  deleteCard(int bankAccountId) async{
+  deleteBankCard(String bankInfoId) async{
     setLoading();
-    deleteCardApiState  = await userRepo.deleteCard(bankAccountId);
-    setLoading(false);
-    return deleteCardApiState;
-  }
-
-  editSurname(String name) async{
-    setLoading();
-    editSurnameApiState  = await userRepo.editSurname(name);
-    if(editSurnameApiState.isSuccess){
-      userRepo.getBasicInfo();
+    deleteBankCardApiState = await bankRepo.deleteBankCard(bankInfoId);
+    if(deleteBankCardApiState.isSuccess) {
+      getBankCardList();
     }
     setLoading(false);
-    return editSurnameApiState;
+    return deleteBankCardApiState;
   }
-
-  updateWithdrawPassword(String password, {String oldPassword = ""}) async{
-    setLoading();
-    updateWithdrawPasswordApiState  = await userRepo.updateWithdrawPassword(oldPassword, password);
-    if(updateWithdrawPasswordApiState.isSuccess){
-      userRepo.getBasicInfo();
-    }
-    setLoading(false);
-    return updateWithdrawPasswordApiState;
-  }
-
-  resetApiState({
-   //bool isGetBankCardApiState= false,
-    bool isAddCardApiState = false,
-    bool isEditSurnameApiState = false,
-    bool isUpdateWithdrawPasswordApiState = false,
-    bool isDeleteCardApiState = false,
-  }){
-    if(isAddCardApiState) {
-      addCardApiState = null;
-    }
-    else if(isEditSurnameApiState){
-      editSurnameApiState = null;
-    }
-    else if(isUpdateWithdrawPasswordApiState){
-      updateWithdrawPasswordApiState = null;
-    }
-    else if(isDeleteCardApiState){
-      deleteCardApiState = null;
-    }
-  }*/
 }

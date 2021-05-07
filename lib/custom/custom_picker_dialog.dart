@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:tgp_flutter/entity/bank_type.dart';
 import 'package:tgp_flutter/entity/game_provider.dart';
 import 'package:tgp_flutter/entity/payment.dart';
+import 'package:tgp_flutter/entity/withdrawal_info.dart';
 import 'package:tgp_flutter/extension/format.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
@@ -59,12 +61,15 @@ class _CustomPickerDialogState extends BaseState<CustomPickerDialog> {
   }
 
   _getText(int index) {
-    if (widget.list is List<Payment>) {
+    if (widget.list is List<Payment> || widget.list is List<WithdrawalInfo>) {
       var name = widget.list[index].channelName.replaceAll(RegExp("_"), " ");
       return name;
     } else if (widget.list is List<GameProvider>) {
       GameProvider game = widget.list[index];
       return game.name;
+    } else if (widget.list is List<BankType>) {
+      BankType bankType = widget.list[index];
+      return bankType.displayName;
     } else
       return widget.list[index];
   }

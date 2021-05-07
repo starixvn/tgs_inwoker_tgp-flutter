@@ -7,12 +7,12 @@ import 'package:tgp_flutter/entity/payment.dart';
 import 'package:tgp_flutter/network/event_result.dart';
 import 'package:tgp_flutter/repository/base_repository.dart';
 import 'package:tgp_flutter/repository/content_repository.dart';
-import 'package:tgp_flutter/repository/deposit_repository.dart';
+import 'package:tgp_flutter/repository/bank_repository.dart';
 import 'package:tgp_flutter/repository/user_repository.dart';
 
 class DepositViewModel extends BaseViewModel {
   final userRepo = UserRepository.getSingleton();
-  final depositRepo = DepositRepository.getSingleton();
+  final depositRepo = BankRepository.getSingleton();
 
   @override
   List<BaseRepository> get repoList => [];

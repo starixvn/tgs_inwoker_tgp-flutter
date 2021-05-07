@@ -198,6 +198,8 @@
   "hot_game": "Hot Game",
   "edit": "Edit",
   "phone_format_error_msg": "Format of the phone number is incorrect",
-  "email_format_error_msg": "Format of the email is incorrect"
+  "email_format_error_msg": "Format of the email is incorrect",
+  "bank_type": "Bank Type",
+  "bank_name": "Bank Name"
 }
 

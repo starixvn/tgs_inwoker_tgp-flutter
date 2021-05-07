@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:tgp_flutter/entity/bank_card.dart';
 import 'package:tgp_flutter/entity/http_method.dart';
 import 'package:tgp_flutter/entity/response/check_username_response.dart';
 import 'package:tgp_flutter/entity/response/edit_password_response.dart';
@@ -8,6 +9,7 @@ import 'package:tgp_flutter/entity/response/register_response.dart';
 import 'package:tgp_flutter/entity/bet_transaction.dart';
 import 'package:tgp_flutter/entity/user_profile.dart';
 import 'package:tgp_flutter/entity/wallet.dart';
+import 'package:tgp_flutter/entity/withdrawal_info.dart';
 import 'package:tgp_flutter/network/api_request_builder.dart';
 import 'package:tgp_flutter/network/event_result.dart';
 import 'package:tgp_flutter/network/services/api_service.dart';
@@ -187,14 +189,5 @@ class UserRepository extends BaseRepository {
             consumer: (result) => wallet = result,
             jwtRefresher: jwtAuth)
         .execute();
-
-    /*return await ApiRequestBuilder<UserProfile>(
-        method: HttpMethod.GET,
-        endPoint: "api/Player/info",
-        converter: (json) => UserProfile.fromJson(json),
-
-        consumer: (result) => userProfile = result,
-        jwtRefresher: jwtAuth)
-        .execute();*/
   }
 }

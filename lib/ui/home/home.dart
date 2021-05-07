@@ -64,6 +64,7 @@ class _HomeState extends BaseState<Home> {
 
   @override
   void initState() {
+    _vm.getAnnouncement();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _vm.resumeIfNeed();
     });
@@ -151,16 +152,16 @@ class _HomeState extends BaseState<Home> {
           margin: EdgeInsets.only(left: 10.auto, right: 10.auto),
           height: 18.auto,
           child: Marquee(
-            text: marquee,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 10.auto,
-            ),
-            scrollAxis: Axis.horizontal,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            blankSpace: 5.auto,
-            pauseAfterRound: Duration(seconds: 1),
-          ),
+              text: _vm.announcement?.content ?? marquee,
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 10.auto,
+              ),
+              scrollAxis: Axis.horizontal,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              blankSpace: 5.auto,
+              pauseAfterRound: Duration(seconds: 1),
+              showFadingOnlyWhenScrolling: false),
         ),
       );
 

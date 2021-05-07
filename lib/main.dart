@@ -9,6 +9,7 @@ import 'package:tgp_flutter/src/gradient_decoration.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
 import 'package:tgp_flutter/ui/card/add_card.dart';
 import 'package:tgp_flutter/ui/card/main_card.dart';
+import 'package:tgp_flutter/ui/customer_service/customer_service.dart';
 import 'package:tgp_flutter/ui/deposit/deposit.dart';
 import 'package:tgp_flutter/ui/forgot_password/forgot_password.dart';
 import 'package:tgp_flutter/ui/frequent_question/frequent_question.dart';
@@ -130,6 +131,7 @@ class _MyAppState extends BaseState<MyApp> {
           RoutePath.forgotPassword: (context) => ForgotPassword(),
           RoutePath.language: (context) => LanguageView(),
           RoutePath.addCard: (context) => AddCard(),
+          RoutePath.customerService: (context) => CustomerService(),
         },
         localizationsDelegates: [
           MyLocalizations.delegate,
@@ -155,8 +157,9 @@ class _MyAppState extends BaseState<MyApp> {
 
 class MyHomePage extends StatefulWidget {
   final bool isFirstRun;
+  final int index;
 
-  MyHomePage({this.isFirstRun});
+  MyHomePage({this.isFirstRun, this.index});
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -164,11 +167,11 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends BaseState<MyHomePage> {
   int currentBottomIndex = 0;
-
   List _page;
 
   @override
   void initState() {
+    if(widget.index !=null)currentBottomIndex = widget.index;
     super.initState();
   }
 
@@ -180,7 +183,7 @@ class _MyHomePageState extends BaseState<MyHomePage> {
       ),
       PromotionPage(),
       Menu(),
-      Login(),
+      CustomerService(),
       Profile(),
     ];
     return ScrollConfiguration(

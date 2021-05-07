@@ -44,9 +44,9 @@ class _CustomPickerState extends BaseState<CustomPicker> {
             Container(
               margin: EdgeInsets.only(bottom: 8.auto,),
               child: Text(
-                getTranslatedText(widget.title)??"",
+                getTranslatedText(widget.title)??widget.title,
                 style: TextStyle(
-                    fontSize: 9.auto
+                    fontSize: 9.auto,
                 ),
               ),
             ),

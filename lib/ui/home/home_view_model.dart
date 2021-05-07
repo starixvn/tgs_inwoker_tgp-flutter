@@ -1,4 +1,5 @@
 import 'package:tgp_flutter/base_viewmodel.dart';
+import 'package:tgp_flutter/entity/announcement.dart';
 import 'package:tgp_flutter/entity/game.dart';
 import 'package:tgp_flutter/entity/game_provider.dart';
 import 'package:tgp_flutter/entity/game_type.dart';
@@ -20,6 +21,7 @@ class HomeViewModel extends BaseViewModel {
   get wallet => userRepo.wallet;
   bool isNotLogin = false, isExpired = false;
   var getWalletBalanceApiState, getBasicInfoApiState, getAnnouncementApiState;
+  Announcement announcement;
 
   resumeIfNeed() async {
     setLoading();
@@ -46,7 +48,7 @@ class HomeViewModel extends BaseViewModel {
     setLoading();
     getAnnouncementApiState = await contentRepo.getAnnouncement();
     if (getAnnouncementApiState.isSuccess) {
-
+      announcement = getAnnouncementApiState.result.first;
     }
     setLoading(false);
     return getAnnouncementApiState;
