@@ -24,7 +24,7 @@ class CardViewModel extends BaseViewModel {
 
   var getBankCardListApiState, getWithdrawalInfoListApiState, addBankCardApiState, deleteBankCardApiState;
   Map<BankType, List<WithdrawalInfo>> bankTypeList = new Map<BankType, List<WithdrawalInfo>>();
-  var bankCardList, withdrawalInfoList;
+  List bankCardList, withdrawalInfoList;
   BankType pBankType = BankType.CRYPTO;
   WithdrawalInfo pWithdrawalInfo;
 
@@ -50,14 +50,17 @@ class CardViewModel extends BaseViewModel {
   }
 
   onSelectedBankType(BankType bankType) async{
-    await getWithdrawalInfoList();
+   if(bankTypeList == null|| bankTypeList.isEmpty) await getWithdrawalInfoList();
     pBankType = bankType;
     withdrawalInfoList = bankTypeList[bankType];
     notifyListeners();
   }
 
-  onSelectedWithdrawalInfo(WithdrawalInfo withdrawalInfo){
-    pWithdrawalInfo = withdrawalInfo;
+  onSelectedWithdrawalInfo({WithdrawalInfo withdrawalInfo}) async{
+    if(bankTypeList == null|| bankTypeList.isEmpty) await getWithdrawalInfoList();
+    if(withdrawalInfo== null) pWithdrawalInfo = withdrawalInfoList.first;
+    else pWithdrawalInfo = withdrawalInfo;
+    notifyListeners();
   }
 
   addBankCard(String address) async {
@@ -71,7 +74,6 @@ class CardViewModel extends BaseViewModel {
     setLoading();
     deleteBankCardApiState = await bankRepo.deleteBankCard(bankInfoId);
     if(deleteBankCardApiState.isSuccess) {
-      getBankCardList();
     }
     setLoading(false);
     return deleteBankCardApiState;
