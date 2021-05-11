@@ -34,7 +34,7 @@ class _MainCardState extends BaseState<MainCard> {
   @override
   void initState() {
     _vm.getWithdrawalInfoList();
-    _initData();
+    _getBankCardList();
     super.initState();
   }
 
@@ -224,7 +224,7 @@ class _MainCardState extends BaseState<MainCard> {
         child: InkWell(
           onTap: () async {
             await Navigator.of(context).pushNamed("/add_card");
-            _initData(); //reinitdata after pop from  add card
+            _getBankCardList(); //reinitdata after pop from  add card
           },
           child: Container(
             margin: EdgeInsets.only(top: 15.auto, left: 5.auto, right: 5.auto, bottom: 20.auto),
@@ -272,16 +272,16 @@ class _MainCardState extends BaseState<MainCard> {
       );
 
   _delete(BankCard card, int index) async {
-    ProgressDialog.show(context);
+    if(_vm.bankCardList.length > 1)//only show when existing list more than 1, else overlapped
+      ProgressDialog.show(context);
     setState(() {
       _vm.bankCardList.removeAt(index);
     });
     await _vm.deleteBankCard(card.id);
   }
 
-  _initData() async {
-    await _vm.getBankCardList();
-    _checkBankCardListLength();
+  _getBankCardList() async {
+     _vm.getBankCardList();
   }
 
   _checkBankCardListLength() async {
@@ -290,8 +290,7 @@ class _MainCardState extends BaseState<MainCard> {
       if (result == null) //no result mean no card added
         Navigator.pop(context);
       else {
-        _initData();
-        _checkBankCardListLength();
+        _getBankCardList();
       } //fetch bank list
       return;
     }
@@ -302,10 +301,10 @@ class _MainCardState extends BaseState<MainCard> {
       if (!isInitLoading) {
         isInitLoading = true;
       }
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _checkBankCardListLength();//check card list every time fetched
+      });
     });
-    handleApiState(_vm.deleteBankCardApiState, onSuccess: () async {
-      await _vm.getBankCardList();
-      _checkBankCardListLength();
-    });
+
   }
 }

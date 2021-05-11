@@ -73,8 +73,7 @@ class CardViewModel extends BaseViewModel {
   deleteBankCard(String bankInfoId) async{
     setLoading();
     deleteBankCardApiState = await bankRepo.deleteBankCard(bankInfoId);
-    if(deleteBankCardApiState.isSuccess) {
-    }
+    getBankCardList();//incase failed, had to get back the deleted card
     setLoading(false);
     return deleteBankCardApiState;
   }
