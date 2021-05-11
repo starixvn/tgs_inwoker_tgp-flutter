@@ -16,6 +16,10 @@ import 'package:tgp_flutter/ui/deposit/deposit_view_model.dart';
 import 'package:tgp_flutter/ui/deposit/deposit_web.dart';
 
 class DepositMethod extends StatefulWidget {
+  final String paymentCode;
+
+  DepositMethod({Key key, this.paymentCode}) : super(key: key);
+
   @override
   _DepositMethodState createState() => _DepositMethodState();
 }
@@ -34,7 +38,7 @@ class _DepositMethodState extends BaseState<DepositMethod> {
 
   void initState() {
     methodPickerText = _vm.pMethod;
-    onSelectedMethod(methodPickerText);
+    onSelectedMethod(methodPickerText, paymentCode: widget.paymentCode);
     super.initState();
   }
 
@@ -102,7 +106,7 @@ class _DepositMethodState extends BaseState<DepositMethod> {
               onChanged: (value) {
                 setState(() {
                   if (value is String)
-                    onSelectedMethod(value);
+                    onSelectedMethod(value,paymentCode: widget.paymentCode );
                   else if (value is Payment) {
                     onSelectedChannel(
                       value,
@@ -187,8 +191,8 @@ class _DepositMethodState extends BaseState<DepositMethod> {
     _vm.getManualDepositId(_bankNameController.text, _amountController.text, _payment.id);
   }
 
-  onSelectedMethod(String method) async {
-    await _vm.filterMethod(method: method);
+  onSelectedMethod(String method, {String paymentCode}) async {
+    await _vm.filterMethod(method: method, paymentCode: paymentCode);
     onSelectedChannel(_vm.paymentList.first);
     setState(() {
       methodPickerText = method;

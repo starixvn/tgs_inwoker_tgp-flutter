@@ -92,6 +92,8 @@ flutter:
     - images/profile_info/
     - images/referFriend/
     - images/language/
+    - images/banner/
+
 
     - i18n/
 

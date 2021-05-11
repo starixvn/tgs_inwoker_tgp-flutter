@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter/custom/custom_dialog.dart';
+import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/custom/leave_game_dialog.dart';
 import 'package:tgp_flutter/entity/game.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
@@ -54,7 +55,8 @@ class _GameWebState extends BaseState<GameWeb> {
         });
   }
 
-  _buildAppBar() => AppBar(
+  _buildAppBar() =>
+      AppBar(
         automaticallyImplyLeading: false,
         centerTitle: true,
         flexibleSpace: Container(
@@ -84,30 +86,26 @@ class _GameWebState extends BaseState<GameWeb> {
 
   _buildWebView() {
     return InAppWebView(
-      initialUrl: _getValidUrl(),
-      initialOptions: InAppWebViewGroupOptions(
-          crossPlatform: InAppWebViewOptions(
-            debuggingEnabled: true,
-            javaScriptEnabled: true,
-          ),
-          android: AndroidInAppWebViewOptions(
-            useWideViewPort: true,
-            mixedContentMode: AndroidMixedContentMode.MIXED_CONTENT_ALWAYS_ALLOW,
-          )),
-      onWebViewCreated: (InAppWebViewController controller) {
-        _webViewController = controller;
-        _webViewController.loadUrl(url: _getValidUrl());
-      },
-      onLoadStart: (InAppWebViewController controller, String url) {
-        setState(() {
-          this.url = url;
-        });
-      },
-      onLoadStop: (InAppWebViewController controller, String url) async {
-        setState(() {
-          this.url = url;
-        });
-      },
+        initialUrl: _getValidUrl(),
+        initialOptions: InAppWebViewGroupOptions(
+            crossPlatform: InAppWebViewOptions(
+              debuggingEnabled: true,
+              javaScriptEnabled: true,
+            ),
+            android: AndroidInAppWebViewOptions(
+              useWideViewPort: true,
+              mixedContentMode: AndroidMixedContentMode.MIXED_CONTENT_ALWAYS_ALLOW,
+            )),
+        onWebViewCreated: (InAppWebViewController controller) {
+          _webViewController = controller;
+          _webViewController.loadUrl(url: _getValidUrl());
+        },
+        onLoadStart: (InAppWebViewController controller, String url) {
+          ProgressDialog.show(context);
+        },
+        onLoadStop: (InAppWebViewController controller, String url) async {
+          ProgressDialog.hide();
+        },
     );
   }
 

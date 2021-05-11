@@ -9,12 +9,17 @@ class Payment {
   Payment();
 
   String id;
+  @JsonKey(name: "channelname")
   String channelName;
+  @JsonKey(name: "transferlimit")
   TransferLimit transferLimit;
-  @JsonKey(name: "payment_id")
+  @JsonKey(name: "paymentid")
   String paymentId;
+  @JsonKey(name: "paymentcode")
   String paymentCode;
+  @JsonKey(name: "methodid")
   String methodId;
+  @JsonKey(name: "methodcode")
   String methodCode;
 
   factory Payment.fromJson(Map<String, dynamic> json) => _$PaymentFromJson(json);

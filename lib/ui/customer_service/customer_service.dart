@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:tgp_flutter/custom/custom_picker_dialog.dart';
+import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
@@ -51,14 +53,10 @@ class _CustomerServiceState extends BaseState<CustomerService> {
             _webViewController.loadUrl(url: url);
           },
           onLoadStart: (InAppWebViewController controller, String url) {
-            setState(() {
-              this.url = url;
-            });
+            ProgressDialog.show(context);
           },
           onLoadStop: (InAppWebViewController controller, String url) async {
-            setState(() {
-              this.url = url;
-            });
+            ProgressDialog.hide();
           },
         ));
   }

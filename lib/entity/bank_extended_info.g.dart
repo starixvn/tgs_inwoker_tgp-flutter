@@ -8,12 +8,16 @@ part of 'bank_extended_info.dart';
 
 BankExtendedInfo _$BankExtendedInfoFromJson(Map<String, dynamic> json) {
   return BankExtendedInfo()
-    ..name = json['name'] as String
-    ..bankAccount = json['bankAccount'] as String;
+    ..channel = json['channel'] as String
+    ..systemId = json['systemId'] as String
+    ..systemKey = json['systemKey'] as String
+    ..channelCurrency = json['channelCurrency'] as String;
 }
 
 Map<String, dynamic> _$BankExtendedInfoToJson(BankExtendedInfo instance) =>
     <String, dynamic>{
-      'name': instance.name,
-      'bankAccount': instance.bankAccount,
+      'channel': instance.channel,
+      'systemId': instance.systemId,
+      'systemKey': instance.systemKey,
+      'channelCurrency': instance.channelCurrency,
     };

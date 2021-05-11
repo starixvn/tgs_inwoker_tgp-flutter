@@ -20,7 +20,7 @@ class DepositViewModel extends BaseViewModel {
   Map<String, List<Payment>> depositMethodList = new Map<String, List<Payment>>();
   Map<String, List<Payment>> paymentCodeList = new Map<String, List<Payment>>();
   List<Payment> paymentList;
-  String pMethod = "Crypto";
+  String pMethod = "Crypto", pPaymentCode = "LeePay";
   var depositOrder;
 
   get wallet => userRepo.wallet;
@@ -37,10 +37,11 @@ class DepositViewModel extends BaseViewModel {
     return getPaymentApiState;
   }
 
-  filterMethod({String method}) async{
-    await getPayment();
+  filterMethod({String method, String paymentCode}) async{
+    if(paymentList ==null) await getPayment();
     if(method !=null) pMethod = method;
-    paymentList = depositMethodList[pMethod];
+    if(paymentCode !=null) pPaymentCode = paymentCode;
+    paymentList = depositMethodList[pMethod].where((element) => element.paymentCode == pPaymentCode).toList();
     notifyListeners();
   }
 

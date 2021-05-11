@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter/custom/custom_dialog.dart';
 import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
+import 'package:tgp_flutter/entity/language.dart';
 import 'package:tgp_flutter/entity/user_profile.dart';
 import 'package:tgp_flutter/localizations/language_provider.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
@@ -26,7 +27,8 @@ class Home extends StatefulWidget {
 
 class _HomeState extends BaseState<Home> {
   List<String> imgList = [
-    'images/banner_1.jpg',
+    'banner_1',
+    'banner_2',
     //'images/banner_2.jpg'
   ];
   String marquee = "《GD真人维护公告》GD真人将于 7 月 2 8 日 09:00 至 14:00 进行维护 维护期间不提供游戏相关服务。若有问题欢迎与在线客服联系 如有问题欢迎与在线客服联系，谢谢";
@@ -98,26 +100,32 @@ class _HomeState extends BaseState<Home> {
         });
   }
 
-  _buildImageSlider() => Container(
-        height: context.screenHeight / 5,
-        child: Swiper(
-          itemBuilder: (BuildContext context, int index) {
-            return AspectRatio(
-              aspectRatio: 360 / 200,
-              child: Image.asset(
-                imgList[index],
-                fit: BoxFit.fill,
-              ),
-            );
-          },
-          autoplay: true,
-          itemCount: imgList.length,
-          pagination: new SwiperPagination(
-              alignment: Alignment.bottomCenter,
-              margin: new EdgeInsets.all(context.screenHeight / 90),
-              builder: new DotSwiperPaginationBuilder(color: Colors.grey, activeColor: Colors.red)),
-        ),
-      );
+  _buildImageSlider() {
+    var list = LanguageProvider().list;
+    Language deviceLanguage = list.singleWhere((e) => e.locale == Localizations.localeOf(context));
+    String imagePath;
+    return Container(
+      height: context.screenHeight / 5,
+      child: Swiper(
+        itemBuilder: (BuildContext context, int index) {
+          imagePath = deviceLanguage.code == "en"?"images/banner/${imgList[index]}_en.png":"images/banner/${imgList[index]}.png";
+          return AspectRatio(
+            aspectRatio: 360 / 200,
+            child: Image.asset(
+              imagePath,
+              fit: BoxFit.fill,
+            ),
+          );
+        },
+        autoplay: true,
+        itemCount: imgList.length,
+        pagination: new SwiperPagination(
+            alignment: Alignment.bottomCenter,
+            margin: new EdgeInsets.all(context.screenHeight / 90),
+            builder: new DotSwiperPaginationBuilder(color: Colors.grey, activeColor: Colors.red)),
+      ),
+    );
+  }
 
   _buildBorderCorner() => Positioned(
         top: context.screenHeight / 5.3,
@@ -146,24 +154,27 @@ class _HomeState extends BaseState<Home> {
         ],
       );
 
-  _buildTextMarquee() => Expanded(
-        child: Container(
-          decoration: BoxDecoration(color: CustomColor.theme_bar_gradient_1, borderRadius: BorderRadius.circular(10.0)),
-          margin: EdgeInsets.only(left: 10.auto, right: 10.auto),
-          height: 18.auto,
-          child: Marquee(
-              text: _vm.announcement?.content ?? marquee,
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 10.auto,
-              ),
-              scrollAxis: Axis.horizontal,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              blankSpace: 5.auto,
-              pauseAfterRound: Duration(seconds: 1),
-              showFadingOnlyWhenScrolling: false),
-        ),
-      );
+  _buildTextMarquee() {
+    var announcement = _vm.announcement?.content?.replaceAll(RegExp("/"), " ");
+    return Expanded(
+      child: Container(
+        decoration: BoxDecoration(color: CustomColor.theme_bar_gradient_1, borderRadius: BorderRadius.circular(10.0)),
+        margin: EdgeInsets.only(left: 10.auto, right: 10.auto),
+        height: 18.auto,
+        child: Marquee(
+            text: announcement ?? marquee,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 10.auto,
+            ),
+            scrollAxis: Axis.horizontal,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            blankSpace: 5.auto,
+            pauseAfterRound: Duration(seconds: 1),
+            showFadingOnlyWhenScrolling: false),
+      ),
+    );
+  }
 
   navigateToLogin() {
     WidgetsBinding.instance.addPostFrameCallback((_) {

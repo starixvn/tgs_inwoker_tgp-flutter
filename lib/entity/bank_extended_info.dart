@@ -8,8 +8,10 @@ part 'bank_extended_info.g.dart';
 class BankExtendedInfo {
   BankExtendedInfo();
 
-  String name;
-  String bankAccount;
+  String channel;
+  String systemId;
+  String systemKey;
+  String channelCurrency;
 
   factory BankExtendedInfo.fromJson(Map<String, dynamic> json) => _$BankExtendedInfoFromJson(json);
   Map<String, dynamic> toJson() => _$BankExtendedInfoToJson(this);

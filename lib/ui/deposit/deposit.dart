@@ -26,8 +26,8 @@ class _DepositState extends BaseState<Deposit> {
 
   @override
   void initState() {
-    super.initState();
     _vm.filterMethod();
+    super.initState();
   }
 
   Widget build(BuildContext context) {
@@ -74,7 +74,13 @@ class _DepositState extends BaseState<Deposit> {
                           ),
                         ),
                         Expanded(
-                          child: DepositMethod(),
+                          child: TabBarView(
+                            children: List.generate(_vm.paymentCodeList.keys.length,(index){
+                              return DepositMethod(
+                                paymentCode: _vm.paymentCodeList.keys.toList()[index],
+                              );
+                            }).toList(),
+                          ),
                         )
                       ],
                     ),

@@ -9,22 +9,22 @@ part of 'payment.dart';
 Payment _$PaymentFromJson(Map<String, dynamic> json) {
   return Payment()
     ..id = json['id'] as String
-    ..channelName = json['channelName'] as String
-    ..transferLimit = json['transferLimit'] == null
+    ..channelName = json['channelname'] as String
+    ..transferLimit = json['transferlimit'] == null
         ? null
-        : TransferLimit.fromJson(json['transferLimit'] as Map<String, dynamic>)
-    ..paymentId = json['payment_id'] as String
-    ..paymentCode = json['paymentCode'] as String
-    ..methodId = json['methodId'] as String
-    ..methodCode = json['methodCode'] as String;
+        : TransferLimit.fromJson(json['transferlimit'] as Map<String, dynamic>)
+    ..paymentId = json['paymentid'] as String
+    ..paymentCode = json['paymentcode'] as String
+    ..methodId = json['methodid'] as String
+    ..methodCode = json['methodcode'] as String;
 }
 
 Map<String, dynamic> _$PaymentToJson(Payment instance) => <String, dynamic>{
       'id': instance.id,
-      'channelName': instance.channelName,
-      'transferLimit': instance.transferLimit,
-      'payment_id': instance.paymentId,
-      'paymentCode': instance.paymentCode,
-      'methodId': instance.methodId,
-      'methodCode': instance.methodCode,
+      'channelname': instance.channelName,
+      'transferlimit': instance.transferLimit,
+      'paymentid': instance.paymentId,
+      'paymentcode': instance.paymentCode,
+      'methodid': instance.methodId,
+      'methodcode': instance.methodCode,
     };

@@ -26,6 +26,7 @@ class ContentRepository extends BaseRepository {
 
   Future<EventResult<List<GameProvider>>> getGameProviderList() async {
     return await ApiRequestBuilder<List<GameProvider>>(
+      isAuthorization: false,
             method: HttpMethod.GET,
             endPoint: "api/GameProvider/list",
             params: {
@@ -41,6 +42,7 @@ class ContentRepository extends BaseRepository {
 
   Future<EventResult<List<Game>>> getGameList(String gamePlatformCode, GameType gameType) async {
     return await ApiRequestBuilder<List<Game>>(
+      isAuthorization: false,
             method: HttpMethod.GET,
             endPoint: "api/Game/list",
             params: {

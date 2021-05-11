@@ -226,7 +226,7 @@ class _AddCardState extends BaseState<AddCard> {
                 setState(() {
                   if (value is BankType)
                     onSelectedBankType(bankType: value);
-                  else if (value is WithdrawalInfo) onSelectedWithdrawalInfo(value);
+                  else if (value is WithdrawalInfo) onSelectedWithdrawalInfo(withdrawalInfo:value);
                   Navigator.pop(context);
                 });
               });
@@ -247,17 +247,17 @@ class _AddCardState extends BaseState<AddCard> {
   onSelectedBankType({BankType bankType}) async {
     if(bankType == null) bankType=_vm.pBankType;
     await _vm.onSelectedBankType(bankType);
-    onSelectedWithdrawalInfo(_vm.withdrawalInfoList.first);
+    onSelectedWithdrawalInfo();
     setState(() {
       isCrypto = bankType == BankType.CRYPTO;
       bankTypePickerText = bankType.displayName;
     });
   }
 
-  onSelectedWithdrawalInfo(WithdrawalInfo withdrawalInfo) {
-    _vm.onSelectedWithdrawalInfo(withdrawalInfo);
+  onSelectedWithdrawalInfo({WithdrawalInfo withdrawalInfo}) async{
+    await _vm.onSelectedWithdrawalInfo(withdrawalInfo:withdrawalInfo);
     setState(() {
-      bankNamePickerText = withdrawalInfo.channelName.replaceAll(RegExp("_"), " ");
+      bankNamePickerText = _vm.pWithdrawalInfo.channelName.replaceAll(RegExp("_"), " ");
     });
   }
 
