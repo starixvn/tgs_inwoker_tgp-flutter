@@ -30,6 +30,9 @@ class Game {
      case "PP":
        return "PragmaticPlay";
        break;
+     case "KY":
+       return "KY";
+       break;
      default:
        return "Habanero";
        break;

@@ -14,20 +14,35 @@ class GameViewItem extends StatefulWidget {
   final ScrollController controller;
   final List<dynamic> gameProviderList;
   final Function(GameProvider2) onGameClick;
+  final Key key;
 
-  GameViewItem({@required this.controller, this.gameProviderList, this.onGameClick});
+
+  GameViewItem(this.key,{@required this.controller, this.gameProviderList, this.onGameClick}): super(key: key);
 
   @override
-  _GameViewItemState createState() => _GameViewItemState();
+  GameViewItemState createState() => GameViewItemState();
+
 }
 
-class _GameViewItemState extends BaseState<GameViewItem> {
+class GameViewItemState extends BaseState<GameViewItem> {
+double _imageRatio = 750 / 330;
+double _containerPaddingRight = 5.auto;
+double _listViewPaddingRight = 5.auto;
+double _itemPaddingRight = 5.auto;
+double _itemPaddingLeft = (8.5).auto;
+double _itemPaddingTop = (12.5).auto;
+double _itemPaddingBottom = (5).auto;
+
+double get _itemWidth =>  context.size.width-_containerPaddingRight-_listViewPaddingRight-_itemPaddingRight-_itemPaddingLeft;
+double get itemHeight => _itemWidth*(1/_imageRatio)+_itemPaddingTop+_itemPaddingBottom;
+
+
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: Container(
         padding: EdgeInsets.only(
-          right: 5.auto,
+          right: _containerPaddingRight,
         ),
         decoration: BoxDecoration(color: CustomColor.very_light_pink_four, borderRadius: BorderRadius.circular(5.auto)),
         child: RawScrollbar(
@@ -37,14 +52,14 @@ class _GameViewItemState extends BaseState<GameViewItem> {
           radius: Radius.circular(1.4),
           controller: widget.controller,
           child: ListView(
-              padding: EdgeInsets.only(right: 5.auto),
+              padding: EdgeInsets.only(right: _listViewPaddingRight),
               controller: widget.controller,
               children: widget.gameProviderList
                   .expand((element) => element)
                   .toList()
                   .map((item) => Container(
-                      padding: EdgeInsets.only(left: (8.5).auto, right: 5.auto, top: (12.5).auto, bottom: 5.auto),
-                      child: GestureDetector(onTap: () => widget.onGameClick(item), child: _buildImage(item))))
+                  padding: EdgeInsets.only(left: _itemPaddingLeft, right:_itemPaddingRight, top: _itemPaddingTop, bottom: _itemPaddingBottom),
+                  child: GestureDetector(onTap: () => widget.onGameClick(item), child: _buildImage(item))))
                   .toList()),
         ),
       ),
@@ -59,34 +74,34 @@ class _GameViewItemState extends BaseState<GameViewItem> {
   }
 
   _buildImage(GameProvider2 gameProvider) => Stack(
-        children: [
-          AspectRatio(
-            aspectRatio: 750 / 330,
-            child: Container(
-                color: Colors.blue,
-                alignment: Alignment.center,
-                child: Image.asset(
-                  _getImagePath(gameProvider),
-                  fit: BoxFit.cover,
-                )),
-          ),
-          Positioned(
-            bottom: context.screenWidth / 30,
-            left: context.screenWidth / 12,
-            child: Container(
-              width: 74.auto,
-              alignment: Alignment.center,
-              padding: EdgeInsets.only(top: 5.auto, bottom: 5.auto),
-              decoration: BoxDecoration(image: DecorationImage(image: AssetImage("images/game/btn_start_game.png"))),
-              child: Text(
-                getTranslatedText("start_game"),
-                style: TextStyle(
-                  fontSize: 10.auto,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+    children: [
+      AspectRatio(
+        aspectRatio: _imageRatio,
+        child: Container(
+            color: Colors.blue,
+            alignment: Alignment.center,
+            child: Image.asset(
+              _getImagePath(gameProvider),
+              fit: BoxFit.cover,
+            )),
+      ),
+      Positioned(
+        bottom: context.screenWidth / 30,
+        left: context.screenWidth / 12,
+        child: Container(
+          width: 74.auto,
+          alignment: Alignment.center,
+          padding: EdgeInsets.only(top: 5.auto, bottom: 5.auto),
+          decoration: BoxDecoration(image: DecorationImage(image: AssetImage("images/game/btn_start_game.png"))),
+          child: Text(
+            getTranslatedText("start_game"),
+            style: TextStyle(
+              fontSize: 10.auto,
+              fontWeight: FontWeight.bold,
             ),
-          )
-        ],
-      );
+          ),
+        ),
+      )
+    ],
+  );
 }

@@ -26,6 +26,14 @@ class GameViewModel extends BaseViewModel {
   var url;
   List<GameProvider2> platformList;
   List<List<GameProvider2>> gameProviderList;
+  List<GameType> gameTypeList = [
+    GameType.Sportsbook,
+    GameType.LiveDealerLobby,
+    GameType.CardGameLobby,
+    GameType.Slot,
+    GameType.TableGame,
+    GameType.Fishing,
+  ];
 
   get userProfile => userRepo.userProfile;
 
@@ -46,11 +54,9 @@ class GameViewModel extends BaseViewModel {
         }
       });
     });
-    gameProviderList = [
-      list.where((element) => element.gameType == GameType.Sportsbook).toList(),
-      list.where((element) => element.gameType == GameType.Slot).toList(),
-      list.where((element) => element.gameType == GameType.TableGame).toList(),
-    ];
+    gameProviderList = gameTypeList.map((type) =>
+         list.where((element) => element.gameType == type).toList(),
+    ).toList();
     // if (getGameProviderListApiState.isSuccess) {
     //
     //

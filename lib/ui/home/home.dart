@@ -31,35 +31,11 @@ class _HomeState extends BaseState<Home> {
     'banner_2',
     //'images/banner_2.jpg'
   ];
-  String marquee = "《GD真人维护公告》GD真人将于 7 月 2 8 日 09:00 至 14:00 进行维护 维护期间不提供游戏相关服务。若有问题欢迎与在线客服联系 如有问题欢迎与在线客服联系，谢谢";
+  String marquee =
+      "《GD真人维护公告》GD真人将于 7 月 2 8 日 09:00 至 14:00 进行维护 维护期间不提供游戏相关服务。若有问题欢迎与在线客服联系 如有问题欢迎与在线客服联系，谢谢";
   ScrollController controller = ScrollController();
   var currentTabIndex = "0";
-  var tabList;
   UserProfile user;
-  var tab = [
-    {"id": "0", "text": "cat_sport"},
-    {"id": "1", "text": "cat_slotgame"},
-    {"id": "2", "text": "cat_table"},
-    /*{
-      "id":"0",
-      "text":"cat_livecasino"
-    },
-    {
-      "id":"1",
-      "text":"cat_qipai"
-    },
-    {
-      "id":"3",
-      "text":"cat_lottery"
-    },    {
-      "id":"5",
-      "text":"cat_laohu"
-    },
-    {
-      "id":"6",
-      "text":"cat_fish"
-    },*/
-  ];
 
   var itemHeightRatio = 335 / 90;
   var _vm = HomeViewModel();
@@ -91,9 +67,7 @@ class _HomeState extends BaseState<Home> {
                     onLoginTap: () {
                       navigateToLogin();
                     }),
-                GameView(
-                  tabList: tab,
-                )
+                GameView()
               ],
             ),
           );
@@ -108,7 +82,9 @@ class _HomeState extends BaseState<Home> {
       height: context.screenHeight / 5,
       child: Swiper(
         itemBuilder: (BuildContext context, int index) {
-          imagePath = deviceLanguage.code == "en"?"images/banner/${imgList[index]}_en.png":"images/banner/${imgList[index]}.png";
+          imagePath = deviceLanguage.code == "en"
+              ? "images/banner/${imgList[index]}_en.png"
+              : "images/banner/${imgList[index]}.png";
           return AspectRatio(
             aspectRatio: 360 / 200,
             child: Image.asset(
@@ -158,7 +134,8 @@ class _HomeState extends BaseState<Home> {
     var announcement = _vm.announcement?.content?.replaceAll(RegExp("/"), " ");
     return Expanded(
       child: Container(
-        decoration: BoxDecoration(color: CustomColor.theme_bar_gradient_1, borderRadius: BorderRadius.circular(10.0)),
+        decoration: BoxDecoration(
+            color: CustomColor.theme_bar_gradient_1, borderRadius: BorderRadius.circular(10.0)),
         margin: EdgeInsets.only(left: 10.auto, right: 10.auto),
         height: 18.auto,
         child: Marquee(

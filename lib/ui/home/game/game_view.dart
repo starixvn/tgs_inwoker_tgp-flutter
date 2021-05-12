@@ -22,11 +22,7 @@ import 'package:tgp_flutter/ui/home/game/game_web_view.dart';
 import 'package:tgp_flutter/ui/login/login.dart';
 
 class GameView extends StatefulWidget {
-  final List<Map<String, String>> tabList;
-
-  GameView({
-    @required this.tabList,
-  });
+  GameView();
 
   @override
   _GameViewState createState() => _GameViewState();
@@ -34,9 +30,8 @@ class GameView extends StatefulWidget {
 
 class _GameViewState extends BaseState<GameView> {
   var _controller = ScrollController();
-  var itemRatio = 335 / 90;
   var currentTabIndex = 0;
-  var key = GlobalKey();
+  GlobalKey<GameViewItemState> gameViewItem = GlobalKey();
   var _vm = GameViewModel();
   var gameName;
 
@@ -63,17 +58,18 @@ class _GameViewState extends BaseState<GameView> {
                         Container(
                           margin: EdgeInsets.only(right: 10.auto, bottom: 5.auto),
                           child: Column(
-                            children: List.generate(widget.tabList.length, (index) {
+                            children: List.generate(_vm.gameTypeList.length, (index) {
                               return Container(
                                 margin: EdgeInsets.only(top: 8.auto),
-                                child: _buildGameTab(index, widget.tabList[index]["text"]),
+                                child:
+                                    _buildGameTab(index, _vm.gameTypeList[index].getName(context)),
                               );
                             }),
                           ),
                         ),
                         Container(
-                          key: key,
                           child: GameViewItem(
+                            gameViewItem,
                             controller: _controller,
                             gameProviderList: _vm.gameProviderList,
                             onGameClick: (game) => _onGameClick(game),
@@ -87,7 +83,9 @@ class _GameViewState extends BaseState<GameView> {
   }
 
   _buildGameTab(int tabIndex, String title) {
-    var bgImage = tabIndex == currentTabIndex ? "btn_home_game_category_selected_bg" : "btn_home_game_category_bg";
+    var bgImage = tabIndex == currentTabIndex
+        ? "btn_home_game_category_selected_bg"
+        : "btn_home_game_category_bg";
     return InkWell(
       onTap: () {
         _onTabClick(tabIndex);
@@ -104,7 +102,7 @@ class _GameViewState extends BaseState<GameView> {
         padding: EdgeInsets.all(3.auto),
         child: Center(
             child: AutoSizeText(
-          getTranslatedText(title),
+          title,
           style: TextStyle(
               fontSize: 17,
               shadows: [
@@ -116,7 +114,9 @@ class _GameViewState extends BaseState<GameView> {
                       )
                     : Shadow(),
               ],
-              color: tabIndex == currentTabIndex ? CustomColor.theme_label_text_highlight_color : Colors.black),
+              color: tabIndex == currentTabIndex
+                  ? CustomColor.theme_label_text_highlight_color
+                  : Colors.black),
           minFontSize: 10,
           stepGranularity: 1,
         )),
@@ -125,8 +125,7 @@ class _GameViewState extends BaseState<GameView> {
   }
 
   _onTabClick(int tabIndex) {
-    var width = key.currentContext.size.width + 67.5.auto;
-    var itemHeight = (width) * (1 / itemRatio) + 17.5.auto;
+    var itemHeight = gameViewItem.currentState.itemHeight;
     var des = 0.0;
 
     _vm.gameProviderList.asMap().forEach((i, element) {
@@ -135,14 +134,13 @@ class _GameViewState extends BaseState<GameView> {
       }
     });
     setState(() {
-      currentTabIndex = tabIndex;
+      //  currentTabIndex = tabIndex;
       _controller.animateTo(des, curve: Curves.linear, duration: Duration(milliseconds: 250));
     });
   }
 
   _scrollListener() {
-    var width = key.currentContext.size.width + 67.5.auto;
-    var scrollTab = (width) * (1 / itemRatio) + 17.5.auto;
+    var scrollTab = gameViewItem.currentState.itemHeight;
     var des = 0.0;
     var index = 0;
 
@@ -197,9 +195,12 @@ class _GameViewState extends BaseState<GameView> {
       //navigate to game web
       ProgressDialog.show(context);
       await _vm.getGameList(gamePlatformCode, gameType);
+      ProgressDialog.hide();
       WidgetsBinding.instance.addPostFrameCallback((_) {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => GameWeb(game: _vm.gameListMap[gamePlatformCode].first)));
+            context,
+            MaterialPageRoute(
+                builder: (context) => GameWeb(game: _vm.gameListMap[gamePlatformCode].first)));
       });
     }
   }
