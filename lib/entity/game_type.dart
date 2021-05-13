@@ -54,7 +54,7 @@ extension GameTypeExtension on GameType {
         return getTranslatedText(context,  "cat_qipai");
       case GameType.Fishing:
         return getTranslatedText(context,  "cat_fish");
-      case GameType.Lottery:
+      case GameType.LotteryLobby:
         return getTranslatedText(context,  "cat_lottery");
       case GameType.Slot: 
         return getTranslatedText(context,  "cat_slotgame");
@@ -73,7 +73,8 @@ extension GameTypeExtension on GameType {
     GameType.CardGame: 7,
     GameType.CardGameLobby: 8,
     GameType.Fishing: 9,
-    GameType.Lottery: 13,
+    GameType.Lottery:13,
+    GameType.LotteryLobby: 14,
     GameType.Slot: 15,
     GameType.TableGame: 16,
   };
@@ -86,6 +87,14 @@ extension GameTypeExtension on GameType {
         return   "tableGame" ;
       case GameType.Sportsbook:
         return   "sports" ;
+      case GameType.LiveDealerLobby:
+        return   "live" ;
+      case GameType.LotteryLobby:
+        return   "lottery" ;
+      case GameType.Fishing:
+        return   "fish" ;
+      case GameType.CardGameLobby:
+        return   "qipai" ;
       default :
         return "";
     }

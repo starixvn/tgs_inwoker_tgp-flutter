@@ -30,6 +30,7 @@ class GameViewModel extends BaseViewModel {
     GameType.Sportsbook,
     GameType.LiveDealerLobby,
     GameType.CardGameLobby,
+    GameType.LotteryLobby,
     GameType.Slot,
     GameType.TableGame,
     GameType.Fishing,

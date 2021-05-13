@@ -201,12 +201,14 @@ class _RegisterContentState extends BaseState<RegisterContent> {
     });
     handleApiState(_vm.checkUsernameApiState, isRequireResult: true, onSuccess: (result) {
       if (result.isExist) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
+        //WidgetsBinding.instance.addPostFrameCallback((_) {
           CustomToast.show("Username is existed");
-        });
+       // });
       } else {
-        ProgressDialog.show(context);
-        _vm.register(username.text, password.text, confirmPassword.text, "CNY", invitationCode.text);
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+           ProgressDialog.show(context);
+           _vm.register(username.text, password.text, confirmPassword.text, "CNY", invitationCode.text);
+        });
       }
     });
   }
