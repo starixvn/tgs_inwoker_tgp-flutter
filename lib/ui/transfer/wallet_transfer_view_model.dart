@@ -1,14 +1,39 @@
 import 'package:tgp_flutter/base_viewmodel.dart';
+import 'package:tgp_flutter/entity/game_provider.dart';
+import 'package:tgp_flutter/entity/game_wallet.dart';
+import 'package:tgp_flutter/entity/wallet.dart';
 import 'package:tgp_flutter/repository/base_repository.dart';
+import 'package:tgp_flutter/repository/content_repository.dart';
+import 'package:tgp_flutter/repository/user_repository.dart';
+import 'package:tgp_flutter/repository/wallet_repository.dart';
 
 class WalletTransferViewModel extends BaseViewModel {
-  //final walletRepo = WalletRepository.getSingleton();
+  final contentRepo = ContentRepository.getSingleton();
+  final walletRepo = WalletRepository.getSingleton();
+  final userRepo = UserRepository.getSingleton();
+
+  List<Wallet> walletList = List.empty();
+
+  WalletTransferViewModel() {
+    walletList = contentRepo.gameProviderList
+        .where((element) => element.transferWallet == true)
+        .map((e) => Wallet(e.code, e.name))
+        .toList()
+          ..insert(0, Wallet("-1", "main_wallet", isMainWallet: true));
+  }
+
+  get userMainWalletBalance => walletList.singleWhere((element) => element.isMainWallet).balance;
+
+  get gameWalletList => walletList.where((element) => !element.isMainWallet).toList();
 
   @override
-  List<BaseRepository> get repoList => [ ];
+  List<BaseRepository> get repoList => [contentRepo];
+  var transferAllToMainWalletApiState, transferWalletApiState, getWalletApiState;
+  bool isFetchingBalance;
+
   /*get walletList => walletRepo.walletList;
 
-  var transferAllToMainWalletApiState, transferWalletApiState, getWalletApiState;
+
 
   transferAllToMainWallet() async{
     setLoading();
@@ -19,17 +44,7 @@ class WalletTransferViewModel extends BaseViewModel {
     return transferAllToMainWalletApiState ;
   }
 
-  transferWallet(
-      int from,
-      int to,
-      double transferAmount
-      ) async{
-    transferWalletApiState = await walletRepo.transferWallet(from, to, transferAmount);
-    setLoading();
-    notifyListeners();
-    setLoading(false);
-    return transferWalletApiState ;
-  }
+
 
   getTransferableWalletList(){
     return walletList.where((e) => e.purseType != 1).toList();
@@ -46,13 +61,39 @@ class WalletTransferViewModel extends BaseViewModel {
   getMainWallet(){
     return getTransferableWalletList().singleWhere((e) => e.id == 10000);
   }
-
-  getAllWallet() async{
+*/
+  transferWallet(String gpCode, int transferAmount, bool isFundOut) async {
     setLoading();
-    notifyListeners();
-    getWalletApiState = await walletRepo.getAllWallet();
+    transferWalletApiState = await walletRepo.fundTransfer(gpCode, transferAmount, isFundOut);
+    if (transferWalletApiState.isSuccess) {
+      getAllWallet();
+    }
     setLoading(false);
+  }
+
+  _getGameWalletBalance(Wallet wallet) async {
+    wallet.balance = null;
+    if (wallet.isMainWallet) {
+      await userRepo.getWalletBalance();
+      wallet.balance = userRepo.wallet.main;
+    } else {
+      var state = await walletRepo.getGameWallet(wallet.gpCode);
+      if (state.isSuccess) {
+        wallet.balance = state.result.balance;
+      }
+    }
     notifyListeners();
-    return getWalletApiState ;
-  }*/
+  }
+
+  getAllWallet() async {
+    isFetchingBalance = true;
+    notifyListeners();
+    var task = <Future>[];
+    walletList.forEach((wallet) {
+      task.add(_getGameWalletBalance(wallet));
+    });
+    await Future.wait(task);
+    isFetchingBalance = false;
+    if (hasListeners) notifyListeners();
+  }
 }

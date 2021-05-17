@@ -8,7 +8,7 @@ import 'package:tgp_flutter/entity/response/login_response.dart';
 import 'package:tgp_flutter/entity/response/register_response.dart';
 import 'package:tgp_flutter/entity/bet_transaction.dart';
 import 'package:tgp_flutter/entity/user_profile.dart';
-import 'package:tgp_flutter/entity/wallet.dart';
+import 'package:tgp_flutter/entity/main_wallet.dart';
 import 'package:tgp_flutter/entity/withdrawal_info.dart';
 import 'package:tgp_flutter/network/api_request_builder.dart';
 import 'package:tgp_flutter/network/event_result.dart';
@@ -19,7 +19,7 @@ import 'base_repository.dart';
 class UserRepository extends BaseRepository {
   static UserRepository _singleton;
   UserProfile userProfile;
-  Wallet wallet;
+  MainWallet wallet;
 
   static UserRepository getSingleton() {
     if (_singleton == null) {
@@ -42,8 +42,8 @@ class UserRepository extends BaseRepository {
         .execute();
   }
 
-  Future<EventResult<RegisterResponse>> register(
-      String username, String password, String rpassword, String currency, String invitationCode) async {
+  Future<EventResult<RegisterResponse>> register(String username, String password, String rpassword,
+      String currency, String invitationCode) async {
     return await ApiRequestBuilder<RegisterResponse>(
             isAuthorization: false,
             endPoint: "api/Player/create",
@@ -117,7 +117,8 @@ class UserRepository extends BaseRepository {
         .execute();
   }
 
-  Future<EventResult<EditPasswordResponse>> editPassword(String oldPassword, String newPassword) async {
+  Future<EventResult<EditPasswordResponse>> editPassword(
+      String oldPassword, String newPassword) async {
     return await ApiRequestBuilder<EditPasswordResponse>(
             method: HttpMethod.PUT,
             endPoint: "api/player/password",
@@ -181,12 +182,14 @@ class UserRepository extends BaseRepository {
         .execute();
   }
 
-  Future<EventResult<Wallet>> getWalletBalance() async {
-    return await ApiRequestBuilder<Wallet>(
+  Future<EventResult<MainWallet>> getWalletBalance() async {
+    return await ApiRequestBuilder<MainWallet>(
             method: HttpMethod.GET,
             endPoint: "api/Wallet",
-            converter: (json) => Wallet.fromJson(json),
-            consumer: (result) => wallet = result,
+            converter: (json) => MainWallet.fromJson(json),
+            consumer: (result) => setRepoValues(() {
+                  wallet = result;
+                }),
             jwtRefresher: jwtAuth)
         .execute();
   }

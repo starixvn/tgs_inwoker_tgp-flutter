@@ -2,7 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter/custom/color_button.dart';
 import 'package:tgp_flutter/entity/user_profile.dart';
-import 'package:tgp_flutter/entity/wallet.dart';
+import 'package:tgp_flutter/entity/main_wallet.dart';
 import 'package:tgp_flutter/extension/format.dart';
 import 'package:tgp_flutter/localizations/language_provider.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
@@ -18,7 +18,7 @@ import 'package:tgp_flutter/ui/withdraw/withdraw.dart';
 
 class HomeUserInfoView extends StatefulWidget {
   final UserProfile userProfile;
-  final Wallet wallet;
+  final MainWallet wallet;
   final void Function() onLoginTap;
 
   HomeUserInfoView({@required this.userProfile, this.wallet, this.onLoginTap});

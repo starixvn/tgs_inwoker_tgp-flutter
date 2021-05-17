@@ -1,15 +1,15 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'wallet.dart';
+part of 'main_wallet.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-Wallet _$WalletFromJson(Map<String, dynamic> json) {
-  return Wallet()..main = (json['main'] as num)?.toDouble();
+MainWallet _$MainWalletFromJson(Map<String, dynamic> json) {
+  return MainWallet()..main = (json['main'] as num)?.toDouble();
 }
 
-Map<String, dynamic> _$WalletToJson(Wallet instance) => <String, dynamic>{
+Map<String, dynamic> _$MainWalletToJson(MainWallet instance) => <String, dynamic>{
       'main': instance.main,
     };

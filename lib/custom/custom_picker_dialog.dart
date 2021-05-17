@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tgp_flutter/entity/bank_type.dart';
 import 'package:tgp_flutter/entity/game_provider.dart';
 import 'package:tgp_flutter/entity/payment.dart';
+import 'package:tgp_flutter/entity/wallet.dart';
 import 'package:tgp_flutter/entity/withdrawal_info.dart';
 import 'package:tgp_flutter/extension/format.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
@@ -34,7 +35,8 @@ class _CustomPickerDialogState extends BaseState<CustomPickerDialog> {
           width: context.screenWidth,
           padding: EdgeInsets.only(bottom: 5),
           margin: EdgeInsets.only(left: 5, right: 5, top: 5),
-          decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Colors.grey, width: 1.0))),
+          decoration:
+              BoxDecoration(border: Border(bottom: BorderSide(color: Colors.grey, width: 1.0))),
           child: Text(
             getTranslatedText(widget.title) ?? "",
             style: TextStyle(
@@ -70,6 +72,9 @@ class _CustomPickerDialogState extends BaseState<CustomPickerDialog> {
     } else if (widget.list is List<BankType>) {
       BankType bankType = widget.list[index];
       return bankType.displayName;
+    } else if (widget.list is List<Wallet>) {
+      Wallet wallet = widget.list[index];
+      return (wallet.isMainWallet) ? getTranslatedText(wallet.title) : wallet.title;
     } else
       return widget.list[index];
   }

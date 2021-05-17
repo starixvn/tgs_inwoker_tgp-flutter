@@ -12,6 +12,8 @@ class GameProvider {
   String name;
   String description;
   int status;
+  @JsonKey(name:"transferwallet")
+  bool transferWallet;
   @JsonKey(name:"gametypes")
   List<GameType> gameTypes;
 

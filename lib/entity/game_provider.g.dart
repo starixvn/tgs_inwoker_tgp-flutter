@@ -12,6 +12,7 @@ GameProvider _$GameProviderFromJson(Map<String, dynamic> json) {
     ..name = json['name'] as String
     ..description = json['description'] as String
     ..status = json['status'] as int
+    ..transferWallet = json['transferwallet'] as bool
     ..gameTypes = (json['gametypes'] as List)
         ?.map((e) => _$enumDecodeNullable(_$GameTypeEnumMap, e))
         ?.toList();
@@ -23,6 +24,7 @@ Map<String, dynamic> _$GameProviderToJson(GameProvider instance) =>
       'name': instance.name,
       'description': instance.description,
       'status': instance.status,
+      'transferwallet': instance.transferWallet,
       'gametypes':
           instance.gameTypes?.map((e) => _$GameTypeEnumMap[e])?.toList(),
     };

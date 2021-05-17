@@ -1,4 +1,3 @@
-import 'package:tgp_flutter/entity/wallet.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'vip_progress.g.dart';
 @JsonSerializable()
