@@ -106,7 +106,7 @@ class AccountTransactionViewState extends BaseState<AccountTransactionView> {
                   return Container(
                     child: TransactionCellItem(
                         list: [
-                          Format().dateTimeFormat(DateTime.parse(widget.vm.accountTransactionList[index].createdOn)),
+                          Format().dateTimeFormat(widget.vm.accountTransactionList[index].createdOn),
                           widget.vm.accountTransactionList[index].gameProviderName,
                           widget.vm.accountTransactionList[index].betAmount.toString(),
                           widget.vm.accountTransactionList[index].winLoss.toString(),

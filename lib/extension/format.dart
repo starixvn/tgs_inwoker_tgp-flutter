@@ -50,7 +50,9 @@ class Format {
     return DateFormat("yyyy/MM/dd").format(date);
   }
 
-  String dateTimeFormat(DateTime date) {
-    return DateFormat("yyyy/MM/dd hh:mm:ss").format(date);
+  String dateTimeFormat(String dateString) {
+    final date = DateTime.parse(dateString);
+    return DateFormat("yyyy/MM/dd HH:mm:ss").format(date.toLocal());
   }
+
 }

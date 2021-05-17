@@ -111,7 +111,7 @@ class BetTransactionViewState extends BaseState<BetTransactionView> {
                   return Container(
                     child: TransactionCellItem(
                         list: [
-                          Format().dateTimeFormat(DateTime.parse(widget.vm.betTransactionList[index].createdOn)),
+                          Format().dateTimeFormat(widget.vm.betTransactionList[index].createdOn),
                           widget.vm.betTransactionList[index].gameProviderName,
                           widget.vm.betTransactionList[index].betAmount.toString(),
                           widget.vm.betTransactionList[index].winLoss.toString(),

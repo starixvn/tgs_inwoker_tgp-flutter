@@ -61,9 +61,9 @@ class _PromotionItemDetailsState extends BaseState<PromotionItemDetails> {
           Container(
             margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 15.auto),
             child: Text("${getTranslatedText("promotion_time")}：\n " +
-                Format().dateTimeFormat(DateTime.parse(widget.promotion.from)) +
+                Format().dateTimeFormat(widget.promotion.from) +
                 " - " +
-                Format().dateTimeFormat(DateTime.parse(widget.promotion.to))),
+                Format().dateTimeFormat(widget.promotion.to)),
           ),
           //_buildPromotionDescriptionText(),
           _buildJoinButton()

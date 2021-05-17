@@ -46,7 +46,7 @@ class _PromotionState extends BaseState<PromotionPage> {
                 : ListView(
               children: List.generate(_vm.promotionList.length, (index) {
                 return PromotionItem(
-                  imagePath: "promotion_BN_${(index+1).toString()}",
+                  imagePath: "promotion_BN_${(index%3+1).toString()}",
                   promotion: _vm.promotionList[index],
                   vm:_vm
                 );
