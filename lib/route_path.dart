@@ -44,4 +44,5 @@ class RoutePath{
   static final frequentQuestion = '/frequent_question';
   static final forgotPassword = '/forgot_password';
   static final language = '/language';
+  static final promotionItemDetails = '/promotion_item_details';
 }

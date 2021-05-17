@@ -12,6 +12,7 @@ class BaseResponse {
   dynamic data;
   @JsonKey(name: 'errmsg')
   String msg;
+  bool success;
 
   factory BaseResponse.fromJson(Map<String, dynamic> json) => _$BaseResponseFromJson(json);
   Map<String, dynamic> toJson() => _$BaseResponseToJson(this);

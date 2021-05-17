@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter/custom/color_button.dart';
 import 'package:tgp_flutter/custom/outline_border_button.dart';
@@ -68,14 +69,15 @@ class CustomDialog extends StatelessWidget {
                       ),
                     ),
               Container(
+                width: context.screenWidth,
                 padding: EdgeInsets.only(bottom: 20.auto, left: 10.auto, right: 10.auto),
-                alignment: Alignment.topLeft,
                 child: Text(
                   description,
                   style: TextStyle(
                     fontSize: 13.auto,
                     color: Colors.black54,
                   ),
+                  textAlign: title==null?TextAlign.center: TextAlign.start,
                 ),
               ),
               buttonText2 == null

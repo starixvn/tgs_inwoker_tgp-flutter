@@ -2,7 +2,7 @@
     package="com.example.tgp_flutter">
     <uses-permission android:name="android.permission.INTERNET" />
    <application
-        android:label="TGS"
+        android:label="PG"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

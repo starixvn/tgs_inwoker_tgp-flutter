@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:tgp_flutter/custom/custom_dialog.dart';
+import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/localizations/language_provider.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
@@ -15,21 +17,10 @@ class PromotionPage extends StatefulWidget {
 }
 
 class _PromotionState extends BaseState<PromotionPage> {
-  var tabList = [
-    {"id": "0", "text": "热门优惠"},
-    {"id": "1", "text": "存提款"},
-    {"id": "2", "text": "真人优惠"},
-    {"id": "3", "text": "棋牌优惠"},
-    {"id": "4", "text": "体育优惠"},
-    {"id": "5", "text": "彩票优惠"},
-    {"id": "6", "text": "电子优惠"},
-  ];
-
   var height, width, ratio;
   var currentTabIndex = 0;
   var currentBottomIndex = 1;
   PromotionViewModel _vm = PromotionViewModel();
-  var imgDomain = "https://static.sixfeliz.com/";
   BuildContext key = GlobalKey().currentContext;
 
   @override
@@ -47,33 +38,86 @@ class _PromotionState extends BaseState<PromotionPage> {
     return ProviderWidget<PromotionViewModel>(
         model: _vm,
         builder: (ctx, vm, _) {
+          _handleApiState();
           return Scaffold(
-            appBar: AppBar(
-              automaticallyImplyLeading: false,
-              centerTitle: true,
-              flexibleSpace: Container(
-                decoration: gradientDecoration,
-              ),
-              title: Text(
-                getTranslatedText("promotion_center"),
-                style: TextStyle(fontSize: 20.auto),
-              ),
-              leading: IconButton(
-                icon: Icon(Icons.arrow_back),
-                onPressed: () {
-                  Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(builder: (context) => Home()), (Route<dynamic> route) => false);
-                },
-              ),
-            ),
-            body: ListView(
-              children: [
-                PromotionItem(imagePath: "images/game/livegame_ag.png"),
-                PromotionItem(imagePath: "images/game/livegame_ag.png"),
-                PromotionItem(imagePath: "images/game/livegame_ag.png"),
-              ],
+            appBar: _buildAppBar(),
+            body: _vm.promotionList ==null
+                ? buildProgressDialog()
+                : ListView(
+              children: List.generate(_vm.promotionList.length, (index) {
+                return PromotionItem(
+                  imagePath: "promotion_BN_${(index+1).toString()}",
+                  promotion: _vm.promotionList[index],
+                  vm:_vm
+                );
+              }),
             ),
           );
         });
+  }
+
+  _buildAppBar() => AppBar(
+    automaticallyImplyLeading: false,
+    centerTitle: true,
+    flexibleSpace: Container(
+      decoration: gradientDecoration,
+    ),
+    title: Text(
+      getTranslatedText("promotion_center"),
+      style: TextStyle(fontSize: 20.auto),
+    ),
+    leading: IconButton(
+      icon: Icon(Icons.arrow_back),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    ),
+  );
+
+  _handleApiState(){
+    handleApiState(_vm.joinPromotionApiState, onSuccess: () {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) => CustomDialog(
+            title: null,
+            description: "参加优惠成功",
+            buttonText1: "确认",
+            onClick: () {
+              Navigator.pop(
+                context,
+              );
+              Navigator.pop(
+                context,
+              );
+            },
+            onClick2: () {
+            },
+          ),
+        );
+      });
+    },
+    onError: (errorMsg){
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) => CustomDialog(
+            title: null,
+            description: "优惠已参加",
+            buttonText1: "确认",
+            onClick: () {
+              Navigator.pop(
+                context,
+              );
+              Navigator.pop(
+                context,
+              );
+            },
+            onClick2: () {
+            },
+          ),
+        );
+      });
+    });
   }
 }

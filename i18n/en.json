@@ -202,6 +202,11 @@
   "phone_format_error_msg": "Format of the phone number is incorrect",
   "email_format_error_msg": "Format of the email is incorrect",
   "bank_type": "Bank Type",
-  "bank_name": "Bank Name"
+  "bank_name": "Bank Name",
+  "promotion_condition": "Promotion Condition",
+  "promotion_person":"Promotion Person",
+  "promotion_time":"Promotion time",
+  "join": "Join"
+
 }
 

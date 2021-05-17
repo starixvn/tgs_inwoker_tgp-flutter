@@ -35,6 +35,7 @@ import 'package:tgp_flutter/ui/profile_info/security/edit_security_answer.dart';
 import 'package:tgp_flutter/ui/profile_info/security/edit_security_answer_by_security_answer.dart';
 import 'package:tgp_flutter/ui/profile_info/security/security_answer.dart';
 import 'package:tgp_flutter/ui/profile_info/wechat/wechat.dart';
+import 'package:tgp_flutter/ui/promotion/promotion_item_details.dart';
 import 'package:tgp_flutter/ui/promotion/promotion_page.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart' as DotEnv;
 import 'package:tgp_flutter/ui/referFriend/refer_friend.dart';
@@ -132,6 +133,7 @@ class _MyAppState extends BaseState<MyApp> {
           RoutePath.language: (context) => LanguageView(),
           RoutePath.addCard: (context) => AddCard(),
           RoutePath.customerService: (context) => CustomerService(),
+          RoutePath.promotionItemDetails: (context) => PromotionItemDetails(),
         },
         localizationsDelegates: [
           MyLocalizations.delegate,
@@ -171,7 +173,7 @@ class _MyHomePageState extends BaseState<MyHomePage> {
 
   @override
   void initState() {
-    if(widget.index !=null)currentBottomIndex = widget.index;
+    if (widget.index != null) currentBottomIndex = widget.index;
     super.initState();
   }
 
@@ -235,9 +237,15 @@ class _MyHomePageState extends BaseState<MyHomePage> {
                 type: MaterialType.transparency,
                 child: InkWell(
                   onTap: () {
-                    setState(() {
-                      currentBottomIndex = index;
-                    });
+                    if (index == 1) {
+                      Navigator.of(context).pushNamed("/promotion");
+                    } else if (index == 3) {
+                      Navigator.of(context).pushNamed("/customer_service");
+                    } else {
+                      setState(() {
+                        currentBottomIndex = index;
+                      });
+                    }
                   },
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,

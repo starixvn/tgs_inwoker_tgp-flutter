@@ -202,7 +202,11 @@
   "phone_format_error_msg": "手机号码格式不正确",
   "email_format_error_msg": "邮箱地址格式不正确",
   "bank_type": "银行类别",
-  "bank_name": "银行名称"
+  "bank_name": "银行名称",
+  "promotion_condition": "优惠条件",
+  "promotion_person":"优惠对象",
+  "promotion_time":"优惠时间",
+  "join": "参加优惠"
 }
 
 
