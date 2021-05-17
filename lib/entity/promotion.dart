@@ -7,12 +7,25 @@ part 'promotion.g.dart';
 class Promotion {
   Promotion();
 
-  @JsonKey(name: 'is_hot')
-  int isHot;
-  @JsonKey(name: 'type_id')
-  int typeId;
-  @JsonKey(name: 'm_image_url')
-  String imageUrl;
+  String id;
+  String name;
+  String from;
+  String to;
+  int status;
+  String promotionType;
+  double bonusAmountLimit;
+  double amountUsed;
+  bool unlimited;
+  String gameType;
+  double percentage;
+  double totalAmountLimit;
+  double turnoverMultiple;
+  List<String> gameProviderIds;
+  List<int> vipLevels;
+  String createdOn;
+  String updatedOn;
+  String createdByUsername;
+  String updatedByUsername;
 
   factory Promotion.fromJson(Map<String, dynamic> json) => _$PromotionFromJson(json);
   Map<String, dynamic> toJson() => _$PromotionToJson(this);

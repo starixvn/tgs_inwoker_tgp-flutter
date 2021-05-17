@@ -202,5 +202,9 @@
   "phone_format_error_msg": "手機號碼格式不正確",
   "email_format_error_msg": "郵箱地址格式不正確",
   "bank_type": "銀行類別",
-  "bank_name": "銀行名稱"
+  "bank_name": "銀行名稱",
+  "promotion_condition": "優惠條件",
+  "promotion_person":"優惠對象",
+  "promotion_time":"優惠時間",
+  "join": "參加優惠"
 }

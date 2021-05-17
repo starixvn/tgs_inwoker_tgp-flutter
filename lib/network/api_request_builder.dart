@@ -52,7 +52,9 @@ class ApiRequestBuilder<T> extends ChangeNotifier {
     var value = json.decode(response.body);
     print(value);
     var baseResponse = BaseResponse.fromJson(value);
-    if (baseResponse.error == null || baseResponse.error == 0) {
+    if (baseResponse.error == null ||
+        (baseResponse.success == null && baseResponse.error == 0) ||
+        (baseResponse.success != null && baseResponse.success)) {
       var dataToConvert = baseResponse.data ?? value;
       var result = converter == null ? dataToConvert as T : converter(dataToConvert);
       if (onSuccess != null) onSuccess(result);

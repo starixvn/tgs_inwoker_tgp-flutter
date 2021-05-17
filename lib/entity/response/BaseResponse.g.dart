@@ -11,7 +11,7 @@ BaseResponse _$BaseResponseFromJson(Map<String, dynamic> json) {
     json['err'] as int,
     json['data'],
     json['errmsg'] as String,
-  );
+  )..success = json['success'] as bool;
 }
 
 Map<String, dynamic> _$BaseResponseToJson(BaseResponse instance) =>
@@ -19,4 +19,5 @@ Map<String, dynamic> _$BaseResponseToJson(BaseResponse instance) =>
       'err': instance.error,
       'data': instance.data,
       'errmsg': instance.msg,
+      'success': instance.success,
     };

@@ -217,8 +217,8 @@ class _DepositOrderViewState extends BaseState<DepositOrderView> {
         showDialog(
           context: context,
           builder: (BuildContext context) => CustomDialog(
-            title: "上传成功",
-            description: "",
+            title: null,
+            description: "上传成功",
             buttonText1: "确认",
             onClick: () {
               Navigator.pop(
