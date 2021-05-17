@@ -51,11 +51,13 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
                         children: [
                           _buildInfoCard(
                             "basic_info",
-                            [ProfileInfoItem.REALNAME, ProfileInfoItem.PHONE_NUMBER, ProfileInfoItem.EMAIL],
-                            ["real_ name_verification", "phone_verification", "email_verification"],
+                            [ProfileInfoItem.REALNAME, //ProfileInfoItem.PHONE_NUMBER,
+                              ProfileInfoItem.EMAIL],
+                            ["real_ name_verification", //"phone_verification",
+                             "email_verification"],
                             itemDescriptionList: [
                               _getItemText(_vm.userProfile.realname),
-                              _getItemText(_vm.userProfile.phone),
+                             // _getItemText(_vm.userProfile.phone),
                               _getItemText(_vm.userProfile.email)
                             ],
                           ),

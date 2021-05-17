@@ -38,12 +38,15 @@ class OutlineBorderButton extends StatelessWidget {
         alignment: Alignment.center,
         /*width: width??context.screenWidth,
           height: 25.auto,*/
-        child: AutoSizeText(
-          title,
-          style: TextStyle(color: CustomColor.theme_bar_gradient_2, fontSize: fontSize),
-          minFontSize: 8,
-          maxLines: 1,
-          textAlign: TextAlign.center,
+        child: SizedBox(
+          width: width-20,
+          child: AutoSizeText(
+            title,
+            style: TextStyle(color: CustomColor.theme_bar_gradient_2, fontSize: fontSize),
+            minFontSize: 7,
+            maxLines: 1,
+            textAlign: TextAlign.center,
+          ),
         ),
       ),
     );

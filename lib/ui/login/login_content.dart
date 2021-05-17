@@ -8,6 +8,7 @@ import 'package:tgp_flutter/entity/language.dart';
 import 'package:tgp_flutter/localizations/language_provider.dart';
 import 'package:tgp_flutter/main.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
+import 'package:tgp_flutter/route_path.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
 import 'package:tgp_flutter/ui/forgot_password/forgot_password.dart';
@@ -122,7 +123,7 @@ class _LoginContentState extends BaseState<LoginContent> {
         children: [
           InkWell(
             onTap: () {
-              Navigator.of(context).pushNamed("forgot_password");
+              Navigator.of(context).pushNamed(RoutePath.forgotPassword);
             },
             child: Text(
               getTranslatedText("forgot_password_with_question_mark"),

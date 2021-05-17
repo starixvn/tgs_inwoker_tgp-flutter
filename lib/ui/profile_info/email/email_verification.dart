@@ -23,8 +23,12 @@ class EmailVerification extends StatefulWidget {
 
 class _EmailVerificationState extends BaseState<EmailVerification> {
   var _vm = EmailVerificationViewModel();
-  TextEditingController _emailController = TextEditingController(), _otpController = TextEditingController();
-  var isButtonEnabled = false, isOtpEnabled = false, isTextFieldEnabled = false;
+  TextEditingController _emailController = TextEditingController(),
+      _otpController = TextEditingController();
+  var isButtonEnabled = false,
+      isOtpEnabled = false,
+      isTextFieldEnabled = false,
+      isOtpCountdown = false;
   var buttonText;
   InputValidationProvider validate = new InputValidationProvider();
 
@@ -44,7 +48,8 @@ class _EmailVerificationState extends BaseState<EmailVerification> {
           return Scaffold(
               resizeToAvoidBottomInset: false,
               appBar: _buildAppBar(),
-              body: /*userProfile == null?
+              body:
+                  /*userProfile == null?
                   Center(child: CircularProgressIndicator(),):*/
                   Container(
                 margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 10.auto),
@@ -67,11 +72,8 @@ class _EmailVerificationState extends BaseState<EmailVerification> {
         ),
         centerTitle: true,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
+            icon: Icon(Icons.arrow_back),
+            onPressed: () => Navigator.popUntil(context, ModalRoute.withName('/profile_info'))),
         title: Text(
           getTranslatedText("email"),
           style: TextStyle(fontSize: 16.auto),
@@ -109,6 +111,12 @@ class _EmailVerificationState extends BaseState<EmailVerification> {
                 _getSmsCode();
               },
               isEnabled: isOtpEnabled,
+              isCountdown: isOtpCountdown,
+              onCountDownEnd: () => {
+                setState(() {
+                  isOtpCountdown = false;
+                })
+              },
             ),
           ),
         ),
@@ -178,10 +186,18 @@ class _EmailVerificationState extends BaseState<EmailVerification> {
   }
 
   _handleApiState() {
-    handleApiState(_vm.getEmailCodeApiState, onSuccess: () {});
+    handleApiState(_vm.getEmailCodeApiState, onSuccess: () {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        setState(() {
+          isOtpCountdown = true;
+        });
+      });
+    });
     handleApiState(_vm.emailVerifyApiState, onSuccess: () {
-      CustomToast.show("Success");
-      _getUserProfile();
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        CustomToast.show("Success");
+        _getUserProfile();
+      });
     });
   }
 }

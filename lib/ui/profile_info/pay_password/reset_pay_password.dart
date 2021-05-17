@@ -30,20 +30,20 @@ class _ResetPayPasswordState extends BaseState<ResetPayPassword> {
   var _vm = PayPasswordViewModel();
   TextEditingController _payPasswordController = TextEditingController(),
       _confirmPayPasswordController = TextEditingController(),
-      _phoneController = TextEditingController(),
+      _emailController = TextEditingController(),
       _otpController = TextEditingController();
-  var isButtonEnabled = false, isResetPassword = false, isCodeVisible = false, isOtpEnabled = false;
+  var isButtonEnabled = false, isResetPassword = false, isCodeVisible = false, isOtpEnabled = true, isOtpCountdown = false;
   InputValidationProvider validate = new InputValidationProvider();
 
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (_vm.userProfile.phone != null && _vm.userProfile.phone.isNotEmpty) {
+      if (_vm.userProfile.email != null && _vm.userProfile.email.isNotEmpty) {
         setState(() {
-          _phoneController.text = _vm.userProfile.phone;
+          _emailController.text = _vm.userProfile.email;
         });
       } else
-        Navigator.of(context).pushNamed("/phone_verification");
+        Navigator.of(context).pushNamed("/email_verification");
     });
     super.initState();
   }
@@ -63,7 +63,7 @@ class _ResetPayPasswordState extends BaseState<ResetPayPassword> {
                       _buildPasswordTextFormField("new_pay_password", "enter_new_pay_password", _payPasswordController),
                       _buildPasswordTextFormField(
                           "confirm_pay_password", "confirm_pay_password_hint", _confirmPayPasswordController),
-                      _buildTextFormField("phone_number", "enter_phone_hint", _phoneController),
+                      _buildTextFormField("email", "enter_phone_hint", _emailController),
                       _buildOtpTextFormField(),
                       _buildButton()
                     ],
@@ -132,6 +132,13 @@ class _ResetPayPasswordState extends BaseState<ResetPayPassword> {
             getOtpCode: () {
               _getSmsCode();
             },
+            isEnabled: isOtpEnabled,
+            isCountdown: isOtpCountdown,
+            onCountDownEnd: () => {
+              setState(() {
+                isOtpCountdown = false;
+              })
+            },
           ),
         ),
       );
@@ -182,7 +189,14 @@ class _ResetPayPasswordState extends BaseState<ResetPayPassword> {
   }
 
   _handleApiState() {
-    handleApiState(_vm.getPayPasswordCodeApiState, onSuccess: () {});
+    handleApiState(_vm.getPayPasswordCodeApiState, onSuccess: () {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        setState(() {
+          isOtpCountdown = true;
+        });
+      });
+    });
+
     handleApiState(_vm.payPasswordVerifyApiState, onSuccess: () {
       CustomToast.show("Success");
       WidgetsBinding.instance.addPostFrameCallback((_) {

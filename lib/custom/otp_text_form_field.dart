@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
@@ -11,18 +13,34 @@ class OtpTextFormField extends StatefulWidget {
   final TextEditingController controller;
   final TextInputAction textInputAction;
   final Function getOtpCode;
+  final Function onCountDownEnd;
   final bool isEnabled;
+  final bool isCountdown;
 
   OtpTextFormField(
-      {Key key, this.hintText, this.onChanged, this.controller, this.textInputAction, this.getOtpCode, this.isEnabled})
+      {Key key,
+      this.hintText,
+      this.onChanged,
+      this.controller,
+      this.textInputAction,
+      this.getOtpCode,
+      this.isEnabled,
+      this.isCountdown,
+      this.onCountDownEnd})
       : super(key: key);
 
   @override
   _OtpTextFormFieldState createState() => _OtpTextFormFieldState();
 }
 
+
 class _OtpTextFormFieldState extends BaseState<OtpTextFormField> {
+  Timer _timer;
+  int _start = 0;
+  static const int _duration = 5;
+
   Widget build(BuildContext context) {
+
     return Card(
         semanticContainer: true,
         clipBehavior: Clip.antiAliasWithSaveLayer,
@@ -59,16 +77,16 @@ class _OtpTextFormFieldState extends BaseState<OtpTextFormField> {
                       isDense: true,
                       border: InputBorder.none,
                       hintText: widget.hintText,
-                      hintStyle: TextStyle(color: CustomColor.very_light_pink_two, fontSize: 13.auto),
+                      hintStyle:
+                          TextStyle(color: CustomColor.very_light_pink_two, fontSize: 13.auto),
                     ),
                     enabled: widget.isEnabled,
                   ),
                 ),
               ]),
               OutlineBorderButton(
-                  title: getTranslatedText("request_otp"),
-                  onClick: () => widget.getOtpCode(),
-                  isEnabled: true,
+                  title: widget.isCountdown ? "${getTranslatedText("retry_otp")} (${_start}s)" : getTranslatedText("request_otp"),
+                  onClick: () => widget.isEnabled && !widget.isCountdown ? widget.getOtpCode():null,
                   width: 86.auto,
                   height: 29.auto,
                   color: CustomColor.theme_bar_gradient_2,
@@ -79,4 +97,45 @@ class _OtpTextFormFieldState extends BaseState<OtpTextFormField> {
           ),
         ));
   }
+
+  @override
+  void didUpdateWidget(covariant OtpTextFormField oldWidget) {
+    if(oldWidget.isCountdown != widget.isCountdown) {
+      if (widget.isCountdown && (_timer == null || !_timer.isActive)) {
+        startTimer();
+      } else {
+        if (_timer != null)
+          _timer.cancel();
+      }
+    }
+    super.didUpdateWidget(oldWidget);
+  }
+
+  void startTimer() {
+    _start = _duration;
+    const oneSec = const Duration(seconds: 1);
+    _timer = new Timer.periodic(
+      oneSec,
+      (Timer timer) {
+        if (_start == 0) {
+          setState(() {
+            timer.cancel();
+            widget.onCountDownEnd();
+          });
+        } else {
+          setState(() {
+            _start--;
+          });
+        }
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    print("disposedisposedisposedispose");
+    _timer.cancel();
+    super.dispose();
+  }
+
 }

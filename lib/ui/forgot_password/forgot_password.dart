@@ -1,21 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter/custom/color_button.dart';
 import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
-import 'package:tgp_flutter/custom/custom_tab_bar.dart';
 import 'package:tgp_flutter/custom/custom_text_form_field.dart';
 import 'package:tgp_flutter/custom/custom_toast.dart';
 import 'package:tgp_flutter/custom/otp_text_form_field.dart';
-import 'package:tgp_flutter/custom/outline_border_button.dart';
 import 'package:tgp_flutter/data/provider/input_validation_provider.dart';
-import 'package:tgp_flutter/entity/event_type.dart';
+import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
 import 'package:tgp_flutter/ui/forgot_password/forgot_password_view_model.dart';
 import 'package:tgp_flutter/ui/forgot_password/update_forgot_password.dart';
-import 'package:tgp_flutter/ui/profile_info/phone/phone_verification_view_model.dart';
-import 'package:tgp_flutter/extension/screen_apis.dart';
 
 class ForgotPassword extends StatefulWidget {
   @override
@@ -24,8 +20,8 @@ class ForgotPassword extends StatefulWidget {
 
 class _ForgotPasswordState extends BaseState<ForgotPassword> {
   var _vm = ForgotPasswordViewModel();
-  TextEditingController _phoneController = TextEditingController(), _otpController = TextEditingController();
-  var isButtonEnabled = false, isOtpEnabled = false;
+  TextEditingController _emailController = TextEditingController(), _otpController = TextEditingController();
+  var isButtonEnabled = false, isOtpEnabled = false, isOtpCountdown = false;
   InputValidationProvider validate = new InputValidationProvider();
 
   @override
@@ -77,11 +73,11 @@ class _ForgotPasswordState extends BaseState<ForgotPassword> {
   _buildTextFormField() => Container(
         margin: EdgeInsets.only(top: 15.auto),
         child: CustomTextFormField(
-          title: getTranslatedText("phone_number"),
-          hintText: getTranslatedText("enter_phone_hint"),
+          title: getTranslatedText("email"),
+          hintText: getTranslatedText("email_hint"),
           onChanged: (value) => _onTextChange(),
           onFieldSubmitted: (value) {},
-          controller: _phoneController,
+          controller: _emailController,
           focusNode: null,
           width: context.screenWidth - 70.auto,
           textInputType: TextInputType.number,
@@ -101,6 +97,13 @@ class _ForgotPasswordState extends BaseState<ForgotPassword> {
             getOtpCode: () {
               _getSmsCode();
             },
+              isEnabled: isOtpEnabled,
+              isCountdown: isOtpCountdown,
+              onCountDownEnd: () => {
+                setState(() {
+                  isOtpCountdown = false;
+                })
+              }
           ),
         ),
       );
@@ -123,9 +126,9 @@ class _ForgotPasswordState extends BaseState<ForgotPassword> {
 
   _onTextChange() {
     setState(() {
-      if (_otpController.text.isNotEmpty && _phoneController.text.isNotEmpty) {
+      if (_otpController.text.isNotEmpty && _emailController.text.isNotEmpty) {
         isButtonEnabled = true;
-      } else if (_phoneController.text.isNotEmpty) {
+      } else if (_emailController.text.isNotEmpty) {
         isOtpEnabled = true;
       } else {
         isOtpEnabled = false;
@@ -135,18 +138,24 @@ class _ForgotPasswordState extends BaseState<ForgotPassword> {
   }
 
   _getSmsCode() {
-    if (!validate.validateChinaPhoneNumber(_phoneController.text)) {
+    if (!validate.validateEmail(_emailController.text)) {
       setState(() {
-        CustomToast.show(getTranslatedText("phone_format_error_msg"));
+        CustomToast.show(getTranslatedText("email_format_error_msg"));
       });
     } else {
       ProgressDialog.show(context);
-      _vm.getForgotPasswordCode(_phoneController.text);
+      _vm.getForgotPasswordCode(_emailController.text);
     }
   }
 
   _handleApiState() {
-    handleApiState(_vm.getForgotPasswordCodeApiState, onSuccess: () {});
+    handleApiState(_vm.getForgotPasswordCodeApiState, onSuccess: () {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        setState(() {
+          isOtpCountdown = true;
+        });
+      });
+    });
   }
 
   _navigateToUpdatePassword() {

@@ -54,7 +54,7 @@ class AuthenticationRepository extends BaseRepository {
             isAuthorization: false,
             endPoint: "api/player/password/forgot",
             params: {
-              "phone": phone,
+              "email": phone,
             },
             jwtRefresher: jwtAuth)
         .execute();
