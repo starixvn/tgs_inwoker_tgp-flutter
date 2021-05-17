@@ -34,7 +34,8 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
               );
             });
           } else
-            CustomToast.show(eventResult.error);
+            _showErrorMessage(eventResult);
+
         }
       } else if (eventResult.isSuccess) {
         if (isAutoHideLoading) ProgressDialog.hide();
@@ -61,4 +62,14 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
           ],
         ),
       );
+
+  _showErrorMessage(EventResult eventResult){
+    var errorMessage = eventResult.error;
+    final errorMap = {405:"invalid_otp"};
+    final errorKey = errorMap[eventResult.errorCode];
+    if(errorKey != null){
+      errorMessage = getTranslatedText(errorKey);
+    }
+    CustomToast.show(errorMessage);
+  }
 }
