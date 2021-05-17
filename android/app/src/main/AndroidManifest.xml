@@ -1,7 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.tgp_flutter">
+    <uses-permission android:name="android.permission.INTERNET" />
    <application
-        android:label="tgp_flutter"
+        android:label="TGS"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
