@@ -8,20 +8,20 @@ part of 'deposit_order.dart';
 
 DepositOrder _$DepositOrderFromJson(Map<String, dynamic> json) {
   return DepositOrder()
-    ..methodName = json['methodName'] as String
-    ..channelName = json['channelName'] as String
+    ..methodName = json['methodname'] as String
+    ..channelName = json['channelname'] as String
     ..amount = (json['amount'] as num)?.toDouble()
-    ..bankName = json['bankName'] as String
-    ..bankAccountName = json['bankAccountName'] as String
-    ..bankAccount = json['bankAccount'] as String;
+    ..bankName = json['bankname'] as String
+    ..bankAccountName = json['bankaccountname'] as String
+    ..bankAccount = json['bankaccount'] as String;
 }
 
 Map<String, dynamic> _$DepositOrderToJson(DepositOrder instance) =>
     <String, dynamic>{
-      'methodName': instance.methodName,
-      'channelName': instance.channelName,
+      'methodname': instance.methodName,
+      'channelname': instance.channelName,
       'amount': instance.amount,
-      'bankName': instance.bankName,
-      'bankAccountName': instance.bankAccountName,
-      'bankAccount': instance.bankAccount,
+      'bankname': instance.bankName,
+      'bankaccountname': instance.bankAccountName,
+      'bankaccount': instance.bankAccount,
     };

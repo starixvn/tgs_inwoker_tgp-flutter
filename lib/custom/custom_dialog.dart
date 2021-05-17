@@ -8,7 +8,7 @@ import 'package:tgp_flutter/src/gradient_decoration.dart';
 
 class CustomDialog extends StatelessWidget {
   final String title, description, buttonText1, buttonText2;
-  final Function onClick;
+  final Function onClick, onClick2;
 
   CustomDialog({
     this.title,
@@ -16,6 +16,7 @@ class CustomDialog extends StatelessWidget {
     this.buttonText1,
     this.buttonText2,
     this.onClick,
+    this.onClick2,
   });
 
   @override
@@ -105,9 +106,7 @@ class CustomDialog extends StatelessWidget {
       );
 
   _buildBackButton(BuildContext context) => OutlineBorderButton(
-        onClick: () => Navigator.pop(
-          context,
-        ),
+        onClick: () => this.onClick2(),
         title: buttonText2,
         isEnabled: true,
         width: context.screenWidth / 3.5,

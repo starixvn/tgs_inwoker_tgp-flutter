@@ -192,6 +192,9 @@ class _CardVerifyRealNameState extends BaseState<CardVerifyRealName> {
         buttonText1: "确认",
         buttonText2: "取消",
         onClick: () => _editSurname(),
+        onClick2: (){
+          Navigator.pop(context);
+        },
       ),
     );
   }

@@ -113,4 +113,16 @@ class BankRepository extends BaseRepository {
         jwtRefresher: jwtAuth)
         .execute();
   }
+
+  Future<EventResult<dynamic>> getCryptoId(String amount, String paymentId) async {
+    return await ApiRequestBuilder<dynamic>(
+        method: HttpMethod.PUT,
+        endPoint: "api/deposit/crypto",
+        params: {
+          "amount": amount,
+          "paymentid": paymentId,
+        },
+        jwtRefresher: jwtAuth)
+        .execute();
+  }
 }

@@ -165,7 +165,7 @@ class _DepositOrderViewState extends BaseState<DepositOrderView> {
               style: TextStyle(fontSize: 13.auto, color: CustomColor.grey),
             ),
             Text(
-              content,
+              content ?? "",
               style: TextStyle(fontSize: 13.auto, color: Colors.black),
             )
           ],
@@ -217,17 +217,21 @@ class _DepositOrderViewState extends BaseState<DepositOrderView> {
         showDialog(
           context: context,
           builder: (BuildContext context) => CustomDialog(
-              title: "上传成功",
-              description: "",
-              buttonText1: "确认",
-              onClick: () {
-                Navigator.pop(
-                  context,
-                );
-                Navigator.pop(
-                  context,
-                );
-              }),
+            title: "上传成功",
+            description: "",
+            buttonText1: "确认",
+            onClick: () {
+              Navigator.pop(
+                context,
+              );
+              Navigator.pop(
+                context,
+              );
+            },
+            onClick2: () {
+              Navigator.pop(context);
+            },
+          ),
         );
       });
     });
