@@ -131,6 +131,12 @@ class _PromotionItemDetailsState extends BaseState<PromotionItemDetails> {
       );
 
   _onClick() {
+    if (widget.vm.userProfile == null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.of(context).pushNamed("/login");
+      });
+      return;
+    }
     ProgressDialog.show(context);
     widget.vm.joinPromotion(widget.promotion.id);
   }
