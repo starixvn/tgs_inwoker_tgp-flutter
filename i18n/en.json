@@ -122,6 +122,8 @@
   "set_new_phone_number":"New Phone Number",
   "enter_ic_no_hint":"Enter your IC No.",
   "otp":"OTP",
+  "invalid_otp": "Invalid OTP",
+  "retry_otp": "Retry",
   "old_password":"Old Password",
   "enter_old_password_hint":"Enter Old Password",
   "new_password":"New Password",

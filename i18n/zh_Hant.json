@@ -122,6 +122,8 @@
   "set_new_phone_number":"設定新號碼",
   "enter_ic_no_hint":"請輸入您的身份證號碼",
   "otp":"驗證碼",
+  "invalid_otp": "驗證碼错误",
+  "retry_otp": "重新发送",
   "old_password":"舊密碼",
   "enter_old_password_hint":"請輸入舊密碼",
   "new_password":"新密碼",
