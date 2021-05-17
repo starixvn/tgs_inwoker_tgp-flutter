@@ -17,7 +17,7 @@ Promotion _$PromotionFromJson(Map<String, dynamic> json) {
     ..bonusAmountLimit = (json['bonusAmountLimit'] as num)?.toDouble()
     ..amountUsed = (json['amountUsed'] as num)?.toDouble()
     ..unlimited = json['unlimited'] as bool
-    ..gameType = json['gameType'] as String
+    ..gameType = json['gameType'] as int
     ..percentage = (json['percentage'] as num)?.toDouble()
     ..totalAmountLimit = (json['totalAmountLimit'] as num)?.toDouble()
     ..turnoverMultiple = (json['turnoverMultiple'] as num)?.toDouble()

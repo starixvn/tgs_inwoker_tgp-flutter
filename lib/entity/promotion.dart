@@ -16,7 +16,7 @@ class Promotion {
   double bonusAmountLimit;
   double amountUsed;
   bool unlimited;
-  String gameType;
+  int gameType;
   double percentage;
   double totalAmountLimit;
   double turnoverMultiple;
