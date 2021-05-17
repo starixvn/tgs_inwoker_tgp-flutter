@@ -6,6 +6,7 @@ import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/custom/custom_toast.dart';
 import 'package:tgp_flutter/localizations/language_provider.dart';
 import 'package:tgp_flutter/network/event_result.dart';
+import 'package:tgp_flutter/repository/user_repository.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/ui/login/login.dart';
 
@@ -13,7 +14,10 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
   getTranslatedText(String key) => LanguageProvider().getTranslated(context, key);
 
   handleApiState(EventResult eventResult,
-      {Function onSuccess, Function onError, bool isAutoHideLoading = true, bool isRequireResult = false}) async{
+      {Function onSuccess,
+      Function onError,
+      bool isAutoHideLoading = true,
+      bool isRequireResult = false}) async {
     if (eventResult == null) return;
     if (!eventResult.isHandled) {
       if (eventResult.isError) {
@@ -22,27 +26,33 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
           onError(eventResult.error);
         } else {
           final SharedPreferences prefs = await SharedPreferences.getInstance();
-          var loginLater = prefs.getBool("login_later")?? false;
-          if ((eventResult.errorCode == 102 || eventResult.errorCode == 101)&&!loginLater) {
+          var loginLater = prefs.getBool("login_later") ?? false;
+          if ((eventResult.errorCode == 102 || eventResult.errorCode == 101)) {
+            UserRepository.getSingleton().clearSession();
             WidgetsBinding.instance.addPostFrameCallback((_) {
               showDialog(
-                context: context,
-                builder: (BuildContext context) => CustomDialog(
-                  title: "登录已超时",
-                  description: "请再登录",
-                  buttonText1: "登录",
-                  buttonText2: "不了",
-                  onClick: () => Navigator.of(context).pushNamed("/login"),
-                  onClick2: (){
-                    Navigator.pop(context);
-                    prefs.setBool("login_later", true);
-                  },
-                ),
-              );
+                  barrierDismissible: false,
+                  context: context,
+                  builder: (BuildContext context) => WillPopScope(
+                        onWillPop: () async => false,
+                        child: CustomDialog(
+                          title: "登录已超时",
+                          description: "请再登录",
+                          buttonText1: "登录",
+                          buttonText2: "不了",
+                          onClick: () {
+                            Navigator.of(context).pushReplacementNamed("/home");
+                            Navigator.of(context).pushNamed("/login");
+                          },
+                          onClick2: () {
+                            Navigator.of(context).pushReplacementNamed("/home");
+                            prefs.setBool("login_later", true);
+                          },
+                        ),
+                      ));
             });
           } else
             _showErrorMessage(eventResult);
-
         }
       } else if (eventResult.isSuccess) {
         if (isAutoHideLoading) ProgressDialog.hide();
@@ -70,11 +80,11 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
         ),
       );
 
-  _showErrorMessage(EventResult eventResult){
+  _showErrorMessage(EventResult eventResult) {
     var errorMessage = eventResult.error;
-    final errorMap = {405:"invalid_otp"};
+    final errorMap = {405: "invalid_otp"};
     final errorKey = errorMap[eventResult.errorCode];
-    if(errorKey != null){
+    if (errorKey != null) {
       errorMessage = getTranslatedText(errorKey);
     }
     CustomToast.show(errorMessage);

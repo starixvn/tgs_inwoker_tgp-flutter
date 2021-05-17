@@ -34,6 +34,7 @@ class _DepositState extends BaseState<Deposit> {
     return ProviderWidget<DepositViewModel>(
         model: _vm,
         builder: (ctx, vm, _) {
+          _handleApiState();
           return Scaffold(
             resizeToAvoidBottomInset: false,
             backgroundColor: Colors.white,
@@ -113,4 +114,8 @@ class _DepositState extends BaseState<Deposit> {
           style: TextStyle(fontSize: 20.auto),
         ),
       );
+
+  _handleApiState(){
+    handleApiState(_vm.getPaymentApiState, isAutoHideLoading: false, onSuccess: () {});
+  }
 }

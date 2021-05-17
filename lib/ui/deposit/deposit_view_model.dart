@@ -41,6 +41,7 @@ class DepositViewModel extends BaseViewModel {
     if(paymentList ==null) await getPayment();
     if(method !=null) pMethod = method;
     if(paymentCode !=null) pPaymentCode = paymentCode;
+    if(depositMethodList[pMethod] != null)
     paymentList = depositMethodList[pMethod].where((element) => element.paymentCode == pPaymentCode).toList();
     notifyListeners();
   }

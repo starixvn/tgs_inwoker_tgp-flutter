@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tgp_flutter/entity/bank_card.dart';
 import 'package:tgp_flutter/entity/http_method.dart';
 import 'package:tgp_flutter/entity/response/check_username_response.dart';
@@ -75,8 +76,14 @@ class UserRepository extends BaseRepository {
     var apiState = await ApiRequestBuilder<dynamic>(
             method: HttpMethod.DELETE, endPoint: "api/Player/logout", jwtRefresher: jwtAuth)
         .execute();
-    userProfile = null;
+    await clearSession();
     return apiState;
+  }
+
+  clearSession() async{
+    userProfile = null;
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove("token");
   }
 
   Future<EventResult<LoginResponse>> auth() async {

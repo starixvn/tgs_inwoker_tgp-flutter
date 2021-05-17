@@ -23,8 +23,6 @@ class ProfileViewModel extends BaseViewModel {
   logout() async {
     setLoading();
     logoutApiState = await userRepo.logout();
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.remove("token");
     setLoading(false);
     return logoutApiState;
   }

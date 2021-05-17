@@ -212,7 +212,6 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
   }
 
   _handleApiState() {
-    handleApiState(widget.vm.getPaymentApiState, isAutoHideLoading: false, onSuccess: () {});
     handleApiState(widget.vm.getCryptoIdApiState, onSuccess: () {});
     handleApiState(widget.vm.getManualDepositIdApiState, onSuccess: () {
       paymentChannelId = widget.vm.getManualDepositIdApiState.result;
