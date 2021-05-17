@@ -99,7 +99,7 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
           child: Container(
             margin: EdgeInsets.only(top: 15.auto),
             child: OtpTextFormField(
-              hintText: getTranslatedText("enter_phone_otp_hint"),
+              hintText: getTranslatedText("enter_email_otp_hint"),
               onChanged: (value) => _onTextChange(),
               controller: _otpController,
               textInputAction: TextInputAction.done,
