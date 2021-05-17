@@ -305,6 +305,5 @@ class _MainCardState extends BaseState<MainCard> {
         _checkBankCardListLength();//check card list every time fetched
       });
     });
-
   }
 }

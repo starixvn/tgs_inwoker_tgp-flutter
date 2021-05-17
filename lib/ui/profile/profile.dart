@@ -43,7 +43,7 @@ class _ProfileState extends BaseState<Profile> {
         //_vm.getWalletBalance();
         //_getVipDetails();
       } else {
-        Navigator.of(context).pushNamed("/login}");
+        Navigator.of(context).pushNamed("/login");
       }
     });
     super.initState();

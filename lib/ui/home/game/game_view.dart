@@ -167,6 +167,9 @@ class _GameViewState extends BaseState<GameView> {
           buttonText1: "注册/登录",
           buttonText2: "知道了",
           onClick: this.navigateToLogin,
+          onClick2: (){
+            Navigator.pop(context);
+          },
         ),
       );
     } else

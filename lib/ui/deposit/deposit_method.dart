@@ -17,14 +17,15 @@ import 'package:tgp_flutter/ui/deposit/deposit_web.dart';
 
 class DepositMethod extends StatefulWidget {
   final String paymentCode;
+  final DepositViewModel vm;
 
-  DepositMethod({Key key, this.paymentCode}) : super(key: key);
+  DepositMethod({Key key, this.paymentCode, this.vm}) : super(key: key);
 
   @override
   _DepositMethodState createState() => _DepositMethodState();
 }
 
-class _DepositMethodState extends BaseState<DepositMethod> {
+class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAliveClientMixin {
   String methodPickerText, channelPickerText;
   TextEditingController _amountController = TextEditingController(), _bankNameController = TextEditingController();
   var isButtonEnabled = false;
@@ -33,48 +34,49 @@ class _DepositMethodState extends BaseState<DepositMethod> {
   int amount;
   var onClick = false;
   Payment _payment;
-  var _vm = DepositViewModel();
   var paymentChannelId;
 
   void initState() {
-    methodPickerText = _vm.pMethod;
-    onSelectedMethod(methodPickerText, paymentCode: widget.paymentCode);
+    methodPickerText = widget.vm.pMethod;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      onSelectedMethod(methodPickerText, paymentCode: widget.paymentCode);
+    });
     super.initState();
   }
 
+  @override
+  bool get wantKeepAlive => true;
+
   Widget build(BuildContext context) {
-    return ProviderWidget<DepositViewModel>(
-        model: _vm,
-        builder: (ctx, vm, _) {
-          _handleApiState();
-          return /*_vm.isLoading?Center(child: CircularProgressIndicator(),):*/ Container(
-            margin: EdgeInsets.all(10.auto),
-            child: ListView(
-              children: [
-                _buildCard("deposit_method", _vm.depositMethodList.keys.toList(), isDepositMethod: true),
-                _buildCard("deposit_channel", _vm.paymentList),
-                _buildBankNameTextField("银行账号名称", "请输入银行账号名称"),
-                _buildAmountTextField("deposit_amount", paymentMin, paymentMax),
-                _buildButton(),
-                Container(
-                    width: context.screenWidth,
-                    margin: EdgeInsets.only(
-                      left: 20.auto,
-                      right: 20.auto,
-                      bottom: 10.auto,
-                      top: 15.auto,
-                    ),
-                    child: Text(
-                      "温性提醒 \n "
-                      "1.存款完成，请勿关闭操作页面， 以确保账作业顺利。"
-                      "\n 2.请您直接在弹出的银行页面上完成存款。"
-                      "\n 3.因建行网银接口维护，请该用其他银行存款。",
-                      style: TextStyle(color: CustomColor.grey, fontSize: 11.auto),
-                    )),
-              ],
-            ),
-          );
-        });
+    super.build(context);
+    _handleApiState();
+    return /*widget.vm.isLoading?Center(child: CircularProgressIndicator(),):*/ Container(
+      margin: EdgeInsets.all(10.auto),
+      child: ListView(
+        children: [
+          _buildCard("deposit_method", widget.vm.depositMethodList.keys.toList(), isDepositMethod: true),
+          _buildCard("deposit_channel", widget.vm.paymentList),
+          _buildBankNameTextField("银行账号名称", "请输入银行账号名称"),
+          _buildAmountTextField("deposit_amount", paymentMin, paymentMax),
+          _buildButton(),
+          Container(
+              width: context.screenWidth,
+              margin: EdgeInsets.only(
+                left: 20.auto,
+                right: 20.auto,
+                bottom: 10.auto,
+                top: 15.auto,
+              ),
+              child: Text(
+                "温性提醒 \n "
+                "1.存款完成，请勿关闭操作页面， 以确保账作业顺利。"
+                "\n 2.请您直接在弹出的银行页面上完成存款。"
+                "\n 3.因建行网银接口维护，请该用其他银行存款。",
+                style: TextStyle(color: CustomColor.grey, fontSize: 11.auto),
+              )),
+        ],
+      ),
+    );
   }
 
   _buildCard(String title, List<dynamic> list, {bool isDepositMethod = false}) {
@@ -106,7 +108,7 @@ class _DepositMethodState extends BaseState<DepositMethod> {
               onChanged: (value) {
                 setState(() {
                   if (value is String)
-                    onSelectedMethod(value,paymentCode: widget.paymentCode );
+                    onSelectedMethod(value, paymentCode: widget.paymentCode);
                   else if (value is Payment) {
                     onSelectedChannel(
                       value,
@@ -188,12 +190,13 @@ class _DepositMethodState extends BaseState<DepositMethod> {
 
   _onClick() {
     ProgressDialog.show(context);
-    _vm.getManualDepositId(_bankNameController.text, _amountController.text, _payment.id);
+    if(widget.paymentCode == "Manual") widget.vm.getManualDepositId(_bankNameController.text, _amountController.text, _payment.id);
+    else widget.vm.getCryptoId( _amountController.text, _payment.id);
   }
 
   onSelectedMethod(String method, {String paymentCode}) async {
-    await _vm.filterMethod(method: method, paymentCode: paymentCode);
-    onSelectedChannel(_vm.paymentList.first);
+    await widget.vm.filterMethod(method: method, paymentCode: paymentCode);
+    onSelectedChannel(widget.vm.paymentList.first);
     setState(() {
       methodPickerText = method;
     });
@@ -209,11 +212,12 @@ class _DepositMethodState extends BaseState<DepositMethod> {
   }
 
   _handleApiState() {
-    handleApiState(_vm.getPaymentApiState, isAutoHideLoading: false, onSuccess: () {});
-    handleApiState(_vm.getManualDepositIdApiState, onSuccess: () {
-      paymentChannelId = _vm.getManualDepositIdApiState.result;
+    handleApiState(widget.vm.getPaymentApiState, isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(widget.vm.getCryptoIdApiState, onSuccess: () {});
+    handleApiState(widget.vm.getManualDepositIdApiState, onSuccess: () {
+      paymentChannelId = widget.vm.getManualDepositIdApiState.result;
     });
-    handleApiState(_vm.getDepositOrderApiState, onSuccess: () {
+    handleApiState(widget.vm.getDepositOrderApiState, onSuccess: () {
       ProgressDialog.hide();
       WidgetsBinding.instance.addPostFrameCallback((_) {
         Navigator.push(
@@ -221,7 +225,7 @@ class _DepositMethodState extends BaseState<DepositMethod> {
             MaterialPageRoute(
                 builder: (context) => DepositOrderView(
                     method: _payment.methodCode,
-                    deposit: _vm.getDepositOrderApiState.result,
+                    deposit: widget.vm.getDepositOrderApiState.result,
                     id: paymentChannelId,
                     name: _bankNameController.text)));
       });

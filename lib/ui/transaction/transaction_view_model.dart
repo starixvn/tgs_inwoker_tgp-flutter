@@ -14,6 +14,7 @@ class TransactionViewModel extends BaseViewModel {
   var startDate = DateTime.now(), endDate = DateTime.now();
   List<BetTransaction> betTransactionList;
   var endRecord = false;
+  var accountTransactionList;
 
   get gameProviderList => contentRepo.gameProviderList;
 
@@ -58,6 +59,5 @@ class TransactionViewModel extends BaseViewModel {
     getGameProviderApiState = await contentRepo.getGameProviderList();
     setLoading(false);
     return getGameProviderApiState;
-
   }
 }

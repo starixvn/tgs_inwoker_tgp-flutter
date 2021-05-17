@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tgp_flutter/custom/color_button.dart';
 import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/custom/custom_toast.dart';
@@ -221,7 +222,9 @@ class _LoginContentState extends BaseState<LoginContent> {
     }
   }
 
-  _navigateToHome() {
+  _navigateToHome() async{
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool("login_later", true);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(

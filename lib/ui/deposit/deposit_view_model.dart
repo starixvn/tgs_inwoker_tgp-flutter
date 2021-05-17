@@ -16,7 +16,7 @@ class DepositViewModel extends BaseViewModel {
 
   @override
   List<BaseRepository> get repoList => [];
-  var getPaymentApiState, getManualDepositIdApiState, getDepositOrderApiState, uploadDepositImageApiState;
+  var getPaymentApiState, getManualDepositIdApiState, getDepositOrderApiState, uploadDepositImageApiState, getCryptoIdApiState;
   Map<String, List<Payment>> depositMethodList = new Map<String, List<Payment>>();
   Map<String, List<Payment>> paymentCodeList = new Map<String, List<Payment>>();
   List<Payment> paymentList;
@@ -72,5 +72,15 @@ class DepositViewModel extends BaseViewModel {
     }
     setLoading(false);
     return uploadDepositImageApiState;
+  }
+
+  getCryptoId(String amount, String paymentId) async{
+    setLoading();
+    getCryptoIdApiState = await depositRepo.getCryptoId(amount, paymentId);
+    if(getCryptoIdApiState.isSuccess){
+      getDepositOrder(getCryptoIdApiState.result);
+    }
+    setLoading(false);
+    return getCryptoIdApiState;
   }
 }

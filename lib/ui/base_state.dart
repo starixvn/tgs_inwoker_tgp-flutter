@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tgp_flutter/custom/custom_dialog.dart';
 import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/custom/custom_toast.dart';
@@ -12,7 +13,7 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
   getTranslatedText(String key) => LanguageProvider().getTranslated(context, key);
 
   handleApiState(EventResult eventResult,
-      {Function onSuccess, Function onError, bool isAutoHideLoading = true, bool isRequireResult = false}) {
+      {Function onSuccess, Function onError, bool isAutoHideLoading = true, bool isRequireResult = false}) async{
     if (eventResult == null) return;
     if (!eventResult.isHandled) {
       if (eventResult.isError) {
@@ -20,7 +21,9 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
         if (onError != null) {
           onError(eventResult.error);
         } else {
-          if (eventResult.errorCode == 102 || eventResult.errorCode == 101) {
+          final SharedPreferences prefs = await SharedPreferences.getInstance();
+          var loginLater = prefs.getBool("login_later")?? false;
+          if ((eventResult.errorCode == 102 || eventResult.errorCode == 101)&&!loginLater) {
             WidgetsBinding.instance.addPostFrameCallback((_) {
               showDialog(
                 context: context,
@@ -30,6 +33,10 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
                   buttonText1: "登录",
                   buttonText2: "不了",
                   onClick: () => Navigator.of(context).pushNamed("/login"),
+                  onClick2: (){
+                    Navigator.pop(context);
+                    prefs.setBool("login_later", true);
+                  },
                 ),
               );
             });

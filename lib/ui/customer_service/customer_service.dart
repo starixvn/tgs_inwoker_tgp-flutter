@@ -33,7 +33,7 @@ class _CustomerServiceState extends BaseState<CustomerService> {
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
-              Navigator.popUntil(context, ModalRoute.withName('/'));
+              Navigator.of(context).pop();
             },
           ),
         ),

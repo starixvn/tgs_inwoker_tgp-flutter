@@ -9,8 +9,8 @@ import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
+import 'package:tgp_flutter/ui/transaction/account_transaction_view.dart';
 import 'package:tgp_flutter/ui/transaction/bet_transaction_view.dart';
-import 'package:tgp_flutter/ui/transaction/transaction_details.dart';
 import 'package:tgp_flutter/ui/transaction/transaction_view_model.dart';
 
 class Transaction extends StatefulWidget {
@@ -33,10 +33,12 @@ class _TransactionState extends BaseState<Transaction> with SingleTickerProvider
     {"id": "4", "text": "返水记录"},
   ];
   var accountTransactionList;
+  TransactionViewModel _vm = TransactionViewModel();
 
   @override
   void initState() {
     _tabController = TabController(length: tabList.length, vsync: this, initialIndex: (widget.tabIndex) ?? 0);
+    _vm.getGameProviderList();
     super.initState();
   }
 
@@ -47,85 +49,93 @@ class _TransactionState extends BaseState<Transaction> with SingleTickerProvider
   }
 
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        centerTitle: true,
-        flexibleSpace: Container(
-          decoration: gradientDecoration,
-        ),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        title: Text(
-          tabList[currentTabIndex]["text"],
-          style: TextStyle(fontSize: 20.auto),
-        ),
-        bottom: PreferredSize(
-          preferredSize: Size.fromHeight(40),
-          child: Container(
-              margin: EdgeInsets.symmetric(vertical: 20.auto),
-              alignment: Alignment.center,
-              child: Text(
-                "¥ 0.00",
-                style: TextStyle(fontSize: 16.auto, color: Colors.white),
-              )),
-        ),
-      ),
-      body: Column(
-        children: [
-          Container(
-            width: context.screenWidth,
-            color: Colors.black87,
-            child: TabBar(
-              controller: _tabController,
-              isScrollable: true,
-              unselectedLabelColor: Colors.white,
-              labelColor: CustomColor.theme_label_text_highlight_color,
-              indicatorColor: CustomColor.theme_label_text_highlight_color,
-              indicatorWeight: 3,
-              onTap: (index) {
-                setState(() {
-                  currentTabIndex = index;
-                });
-              },
-              unselectedLabelStyle: TextStyle(color: CustomColor.grey),
-              tabs: tabList.map((item) {
-                return Tab(
-                  child: Text(item["text"],
-                      style: TextStyle(
-                        fontFamily: 'PingFang',
-                        fontSize: 14.auto,
-                      )),
-                );
-              }).toList(),
+    return ProviderWidget<TransactionViewModel>(
+        model: _vm,
+        builder: (ctx, vm, _) {
+          return Scaffold(
+            resizeToAvoidBottomInset: false,
+            backgroundColor: Colors.white,
+            appBar: AppBar(
+              automaticallyImplyLeading: false,
+              centerTitle: true,
+              flexibleSpace: Container(
+                decoration: gradientDecoration,
+              ),
+              leading: IconButton(
+                icon: Icon(Icons.arrow_back),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+              title: Text(
+                tabList[currentTabIndex]["text"],
+                style: TextStyle(fontSize: 20.auto),
+              ),
+              bottom: PreferredSize(
+                preferredSize: Size.fromHeight(40),
+                child: Container(
+                    margin: EdgeInsets.symmetric(vertical: 20.auto),
+                    alignment: Alignment.center,
+                    child: Text(
+                      "¥ 0.00",
+                      style: TextStyle(fontSize: 16.auto, color: Colors.white),
+                    )),
+              ),
             ),
-          ),
-          Expanded(
-            child: TabBarView(
-              controller: _tabController,
+            body: Column(
               children: [
-                TransactionDetails<AccountTransaction>(
-                    transactionHeaderList: ["bet_time", "platform", "bet_amount", "win_loss"]),
-                BetTransactionView(),
-                TransactionDetails<AccountTransaction>(
-                    transactionHeaderList: ["bet_time", "platform", "bet_amount", "win_loss"]),
-                TransactionDetails<BetTransaction>(
-                  transactionHeaderList: ["bet_time", "platform", "bet_amount", "win_loss"],
+                Container(
+                  width: context.screenWidth,
+                  color: Colors.black87,
+                  child: TabBar(
+                    controller: _tabController,
+                    isScrollable: true,
+                    unselectedLabelColor: Colors.white,
+                    labelColor: CustomColor.theme_label_text_highlight_color,
+                    indicatorColor: CustomColor.theme_label_text_highlight_color,
+                    indicatorWeight: 3,
+                    onTap: (index) {
+                      setState(() {
+                        currentTabIndex = index;
+                      });
+                    },
+                    unselectedLabelStyle: TextStyle(color: CustomColor.grey),
+                    tabs: tabList.map((item) {
+                      return Tab(
+                        child: Text(item["text"],
+                            style: TextStyle(
+                              fontFamily: 'PingFang',
+                              fontSize: 14.auto,
+                            )),
+                      );
+                    }).toList(),
+                  ),
                 ),
-                TransactionDetails<DailyTransaction>(
-                  transactionHeaderList: ["bet_time", "platform", "bet_amount", "win_loss"],
+                Expanded(
+                  child: TabBarView(
+                    controller: _tabController,
+                    children: [
+                      AccountTransactionView(vm: _vm, transactionHeaderList: ["time", "status", "wallet", "amount"]),
+                      BetTransactionView(
+                        vm: _vm,
+                      ),
+                      AccountTransactionView(
+                          vm: _vm, transactionHeaderList: ["time", "trade_order_no", "status", "amount"]),
+                      AccountTransactionView(
+                          vm: _vm, transactionHeaderList: ["time", "trade_order_no", "status", "amount"]),
+                      AccountTransactionView(
+                          vm: _vm,
+                          transactionHeaderList: ["rebate_no", "rebate_cycle_date", "status", "rebate_detail"]),
+                    ],
+                  ),
                 ),
               ],
             ),
-          ),
-        ],
-      ),
-    );
+          );
+        });
+  }
+
+  _handleApiState() {
+    handleApiState(_vm.getGameProviderApiState, isAutoHideLoading: false, onSuccess: () {});
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tgp_flutter/custom/custom_dialog.dart';
 import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/entity/language.dart';
@@ -160,7 +161,9 @@ class _HomeState extends BaseState<Home> {
   }
 
   _displayDialog() async {
-    if (_vm.userProfile == null) {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    var loginLater = prefs.getBool("login_later")?? false;
+    if (_vm.userProfile == null && !loginLater) {
       showDialog(
         context: context,
         builder: (BuildContext context) => CustomDialog(
@@ -169,6 +172,10 @@ class _HomeState extends BaseState<Home> {
           buttonText1: "登录",
           buttonText2: "不了",
           onClick: this.navigateToLogin,
+          onClick2: (){
+            prefs.setBool("login_later", true);
+            Navigator.pop(context);
+          },
         ),
       );
     }

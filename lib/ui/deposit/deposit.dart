@@ -75,10 +75,8 @@ class _DepositState extends BaseState<Deposit> {
                         ),
                         Expanded(
                           child: TabBarView(
-                            children: List.generate(_vm.paymentCodeList.keys.length,(index){
-                              return DepositMethod(
-                                paymentCode: _vm.paymentCodeList.keys.toList()[index],
-                              );
+                            children: List.generate(_vm.paymentCodeList.keys.length, (index) {
+                              return DepositMethod(paymentCode: _vm.paymentCodeList.keys.toList()[index], vm: _vm);
                             }).toList(),
                           ),
                         )

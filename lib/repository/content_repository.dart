@@ -4,7 +4,9 @@ import 'package:tgp_flutter/entity/game_provider.dart';
 import 'package:tgp_flutter/entity/game_type.dart';
 import 'package:tgp_flutter/entity/http_method.dart';
 import 'package:tgp_flutter/entity/payment.dart';
+import 'package:tgp_flutter/entity/promotion.dart';
 import 'package:tgp_flutter/entity/response/game_url_response.dart';
+import 'package:tgp_flutter/entity/response/list_response.dart';
 import 'package:tgp_flutter/entity/user_profile.dart';
 import 'package:tgp_flutter/network/api_request_builder.dart';
 import 'package:tgp_flutter/network/event_result.dart';
@@ -26,7 +28,7 @@ class ContentRepository extends BaseRepository {
 
   Future<EventResult<List<GameProvider>>> getGameProviderList() async {
     return await ApiRequestBuilder<List<GameProvider>>(
-      isAuthorization: false,
+            isAuthorization: false,
             method: HttpMethod.GET,
             endPoint: "api/GameProvider/list",
             params: {
@@ -42,7 +44,7 @@ class ContentRepository extends BaseRepository {
 
   Future<EventResult<List<Game>>> getGameList(String gamePlatformCode, GameType gameType) async {
     return await ApiRequestBuilder<List<Game>>(
-      isAuthorization: false,
+            isAuthorization: false,
             method: HttpMethod.GET,
             endPoint: "api/Game/list",
             params: {
@@ -78,6 +80,28 @@ class ContentRepository extends BaseRepository {
             endPoint: "api/announcement/list",
             converter: (json) => (json as List<dynamic>).map((e) => Announcement.fromJson(e)).toList(),
             jwtRefresher: jwtAuth)
+        .execute();
+  }
+
+  Future<EventResult<ListResponse<Promotion>>> getPromotionList(int page, int rows, bool desc, bool all) async {
+    return await ApiRequestBuilder<ListResponse<Promotion>>(
+            method: HttpMethod.GET,
+            endPoint: "api/promotion",
+            params: {
+              "page": page.toString(),
+              "rows": rows.toString(),
+              "desc": desc.toString(),
+              //"sort":"",
+              "all": all.toString(),
+            },
+            converter: (json) => ListResponse.fromJson(json, (res) => Promotion.fromJson(res)),
+            jwtRefresher: jwtAuth)
+        .execute();
+  }
+
+  Future<EventResult<dynamic>> joinPromotion(String id) async {
+    return await ApiRequestBuilder<dynamic>(
+            method: HttpMethod.POST, endPoint: "api/promotion/$id/join", jwtRefresher: jwtAuth)
         .execute();
   }
 }

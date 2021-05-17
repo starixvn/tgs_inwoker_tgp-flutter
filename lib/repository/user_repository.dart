@@ -3,7 +3,7 @@ import 'package:tgp_flutter/entity/bank_card.dart';
 import 'package:tgp_flutter/entity/http_method.dart';
 import 'package:tgp_flutter/entity/response/check_username_response.dart';
 import 'package:tgp_flutter/entity/response/edit_password_response.dart';
-import 'package:tgp_flutter/entity/response/get_transaction_response.dart';
+import 'package:tgp_flutter/entity/response/list_response.dart';
 import 'package:tgp_flutter/entity/response/login_response.dart';
 import 'package:tgp_flutter/entity/response/register_response.dart';
 import 'package:tgp_flutter/entity/bet_transaction.dart';
@@ -153,7 +153,7 @@ class UserRepository extends BaseRepository {
         .execute();
   }
 
-  Future<EventResult<GetTransactionResponse<BetTransaction>>> getTransaction(
+  Future<EventResult<ListResponse<BetTransaction>>> getTransaction(
     DateTime startDate,
     DateTime endDate,
     int page,
@@ -163,9 +163,9 @@ class UserRepository extends BaseRepository {
       String sortBy,
       bool showAll*/
   ) async {
-    return await ApiRequestBuilder<GetTransactionResponse<BetTransaction>>(
+    return await ApiRequestBuilder<ListResponse<BetTransaction>>(
             method: HttpMethod.GET,
-            endPoint: "api/player/report/rounds",
+            endPoint: "api/playerreport/rounds",
             params: {
               "From": startDate.toString(),
               "To": endDate.toString(),
@@ -176,7 +176,7 @@ class UserRepository extends BaseRepository {
           "SortBy":sortBy,
           "ShowAll":showAll.toString(),*/
             },
-            converter: (json) => GetTransactionResponse.fromJson(json, (res) => BetTransaction.fromJson(res)),
+            converter: (json) => ListResponse.fromJson(json, (res) => BetTransaction.fromJson(res)),
             jwtRefresher: jwtAuth)
         .execute();
   }

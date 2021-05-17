@@ -174,6 +174,9 @@ class _CardVerifyWithdrawPasswordState extends BaseState<CardVerifyWithdrawPassw
         description: "因风控原因，进行本项操作以前，您需先创建提款密码。",
         buttonText1: "确认",
         onClick: () => Navigator.pop(context),
+        onClick2: (){
+          Navigator.pop(context);
+        },
       ),
     );
   }
