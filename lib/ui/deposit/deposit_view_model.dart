@@ -16,11 +16,13 @@ class DepositViewModel extends BaseViewModel {
 
   @override
   List<BaseRepository> get repoList => [];
-  var getPaymentApiState, getManualDepositIdApiState, getDepositOrderApiState, uploadDepositImageApiState, getCryptoIdApiState;
-  Map<String, List<Payment>> depositMethodList = new Map<String, List<Payment>>();
-  Map<String, List<Payment>> paymentCodeList = new Map<String, List<Payment>>();
+  var getPaymentApiState,
+      getManualDepositIdApiState,
+      getDepositOrderApiState,
+      uploadDepositImageApiState,
+      getCryptoIdApiState;
+  Map<String, Map<String, List<Payment>>> paymentCodeList;
   List<Payment> paymentList;
-  String pMethod = "Crypto", pPaymentCode = "LeePay";
   var depositOrder;
 
   get wallet => userRepo.wallet;
@@ -28,60 +30,22 @@ class DepositViewModel extends BaseViewModel {
   getPayment() async {
     setLoading();
     getPaymentApiState = await depositRepo.getPayment();
-    if(getPaymentApiState.isSuccess){
+    if (getPaymentApiState.isSuccess) {
       List<Payment> list = getPaymentApiState.result;
-      paymentCodeList = groupBy(list, (obj) => obj.paymentCode);
-      depositMethodList = groupBy(paymentCodeList.values.expand((element) => element), (obj) => obj.methodCode);
+      paymentCodeList = groupBy(list, (obj) => obj.paymentCode)
+          .map((key, value) => MapEntry(key, groupBy(value, (obj) => obj.methodCode)));
     }
     setLoading(false);
     return getPaymentApiState;
   }
 
-  filterMethod({String method, String paymentCode}) async{
-    if(paymentList ==null) await getPayment();
-    if(method !=null) pMethod = method;
-    if(paymentCode !=null) pPaymentCode = paymentCode;
-    if(depositMethodList[pMethod] != null)
-    paymentList = depositMethodList[pMethod].where((element) => element.paymentCode == pPaymentCode).toList();
-    notifyListeners();
-  }
-
-  getManualDepositId(String account,String amount, String paymentId) async{
-    setLoading();
-    getManualDepositIdApiState = await depositRepo.getManualDepositId(account, amount, paymentId);
-    if(getManualDepositIdApiState.isSuccess){
-      getDepositOrder(getManualDepositIdApiState.result);
-    }
-    setLoading(false);
-    return getManualDepositIdApiState;
-  }
-
-  getDepositOrder(String id) async{
-    setLoading();
-    getDepositOrderApiState = await depositRepo.getDepositOrder(id);
-    if(getDepositOrderApiState.isSuccess){
-      depositOrder = getDepositOrderApiState.result;
-    }
-    setLoading(false);
-    return getDepositOrderApiState;
-  }
-
-  uploadDepositImage (String imageFile, String id) async{
+  uploadDepositImage(String imageFile, String id) async {
     setLoading();
     uploadDepositImageApiState = await depositRepo.uploadDepositImage(imageFile, id);
-    if(uploadDepositImageApiState.isSuccess){
-    }
+    if (uploadDepositImageApiState.isSuccess) {}
     setLoading(false);
     return uploadDepositImageApiState;
   }
 
-  getCryptoId(String amount, String paymentId) async{
-    setLoading();
-    getCryptoIdApiState = await depositRepo.getCryptoId(amount, paymentId);
-    if(getCryptoIdApiState.isSuccess){
-      getDepositOrder(getCryptoIdApiState.result);
-    }
-    setLoading(false);
-    return getCryptoIdApiState;
-  }
+
 }

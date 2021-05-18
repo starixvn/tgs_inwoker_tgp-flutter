@@ -117,7 +117,7 @@ class BankRepository extends BaseRepository {
   Future<EventResult<dynamic>> getCryptoId(String amount, String paymentId) async {
     return await ApiRequestBuilder<dynamic>(
         method: HttpMethod.PUT,
-        endPoint: "api/deposit/crypto",
+        endPoint: "api/deposit/crypto/leepay",
         params: {
           "amount": amount,
           "paymentid": paymentId,

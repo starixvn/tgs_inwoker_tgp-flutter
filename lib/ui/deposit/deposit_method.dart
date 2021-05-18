@@ -4,22 +4,20 @@ import 'package:tgp_flutter/custom/custom_picker.dart';
 import 'package:tgp_flutter/custom/custom_picker_dialog.dart';
 import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/custom/custom_text_form_field.dart';
-import 'package:tgp_flutter/custom/custom_toast.dart';
 import 'package:tgp_flutter/entity/payment.dart';
 import 'package:tgp_flutter/extension/format.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
+import 'package:tgp_flutter/ui/deposit/deposit_method_view_model.dart';
 import 'package:tgp_flutter/ui/deposit/deposit_order_view.dart';
-import 'package:tgp_flutter/ui/deposit/deposit_view_model.dart';
-import 'package:tgp_flutter/ui/deposit/deposit_web.dart';
 
 class DepositMethod extends StatefulWidget {
   final String paymentCode;
-  final DepositViewModel vm;
+  final Map<String, List<Payment>> depositMethodList;
 
-  DepositMethod({Key key, this.paymentCode, this.vm}) : super(key: key);
+  DepositMethod({Key key, this.paymentCode, this.depositMethodList}) : super(key: key);
 
   @override
   _DepositMethodState createState() => _DepositMethodState();
@@ -27,20 +25,25 @@ class DepositMethod extends StatefulWidget {
 
 class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAliveClientMixin {
   String methodPickerText, channelPickerText;
-  TextEditingController _amountController = TextEditingController(), _bankNameController = TextEditingController();
+  TextEditingController _amountController = TextEditingController(),
+      _bankNameController = TextEditingController();
   var isButtonEnabled = false;
   var selectedPayment;
   var paymentMin, paymentMax;
   int amount;
-  var onClick = false;
+
+  DepositMethodViewModel _vm;
   Payment _payment;
   var paymentChannelId;
 
   void initState() {
-    methodPickerText = widget.vm.pMethod;
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      onSelectedMethod(methodPickerText, paymentCode: widget.paymentCode);
-    });
+    _vm = DepositMethodViewModel(widget.depositMethodList);
+    if (_vm.depositMethodList.isNotEmpty) {
+      methodPickerText = _vm.depositMethodList.keys.first;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        onSelectedMethod(methodPickerText);
+      });
+    }
     super.initState();
   }
 
@@ -49,34 +52,39 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
 
   Widget build(BuildContext context) {
     super.build(context);
-    _handleApiState();
-    return /*widget.vm.isLoading?Center(child: CircularProgressIndicator(),):*/ Container(
-      margin: EdgeInsets.all(10.auto),
-      child: ListView(
-        children: [
-          _buildCard("deposit_method", widget.vm.depositMethodList.keys.toList(), isDepositMethod: true),
-          _buildCard("deposit_channel", widget.vm.paymentList),
-          _buildBankNameTextField("银行账号名称", "请输入银行账号名称"),
-          _buildAmountTextField("deposit_amount", paymentMin, paymentMax),
-          _buildButton(),
-          Container(
-              width: context.screenWidth,
-              margin: EdgeInsets.only(
-                left: 20.auto,
-                right: 20.auto,
-                bottom: 10.auto,
-                top: 15.auto,
-              ),
-              child: Text(
-                "温性提醒 \n "
-                "1.存款完成，请勿关闭操作页面， 以确保账作业顺利。"
-                "\n 2.请您直接在弹出的银行页面上完成存款。"
-                "\n 3.因建行网银接口维护，请该用其他银行存款。",
-                style: TextStyle(color: CustomColor.grey, fontSize: 11.auto),
-              )),
-        ],
-      ),
-    );
+    return ProviderWidget<DepositMethodViewModel>(
+        model: _vm,
+        builder: (ctx, vm, _) {
+          _handleApiState();
+          return Container(
+            margin: EdgeInsets.all(10.auto),
+            child: ListView(
+              children: [
+                _buildCard("deposit_method", _vm.depositMethodList.keys.toList(),
+                    isDepositMethod: true),
+                _buildCard("deposit_channel", _vm.paymentList),
+                if(_isManualDeposit()) _buildBankNameTextField("银行账号名称", "请输入银行账号名称"),
+                _buildAmountTextField("deposit_amount", paymentMin, paymentMax),
+                _buildButton(),
+                Container(
+                    width: context.screenWidth,
+                    margin: EdgeInsets.only(
+                      left: 20.auto,
+                      right: 20.auto,
+                      bottom: 10.auto,
+                      top: 15.auto,
+                    ),
+                    child: Text(
+                      "温性提醒 \n "
+                      "1.存款完成，请勿关闭操作页面， 以确保账作业顺利。"
+                      "\n 2.请您直接在弹出的银行页面上完成存款。"
+                      "\n 3.因建行网银接口维护，请该用其他银行存款。",
+                      style: TextStyle(color: CustomColor.grey, fontSize: 11.auto),
+                    )),
+              ],
+            ),
+          );
+        });
   }
 
   _buildCard(String title, List<dynamic> list, {bool isDepositMethod = false}) {
@@ -108,7 +116,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
               onChanged: (value) {
                 setState(() {
                   if (value is String)
-                    onSelectedMethod(value, paymentCode: widget.paymentCode);
+                    onSelectedMethod(value);
                   else if (value is Payment) {
                     onSelectedChannel(
                       value,
@@ -190,13 +198,19 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
 
   _onClick() {
     ProgressDialog.show(context);
-    if(widget.paymentCode == "Manual") widget.vm.getManualDepositId(_bankNameController.text, _amountController.text, _payment.id);
-    else widget.vm.getCryptoId( _amountController.text, _payment.id);
+    if (_isManualDeposit())
+      _vm.getManualDepositId(_bankNameController.text, _amountController.text, _payment.id);
+    else//currently is LeePay
+      _vm.getCryptoId(_amountController.text, _payment.id);
   }
 
-  onSelectedMethod(String method, {String paymentCode}) async {
-    await widget.vm.filterMethod(method: method, paymentCode: paymentCode);
-    onSelectedChannel(widget.vm.paymentList.first);
+  _isManualDeposit(){
+    return  widget.paymentCode == "Manual";
+  }
+
+  onSelectedMethod(String method) async {
+    _vm.filterMethod(method);
+    onSelectedChannel(_vm.paymentList.first);
     setState(() {
       methodPickerText = method;
     });
@@ -212,11 +226,15 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
   }
 
   _handleApiState() {
-    handleApiState(widget.vm.getCryptoIdApiState, onSuccess: () {});
-    handleApiState(widget.vm.getManualDepositIdApiState, onSuccess: () {
-      paymentChannelId = widget.vm.getManualDepositIdApiState.result;
+    handleApiState(_vm.getCryptoIdApiState,isRequireResult: true, onSuccess: (result) {
+      //open in new web
+      print(result["paymenturl"]);
     });
-    handleApiState(widget.vm.getDepositOrderApiState, onSuccess: () {
+
+    handleApiState(_vm.getManualDepositIdApiState, isRequireResult: true, onSuccess: (result) {
+      paymentChannelId = result;
+    });
+    handleApiState(_vm.getDepositOrderApiState, onSuccess: () {
       ProgressDialog.hide();
       WidgetsBinding.instance.addPostFrameCallback((_) {
         Navigator.push(
@@ -224,7 +242,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
             MaterialPageRoute(
                 builder: (context) => DepositOrderView(
                     method: _payment.methodCode,
-                    deposit: widget.vm.getDepositOrderApiState.result,
+                    deposit: _vm.getDepositOrderApiState.result,
                     id: paymentChannelId,
                     name: _bankNameController.text)));
       });

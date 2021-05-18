@@ -26,7 +26,7 @@ class _DepositState extends BaseState<Deposit> {
 
   @override
   void initState() {
-    _vm.filterMethod();
+    _vm.getPayment();
     super.initState();
   }
 
@@ -39,7 +39,7 @@ class _DepositState extends BaseState<Deposit> {
             resizeToAvoidBottomInset: false,
             backgroundColor: Colors.white,
             appBar: _buildAppBar(),
-            body: _vm.depositMethodList == null || _vm.paymentList == null
+            body: _vm.paymentCodeList == null
                 ? buildProgressDialog()
                 : DefaultTabController(
                     length: _vm.paymentCodeList.keys.length,
@@ -77,7 +77,7 @@ class _DepositState extends BaseState<Deposit> {
                         Expanded(
                           child: TabBarView(
                             children: List.generate(_vm.paymentCodeList.keys.length, (index) {
-                              return DepositMethod(paymentCode: _vm.paymentCodeList.keys.toList()[index], vm: _vm);
+                              return DepositMethod(paymentCode: _vm.paymentCodeList.keys.toList()[index],depositMethodList: _vm.paymentCodeList.values.toList()[index]);
                             }).toList(),
                           ),
                         )
