@@ -32,6 +32,7 @@ class MessageViewModel extends BaseViewModel {
     if (getMessageListApiState.isSuccess) {
       list = getMessageListApiState.result.items;
       if (messageList == null) messageList = [];
+      if(page == 1) messageList = [];
       messageList.addAll(list);
       endRecord = messageList.length >= getMessageListApiState.result.totalCount ? true : false;
     }

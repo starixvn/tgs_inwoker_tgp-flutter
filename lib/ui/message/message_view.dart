@@ -82,22 +82,23 @@ class _MessageViewState extends BaseState<MessageView> {
                 ? Container()
                 : ListView(controller: _controller, padding: EdgeInsets.all(8.0), children: [
                     Column(
-                      children: List.generate(_vm.messageList.length, (index) {
+                      children: List.generate(20, (index) {
                         return MessageItem(
-                            message: _vm.messageList[index],
+                            message: _vm.messageList[0],
                             isEditing: isEditing,
                             onSelected: (message) => _onSelected(message),
                             onReadMessage: (id) {
-                              ProgressDialog.show(context);
-                              _vm.readMessage([id]);
+                              //ProgressDialog.show(context);
+                              _vm.readMessage([id]);//call api silently
                             },
                             selectedMessageList: selectedMessageList ?? []);
                       }),
                     ),
-                    Visibility(visible: isLoading, child: CircularProgressIndicator()),
+                    Visibility(visible: isLoading, child: Container(alignment: Alignment.center,child:CircularProgressIndicator())),
                     Visibility(
                         visible: _vm.endRecord && _vm.messageList.isNotEmpty,
                         child: Container(
+                          alignment: Alignment.center,
                           padding: EdgeInsets.only(bottom: 10.auto),
                           child: Text(
                             "没有更多了",

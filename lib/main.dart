@@ -215,7 +215,7 @@ class _MyHomePageState extends BaseState<MyHomePage> {
                     _buildBottomBarItem(1, "ic_promotion", "promotion"),
                     _buildBottomBarItem(2, "ic_menu", ""),
                     _buildBottomBarItem(3, "ic_customer_service", "customer_service"),
-                    _buildBottomBarItem(4, "ic_profile", "my_profile", isNewMessage: true),
+                    _buildBottomBarItem(4, "ic_profile", "my_profile", isNewMessage: false),
                   ],
                 ),
               ),
