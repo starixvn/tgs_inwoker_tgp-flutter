@@ -32,8 +32,7 @@ class _HomeState extends BaseState<Home> {
     'banner_2',
     //'images/banner_2.jpg'
   ];
-  String marquee =
-      "《GD真人维护公告》GD真人将于 7 月 2 8 日 09:00 至 14:00 进行维护 维护期间不提供游戏相关服务。若有问题欢迎与在线客服联系 如有问题欢迎与在线客服联系，谢谢";
+  String marquee = "《GD真人维护公告》GD真人将于 7 月 2 8 日 09:00 至 14:00 进行维护 维护期间不提供游戏相关服务。若有问题欢迎与在线客服联系 如有问题欢迎与在线客服联系，谢谢";
   ScrollController controller = ScrollController();
   var currentTabIndex = "0";
   UserProfile user;
@@ -135,8 +134,7 @@ class _HomeState extends BaseState<Home> {
     var announcement = _vm.announcement?.content?.replaceAll(RegExp("/"), " ");
     return Expanded(
       child: Container(
-        decoration: BoxDecoration(
-            color: CustomColor.theme_bar_gradient_1, borderRadius: BorderRadius.circular(10.0)),
+        decoration: BoxDecoration(color: CustomColor.theme_bar_gradient_1, borderRadius: BorderRadius.circular(10.0)),
         margin: EdgeInsets.only(left: 10.auto, right: 10.auto),
         height: 18.auto,
         child: Marquee(
@@ -162,17 +160,17 @@ class _HomeState extends BaseState<Home> {
 
   _displayDialog() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    var loginLater = prefs.getBool("login_later")?? false;
+    var loginLater = prefs.getBool("login_later") ?? false;
     if (_vm.userProfile == null && !loginLater) {
       showDialog(
         context: context,
         builder: (BuildContext context) => CustomDialog(
-          title: "登录已超时",
-          description: "请再登录",
-          buttonText1: "登录",
-          buttonText2: "不了",
+          title: getTranslatedText("login_expired"),
+          description: getTranslatedText("login_again"),
+          buttonText1: getTranslatedText("login"),
+          buttonText2: getTranslatedText("no"),
           onClick: this.navigateToLogin,
-          onClick2: (){
+          onClick2: () {
             prefs.setBool("login_later", true);
             Navigator.pop(context);
           },

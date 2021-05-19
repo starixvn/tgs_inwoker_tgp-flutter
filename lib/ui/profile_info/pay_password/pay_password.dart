@@ -172,7 +172,7 @@ class _PayPasswordState extends BaseState<PayPassword> {
       });
     } else if (_newPasswordController.text != _confirmPasswordController.text) {
       setState(() {
-        CustomToast.show("确认密码与密码不一致");
+        CustomToast.show(getTranslatedText("confirm_password_error_msg"));
       });
     } else {
       ProgressDialog.show(context);

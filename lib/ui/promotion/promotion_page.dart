@@ -41,48 +41,47 @@ class _PromotionState extends BaseState<PromotionPage> {
           _handleApiState();
           return Scaffold(
             appBar: _buildAppBar(),
-            body: _vm.promotionList ==null
+            body: _vm.promotionList == null
                 ? buildProgressDialog()
                 : ListView(
-              children: List.generate(_vm.promotionList.length, (index) {
-                return PromotionItem(
-                  imagePath: "promotion_BN_${(index%3+1).toString()}",
-                  promotion: _vm.promotionList[index],
-                  vm:_vm
-                );
-              }),
-            ),
+                    children: List.generate(_vm.promotionList.length, (index) {
+                      return PromotionItem(
+                          imagePath: "promotion_BN_${(index % 3 + 1).toString()}",
+                          promotion: _vm.promotionList[index],
+                          vm: _vm);
+                    }),
+                  ),
           );
         });
   }
 
   _buildAppBar() => AppBar(
-    automaticallyImplyLeading: false,
-    centerTitle: true,
-    flexibleSpace: Container(
-      decoration: gradientDecoration,
-    ),
-    title: Text(
-      getTranslatedText("promotion_center"),
-      style: TextStyle(fontSize: 20.auto),
-    ),
-    leading: IconButton(
-      icon: Icon(Icons.arrow_back),
-      onPressed: () {
-        Navigator.of(context).pop();
-      },
-    ),
-  );
+        automaticallyImplyLeading: false,
+        centerTitle: true,
+        flexibleSpace: Container(
+          decoration: gradientDecoration,
+        ),
+        title: Text(
+          getTranslatedText("promotion_center"),
+          style: TextStyle(fontSize: 20.auto),
+        ),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      );
 
-  _handleApiState(){
+  _handleApiState() {
     handleApiState(_vm.joinPromotionApiState, onSuccess: () {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         showDialog(
           context: context,
           builder: (BuildContext context) => CustomDialog(
             title: null,
-            description: "参加优惠成功",
-            buttonText1: "确认",
+            description: getTranslatedText("join_success"),
+            buttonText1: getTranslatedText("confirm"),
             onClick: () {
               Navigator.pop(
                 context,
@@ -91,13 +90,11 @@ class _PromotionState extends BaseState<PromotionPage> {
                 context,
               );
             },
-            onClick2: () {
-            },
+            onClick2: () {},
           ),
         );
       });
-    },
-    onError: (errorMsg){
+    }, onError: (errorMsg) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         showDialog(
           context: context,
@@ -113,8 +110,7 @@ class _PromotionState extends BaseState<PromotionPage> {
                 context,
               );
             },
-            onClick2: () {
-            },
+            onClick2: () {},
           ),
         );
       });

@@ -1,13 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'deposit_order.dart';
+part of 'manual_deposit_order.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-DepositOrder _$DepositOrderFromJson(Map<String, dynamic> json) {
-  return DepositOrder()
+ManualDepositOrder _$ManualDepositOrderFromJson(Map<String, dynamic> json) {
+  return ManualDepositOrder()
     ..methodName = json['methodname'] as String
     ..channelName = json['channelname'] as String
     ..amount = (json['amount'] as num)?.toDouble()
@@ -16,7 +16,7 @@ DepositOrder _$DepositOrderFromJson(Map<String, dynamic> json) {
     ..bankAccount = json['bankaccount'] as String;
 }
 
-Map<String, dynamic> _$DepositOrderToJson(DepositOrder instance) =>
+Map<String, dynamic> _$ManualDepositOrderToJson(ManualDepositOrder instance) =>
     <String, dynamic>{
       'methodname': instance.methodName,
       'channelname': instance.channelName,

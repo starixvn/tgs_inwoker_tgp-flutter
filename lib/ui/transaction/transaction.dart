@@ -3,6 +3,7 @@ import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/entity/account_transaction.dart';
 import 'package:tgp_flutter/entity/bet_transaction.dart';
 import 'package:tgp_flutter/entity/daily_transaction.dart';
+import 'package:tgp_flutter/extension/format.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/my_behavior.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
@@ -26,11 +27,11 @@ class _TransactionState extends BaseState<Transaction> with SingleTickerProvider
   var _tabController;
   var currentTabIndex = 0;
   var tabList = [
-    {"id": "0", "text": "转换记录"},
-    {"id": "1", "text": "投注明细"},
-    {"id": "2", "text": "提现记录"},
+    // {"id": "0", "text": "转换记录"},
+    {"id": "0", "text": "bet_history"},
+    /* {"id": "2", "text": "提现记录"},
     {"id": "3", "text": "充值记录"},
-    {"id": "4", "text": "返水记录"},
+    {"id": "4", "text": "返水记录"},*/
   ];
   var accountTransactionList;
   TransactionViewModel _vm = TransactionViewModel();
@@ -68,7 +69,7 @@ class _TransactionState extends BaseState<Transaction> with SingleTickerProvider
                 },
               ),
               title: Text(
-                tabList[currentTabIndex]["text"],
+                getTranslatedText(tabList[currentTabIndex]["text"]),
                 style: TextStyle(fontSize: 20.auto),
               ),
               bottom: PreferredSize(
@@ -77,7 +78,7 @@ class _TransactionState extends BaseState<Transaction> with SingleTickerProvider
                     margin: EdgeInsets.symmetric(vertical: 20.auto),
                     alignment: Alignment.center,
                     child: Text(
-                      "¥ 0.00",
+                      "¥ ${Format().currencyWithDecimalFormat(_vm.wallet?.main ?? 0.0)}",
                       style: TextStyle(fontSize: 16.auto, color: Colors.white),
                     )),
               ),
@@ -102,7 +103,7 @@ class _TransactionState extends BaseState<Transaction> with SingleTickerProvider
                     unselectedLabelStyle: TextStyle(color: CustomColor.grey),
                     tabs: tabList.map((item) {
                       return Tab(
-                        child: Text(item["text"],
+                        child: Text(getTranslatedText(item["text"]),
                             style: TextStyle(
                               fontFamily: 'PingFang',
                               fontSize: 14.auto,
@@ -115,17 +116,17 @@ class _TransactionState extends BaseState<Transaction> with SingleTickerProvider
                   child: TabBarView(
                     controller: _tabController,
                     children: [
-                      AccountTransactionView(vm: _vm, transactionHeaderList: ["time", "status", "wallet", "amount"]),
+                      // AccountTransactionView(vm: _vm, transactionHeaderList: ["time", "status", "wallet", "amount"]),
                       BetTransactionView(
                         vm: _vm,
                       ),
-                      AccountTransactionView(
+                      /*AccountTransactionView(
                           vm: _vm, transactionHeaderList: ["time", "trade_order_no", "status", "amount"]),
                       AccountTransactionView(
                           vm: _vm, transactionHeaderList: ["time", "trade_order_no", "status", "amount"]),
                       AccountTransactionView(
                           vm: _vm,
-                          transactionHeaderList: ["rebate_no", "rebate_cycle_date", "status", "rebate_detail"]),
+                          transactionHeaderList: ["rebate_no", "rebate_cycle_date", "status", "rebate_detail"]),*/
                     ],
                   ),
                 ),

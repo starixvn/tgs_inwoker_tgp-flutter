@@ -61,8 +61,7 @@ class _GameViewState extends BaseState<GameView> {
                             children: List.generate(_vm.gameTypeList.length, (index) {
                               return Container(
                                 margin: EdgeInsets.only(top: 8.auto),
-                                child:
-                                    _buildGameTab(index, _vm.gameTypeList[index].getName(context)),
+                                child: _buildGameTab(index, _vm.gameTypeList[index].getName(context)),
                               );
                             }),
                           ),
@@ -83,9 +82,7 @@ class _GameViewState extends BaseState<GameView> {
   }
 
   _buildGameTab(int tabIndex, String title) {
-    var bgImage = tabIndex == currentTabIndex
-        ? "btn_home_game_category_selected_bg"
-        : "btn_home_game_category_bg";
+    var bgImage = tabIndex == currentTabIndex ? "btn_home_game_category_selected_bg" : "btn_home_game_category_bg";
     return InkWell(
       onTap: () {
         _onTabClick(tabIndex);
@@ -114,9 +111,7 @@ class _GameViewState extends BaseState<GameView> {
                       )
                     : Shadow(),
               ],
-              color: tabIndex == currentTabIndex
-                  ? CustomColor.theme_label_text_highlight_color
-                  : Colors.black),
+              color: tabIndex == currentTabIndex ? CustomColor.theme_label_text_highlight_color : Colors.black),
           minFontSize: 10,
           stepGranularity: 1,
         )),
@@ -162,12 +157,12 @@ class _GameViewState extends BaseState<GameView> {
       showDialog(
         context: context,
         builder: (BuildContext context) => CustomDialog(
-          title: "登录提示",
-          description: "此功能仅对注册户开放",
-          buttonText1: "注册/登录",
-          buttonText2: "知道了",
+          title: getTranslatedText("login_hint"),
+          description: getTranslatedText("login_dialog_des"),
+          buttonText1: getTranslatedText("login_or_signup"),
+          buttonText2: getTranslatedText("got_it"),
           onClick: this.navigateToLogin,
-          onClick2: (){
+          onClick2: () {
             Navigator.pop(context);
           },
         ),
@@ -201,9 +196,7 @@ class _GameViewState extends BaseState<GameView> {
       ProgressDialog.hide();
       WidgetsBinding.instance.addPostFrameCallback((_) {
         Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => GameWeb(game: _vm.gameListMap[gamePlatformCode].first)));
+            context, MaterialPageRoute(builder: (context) => GameWeb(game: _vm.gameListMap[gamePlatformCode].first)));
       });
     }
   }

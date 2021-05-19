@@ -10,6 +10,7 @@ GameWallet _$GameWalletFromJson(Map<String, dynamic> json) {
   return GameWallet()..balance = (json['balance'] as num)?.toDouble();
 }
 
-Map<String, dynamic> _$GameWalletToJson(GameWallet instance) => <String, dynamic>{
+Map<String, dynamic> _$GameWalletToJson(GameWallet instance) =>
+    <String, dynamic>{
       'balance': instance.balance,
     };

@@ -26,10 +26,8 @@ class MainCard extends StatefulWidget {
 class _MainCardState extends BaseState<MainCard> {
   CardViewModel _vm = CardViewModel();
   var imagePath;
-  var isNavigatedToVerifyName = false,
-      isNavigatedToSetWithdrawPassword = false;
-  bool isNavigatedToAddCard = false,
-      isInitLoading = false;
+  var isNavigatedToVerifyName = false, isNavigatedToSetWithdrawPassword = false;
+  bool isNavigatedToAddCard = false, isInitLoading = false;
 
   @override
   void initState() {
@@ -52,36 +50,35 @@ class _MainCardState extends BaseState<MainCard> {
               body: _vm.bankCardList == null || _vm.bankCardList.length == 0
                   ? buildProgressDialog()
                   : Padding(
-                padding: EdgeInsets.symmetric(horizontal: 15.auto),
-                child: ListView(
-                  children: [
-                    Wrap(
-                      children: List.generate(_vm.bankCardList.length, (index) {
-                        return Container(
-                            child: Dismissible(
-                              key: UniqueKey(),
-                              child: _buildBankCardItem(_vm.bankCardList[index]),
-                              background: _swipeLeftBackground(),
-                              direction: DismissDirection.endToStart,
-                              behavior: HitTestBehavior.deferToChild,
-                              onDismissed: (_) {
-                                _delete(_vm.bankCardList[index], index);
-                              },
-                            ));
-                      }),
+                      padding: EdgeInsets.symmetric(horizontal: 15.auto),
+                      child: ListView(
+                        children: [
+                          Wrap(
+                            children: List.generate(_vm.bankCardList.length, (index) {
+                              return Container(
+                                  child: Dismissible(
+                                key: UniqueKey(),
+                                child: _buildBankCardItem(_vm.bankCardList[index]),
+                                background: _swipeLeftBackground(),
+                                direction: DismissDirection.endToStart,
+                                behavior: HitTestBehavior.deferToChild,
+                                onDismissed: (_) {
+                                  _delete(_vm.bankCardList[index], index);
+                                },
+                              ));
+                            }),
+                          ),
+                          _buildDeleteHintText(),
+                          _buildAddCardItem(),
+                        ],
+                      ),
                     ),
-                    _buildDeleteHintText(),
-                    _buildAddCardItem(),
-                  ],
-                ),
-              ),
             ),
           );
         });
   }
 
-  _buildAppBar() =>
-      AppBar(
+  _buildAppBar() => AppBar(
         automaticallyImplyLeading: false,
         centerTitle: true,
         elevation: 0,
@@ -90,12 +87,11 @@ class _MainCardState extends BaseState<MainCard> {
           onPressed: () {
             Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(
-                    builder: (context) =>
-                        MyHomePage(
+                    builder: (context) => MyHomePage(
                           isFirstRun: false,
                           index: 4,
                         )),
-                    (Route<dynamic> route) => false);
+                (Route<dynamic> route) => false);
           },
         ),
         title: Text(
@@ -136,7 +132,7 @@ class _MainCardState extends BaseState<MainCard> {
                 color: Colors.white,
               ),
               Text(
-                " Delete",
+                getTranslatedText("delete"),
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.w700,
@@ -151,51 +147,47 @@ class _MainCardState extends BaseState<MainCard> {
     );
   }
 
-  _buildBankCardItem(BankCard bankCard) =>Container(
-        margin: EdgeInsets.only(top: 10.auto),
-        padding: EdgeInsets.only(left: 30.auto, right: 20.auto),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          image: DecorationImage(image: AssetImage("images/card/card_bg.png"), fit: BoxFit.cover),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black12,
-              offset: Offset(0.0, 3.0),
-              spreadRadius: 0.0, //(x,y)
-              blurRadius: 15.0,
-            ),
-          ],
-        ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-              margin: EdgeInsets.symmetric(vertical: 20.auto),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    bankCard.bankType.displayName,
-                    style: TextStyle(fontSize: 11.auto),
+  _buildBankCardItem(BankCard bankCard) => Container(
+      margin: EdgeInsets.only(top: 10.auto),
+      padding: EdgeInsets.only(left: 30.auto, right: 20.auto),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        image: DecorationImage(image: AssetImage("images/card/card_bg.png"), fit: BoxFit.cover),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12,
+            offset: Offset(0.0, 3.0),
+            spreadRadius: 0.0, //(x,y)
+            blurRadius: 15.0,
+          ),
+        ],
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+            margin: EdgeInsets.symmetric(vertical: 20.auto),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  bankCard.bankType.displayName,
+                  style: TextStyle(fontSize: 11.auto),
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 10.auto),
+                  child: Text(
+                    bankCard.bankType == BankType.CRYPTO ? (bankCard.bankDetail?.address ?? "") : "xxxx xxxx xxxx 1234",
+                    style: TextStyle(fontSize: 15.auto, color: CustomColor.theme_bar_gradient_2),
                   ),
-                  Container(
-                    margin: EdgeInsets.only(top: 10.auto),
-                    child: Text(
-                      bankCard.bankType == BankType.CRYPTO
-                          ? (bankCard.bankDetail?.address ?? "")
-                          : "xxxx xxxx xxxx 1234",
-                      style: TextStyle(fontSize: 15.auto, color: CustomColor.theme_bar_gradient_2),
-                    ),
-                  )
-                ],
-              ),
-            )
-          ],
-        ));
+                )
+              ],
+            ),
+          )
+        ],
+      ));
 
-
-  _buildDeleteHintText() =>
-      Container(
+  _buildDeleteHintText() => Container(
         margin: EdgeInsets.only(right: 23.auto, top: 10.auto),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.end,
@@ -218,8 +210,7 @@ class _MainCardState extends BaseState<MainCard> {
         ),
       );
 
-  _buildAddCardItem() =>
-      Visibility(
+  _buildAddCardItem() => Visibility(
         visible: _vm.bankCardList.length != 3,
         child: InkWell(
           onTap: () async {
@@ -272,7 +263,7 @@ class _MainCardState extends BaseState<MainCard> {
       );
 
   _delete(BankCard card, int index) async {
-    if(_vm.bankCardList.length > 1)//only show when existing list more than 1, else overlapped
+    if (_vm.bankCardList.length > 1) //only show when existing list more than 1, else overlapped
       ProgressDialog.show(context);
     setState(() {
       _vm.bankCardList.removeAt(index);
@@ -281,7 +272,7 @@ class _MainCardState extends BaseState<MainCard> {
   }
 
   _getBankCardList() async {
-     _vm.getBankCardList();
+    _vm.getBankCardList();
   }
 
   _checkBankCardListLength() async {
@@ -302,7 +293,7 @@ class _MainCardState extends BaseState<MainCard> {
         isInitLoading = true;
       }
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        _checkBankCardListLength();//check card list every time fetched
+        _checkBankCardListLength(); //check card list every time fetched
       });
     });
   }

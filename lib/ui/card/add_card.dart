@@ -86,7 +86,7 @@ class _AddCardState extends BaseState<AddCard> {
               );
             }),
         title: Text(
-          getTranslatedText("manage_card"),
+          getTranslatedText("add_card"),
           style: TextStyle(fontSize: 20.auto),
         ),
         bottom: PreferredSize(
@@ -114,7 +114,7 @@ class _AddCardState extends BaseState<AddCard> {
 
   _buildBankTypePicker() => CustomPicker(
       title: "bank_type",
-      displayText: bankTypePickerText == null ? "Please select bank type" : bankTypePickerText,
+      displayText: bankTypePickerText == null ? getTranslatedText("select_bank_type") : bankTypePickerText,
       list: _vm.bankTypeList.keys.toList(),
       isHintText: true,
       width: context.screenWidth,
@@ -124,12 +124,12 @@ class _AddCardState extends BaseState<AddCard> {
 
   _buildBankNamePicker() => CustomPicker(
       title: "bank_name",
-      displayText: bankNamePickerText == null ? "Please select bank name" : bankNamePickerText,
+      displayText: bankNamePickerText == null ? getTranslatedText("select_bank_name") : bankNamePickerText,
       list: _vm.withdrawalInfoList,
       isHintText: true,
       width: context.screenWidth,
       onClick: () {
-        _buildBottomSheet("Bank Name", _vm.withdrawalInfoList);
+        _buildBottomSheet(getTranslatedText("bank_name"), _vm.withdrawalInfoList);
       });
 
   _buildBankCardTextField() => Visibility(
@@ -168,8 +168,8 @@ class _AddCardState extends BaseState<AddCard> {
   _buildCryptoAddressTextField() => Visibility(
         visible: isCrypto,
         child: CustomTextFormField(
-          title: "Address",
-          hintText: "Please enter address",
+          title: getTranslatedText("address"),
+          hintText: getTranslatedText("enter_address"),
           onChanged: (value) => _onTextChange(value),
           onFieldSubmitted: (value) => _onTextChange(value),
           controller: _addressController,
@@ -193,7 +193,7 @@ class _AddCardState extends BaseState<AddCard> {
             Container(
               margin: EdgeInsets.only(left: 5.auto),
               child: Text(
-                "资讯加密处理，仅用银行验证",
+                getTranslatedText("add_card_hint"),
                 style: TextStyle(fontSize: 9.auto, color: Colors.red),
               ),
             )
@@ -221,12 +221,12 @@ class _AddCardState extends BaseState<AddCard> {
         builder: (BuildContext bc) {
           return CustomPickerDialog(
               title: title,
-              list: list,
+              list: list ?? [],
               onChanged: (value) {
                 setState(() {
                   if (value is BankType)
                     onSelectedBankType(bankType: value);
-                  else if (value is WithdrawalInfo) onSelectedWithdrawalInfo(withdrawalInfo:value);
+                  else if (value is WithdrawalInfo) onSelectedWithdrawalInfo(withdrawalInfo: value);
                   Navigator.pop(context);
                 });
               });
@@ -245,7 +245,7 @@ class _AddCardState extends BaseState<AddCard> {
   }
 
   onSelectedBankType({BankType bankType}) async {
-    if(bankType == null) bankType=_vm.pBankType;
+    if (bankType == null) bankType = _vm.pBankType;
     await _vm.onSelectedBankType(bankType);
     onSelectedWithdrawalInfo();
     setState(() {
@@ -254,8 +254,8 @@ class _AddCardState extends BaseState<AddCard> {
     });
   }
 
-  onSelectedWithdrawalInfo({WithdrawalInfo withdrawalInfo}) async{
-    await _vm.onSelectedWithdrawalInfo(withdrawalInfo:withdrawalInfo);
+  onSelectedWithdrawalInfo({WithdrawalInfo withdrawalInfo}) async {
+    await _vm.onSelectedWithdrawalInfo(withdrawalInfo: withdrawalInfo);
     setState(() {
       bankNamePickerText = _vm.pWithdrawalInfo.channelName.replaceAll(RegExp("_"), " ");
     });

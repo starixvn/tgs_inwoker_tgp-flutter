@@ -117,7 +117,7 @@ class _PromotionItemDetailsState extends BaseState<PromotionItemDetails> {
         margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 15.auto),
         child: ColorButton(
           text: Text(
-            "Join",
+            getTranslatedText("join"),
             textAlign: TextAlign.center,
             style: TextStyle(color: Colors.white, fontSize: 16.auto),
           ),

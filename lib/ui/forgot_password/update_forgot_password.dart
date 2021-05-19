@@ -137,7 +137,7 @@ class _UpdateForgotPasswordState extends BaseState<UpdateForgotPassword> {
       padding: EdgeInsets.only(top: 50.auto, bottom: 20.auto),
       child: ColorButton(
         text: Text(
-          "完成",
+          getTranslatedText("done"),
           textAlign: TextAlign.center,
           style: TextStyle(color: Colors.white, fontSize: 16.auto),
         ),

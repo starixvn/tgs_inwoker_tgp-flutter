@@ -27,7 +27,7 @@ class _ChildGamePlatformState extends BaseState<ChildGamePlatform> with SingleTi
   var _platformTabController;
   var platformTabIndex = 0;
   List<Map<String, String>> _platformTabList = [
-    {"name": "全部", "code": "ALL"}
+    {"name": "all", "code": "ALL"}
   ];
 
   @override
@@ -78,7 +78,7 @@ class _ChildGamePlatformState extends BaseState<ChildGamePlatform> with SingleTi
           unselectedLabelStyle: TextStyle(color: CustomColor.theme_button_disable_bg),
           tabs: _platformTabList.map((item) {
             return Tab(
-              child: Text(item["name"],
+              child: Text(item["code"] == "ALL" ? getTranslatedText(item["name"]) : item["name"],
                   style: TextStyle(
                     fontFamily: 'PingFang',
                     fontSize: 14.auto,

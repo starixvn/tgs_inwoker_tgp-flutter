@@ -206,7 +206,27 @@
   "promotion_condition": "Promotion Condition",
   "promotion_person":"Promotion Person",
   "promotion_time":"Promotion time",
-  "join": "Join"
-
+  "join": "Join",
+  "join_success": "Promotion join successfully",
+  "promotion_joined": "Promotion joined",
+  "select_bank_type": "Please select bank type",
+  "select_bank_name": "Please select bank name",
+  "add_card_hint": "Information is encrypted, use bank verification only",
+  "address": "Address",
+  "enter_address": "Please enter address",
+  "delete": "Delete",
+  "enter_bank_name": "Please enter bank name",
+  "enter": "Please enter ",
+  "yuan": " Yuan",
+  "cancel_deposit": "Cancel deposit",
+  "search_keyword": "Search keyword",
+  "login_hint": "Login hint",
+  "login_dialog_des": "This feature is only available to registered users",
+  "got_it": "Got it",
+  "login_expired": "Login expired",
+  "login_again": "Please login again",
+  "no": "No",
+  "mark_as_read": "Mark as read",
+  "confirm_pay_password_error_msg": "Confirm pay password is not same with pay password"
 }
 

@@ -67,7 +67,7 @@ class _EditPasswordState extends BaseState<EditPassword> {
           },
         ),
         title: Text(
-          "修改密码",
+          getTranslatedText("edit_password"),
           style: TextStyle(fontSize: 16.auto),
         ),
       );
@@ -160,7 +160,7 @@ class _EditPasswordState extends BaseState<EditPassword> {
       });
     } else if (_newPasswordController.text != _confirmPasswordController.text) {
       setState(() {
-        CustomToast.show("确认密码与密码不一致");
+        CustomToast.show(getTranslatedText("confirm_password_error_msg"));
       });
     } else {
       ProgressDialog.show(context);

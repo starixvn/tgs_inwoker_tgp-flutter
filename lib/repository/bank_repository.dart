@@ -4,7 +4,8 @@ import 'dart:io';
 
 import 'package:tgp_flutter/entity/bank_card.dart';
 import 'package:tgp_flutter/entity/bank_type.dart';
-import 'package:tgp_flutter/entity/deposit_order.dart';
+import 'package:tgp_flutter/entity/deposit_redirect.dart';
+import 'package:tgp_flutter/entity/manual_deposit_order.dart';
 import 'package:tgp_flutter/entity/game_provider.dart';
 import 'package:tgp_flutter/entity/http_method.dart';
 import 'package:tgp_flutter/entity/payment.dart';
@@ -53,12 +54,12 @@ class BankRepository extends BaseRepository {
         .execute();
   }
 
-  Future<EventResult<DepositOrder>> getDepositOrder (String id) async {
-    return await ApiRequestBuilder<DepositOrder>(
+  Future<EventResult<ManualDepositOrder>> getManualDepositOrder (String id) async {
+    return await ApiRequestBuilder<ManualDepositOrder>(
         method: HttpMethod.GET,
         endPoint: "api/Deposit/manual",
         params: id,
-        converter: (json) => DepositOrder.fromJson(json),
+        converter: (json) => ManualDepositOrder.fromJson(json),
         jwtRefresher: jwtAuth)
         .execute();
   }
@@ -114,14 +115,15 @@ class BankRepository extends BaseRepository {
         .execute();
   }
 
-  Future<EventResult<dynamic>> getCryptoId(String amount, String paymentId) async {
-    return await ApiRequestBuilder<dynamic>(
+  Future<EventResult<DepositRedirect>> leePayDepositOrder(String amount, String paymentId) async {
+    return await ApiRequestBuilder<DepositRedirect>(
         method: HttpMethod.PUT,
         endPoint: "api/deposit/crypto/leepay",
         params: {
           "amount": amount,
           "paymentid": paymentId,
         },
+        converter: (json) => DepositRedirect.fromJson(json),
         jwtRefresher: jwtAuth)
         .execute();
   }

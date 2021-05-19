@@ -12,6 +12,7 @@ import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
 import 'package:tgp_flutter/ui/deposit/deposit_method_view_model.dart';
 import 'package:tgp_flutter/ui/deposit/deposit_order_view.dart';
+import 'package:tgp_flutter/ui/deposit/deposit_web.dart';
 
 class DepositMethod extends StatefulWidget {
   final String paymentCode;
@@ -25,8 +26,7 @@ class DepositMethod extends StatefulWidget {
 
 class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAliveClientMixin {
   String methodPickerText, channelPickerText;
-  TextEditingController _amountController = TextEditingController(),
-      _bankNameController = TextEditingController();
+  TextEditingController _amountController = TextEditingController(), _bankNameController = TextEditingController();
   var isButtonEnabled = false;
   var selectedPayment;
   var paymentMin, paymentMax;
@@ -60,27 +60,11 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
             margin: EdgeInsets.all(10.auto),
             child: ListView(
               children: [
-                _buildCard("deposit_method", _vm.depositMethodList.keys.toList(),
-                    isDepositMethod: true),
+                _buildCard("deposit_method", _vm.depositMethodList.keys.toList(), isDepositMethod: true),
                 _buildCard("deposit_channel", _vm.paymentList),
-                if(_isManualDeposit()) _buildBankNameTextField("银行账号名称", "请输入银行账号名称"),
-                _buildAmountTextField("deposit_amount", paymentMin, paymentMax),
+                if (_isManualDeposit()) _buildBankNameTextField(),
+                _buildAmountTextField(),
                 _buildButton(),
-                Container(
-                    width: context.screenWidth,
-                    margin: EdgeInsets.only(
-                      left: 20.auto,
-                      right: 20.auto,
-                      bottom: 10.auto,
-                      top: 15.auto,
-                    ),
-                    child: Text(
-                      "温性提醒 \n "
-                      "1.存款完成，请勿关闭操作页面， 以确保账作业顺利。"
-                      "\n 2.请您直接在弹出的银行页面上完成存款。"
-                      "\n 3.因建行网银接口维护，请该用其他银行存款。",
-                      style: TextStyle(color: CustomColor.grey, fontSize: 11.auto),
-                    )),
               ],
             ),
           );
@@ -131,12 +115,15 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
         });
   }
 
-  _buildAmountTextField(String title, double paymentMin, double paymentMax) => Container(
+  _buildAmountTextField() => Container(
         margin: EdgeInsets.only(top: 10.auto),
         child: CustomTextFormField(
-          title: getTranslatedText(title) ?? "",
-          hintText:
-              "请输入${Format().amountFormat(paymentMin) ?? "10.00"}-${Format().amountFormat(paymentMax) ?? "100,000"}元",
+          title: getTranslatedText("deposit_amount") ?? "",
+          hintText: getTranslatedText("enter") +
+              (Format().amountFormat(paymentMin) ?? "10.00") +
+              "-" +
+              (Format().amountFormat(paymentMax) ?? "100,000") +
+              getTranslatedText("yuan"),
           onChanged: (value) => onTextChange(),
           onFieldSubmitted: (value) => onTextChange(),
           controller: _amountController,
@@ -146,11 +133,11 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
         ),
       );
 
-  _buildBankNameTextField(String title, String hintText) => Container(
+  _buildBankNameTextField() => Container(
         margin: EdgeInsets.only(top: 10.auto),
         child: CustomTextFormField(
-          title: title,
-          hintText: hintText,
+          title: getTranslatedText("bank_name"),
+          hintText: getTranslatedText("enter_bank_name"),
           onChanged: (value) => onTextChange(),
           onFieldSubmitted: (value) => onTextChange(),
           controller: _bankNameController,
@@ -169,7 +156,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
       child: ColorButton(
         onClick: () => _onClick(),
         text: Text(
-          "Next",
+          getTranslatedText("next"),
           textAlign: TextAlign.center,
           style: TextStyle(color: Colors.white, fontSize: 16.auto),
         ),
@@ -179,10 +166,19 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
       ));
 
   onTextChange() {
-    if (_amountController.text != null &&
-        _amountController.text.isNotEmpty &&
-        _bankNameController.text != null &&
-        _bankNameController.text.isNotEmpty) {
+    if (_isManualDeposit()) {
+      if (_amountController.text != null &&
+          _amountController.text.isNotEmpty &&
+          _bankNameController.text != null &&
+          _bankNameController.text.isNotEmpty) {
+        amount = int.parse(_amountController.text);
+        if (amount >= paymentMin && amount <= paymentMax) {
+          setState(() {
+            isButtonEnabled = true;
+          });
+        }
+      }
+    } else if (_amountController.text != null && _amountController.text.isNotEmpty) {
       amount = int.parse(_amountController.text);
       if (amount >= paymentMin && amount <= paymentMax) {
         setState(() {
@@ -200,12 +196,12 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
     ProgressDialog.show(context);
     if (_isManualDeposit())
       _vm.getManualDepositId(_bankNameController.text, _amountController.text, _payment.id);
-    else//currently is LeePay
-      _vm.getCryptoId(_amountController.text, _payment.id);
+    else //currently is LeePay
+      _vm.leePayDepositOrder(_amountController.text, _payment.id);
   }
 
-  _isManualDeposit(){
-    return  widget.paymentCode == "Manual";
+  _isManualDeposit() {
+    return widget.paymentCode == "Manual";
   }
 
   onSelectedMethod(String method) async {
@@ -226,25 +222,36 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
   }
 
   _handleApiState() {
-    handleApiState(_vm.getCryptoIdApiState,isRequireResult: true, onSuccess: (result) {
-      //open in new web
-      print(result["paymenturl"]);
+    handleApiState(_vm.getLeepayOrderApiState, isRequireResult: true, onSuccess: (result) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => DepositOrderView(
+                      method: _payment.methodCode,
+                      depositRedirect: _vm.getLeepayOrderApiState.result,
+                      depositAmount: Format().currencySymbolWithDecimalFormat(double.parse(_amountController.text)),
+                      depositChannel: channelPickerText,
+                    )));
+      });
     });
 
     handleApiState(_vm.getManualDepositIdApiState, isRequireResult: true, onSuccess: (result) {
       paymentChannelId = result;
     });
     handleApiState(_vm.getDepositOrderApiState, onSuccess: () {
-      ProgressDialog.hide();
       WidgetsBinding.instance.addPostFrameCallback((_) {
         Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) => DepositOrderView(
-                    method: _payment.methodCode,
-                    deposit: _vm.getDepositOrderApiState.result,
-                    id: paymentChannelId,
-                    name: _bankNameController.text)));
+                      method: _payment.methodCode,
+                      id: paymentChannelId,
+                      manualDepositOrder: _vm.getDepositOrderApiState.result,
+                      payUsername: _bankNameController.text,
+                      depositAmount: Format().currencySymbolWithDecimalFormat(double.parse(_amountController.text)),
+                      depositChannel: channelPickerText,
+                    )));
       });
     });
   }

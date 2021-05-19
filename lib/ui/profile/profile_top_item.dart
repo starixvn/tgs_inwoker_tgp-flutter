@@ -37,7 +37,7 @@ class _ProfileTopItemState extends BaseState<ProfileTopItem> {
               size: 50.auto,
             ),
             Text(
-              widget.title,
+              getTranslatedText(widget.title),
               style: TextStyle(fontSize: 15.auto),
             )
           ],

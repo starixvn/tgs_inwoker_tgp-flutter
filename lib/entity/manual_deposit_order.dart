@@ -1,11 +1,11 @@
 import 'package:tgp_flutter/entity/deposit_response.dart';
 import 'package:json_annotation/json_annotation.dart';
-part 'deposit_order.g.dart';
+part 'manual_deposit_order.g.dart';
 
 @JsonSerializable()
 
-class DepositOrder {
-  DepositOrder();
+class ManualDepositOrder {
+  ManualDepositOrder();
 
   @JsonKey(name: "methodname")
   String methodName;
@@ -20,6 +20,6 @@ class DepositOrder {
 
   String bankAccount;
 
-  factory DepositOrder.fromJson(Map<String, dynamic> json) => _$DepositOrderFromJson(json);
-  Map<String, dynamic> toJson() => _$DepositOrderToJson(this);
+  factory ManualDepositOrder.fromJson(Map<String, dynamic> json) => _$ManualDepositOrderFromJson(json);
+  Map<String, dynamic> toJson() => _$ManualDepositOrderToJson(this);
 }

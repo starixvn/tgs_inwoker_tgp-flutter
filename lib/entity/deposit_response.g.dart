@@ -18,7 +18,7 @@ DepositResponse _$DepositResponseFromJson(Map<String, dynamic> json) {
         : Params.fromJson(json['params'] as Map<String, dynamic>)
     ..order = json['order'] == null
         ? null
-        : DepositOrder.fromJson(json['order'] as Map<String, dynamic>)
+        : ManualDepositOrder.fromJson(json['order'] as Map<String, dynamic>)
     ..expiredTime = json['expired_time'] as int;
 }
 

@@ -11,7 +11,7 @@ class DepositMethodViewModel extends BaseViewModel {
 
   @override
   List<BaseRepository> get repoList => [];
-  var getManualDepositIdApiState, getDepositOrderApiState, getCryptoIdApiState;
+  var getManualDepositIdApiState, getDepositOrderApiState, getLeepayOrderApiState;
 
   List<Payment> paymentList;
   var depositOrder;
@@ -25,15 +25,15 @@ class DepositMethodViewModel extends BaseViewModel {
     setLoading();
     getManualDepositIdApiState = await depositRepo.getManualDepositId(account, amount, paymentId);
     if (getManualDepositIdApiState.isSuccess) {
-      getDepositOrder(getManualDepositIdApiState.result);
+      getManualDepositOrder(getManualDepositIdApiState.result);
     }
     setLoading(false);
     return getManualDepositIdApiState;
   }
 
-  getDepositOrder(String id) async {
+  getManualDepositOrder(String id) async {
     setLoading();
-    getDepositOrderApiState = await depositRepo.getDepositOrder(id);
+    getDepositOrderApiState = await depositRepo.getManualDepositOrder(id);
     if (getDepositOrderApiState.isSuccess) {
       depositOrder = getDepositOrderApiState.result;
     }
@@ -41,13 +41,10 @@ class DepositMethodViewModel extends BaseViewModel {
     return getDepositOrderApiState;
   }
 
-  getCryptoId(String amount, String paymentId) async {
+  leePayDepositOrder(String amount, String paymentId) async {
     setLoading();
-    getCryptoIdApiState = await depositRepo.getCryptoId(amount, paymentId);
-//    if (getCryptoIdApiState.isSuccess) {
-//      getDepositOrder(getCryptoIdApiState.result);
-//    }
+    getLeepayOrderApiState = await depositRepo.leePayDepositOrder(amount, paymentId);
     setLoading(false);
-    return getCryptoIdApiState;
+    return getLeepayOrderApiState;
   }
 }

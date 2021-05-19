@@ -134,10 +134,9 @@ class _ProfileState extends BaseState<Profile> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              ProfileTopItem(title: getTranslatedText("deposit"), imagePath: "ic_deposit", routePath: "deposit"),
-              ProfileTopItem(
-                  title: getTranslatedText("transfer"), imagePath: "ic_transfer", routePath: "wallet_transfer"),
-              ProfileTopItem(title: getTranslatedText("withdrawal"), imagePath: "ic_withdraw", routePath: "withdraw"),
+              ProfileTopItem(title: "deposit", imagePath: "ic_deposit", routePath: "deposit"),
+              ProfileTopItem(title: "transfer", imagePath: "ic_transfer", routePath: "wallet_transfer"),
+              ProfileTopItem(title: "withdrawal", imagePath: "ic_withdraw", routePath: "withdraw"),
             ],
           ),
         ),
@@ -162,11 +161,11 @@ class _ProfileState extends BaseState<Profile> {
                 children: [
                   _buildProfileBottomItem("profile_detail", "ic_profile_user_detail", "profile_info", 0),
                   _buildProfileBottomItem("message_center", "ic_message", "message", 0, isMessage: false),
-                  _buildProfileBottomItem("transfer_history", "ic_account_detail", "transaction", 0),
+                  //_buildProfileBottomItem("transfer_history", "ic_account_detail", "transaction", 0),
                   _buildProfileBottomItem("bet_history", "ic_bet_transaction", "transaction", 1),
                   _buildProfileBottomItem("manage_card", "ic_card_detail", "main_card", 0),
-                  _buildProfileBottomItem("refer_friend", "ic_refer_friend", "refer_friend", 0),
-                  _buildProfileBottomItem("frequent_question", "ic_profile_question", "frequent_question", 0),
+                  //_buildProfileBottomItem("refer_friend", "ic_refer_friend", "refer_friend", 0),
+                  //_buildProfileBottomItem("frequent_question", "ic_profile_question", "frequent_question", 0),
                   _buildProfileBottomItem("language", "ic_lang", "language", 0),
                 ],
               ),

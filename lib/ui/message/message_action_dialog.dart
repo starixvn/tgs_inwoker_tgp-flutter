@@ -22,7 +22,7 @@ class _MessageActionDialogState extends BaseState<MessageActionDialog> {
       child: Wrap(children: [
         ColorButton(
             text: Text(
-              "删除",
+              getTranslatedText("delete"),
               style: TextStyle(fontSize: 17.2.auto, color: Colors.red),
             ),
             onClick: () {},
@@ -31,7 +31,7 @@ class _MessageActionDialogState extends BaseState<MessageActionDialog> {
             radius: 11.6.auto),
         ColorButton(
             text: Text(
-              "取消",
+              getTranslatedText("cancel"),
               style: TextStyle(fontSize: 17.2.auto, color: Colors.black),
             ),
             onClick: () {

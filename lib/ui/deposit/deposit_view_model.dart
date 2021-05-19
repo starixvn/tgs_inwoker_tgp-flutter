@@ -18,12 +18,12 @@ class DepositViewModel extends BaseViewModel {
   List<BaseRepository> get repoList => [];
   var getPaymentApiState,
       getManualDepositIdApiState,
-      getDepositOrderApiState,
+      getManualDepositOrderApiState,
       uploadDepositImageApiState,
       getCryptoIdApiState;
   Map<String, Map<String, List<Payment>>> paymentCodeList;
   List<Payment> paymentList;
-  var depositOrder;
+  var manualDepositOrder;
 
   get wallet => userRepo.wallet;
 
@@ -46,6 +46,4 @@ class DepositViewModel extends BaseViewModel {
     setLoading(false);
     return uploadDepositImageApiState;
   }
-
-
 }

@@ -75,16 +75,16 @@ class _ProfileBottomItemState extends BaseState<ProfileBottomItem> {
       );
 
   _navigate() => WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (widget.navigationID == 0) {
-          Navigator.of(context).pushNamed("/${widget.routePath}");
-        } else {
+        //if (widget.navigationID == 0) {
+        Navigator.of(context).pushNamed("/${widget.routePath}");
+        /*} else {
           Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) => Transaction(
                         tabIndex: widget.navigationID,
                       )));
-        }
+        }*/
       });
 
   _buildNotification() => Visibility(

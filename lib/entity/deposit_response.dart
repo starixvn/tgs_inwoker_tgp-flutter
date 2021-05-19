@@ -1,4 +1,4 @@
-import 'package:tgp_flutter/entity/deposit_order.dart';
+import 'package:tgp_flutter/entity/manual_deposit_order.dart';
 import 'package:tgp_flutter/entity/params.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'deposit_response.g.dart';
@@ -17,7 +17,7 @@ class DepositResponse {
   dynamic url;
   String qrcode;
   Params params;
-  DepositOrder order;
+  ManualDepositOrder order;
   @JsonKey(name: "expired_time")
   int expiredTime;
 

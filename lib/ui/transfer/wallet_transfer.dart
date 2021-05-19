@@ -127,7 +127,7 @@ class _WalletTransferState extends BaseState<WalletTransfer> with TickerProvider
           ),
         ],
         title: Text(
-          "转账",
+          getTranslatedText("transfer"),
           style: TextStyle(fontSize: 20.auto),
         ),
       );
@@ -140,8 +140,7 @@ class _WalletTransferState extends BaseState<WalletTransfer> with TickerProvider
         ),
         elevation: 5,
         child: Container(
-          padding:
-              EdgeInsets.only(left: (25.5).auto, top: 15.auto, right: 10.auto, bottom: 10.auto),
+          padding: EdgeInsets.only(left: (25.5).auto, top: 15.auto, right: 10.auto, bottom: 10.auto),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -151,7 +150,7 @@ class _WalletTransferState extends BaseState<WalletTransfer> with TickerProvider
                   Row(
                     children: [
                       Text(
-                        "主账户",
+                        getTranslatedText("main_wallet"),
                         style: TextStyle(fontSize: 8.auto),
                       ),
                       Image.asset(
@@ -167,7 +166,7 @@ class _WalletTransferState extends BaseState<WalletTransfer> with TickerProvider
                 margin: EdgeInsets.only(left: 15.auto),
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  "¥ ${_vm.userMainWalletBalance ?? ""}",
+                  "¥ ${Format().amountFormat(_vm.userMainWalletBalance) ?? ""}",
                   style: TextStyle(fontSize: 12.auto),
                 ),
               ),
@@ -254,7 +253,7 @@ class _WalletTransferState extends BaseState<WalletTransfer> with TickerProvider
         alignment: Alignment.centerLeft,
         padding: EdgeInsets.all(5.auto),
         child: Text(
-          "温馨提示：点击某平台可自选转入对象。",
+          getTranslatedText("wallet_transfer_hint"),
           style: TextStyle(fontSize: 9.auto),
           textAlign: TextAlign.left,
         ),
@@ -267,7 +266,7 @@ class _WalletTransferState extends BaseState<WalletTransfer> with TickerProvider
           children: [
             CustomPicker(
                 title: getTranslatedText("transfer_from"),
-                displayText: textFromWallet ?? "请选择",
+                displayText: textFromWallet ?? getTranslatedText("please_select"),
                 list: [],
                 isHintText: textFromWallet == null ? false : true,
                 width: (context.screenWidth / 2) - 75.auto,
@@ -280,7 +279,7 @@ class _WalletTransferState extends BaseState<WalletTransfer> with TickerProvider
             ),
             CustomPicker(
                 title: getTranslatedText("transfer_to"),
-                displayText: textToWallet ?? "请选择",
+                displayText: textToWallet ?? getTranslatedText("please_select"),
                 list: [],
                 isHintText: textToWallet == null ? false : true,
                 width: (context.screenWidth / 2) - 75.auto,
@@ -343,9 +342,11 @@ class _WalletTransferState extends BaseState<WalletTransfer> with TickerProvider
   _buildAmountTextFormField() => Container(
       padding: EdgeInsets.only(top: 10.auto),
       child: CustomTextFormField(
-        title: "金额",
-        hintText: "请输入转账金额",
-        onChanged: (value) {checkButtonState();},
+        title: getTranslatedText("amount"),
+        hintText: getTranslatedText("enter_amount"),
+        onChanged: (value) {
+          checkButtonState();
+        },
         onFieldSubmitted: (value) {},
         controller: amount,
         focusNode: _focusNode,
@@ -360,7 +361,7 @@ class _WalletTransferState extends BaseState<WalletTransfer> with TickerProvider
             width: 40.auto,
             height: 25.auto,
             text: Text(
-              "最大金额",
+              getTranslatedText("max_amount"),
               style: TextStyle(fontSize: 10.5, color: Colors.white),
             ),
           ),
@@ -376,7 +377,7 @@ class _WalletTransferState extends BaseState<WalletTransfer> with TickerProvider
           opacity: isEnabled ? 1 : 0.5,
           child: ColorButton(
             text: Text(
-              "确认",
+              getTranslatedText("confirm"),
               style: TextStyle(fontSize: (16.2).auto, color: Colors.white),
             ),
             onClick: () {
@@ -391,8 +392,7 @@ class _WalletTransferState extends BaseState<WalletTransfer> with TickerProvider
 
   getMaxAmount() {
     setState(() {
-      amount.text =
-          _vm.walletList.singleWhere((e) => e.gpCode == fromWallet.gpCode).balance.floor().toString() ?? "";
+      amount.text = _vm.walletList.singleWhere((e) => e.gpCode == fromWallet.gpCode).balance.floor().toString() ?? "";
       checkButtonState();
     });
   }
@@ -412,9 +412,9 @@ class _WalletTransferState extends BaseState<WalletTransfer> with TickerProvider
   setToWallet(Wallet wallet) {
     toWallet = wallet;
     if (wallet == null)
-      textToWallet = "请选择";
+      textToWallet = getTranslatedText("please_select");
     else
-      textToWallet = wallet.title ?? "请选择";
+      textToWallet = wallet.title ?? getTranslatedText("please_select");
   }
 
   checkButtonState() {

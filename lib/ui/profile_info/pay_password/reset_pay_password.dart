@@ -180,7 +180,7 @@ class _ResetPayPasswordState extends BaseState<ResetPayPassword> {
   _onClick() async {
     if (_payPasswordController.text != _confirmPayPasswordController.text) {
       setState(() {
-        CustomToast.show("确认提款密码与提款密码不一致");
+        CustomToast.show(getTranslatedText("confirm_pay_password_error_msg"));
       });
     } else {
       ProgressDialog.show(context);

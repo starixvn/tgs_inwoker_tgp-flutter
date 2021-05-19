@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
+import 'package:tgp_flutter/custom/custom_toast.dart';
 import 'package:tgp_flutter/extension/format.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
@@ -36,12 +37,16 @@ class _DepositState extends BaseState<Deposit> {
         builder: (ctx, vm, _) {
           _handleApiState();
           return Scaffold(
-            resizeToAvoidBottomInset: false,
-            backgroundColor: Colors.white,
-            appBar: _buildAppBar(),
-            body: _vm.paymentCodeList == null
-                ? buildProgressDialog()
-                : DefaultTabController(
+              resizeToAvoidBottomInset: false,
+              backgroundColor: Colors.white,
+              appBar: _buildAppBar(),
+              body: (() {
+                if (_vm.paymentCodeList == null)
+                  return buildProgressDialog();
+                else if (_vm.paymentCodeList.isEmpty)
+                  return Container();
+                else {
+                  return DefaultTabController(
                     length: _vm.paymentCodeList.keys.length,
                     child: Column(
                       children: [
@@ -77,14 +82,17 @@ class _DepositState extends BaseState<Deposit> {
                         Expanded(
                           child: TabBarView(
                             children: List.generate(_vm.paymentCodeList.keys.length, (index) {
-                              return DepositMethod(paymentCode: _vm.paymentCodeList.keys.toList()[index],depositMethodList: _vm.paymentCodeList.values.toList()[index]);
+                              return DepositMethod(
+                                  paymentCode: _vm.paymentCodeList.keys.toList()[index],
+                                  depositMethodList: _vm.paymentCodeList.values.toList()[index]);
                             }).toList(),
                           ),
                         )
                       ],
                     ),
-                  ),
-          );
+                  );
+                }
+              }()));
         });
   }
 
@@ -115,7 +123,11 @@ class _DepositState extends BaseState<Deposit> {
         ),
       );
 
-  _handleApiState(){
-    handleApiState(_vm.getPaymentApiState, isAutoHideLoading: false, onSuccess: () {});
+  _handleApiState() {
+    handleApiState(_vm.getPaymentApiState, isAutoHideLoading: false, onSuccess: () {
+      if (_vm.getPaymentApiState.result.isEmpty) {
+        CustomToast.show("Deposit feature not available");
+      }
+    });
   }
 }

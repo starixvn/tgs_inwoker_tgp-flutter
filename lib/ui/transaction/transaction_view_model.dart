@@ -9,7 +9,7 @@ class TransactionViewModel extends BaseViewModel {
   final userRepo = UserRepository.getSingleton();
   final contentRepo = ContentRepository.getSingleton();
   var getTransactionApiState, getGameProviderApiState;
-  var page = 1, rows =20;
+  var page = 1, rows = 20;
   var pStartDate = DateTime.now(), pEndDate = DateTime.now();
   var startDate = DateTime.now(), endDate = DateTime.now();
   List<BetTransaction> betTransactionList;
@@ -18,43 +18,45 @@ class TransactionViewModel extends BaseViewModel {
 
   get gameProviderList => contentRepo.gameProviderList;
 
+  get wallet => userRepo.wallet;
+
   @override
   List<BaseRepository> get repoList => [userRepo, contentRepo];
 
-  getTransaction({
-    bool isLoadMore = false
-  }) async{
+  getTransaction({bool isLoadMore = false}) async {
     setLoading();
 
-    if(isLoadMore){
-      if(page*rows < getTransactionApiState.result.totalCount){
+    if (isLoadMore) {
+      if (page * rows < getTransactionApiState.result.totalCount) {
         page++;
-      }else return;
-    }else{
-      page =1;
+      } else
+        return;
+    } else {
+      page = 1;
       getTransactionApiState = null;
       betTransactionList = null;
     }
-    getTransactionApiState = await userRepo.getTransaction(pStartDate, pEndDate, page, rows/*, orderBy, isDesc, sortBy, showAll*/);
+    getTransactionApiState =
+        await userRepo.getTransaction(pStartDate, pEndDate, page, rows /*, orderBy, isDesc, sortBy, showAll*/);
 
-    List<BetTransaction> list=[];
-    if(getTransactionApiState.isSuccess){
+    List<BetTransaction> list = [];
+    if (getTransactionApiState.isSuccess) {
       list = getTransactionApiState.result.items;
-      if(betTransactionList == null) betTransactionList = [];
+      if (betTransactionList == null) betTransactionList = [];
       betTransactionList.addAll(list);
-      endRecord = betTransactionList.length >= getTransactionApiState.result.totalCount?true:false;
+      endRecord = betTransactionList.length >= getTransactionApiState.result.totalCount ? true : false;
     }
     setLoading(false);
     return getTransactionApiState;
   }
 
-  setDate({DateTime startDate, endDate}){
+  setDate({DateTime startDate, endDate}) {
     if (startDate != null) pStartDate = startDate;
     if (endDate != null) pEndDate = endDate;
     notifyListeners();
   }
 
-  getGameProviderList() async{
+  getGameProviderList() async {
     setLoading();
     getGameProviderApiState = await contentRepo.getGameProviderList();
     setLoading(false);

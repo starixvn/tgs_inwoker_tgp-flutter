@@ -186,7 +186,7 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
                   decoration: InputDecoration(
                     isDense: true,
                     border: InputBorder.none,
-                    hintText: "搜索关键词",
+                    hintText: getTranslatedText("search_keyword"),
                     hintStyle: TextStyle(color: CustomColor.very_light_pink_two, fontSize: 13.auto),
                   ),
                   focusNode: _focusNode,

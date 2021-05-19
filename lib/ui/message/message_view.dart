@@ -89,19 +89,21 @@ class _MessageViewState extends BaseState<MessageView> {
                             onSelected: (message) => _onSelected(message),
                             onReadMessage: (id) {
                               //ProgressDialog.show(context);
-                              _vm.readMessage([id]);//call api silently
+                              _vm.readMessage([id]); //call api silently
                             },
                             selectedMessageList: selectedMessageList ?? []);
                       }),
                     ),
-                    Visibility(visible: isLoading, child: Container(alignment: Alignment.center,child:CircularProgressIndicator())),
+                    Visibility(
+                        visible: isLoading,
+                        child: Container(alignment: Alignment.center, child: CircularProgressIndicator())),
                     Visibility(
                         visible: _vm.endRecord && _vm.messageList.isNotEmpty,
                         child: Container(
                           alignment: Alignment.center,
                           padding: EdgeInsets.only(bottom: 10.auto),
                           child: Text(
-                            "没有更多了",
+                            getTranslatedText("no_more"),
                             style: TextStyle(fontSize: 12.auto, color: CustomColor.grey),
                           ),
                         ))
@@ -129,7 +131,7 @@ class _MessageViewState extends BaseState<MessageView> {
                   child: Container(
                     padding: EdgeInsets.only(top: 10.auto, bottom: 10.auto, left: 15.auto),
                     child: Text(
-                      "标示已读",
+                      getTranslatedText("mark_as_read"),
                       style: TextStyle(color: Colors.white, fontSize: 12.auto),
                     ),
                   ),
@@ -139,7 +141,7 @@ class _MessageViewState extends BaseState<MessageView> {
                   child: Container(
                     padding: EdgeInsets.only(top: 10.auto, bottom: 10.auto, right: 15.auto),
                     child: Text(
-                      "删除",
+                      getTranslatedText("delete"),
                       style: TextStyle(color: Colors.white, fontSize: 12.auto),
                     ),
                   ),
