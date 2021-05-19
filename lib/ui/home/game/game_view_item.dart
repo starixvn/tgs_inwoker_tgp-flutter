@@ -78,7 +78,7 @@ double get itemHeight => _itemWidth*(1/_imageRatio)+_itemPaddingTop+_itemPadding
       AspectRatio(
         aspectRatio: _imageRatio,
         child: Container(
-            color: Colors.blue,
+           // color: Colors.blue,
             alignment: Alignment.center,
             child: Image.asset(
               _getImagePath(gameProvider),

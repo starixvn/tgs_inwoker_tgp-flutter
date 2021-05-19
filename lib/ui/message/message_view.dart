@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/entity/message.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
@@ -17,7 +18,7 @@ class MessageView extends StatefulWidget {
 }
 
 class _MessageViewState extends BaseState<MessageView> {
-  var isEditing = false, isSelected = false, isLoading = false, isEndRecord = false;
+  var isEditing = false, isSelected = false, isLoading = false;
   var _vm = MessageViewModel();
   List<String> selectedMessageList = [];
   ScrollController _controller = ScrollController();
@@ -82,9 +83,9 @@ class _MessageViewState extends BaseState<MessageView> {
                 ? Container()
                 : ListView(controller: _controller, padding: EdgeInsets.all(8.0), children: [
                     Column(
-                      children: List.generate(20, (index) {
+                      children: List.generate(_vm.messageList.length, (index) {
                         return MessageItem(
-                            message: _vm.messageList[0],
+                            message: _vm.messageList[index],
                             isEditing: isEditing,
                             onSelected: (message) => _onSelected(message),
                             onReadMessage: (id) {
@@ -95,7 +96,7 @@ class _MessageViewState extends BaseState<MessageView> {
                       }),
                     ),
                     Visibility(
-                        visible: isLoading,
+                        visible: _vm.endRecord?false:isLoading,
                         child: Container(alignment: Alignment.center, child: CircularProgressIndicator())),
                     Visibility(
                         visible: _vm.endRecord && _vm.messageList.isNotEmpty,
@@ -166,11 +167,20 @@ class _MessageViewState extends BaseState<MessageView> {
       setState(() {
         isLoading = true;
       });
+      _vm.getMessageList(isLoadMore: true);
     }
   }
 
   _handleApiState() {
-    handleApiState(_vm.getMessageListApiState, onSuccess: () {});
+    handleApiState(_vm.getMessageListApiState, onSuccess: () {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if(isLoading){
+          setState(() {
+            isLoading = false;
+          });
+        }
+      });
+    });
     handleApiState(_vm.readMessageApiState, onSuccess: () {});
   }
 }
