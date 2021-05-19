@@ -127,4 +127,17 @@ class BankRepository extends BaseRepository {
         jwtRefresher: jwtAuth)
         .execute();
   }
+
+  Future<EventResult<DepositRedirect>> primePayDepositOrder(String amount, String paymentId) async {
+    return await ApiRequestBuilder<DepositRedirect>(
+        method: HttpMethod.POST,
+        endPoint: "api/deposit/bank/primepay",
+        params: {
+          "amount": amount,
+          "paymentid": paymentId,
+        },
+        converter: (json) => DepositRedirect.fromJson(json),
+        jwtRefresher: jwtAuth)
+        .execute();
+  }
 }

@@ -119,7 +119,7 @@ class _AddCardState extends BaseState<AddCard> {
       isHintText: true,
       width: context.screenWidth,
       onClick: () {
-        _buildBottomSheet("Bank Type", _vm.bankTypeList.keys.toList());
+        _buildBottomSheet("bank_type", _vm.bankTypeList.keys.toList());
       });
 
   _buildBankNamePicker() => CustomPicker(
@@ -129,7 +129,7 @@ class _AddCardState extends BaseState<AddCard> {
       isHintText: true,
       width: context.screenWidth,
       onClick: () {
-        _buildBottomSheet(getTranslatedText("bank_name"), _vm.withdrawalInfoList);
+        _buildBottomSheet("bank_name", _vm.withdrawalInfoList);
       });
 
   _buildBankCardTextField() => Visibility(

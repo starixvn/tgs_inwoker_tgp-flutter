@@ -196,7 +196,9 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
     ProgressDialog.show(context);
     if (_isManualDeposit())
       _vm.getManualDepositId(_bankNameController.text, _amountController.text, _payment.id);
-    else //currently is LeePay
+    else if (widget.paymentCode == "PrimePay") {
+      _vm.primePayDepositOrder(_amountController.text, _payment.id);
+    } else //currently is LeePay
       _vm.leePayDepositOrder(_amountController.text, _payment.id);
   }
 
@@ -233,6 +235,19 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
                       depositAmount: Format().currencySymbolWithDecimalFormat(double.parse(_amountController.text)),
                       depositChannel: channelPickerText,
                     )));
+      });
+    });
+    handleApiState(_vm.primePayDepositOrderApiState,  onSuccess: () {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => DepositOrderView(
+                  method: _payment.methodCode,
+                  depositRedirect: _vm.primePayDepositOrderApiState.result,
+                  depositAmount: Format().currencySymbolWithDecimalFormat(double.parse(_amountController.text)),
+                  depositChannel: channelPickerText,
+                )));
       });
     });
 
