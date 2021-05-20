@@ -62,7 +62,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends BaseState<MyApp> {
-  final appTitle = 'Drawer Demo';
+  final appTitle = 'PG Gaming';
   Locale _locale;
   var langList = LanguageProvider().list.map((e) => e.locale).toList();
 
