@@ -177,7 +177,7 @@ class _MainCardState extends BaseState<MainCard> {
                 Container(
                   margin: EdgeInsets.only(top: 10.auto),
                   child: Text(
-                    bankCard.bankType == BankType.CRYPTO ? (bankCard.bankDetail?.address ?? "") : "xxxx xxxx xxxx 1234",
+                    bankCard.bankType == BankType.CRYPTO ? (bankCard.bankDetail.address) : (bankCard.bankDetail.bankAccount ?? ""),
                     style: TextStyle(fontSize: 15.auto, color: CustomColor.theme_bar_gradient_2),
                   ),
                 )

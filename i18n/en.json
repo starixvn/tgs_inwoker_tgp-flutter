@@ -203,6 +203,7 @@
   "email_format_error_msg": "Format of the email is incorrect",
   "bank_type": "Bank Type",
   "bank_name": "Bank Name",
+  "bank_acc_name": "Bank Account Name",
   "promotion_condition": "Promotion Condition",
   "promotion_person":"Promotion Person",
   "promotion_time":"Promotion time",
@@ -227,6 +228,10 @@
   "login_again": "Please login again",
   "no": "No",
   "mark_as_read": "Mark as read",
-  "confirm_pay_password_error_msg": "Confirm pay password is not same with pay password"
+  "confirm_pay_password_error_msg": "Confirm pay password is not same with pay password",
+  "Manual": "Manual",
+  "LeePay": "LeePay",
+  "PrimePay": "PrimePay",
+  "enter_bank_acc_name": "Please enter bank account name"
 }
 

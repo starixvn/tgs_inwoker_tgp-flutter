@@ -23,8 +23,10 @@ class AddCard extends StatefulWidget {
 
 class _AddCardState extends BaseState<AddCard> {
   var _bankNumController = TextEditingController(),
-      _passController = TextEditingController(),
-      _addressController = TextEditingController();
+      _addressController = TextEditingController(),
+      _bankNameController = TextEditingController(),
+      _nameController = TextEditingController(),
+      _bankBranchController = TextEditingController();
   var _vm = CardViewModel();
   var isButtonEnabled = false;
   String bankTypePickerText, bankNamePickerText;
@@ -61,8 +63,10 @@ class _AddCardState extends BaseState<AddCard> {
                           _buildAddCardTitle(),
                           _buildBankTypePicker(),
                           _buildBankNamePicker(),
-                          _buildBankCardTextField(),
-                          _buildWithdrawPasswordTextField(),
+                          _buildBankTextField("card_number", "enter_card_number", _bankNumController, true),
+                          _buildBankTextField("bank_name", "enter_bank_name", _bankNameController, false),
+                          _buildBankTextField("bank_acc_name", "enter_bank_acc_name", _nameController, false),
+                          _buildBankTextField("bank_branch", "enter_bank_branch", _bankBranchController, false),
                           _buildCryptoAddressTextField(),
                           _getHintText(),
                           _buildConfirmButton()
@@ -132,36 +136,18 @@ class _AddCardState extends BaseState<AddCard> {
         _buildBottomSheet("bank_name", _vm.withdrawalInfoList);
       });
 
-  _buildBankCardTextField() => Visibility(
+  _buildBankTextField(String title, String hint, TextEditingController controller, bool isNum) => Visibility(
         visible: !isCrypto,
         child: CustomTextFormField(
-          title: getTranslatedText("card_number"),
-          hintText: getTranslatedText("enter_card_number"),
+          title: getTranslatedText(title),
+          hintText: getTranslatedText(hint),
           onChanged: (value) => _onTextChange(value),
           onFieldSubmitted: (value) => _onTextChange(value),
-          controller: _bankNumController,
+          controller: controller,
           focusNode: null,
           width: context.screenWidth - 70.auto,
-          textInputType: TextInputType.number,
+          textInputType: isNum ? TextInputType.number : TextInputType.text,
           textInputAction: TextInputAction.next,
-        ),
-      );
-
-  _buildWithdrawPasswordTextField() => Visibility(
-        visible: !isCrypto,
-        child: Container(
-          margin: EdgeInsets.only(top: 10.auto),
-          child: CustomTextFormField(
-            title: getTranslatedText("pay_password"),
-            hintText: getTranslatedText("enter_pay_password"),
-            onChanged: (value) => _onTextChange(value),
-            onFieldSubmitted: (value) => _onTextChange(value),
-            controller: _passController,
-            focusNode: null,
-            width: context.screenWidth - 70.auto,
-            textInputType: TextInputType.visiblePassword,
-            textInputAction: TextInputAction.done,
-          ),
         ),
       );
 
@@ -240,6 +226,17 @@ class _AddCardState extends BaseState<AddCard> {
           isButtonEnabled = true;
         });
       }
+    } else if (_bankNumController.text != null &&
+        _bankNumController.text.isNotEmpty &&
+        _bankNameController.text != null &&
+        _bankNameController.text.isNotEmpty &&
+        _nameController.text != null &&
+        _nameController.text.isNotEmpty &&
+        _bankBranchController.text != null &&
+        _bankBranchController.text.isNotEmpty) {
+      setState(() {
+        isButtonEnabled = true;
+      });
     } else
       isButtonEnabled = false;
   }
@@ -263,7 +260,14 @@ class _AddCardState extends BaseState<AddCard> {
 
   _onClick() {
     ProgressDialog.show(context);
-    _vm.addBankCard(_addressController.text);
+    if (isCrypto)
+      _vm.addBankCard(address: _addressController.text);
+    else
+      _vm.addBankCard(
+          bankName: _bankNameController.text,
+          bankAccount: _bankNumController.text,
+          bankBranch: _bankBranchController.text,
+          name: _nameController.text);
   }
 
   _handleApiState() {

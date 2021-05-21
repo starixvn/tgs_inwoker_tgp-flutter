@@ -84,7 +84,7 @@ extension GameTypeExtension on GameType {
       case GameType.Slot:
         return   "slotGame" ;
       case GameType.TableGame:
-        return   "tableGame" ;
+        return   "slotGame" ;
       case GameType.Sportsbook:
         return   "sports" ;
       case GameType.LiveDealerLobby:

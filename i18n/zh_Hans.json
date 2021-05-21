@@ -202,7 +202,8 @@
   "phone_format_error_msg": "手机号码格式不正确",
   "email_format_error_msg": "邮箱地址格式不正确",
   "bank_type": "银行账号类别",
-  "bank_name": "银行账号名称",
+  "bank_acc_name": "银行账号名称",
+  "bank_name": "银行名称",
   "promotion_condition": "优惠条件",
   "promotion_person":"优惠对象",
   "promotion_time":"优惠时间",
@@ -215,7 +216,7 @@
   "address": "加密货币地址",
   "enter_address": "请输入加密货币地址",
   "delete": "删除",
-  "enter_bank_name": "请输入银行账号名称",
+  "enter_bank_name": "请输入银行名称",
   "enter": "请输入",
   "yuan": "元",
   "cancel_deposit": "取消订单",
@@ -227,7 +228,11 @@
   "login_again": "请再登录",
   "no": "不了",
   "mark_as_read": "标示已读",
-  "confirm_pay_password_error_msg": "确认提款密码与提款密码不一致"
+  "confirm_pay_password_error_msg": "确认提款密码与提款密码不一致",
+  "Manual": "手动存款",
+  "LeePay": "利付钱包",
+  "PrimePay": "一等付",
+  "enter_bank_acc_name": "请输入银行账号名称"
 }
 
 

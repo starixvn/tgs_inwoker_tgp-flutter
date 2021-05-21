@@ -136,8 +136,8 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
   _buildBankNameTextField() => Container(
         margin: EdgeInsets.only(top: 10.auto),
         child: CustomTextFormField(
-          title: getTranslatedText("bank_name"),
-          hintText: getTranslatedText("enter_bank_name"),
+          title: getTranslatedText("bank_acc_name"),
+          hintText: getTranslatedText("enter_bank_acc_name"),
           onChanged: (value) => onTextChange(),
           onFieldSubmitted: (value) => onTextChange(),
           controller: _bankNameController,

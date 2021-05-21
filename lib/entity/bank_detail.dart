@@ -8,6 +8,7 @@ class BankDetail {
   BankDetail();
 
   String address;
+  String bankAccount;
 
   factory BankDetail.fromJson(Map<String, dynamic> json) => _$BankDetailFromJson(json);
   Map<String, dynamic> toJson() => _$BankDetailToJson(this);
