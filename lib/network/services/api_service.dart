@@ -4,22 +4,39 @@ import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tgp_flutter/custom/custom_toast.dart';
 import 'package:tgp_flutter/entity/http_method.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart' as DotEnv;
 
-api(HttpMethod method, final endPoint, {final content, isAuthorization = true, imageContent}) async {
+http.Client client;
+const timeoutDuration = Duration(seconds: 3);
+
+Future<http.Response> api(HttpMethod method, final endPoint,
+    {final content, isAuthorization = true, imageContent}) async {
+  if (client == null) {
+    client = http.Client();
+  }
+
   var header = await _getHeader(isAuthorization);
   var url = DotEnv.env["url"] + endPoint;
+
+  var onTimeout = (){
+   // CustomToast.show("Debug:Timeout -> $url");
+    print("Debug:Timeout -> $url");
+    return  api(method,endPoint,content: content,isAuthorization: isAuthorization);
+  };
   print("Api->${method.getName}:$url");
   print(content);
   http.Response response;
   switch (method) {
     case HttpMethod.POST:
-      response = await http.post(
-        url,
-        headers: header,
-        body: jsonEncode(content),
-      );
+      response = await client
+          .post(
+            url,
+            headers: header,
+            body: jsonEncode(content),
+          )
+          .timeout(timeoutDuration,onTimeout: onTimeout);
       break;
     case HttpMethod.GET:
       {
@@ -29,50 +46,66 @@ api(HttpMethod method, final endPoint, {final content, isAuthorization = true, i
         else
           queryParams = "?" + Uri(queryParameters: content).query;
 
-        response = await http.get(
-          url + queryParams,
-          headers: header,
-        );
+        print("Api->Start ${method.getName}:$url");
+
+        response = await client
+            .get(
+              url + queryParams,
+              headers: header,
+            )
+            .timeout(timeoutDuration,onTimeout: onTimeout);
+        ;
+        print("Api->End ${method.getName}:$url");
       }
       break;
     case HttpMethod.DELETE:
-      response = await http.delete(
-        url,
-        headers: header,
-      );
+      response = await client
+          .delete(
+            url,
+            headers: header,
+          )
+          .timeout(timeoutDuration,onTimeout: onTimeout);
+      ;
       break;
     case HttpMethod.PATCH:
-      response = await http.patch(
-        url,
-        headers: header,
-        body: jsonEncode(content),
-      );
+      response = await client
+          .patch(
+            url,
+            headers: header,
+            body: jsonEncode(content),
+          )
+          .timeout(timeoutDuration,onTimeout: onTimeout);
       break;
     case HttpMethod.PUT:
-      response = await http.put(
-        url,
-        headers: header,
-        body: jsonEncode(content),
-      );
+      response = await client
+          .put(
+            url,
+            headers: header,
+            body: jsonEncode(content),
+          )
+          .timeout(timeoutDuration,onTimeout: onTimeout);
       break;
 
     case HttpMethod.MULTIPART:
-      var request = http.MultipartRequest("POST", Uri.parse(url + "/" + content));
+      var request =
+          http.MultipartRequest("POST", Uri.parse(url + "/" + content));
       header.forEach((k, v) {
         request.headers[k] = v;
       });
-      request.files.add(await http.MultipartFile.fromPath('file', imageContent));
+      request.files
+          .add(await http.MultipartFile.fromPath('file', imageContent));
       var imageRes = await request.send();
-      response = await http.Response.fromStream(imageRes);
+      response = await http.Response.fromStream(imageRes).timeout(timeoutDuration,onTimeout: onTimeout);;
       break;
     default:
-      response = await http.post(
+      response = await client.post(
         url,
         headers: header,
         body: jsonEncode(content),
-      );
+      ).timeout(timeoutDuration,onTimeout: onTimeout);
       break;
   }
+
   log("Api<-Done:${response.statusCode} \n ${response.body}");
   return response;
 }
