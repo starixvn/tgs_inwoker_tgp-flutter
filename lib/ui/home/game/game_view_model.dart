@@ -17,13 +17,13 @@ class GameViewModel extends BaseViewModel {
 
   @override
   List<BaseRepository> get repoList => [contentRepo];
-  EventResult getGameApiState, getGameUrlApiState, getGameProviderListApiState;
+  EventResult getGameApiState, getGameUrlApiState, getGameProviderListApiState, getLobbyGameUrlApiState;
   List<Game> _gameList, filteredGameList;
   Map<String, List<Game>> gameListMap = new Map<String, List<Game>>();
   int mCategory = 0;
   String mPlatform, mSearchQuery = "";
   GameType mGameType;
-  var url;
+  var url, lobbyUrl;
   List<GameProvider2> platformList;
   List<List<GameProvider2>> gameProviderList;
   List<GameType> gameTypeList = [
@@ -58,10 +58,7 @@ class GameViewModel extends BaseViewModel {
     gameProviderList = gameTypeList.map((type) =>
          list.where((element) => element.gameType == type).toList(),
     ).toList();
-    // if (getGameProviderListApiState.isSuccess) {
-    //
-    //
-    // }
+    print(gameProviderList);
     setLoading(false);
     return getGameProviderListApiState;
   }
@@ -76,14 +73,24 @@ class GameViewModel extends BaseViewModel {
     return getGameApiState;
   }
 
-  getGameUrl(String gamePlatformCode, int gameId) async {
+  getGameUrl(String gamePlatformCode, int gameId, String _lobbyUrl) async {
     setLoading();
-    getGameUrlApiState = await contentRepo.getGameUrl(gamePlatformCode, gameId);
+    getGameUrlApiState = await contentRepo.getGameUrl(gamePlatformCode, gameId, _lobbyUrl);
     if (getGameUrlApiState.isSuccess) {
       url = getGameUrlApiState.result.url;
     }
     setLoading(false);
     return getGameUrlApiState;
+  }
+
+  getLobbyGameUrl(String gamePlatformCode, GameType gameType, String _lobbyUrl) async {
+    setLoading();
+    getLobbyGameUrlApiState = await contentRepo.getLobbyGameUrl(gamePlatformCode, gameType, _lobbyUrl);
+    if (getLobbyGameUrlApiState.isSuccess) {
+      lobbyUrl = getLobbyGameUrlApiState.result.url;
+    }
+    setLoading(false);
+    return getLobbyGameUrlApiState;
   }
 
   _getRecommendGameList() {

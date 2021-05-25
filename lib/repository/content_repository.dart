@@ -59,17 +59,37 @@ class ContentRepository extends BaseRepository {
         .execute();
   }
 
-  Future<EventResult<GameUrlResponse>> getGameUrl(String gamePlatformCode, int gameId) async {
+  Future<EventResult<GameUrlResponse>> getGameUrl(String gamePlatformCode, int gameId, String lobbyUrl) async {
     return await ApiRequestBuilder<GameUrlResponse>(
-            method: HttpMethod.GET,
+            method: HttpMethod.POST,
             endPoint: "api/Game/geturl",
             params: {
               "gpcode": gamePlatformCode,
               "gid": gameId.toString(),
               "language": "en-US",
+              "extends":{
+                "lobbyurl":lobbyUrl
+              }
             },
             converter: (json) => GameUrlResponse.fromJson(json),
             jwtRefresher: jwtAuth)
+        .execute();
+  }
+
+  Future<EventResult<GameUrlResponse>> getLobbyGameUrl(String gamePlatformCode, GameType gameType, String lobbyUrl) async {
+    return await ApiRequestBuilder<GameUrlResponse>(
+        method: HttpMethod.POST,
+        endPoint: "api/Game/lobby/geturl",
+        params: {
+          "gpcode": gamePlatformCode,
+          "gtype": gameType.getJsonValue,
+          "language": "en-US",
+          "extends":{
+            "lobbyurl":lobbyUrl
+          }
+        },
+        converter: (json) => GameUrlResponse.fromJson(json),
+        jwtRefresher: jwtAuth)
         .execute();
   }
 

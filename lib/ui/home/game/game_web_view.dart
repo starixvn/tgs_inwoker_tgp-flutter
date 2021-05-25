@@ -5,6 +5,7 @@ import 'package:tgp_flutter/custom/custom_dialog.dart';
 import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/custom/leave_game_dialog.dart';
 import 'package:tgp_flutter/entity/game.dart';
+import 'package:tgp_flutter/entity/game_type.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
@@ -15,12 +16,11 @@ import 'package:tgp_flutter/ui/home/game/game_view_model.dart';
 //import 'package:webview_flutter/webview_flutter.dart';
 
 class GameWeb extends StatefulWidget {
-  final Game game;
+  final int gameId;
+  final String gamePlatformCode;
+  final GameType gameType;
 
-  GameWeb({
-    Key key,
-    this.game,
-  }) : super(key: key);
+  GameWeb({Key key, this.gameId, this.gameType, this.gamePlatformCode}) : super(key: key);
 
   @override
   _GameWebState createState() => _GameWebState();
@@ -29,14 +29,17 @@ class GameWeb extends StatefulWidget {
 class _GameWebState extends BaseState<GameWeb> {
   var _vm = GameViewModel();
   InAppWebViewController _webViewController;
-  String url = "";
-  String initialUrl;
   var isLoading = false;
+  String url, lobbyUrl;
 
   @override
   void initState() {
+    lobbyUrl = "http://gci.aggdemo.com:81/forwardGame.do?params=4DJlwdGL1cWclbwxZFKgtr6rJmU8Mqe0y4VXswlHs8uWLV/LAwtfY9/SYLWTh/MBrOQNAdd/nZiuIaXx1/ZDX71ziYHXpHj9WeekhidF60CbLBd9VFlD9EYcWQOX7ALM/w3Ww5Yy86wEsd/IgnUTGwU7vX+3btJezXPCNriz+iYgg9d9jU6yEAXdEN0H7L/tkDdt8IWJGjAqQ2334aF5vlPc2f7DCzM7&key=8dc57f4377fc86da1d0d9e47495993e0";
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _vm.getGameUrl(widget.game.gamePlatformCode, widget.game.id);
+      if (widget.gameType == null)
+        _vm.getGameUrl(widget.gamePlatformCode, widget.gameId, lobbyUrl);
+      else
+        _vm.getLobbyGameUrl(widget.gamePlatformCode, widget.gameType, lobbyUrl);
     });
     super.initState();
   }
@@ -50,20 +53,19 @@ class _GameWebState extends BaseState<GameWeb> {
             resizeToAvoidBottomInset: false,
             backgroundColor: Colors.white,
             appBar: _buildAppBar(),
-            body: isLoading || _vm.url == null ? buildProgressDialog() : _buildWebView(),
+            body: isLoading || url == null ? buildProgressDialog() : _buildWebView(),
           );
         });
   }
 
-  _buildAppBar() =>
-      AppBar(
+  _buildAppBar() => AppBar(
         automaticallyImplyLeading: false,
         centerTitle: true,
         flexibleSpace: Container(
           decoration: gradientDecoration,
         ),
         title: Text(
-          widget.game.name ?? "",
+          "Game",
           style: TextStyle(fontSize: 20.auto),
         ),
         leading: IconButton(
@@ -86,37 +88,49 @@ class _GameWebState extends BaseState<GameWeb> {
 
   _buildWebView() {
     return InAppWebView(
-        initialUrl: _getValidUrl(),
-        initialOptions: InAppWebViewGroupOptions(
-            crossPlatform: InAppWebViewOptions(
-              debuggingEnabled: true,
-              javaScriptEnabled: true,
-            ),
-            android: AndroidInAppWebViewOptions(
-              useWideViewPort: true,
-              mixedContentMode: AndroidMixedContentMode.MIXED_CONTENT_ALWAYS_ALLOW,
-            )),
-        onWebViewCreated: (InAppWebViewController controller) {
-          _webViewController = controller;
-          _webViewController.loadUrl(url: _getValidUrl());
-        },
-        onLoadStart: (InAppWebViewController controller, String url) {
-          ProgressDialog.show(context);
-        },
-        onLoadStop: (InAppWebViewController controller, String url) async {
-          ProgressDialog.hide();
-        },
+      initialUrl: _getValidUrl(url),
+      initialOptions: InAppWebViewGroupOptions(
+          crossPlatform: InAppWebViewOptions(
+            debuggingEnabled: true,
+            javaScriptEnabled: true,
+            useShouldOverrideUrlLoading: true
+          ),
+          android: AndroidInAppWebViewOptions(
+            useWideViewPort: true,
+            mixedContentMode: AndroidMixedContentMode.MIXED_CONTENT_ALWAYS_ALLOW,
+          )),
+      onWebViewCreated: (InAppWebViewController controller) {
+        _webViewController = controller;
+        _webViewController.loadUrl(url: _getValidUrl(url));
+      },
+      onLoadStart: (InAppWebViewController controller, String url) {
+        //ProgressDialog.show(context);
+      },
+      onLoadStop: (InAppWebViewController controller, String url) async {
+       // ProgressDialog.hide();
+      },
+      shouldOverrideUrlLoading: (controller, shouldOverrideUrlLoadingRequest) async {
+        if (url == lobbyUrl) {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) => LeaveGameDialog(),
+          );
+          return ShouldOverrideUrlLoadingAction.CANCEL;
+        }else {
+          return ShouldOverrideUrlLoadingAction.ALLOW;
+        }
+      },
     );
   }
 
-  _getValidUrl() {
-    if (_vm.url != null) {
-      if (_vm.url.contains("https://") || _vm.url.contains("http://")) {
-        return _vm.url;
-      } else {
-        return "https:" + _vm.url;
-      }
-    }
+  _getValidUrl(String url) {
+   if(url!=null){
+     if ((url.contains("https://") || url.contains("http://"))) {
+       return url;
+     } else {
+       return "https:" + url;
+     }
+   }
   }
 
   _displayDialog() {
@@ -128,7 +142,10 @@ class _GameWebState extends BaseState<GameWeb> {
 
   _loadWebView() {
     isLoading = true;
-    _vm.getGameUrl(widget.game.gamePlatformCode, widget.game.id);
+    if (widget.gameType == null)
+      _vm.getGameUrl(widget.gamePlatformCode, widget.gameId,lobbyUrl);
+    else
+      _vm.getLobbyGameUrl(widget.gamePlatformCode, widget.gameType,lobbyUrl);
   }
 
   _handleApiState() {
@@ -136,6 +153,13 @@ class _GameWebState extends BaseState<GameWeb> {
       if (isLoading) {
         isLoading = !isLoading;
       }
+      url = _vm.url;
+    });
+    handleApiState(_vm.getLobbyGameUrlApiState, isAutoHideLoading: false, onSuccess: () {
+      if (isLoading) {
+        isLoading = !isLoading;
+      }
+      url = _vm.lobbyUrl;
     });
   }
 }

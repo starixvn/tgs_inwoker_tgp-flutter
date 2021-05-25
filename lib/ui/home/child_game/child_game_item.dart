@@ -54,17 +54,18 @@ class _ChildGameItemState extends BaseState<ChildGameItem> {
     var imagePath = widget.game.type.getImagePath();
     var gamePlatformCode = widget.game.gamePlatformCode.toLowerCase();
     var gameName = widget.game.code.replaceAll(RegExp("_"), "");
-    var imageUrl = DotEnv.env["imageUrl"] + imagePath + "/" + gamePlatformCode + "/" + gameName + ".png";
+    var imageUrl = DotEnv.env["imageUrl"] + (imagePath=="fish"?"slotGame":imagePath) + "/" + (gamePlatformCode) + "/" + gameName;
+    var imageType = gamePlatformCode=="jdb"?".jpg":".png";
     return Expanded(
         flex: 4,
         child: CachedNetworkImage(
-            placeholder: (context, url) => Container(
-                  color: CustomColor.very_light_pink_four,
-                ),
-            imageUrl: imageUrl,
-            //handling error
-            width: 165.5.auto,
-            fit: BoxFit.cover));
+                placeholder: (context, url) => Container(
+                      color: CustomColor.very_light_pink_four,
+                    ),
+                imageUrl: imageUrl+ imageType,
+                //handling error
+                width: 165.5.auto,
+                fit: BoxFit.cover));
   }
 
   _buildImageTitleAndFavouriteIcon() => Expanded(
@@ -124,7 +125,7 @@ class _ChildGameItemState extends BaseState<ChildGameItem> {
 
   _navigateToGameWeb(Game game) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => GameWeb(game: game)));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => GameWeb(gamePlatformCode: game.gamePlatformCode, gameId: game.id,)));
     });
   }
 }

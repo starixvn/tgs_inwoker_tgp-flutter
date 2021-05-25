@@ -178,7 +178,7 @@ class _GameViewState extends BaseState<GameView> {
   }
 
   _navigate(String gamePlatformCode, GameType gameType) async {
-    if (gameType == GameType.Slot || gameType == GameType.TableGame) {
+    if (gameType == GameType.Slot || gameType == GameType.TableGame || gameType == GameType.Fishing) {
       //navigate to child game
       WidgetsBinding.instance.addPostFrameCallback((_) {
         Navigator.push(
@@ -191,12 +191,12 @@ class _GameViewState extends BaseState<GameView> {
       });
     } else {
       //navigate to game web
-      ProgressDialog.show(context);
+      /*ProgressDialog.show(context);
       await _vm.getGameList(gamePlatformCode, gameType);
-      ProgressDialog.hide();
+      ProgressDialog.hide();*/
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => GameWeb(game: _vm.gameListMap[gamePlatformCode].first)));
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => GameWeb(gamePlatformCode: gamePlatformCode, gameType: gameType)));
       });
     }
   }

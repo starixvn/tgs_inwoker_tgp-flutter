@@ -62,7 +62,7 @@ class _LeaveGameDialogState extends BaseState<LeaveGameDialog> {
   _buildLeaveButton() => Expanded(
         flex: 1,
         child: InkWell(
-          onTap: () {
+          onTap:(){
             Navigator.pop(
               context,
             );
