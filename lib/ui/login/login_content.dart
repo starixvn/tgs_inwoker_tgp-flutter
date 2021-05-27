@@ -143,6 +143,7 @@ class _LoginContentState extends BaseState<LoginContent> {
             activeColor: Colors.black,
             onChanged: (val) => this.setState(() {
               this._isRememberMe = !this._isRememberMe;
+              if(!_isRememberMe) _vm.removePrefs();
             }),
           ),
           Text(

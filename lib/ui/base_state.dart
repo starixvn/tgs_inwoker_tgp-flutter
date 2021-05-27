@@ -14,10 +14,7 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
   getTranslatedText(String key) => LanguageProvider().getTranslated(context, key);
 
   handleApiState(EventResult eventResult,
-      {Function onSuccess,
-      Function onError,
-      bool isAutoHideLoading = true,
-      bool isRequireResult = false}) async {
+      {Function onSuccess, Function onError, bool isAutoHideLoading = true, bool isRequireResult = false}) async {
     if (eventResult == null) return;
     if (!eventResult.isHandled) {
       if (eventResult.isError) {
@@ -82,7 +79,7 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
 
   _showErrorMessage(EventResult eventResult) {
     var errorMessage = eventResult.error;
-    final errorMap = {405: "invalid_otp"};
+    final errorMap = {101: "invalid_credentials",201: "player_not_found", 405: "invalid_otp"};
     final errorKey = errorMap[eventResult.errorCode];
     if (errorKey != null) {
       errorMessage = getTranslatedText(errorKey);

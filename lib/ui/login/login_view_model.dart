@@ -69,6 +69,12 @@ class LoginViewModel extends BaseViewModel {
     }
   }
 
+  removePrefs() async{
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    if(prefs.getString("username")!=null||prefs.getString("username").isNotEmpty) await prefs.remove("username");
+    if(prefs.getString("password")!=null||prefs.getString("password").isNotEmpty) await prefs.remove("password");
+}
+
   getUsername() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString("username") ?? "";

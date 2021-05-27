@@ -80,7 +80,7 @@ class _ForgotPasswordState extends BaseState<ForgotPassword> {
           controller: _emailController,
           focusNode: null,
           width: context.screenWidth - 70.auto,
-          textInputType: TextInputType.number,
+          textInputType: TextInputType.text,
           textInputAction: TextInputAction.next,
         ),
       );
@@ -117,12 +117,23 @@ class _ForgotPasswordState extends BaseState<ForgotPassword> {
           style: TextStyle(color: Colors.white, fontSize: 16.auto),
         ),
         onClick: () {
-          _navigateToUpdatePassword();
+          _checkValidation();
         },
         isEnabled: isButtonEnabled ?? false,
         color: CustomColor.theme_bar_gradient_2,
         radius: 9.6,
       ));
+
+  _checkValidation(){
+    if (!validate.validateEmail(_emailController.text)) {
+      setState(() {
+        CustomToast.show(getTranslatedText("email_format_error_msg"));
+      });
+    }else {
+      ProgressDialog.show(context);
+      _navigateToUpdatePassword();
+    }
+  }
 
   _onTextChange() {
     setState(() {

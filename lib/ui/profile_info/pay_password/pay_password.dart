@@ -166,7 +166,7 @@ class _PayPasswordState extends BaseState<PayPassword> {
   }
 
   _onClick() async {
-    if (!validate.validatePasswordLength(_newPasswordController.text)) {
+    if (!validate.validateUsernamePasswordLength(_newPasswordController.text)) {
       setState(() {
         CustomToast.show(getTranslatedText("enter_password_error_msg"));
       });

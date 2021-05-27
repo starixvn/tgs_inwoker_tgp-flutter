@@ -55,7 +55,7 @@ class _RegisterContentState extends BaseState<RegisterContent> {
               _buildUsernameTextFormField(),
               _buildPasswordTextFormField(),
               _buildConfirmPasswordTextFormField(),
-              _buildPayPasswordTextFormField(),
+              //_buildPayPasswordTextFormField(),
               _buildPromotionCodeTextFormField(),
               _buildRegisterButton()
             ],
@@ -169,11 +169,11 @@ class _RegisterContentState extends BaseState<RegisterContent> {
       );
 
   _register() {
-    if (!validate.validateUsernameLength(username.text)) {
+    if (!validate.validateUsernamePasswordLength(username.text)) {
       setState(() {
         CustomToast.show(getTranslatedText("enter_username_error_message"));
       });
-    } else if (!validate.validatePasswordLength(password.text)) {
+    } else if (!validate.validateUsernamePasswordLength(password.text)) {
       setState(() {
         CustomToast.show(getTranslatedText("enter_password_error_msg"));
       });
@@ -185,7 +185,11 @@ class _RegisterContentState extends BaseState<RegisterContent> {
       setState(() {
         CustomToast.show(getTranslatedText("confirm_pay_error_msg"));
       });
-    } else {
+    }else if(!validate.validateUsernamePassword(username.text)) {
+      setState(() {
+        CustomToast.show(getTranslatedText("enter_username_validate_error_message"));
+      });
+    }else {
       ProgressDialog.show(context);
       _checkUsername();
     }
@@ -201,9 +205,7 @@ class _RegisterContentState extends BaseState<RegisterContent> {
     });
     handleApiState(_vm.checkUsernameApiState, isRequireResult: true, onSuccess: (result) {
       if (result.isExist) {
-        //WidgetsBinding.instance.addPostFrameCallback((_) {
-          CustomToast.show("Username is existed");
-       // });
+          CustomToast.show(getTranslatedText("username_exist"));
       } else {
         WidgetsBinding.instance.addPostFrameCallback((_) {
            ProgressDialog.show(context);

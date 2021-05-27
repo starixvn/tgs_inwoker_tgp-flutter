@@ -85,11 +85,11 @@
   "rmb_password":"記住密碼",
   "enter_username_hint":"請輸入您的賬號",
   "enter_password_hint":"請輸入您的密碼",
-  "signup_username_hint":"請輸入用戶名(6-32位英文或數字)",
-  "signup_password_hint":"請輸入密碼(8位以上數字 字母)",
+  "signup_username_hint":"請輸入用戶名(6-20位英文或數字)",
+  "signup_password_hint":"請輸入密碼(6-20位英文或數字)",
   "confirm_password":"確認密碼",
   "signup_pay_password_hint":"提現密碼(6位數字)",
-  "signup_promotion_code_hint":"請輸入優惠代碼(選填)",
+  "signup_promotion_code_hint":"請輸入邀請碼(選填)",
   "register":"註冊",
   "single_amount":"單筆限額",
   "deposit_channel":"存款通道",
@@ -172,7 +172,8 @@
   "receiver_bank_account":"收款銀行賬戶",
   "receiver_bank_number":"收款銀行賬號",
   "cancel":"取消",
-  "enter_username_error_message": "用戶名需6-32個字符",
+  "enter_username_error_message": "用戶名需6-20個字符",
+  "enter_username_validate_error_message": "用户名只能輸入英文字母、數字或特殊符號",
   "enter_password_error_msg" : "\n密碼由6-20個英文字母或者數字組成",
   "confirm_password_error_msg" : "確認密碼與密碼不一致",
   "password_validate_error_msg" :"密碼只能輸入英文字母、數字或特殊符號",
@@ -232,6 +233,8 @@
   "Manual": "手動存款",
   "LeePay": "利付錢包",
   "PrimePay": "一等付",
-  "enter_bank_acc_name": "請輸入銀行賬號名稱"
-
+  "enter_bank_acc_name": "請輸入銀行賬號名稱",
+  "player_not_found": "無法查找玩家",
+  "invalid_credentials": "無效憑證",
+  "username_exist": "用户名已存在"
 }
