@@ -14,7 +14,7 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
   getTranslatedText(String key) => LanguageProvider().getTranslated(context, key);
 
   handleApiState(EventResult eventResult,
-      {Function onSuccess, Function onError, bool isAutoHideLoading = true, bool isRequireResult = false}) async {
+      {Function onSuccess, Function onError, bool isAutoHideLoading = true, bool isRequireResult = false, bool isCheckSessionExpired = true}) async {
     if (eventResult == null) return;
     if (!eventResult.isHandled) {
       if (eventResult.isError) {
@@ -22,9 +22,7 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
         if (onError != null) {
           onError(eventResult.error);
         } else {
-          final SharedPreferences prefs = await SharedPreferences.getInstance();
-          var loginLater = prefs.getBool("login_later") ?? false;
-          if ((eventResult.errorCode == 102 || eventResult.errorCode == 101)) {
+          if ((eventResult.errorCode == 102 || eventResult.errorCode == 101) && isCheckSessionExpired) {
             UserRepository.getSingleton().clearSession();
             WidgetsBinding.instance.addPostFrameCallback((_) {
               showDialog(
@@ -43,7 +41,6 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
                           },
                           onClick2: () {
                             Navigator.of(context).pushReplacementNamed("/home");
-                            prefs.setBool("login_later", true);
                           },
                         ),
                       ));
@@ -79,7 +76,7 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
 
   _showErrorMessage(EventResult eventResult) {
     var errorMessage = eventResult.error;
-    final errorMap = {101: "invalid_credentials",201: "player_not_found", 405: "invalid_otp"};
+    final errorMap = {101: "invalid_credentials",201: "player_not_found", 405: "invalid_otp", 901:"operation_not_allow"};
     final errorKey = errorMap[eventResult.errorCode];
     if (errorKey != null) {
       errorMessage = getTranslatedText(errorKey);

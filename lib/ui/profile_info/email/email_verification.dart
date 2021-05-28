@@ -23,12 +23,8 @@ class EmailVerification extends StatefulWidget {
 
 class _EmailVerificationState extends BaseState<EmailVerification> {
   var _vm = EmailVerificationViewModel();
-  TextEditingController _emailController = TextEditingController(),
-      _otpController = TextEditingController();
-  var isButtonEnabled = false,
-      isOtpEnabled = false,
-      isTextFieldEnabled = false,
-      isOtpCountdown = false;
+  TextEditingController _emailController = TextEditingController(), _otpController = TextEditingController();
+  var isButtonEnabled = false, isOtpEnabled = false, isTextFieldEnabled = false, isOtpCountdown = false;
   var buttonText;
   InputValidationProvider validate = new InputValidationProvider();
 
@@ -90,7 +86,7 @@ class _EmailVerificationState extends BaseState<EmailVerification> {
           controller: _emailController,
           focusNode: null,
           width: context.screenWidth - 70.auto,
-          textInputType: TextInputType.number,
+          textInputType: TextInputType.text,
           textInputAction: TextInputAction.next,
           enabled: isTextFieldEnabled,
         ),
@@ -195,7 +191,7 @@ class _EmailVerificationState extends BaseState<EmailVerification> {
     });
     handleApiState(_vm.emailVerifyApiState, onSuccess: () {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        CustomToast.show("Success");
+        CustomToast.show(getTranslatedText("success"));
         _getUserProfile();
       });
     });

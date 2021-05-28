@@ -99,6 +99,7 @@ flutter:
     - images/referFriend/
     - images/language/
     - images/banner/
+    - images/withdraw/
 
 
     - i18n/

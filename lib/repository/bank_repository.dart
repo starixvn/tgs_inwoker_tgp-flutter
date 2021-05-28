@@ -38,8 +38,8 @@ class BankRepository extends BaseRepository {
         .execute();
   }
 
-  Future<EventResult<dynamic>> getManualDepositId(String account, String amount, String paymentId) async {
-    return await ApiRequestBuilder<dynamic>(
+  Future<EventResult<String>> getManualDepositId(String account, String amount, String paymentId) async {
+    return await ApiRequestBuilder<String>(
             method: HttpMethod.PUT,
             endPoint: "api/deposit/manual",
             params: {
@@ -143,6 +143,19 @@ class BankRepository extends BaseRepository {
             },
             converter: (json) => DepositRedirect.fromJson(json),
             jwtRefresher: jwtAuth)
+        .execute();
+  }
+
+  Future<EventResult<dynamic>> withdraw(int amount, String bankInfoId, String payPassword) async {
+    return await ApiRequestBuilder<dynamic>(
+        method: HttpMethod.POST,
+        endPoint: "api/withdraw",
+        params: {
+          "amount": amount.toString(),
+          "bankinfoid": bankInfoId,
+          "paypassword": payPassword,
+        },
+        jwtRefresher: jwtAuth)
         .execute();
   }
 }

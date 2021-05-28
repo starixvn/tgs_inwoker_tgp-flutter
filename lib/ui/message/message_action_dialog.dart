@@ -20,7 +20,7 @@ class _MessageActionDialogState extends BaseState<MessageActionDialog> {
     return Container(
       margin: EdgeInsets.only(left: 10.auto, right: 10.auto, bottom: 10.auto),
       child: Wrap(children: [
-        ColorButton(
+        /*ColorButton(
             text: Text(
               getTranslatedText("delete"),
               style: TextStyle(fontSize: 17.2.auto, color: Colors.red),
@@ -28,7 +28,7 @@ class _MessageActionDialogState extends BaseState<MessageActionDialog> {
             onClick: () {},
             isEnabled: true,
             color: Colors.white,
-            radius: 11.6.auto),
+            radius: 11.6.auto),*/
         ColorButton(
             text: Text(
               getTranslatedText("cancel"),

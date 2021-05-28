@@ -148,7 +148,7 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
 
   _handleApiState() {
     handleApiState(_vm.idVerifyApiState, onSuccess: () {
-      CustomToast.show("Success");
+      CustomToast.show(getTranslatedText("success"));
       _getUserProfile();
     });
   }

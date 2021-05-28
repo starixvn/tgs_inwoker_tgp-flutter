@@ -137,7 +137,7 @@ class _MessageViewState extends BaseState<MessageView> {
                     ),
                   ),
                 ),
-                InkWell(
+                /*InkWell(
                   onTap: () {},
                   child: Container(
                     padding: EdgeInsets.only(top: 10.auto, bottom: 10.auto, right: 15.auto),
@@ -146,7 +146,7 @@ class _MessageViewState extends BaseState<MessageView> {
                       style: TextStyle(color: Colors.white, fontSize: 12.auto),
                     ),
                   ),
-                ),
+                ),*/
               ],
             )),
       );

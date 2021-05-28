@@ -27,7 +27,7 @@ class WalletTransfer extends StatefulWidget {
 
 class _WalletTransferState extends BaseState<WalletTransfer> with TickerProviderStateMixin {
   WalletTransferViewModel _vm = WalletTransferViewModel();
-  var amount = TextEditingController();
+  var _amountController = TextEditingController();
   var isEnabled = false, isMaxAmountButtonEnabled = false;
 
   Wallet fromWallet, toWallet;
@@ -37,11 +37,12 @@ class _WalletTransferState extends BaseState<WalletTransfer> with TickerProvider
   var _key = GlobalKey();
   AnimationController _controller;
   Animation<double> _animation;
+  int amount;
 
   @override
   void dispose() {
     _controller.dispose();
-    amount.dispose();
+    _amountController.dispose();
     super.dispose();
   }
 
@@ -87,7 +88,7 @@ class _WalletTransferState extends BaseState<WalletTransfer> with TickerProvider
                       children: [
                         _buildWalletDetails(),
                         _buildWalletGridView(),
-                        _buildHintText(),
+                        //_buildHintText(),
                         _buildTransferAccount(),
                         _buildAmountTextFormField(),
                         _buildButton()
@@ -348,7 +349,7 @@ class _WalletTransferState extends BaseState<WalletTransfer> with TickerProvider
           checkButtonState();
         },
         onFieldSubmitted: (value) {},
-        controller: amount,
+        controller: _amountController,
         focusNode: _focusNode,
         width: context.screenWidth - 140.auto,
         button: Container(
@@ -392,7 +393,7 @@ class _WalletTransferState extends BaseState<WalletTransfer> with TickerProvider
 
   getMaxAmount() {
     setState(() {
-      amount.text = _vm.walletList.singleWhere((e) => e.gpCode == fromWallet.gpCode).balance.floor().toString() ?? "";
+      _amountController.text = _vm.walletList.singleWhere((e) => e.gpCode == fromWallet.gpCode).balance.floor().toString() ?? "";
       checkButtonState();
     });
   }
@@ -400,9 +401,9 @@ class _WalletTransferState extends BaseState<WalletTransfer> with TickerProvider
   setFromWallet(Wallet wallet) {
     fromWallet = wallet;
     if (wallet == null)
-      textFromWallet = "请选择";
+      textFromWallet =  getTranslatedText("please_select");
     else {
-      textFromWallet = wallet?.title ?? "请选择";
+      textFromWallet = (getTranslatedText(wallet.title)?? wallet.title ) ??  getTranslatedText("please_select");
       setState(() {
         isMaxAmountButtonEnabled = true;
       });
@@ -418,7 +419,10 @@ class _WalletTransferState extends BaseState<WalletTransfer> with TickerProvider
   }
 
   checkButtonState() {
-    if (fromWallet == null || toWallet == null || amount.text.isEmpty) {
+    if(_amountController.text.isNotEmpty){
+      amount = int.parse(_amountController.text);
+    }else amount = 0;
+    if (fromWallet == null || toWallet == null || amount==0||amount> _vm.userMainWalletBalance){
       setState(() {
         isEnabled = false;
       });
@@ -431,14 +435,14 @@ class _WalletTransferState extends BaseState<WalletTransfer> with TickerProvider
   }
 
   onClick() {
-    if (fromWallet == null || toWallet == null || amount.text.isEmpty) {
+    if (fromWallet == null || toWallet == null || _amountController.text.isEmpty) {
       return;
     } else {
       setState(() {
         ProgressDialog.show(context);
         final isFundOut = fromWallet.isMainWallet;
         final gpCode = isFundOut ? toWallet.gpCode : fromWallet.gpCode;
-        _vm.transferWallet(gpCode, int.parse(amount.text), isFundOut);
+        _vm.transferWallet(gpCode, int.parse(_amountController.text), isFundOut);
       });
     }
   }
@@ -448,7 +452,7 @@ class _WalletTransferState extends BaseState<WalletTransfer> with TickerProvider
     setToWallet(null);
     isEnabled = false;
     FocusScope.of(context).requestFocus(new FocusNode());
-    amount.clear();
+    _amountController.clear();
   }
 
   _handleApiState() {
@@ -456,7 +460,7 @@ class _WalletTransferState extends BaseState<WalletTransfer> with TickerProvider
       if (!_controller.isAnimating) _controller.forward(from: 0.0);
     }
     handleApiState(_vm.transferWalletApiState, onSuccess: () {
-      CustomToast.show("success");
+      CustomToast.show(getTranslatedText("success"));
 
       WidgetsBinding.instance.addPostFrameCallback((_) {
         clearData();

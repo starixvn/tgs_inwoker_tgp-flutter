@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tgp_flutter/entity/bank_card.dart';
 import 'package:tgp_flutter/entity/bank_type.dart';
 import 'package:tgp_flutter/entity/game_provider.dart';
 import 'package:tgp_flutter/entity/payment.dart';
@@ -26,7 +27,6 @@ class CustomPickerDialog extends StatefulWidget {
 }
 
 class _CustomPickerDialogState extends BaseState<CustomPickerDialog> {
-  //var isListEmpty = false;
   Widget build(BuildContext context) {
     return Container(
       child: Wrap(children: [
@@ -35,8 +35,7 @@ class _CustomPickerDialogState extends BaseState<CustomPickerDialog> {
           width: context.screenWidth,
           padding: EdgeInsets.only(bottom: 5),
           margin: EdgeInsets.only(left: 5, right: 5, top: 5),
-          decoration:
-              BoxDecoration(border: Border(bottom: BorderSide(color: Colors.grey, width: 1.0))),
+          decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Colors.grey, width: 1.0))),
           child: Text(
             getTranslatedText(widget.title) ?? "",
             style: TextStyle(
@@ -75,15 +74,42 @@ class _CustomPickerDialogState extends BaseState<CustomPickerDialog> {
     } else if (widget.list is List<Wallet>) {
       Wallet wallet = widget.list[index];
       return (wallet.isMainWallet) ? getTranslatedText(wallet.title) : wallet.title;
-    } else
-      return widget.list[index];
+    } else{
+      //string
+      if(widget.list[index] =="BankTransfer")
+        return getTranslatedText("bank_transfer");
+      else if(widget.list[index] =="Crypto")
+        return getTranslatedText("crypto");
+      else return widget.list[index];
+    }
   }
 
-  _getPickerItem(index) {
-    return Text(
-      _getText(index),
-      style: TextStyle(fontSize: 13.auto),
-      textAlign: TextAlign.center,
+  _getPickerItem(index) => widget.list is List<BankCard>
+      ? _getBankCardPickerItem(index)
+      : Text(
+          _getText(index),
+          style: TextStyle(fontSize: 13.auto),
+          textAlign: TextAlign.center,
+        );
+
+  _getBankCardPickerItem(index) {
+    BankType bankType= widget.list[index].bankType;
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          bankType.displayName,
+          style: TextStyle(fontSize: 13.auto),
+          textAlign: TextAlign.center,
+        ),
+        Text(
+          bankType == BankType.CRYPTO
+              ? (widget.list[index].bankDetail.address)
+              : (widget.list[index].bankDetail.bankAccount ?? ""),
+          style: TextStyle(fontSize: 13.auto),
+          textAlign: TextAlign.center,
+        )
+      ],
     );
   }
 }

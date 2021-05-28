@@ -236,5 +236,13 @@
   "enter_bank_acc_name": "請輸入銀行賬號名稱",
   "player_not_found": "無法查找玩家",
   "invalid_credentials": "無效憑證",
-  "username_exist": "用户名已存在"
+  "username_exist": "用户名已存在",
+  "bank_transfer": "銀行轉賬",
+  "crypto": "加密貨幣",
+  "success": "成功",
+  "operation_not_allow": "該操作是不允許的",
+  "enter_withdraw_amount":"請輸入提款金額",
+  "available_withdraw": "您可提款餘額為: ",
+  "withdraw_success": "的提款請求已成功提交，請耐心等待確認",
+  "submit": "提交"
 }

@@ -57,7 +57,8 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
         builder: (ctx, vm, _) {
           _handleApiState();
           return Container(
-            margin: EdgeInsets.all(10.auto),
+            margin: EdgeInsets.only(
+                left: 10.auto, right: 10.auto, top: 10.auto, bottom: MediaQuery.of(context).viewInsets.bottom),
             child: ListView(
               children: [
                 _buildCard("deposit_method", _vm.depositMethodList.keys.toList(), isDepositMethod: true),
@@ -72,13 +73,16 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
   }
 
   _buildCard(String title, List<dynamic> list, {bool isDepositMethod = false}) {
+    var display;
+    if(methodPickerText == "BankTransfer") display = "bank_transfer";
+    else display = methodPickerText.toLowerCase();
     return Container(
         margin: EdgeInsets.only(top: 10.auto),
         child: Opacity(
           opacity: 1,
           child: CustomPicker(
             title: title,
-            displayText: isDepositMethod ? methodPickerText : channelPickerText ?? "",
+            displayText: isDepositMethod ? getTranslatedText(display) ?? "" : channelPickerText ?? "",
             //isDeposit? depositText??"请选择红利": pickerText?? "",
             list: list,
             isHintText: true,
@@ -116,36 +120,36 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
   }
 
   _buildAmountTextField() => Container(
-        margin: EdgeInsets.only(top: 10.auto),
-        child: CustomTextFormField(
-          title: getTranslatedText("deposit_amount") ?? "",
-          hintText: getTranslatedText("enter") +
-              (Format().amountFormat(paymentMin) ?? "10.00") +
-              "-" +
-              (Format().amountFormat(paymentMax) ?? "100,000") +
-              getTranslatedText("yuan"),
-          onChanged: (value) => onTextChange(),
-          onFieldSubmitted: (value) => onTextChange(),
-          controller: _amountController,
-          width: context.screenWidth - 70.auto,
-          textInputType: TextInputType.number,
-          textInputAction: TextInputAction.done,
-        ),
-      );
+    margin: EdgeInsets.only(top: 10.auto),
+    child: CustomTextFormField(
+      title: getTranslatedText("deposit_amount") ?? "",
+      hintText: getTranslatedText("enter") +
+          (Format().amountFormat(paymentMin) ?? "10.00") +
+          "-" +
+          (Format().amountFormat(paymentMax) ?? "100,000") +
+          getTranslatedText("yuan"),
+      onChanged: (value) => onTextChange(),
+      onFieldSubmitted: (value) => onTextChange(),
+      controller: _amountController,
+      width: context.screenWidth - 70.auto,
+      textInputType: TextInputType.number,
+      textInputAction: TextInputAction.done,
+    ),
+  );
 
   _buildBankNameTextField() => Container(
-        margin: EdgeInsets.only(top: 10.auto),
-        child: CustomTextFormField(
-          title: getTranslatedText("bank_acc_name"),
-          hintText: getTranslatedText("enter_bank_acc_name"),
-          onChanged: (value) => onTextChange(),
-          onFieldSubmitted: (value) => onTextChange(),
-          controller: _bankNameController,
-          width: context.screenWidth - 70.auto,
-          textInputType: TextInputType.text,
-          textInputAction: TextInputAction.next,
-        ),
-      );
+    margin: EdgeInsets.only(top: 10.auto),
+    child: CustomTextFormField(
+      title: getTranslatedText("bank_acc_name"),
+      hintText: getTranslatedText("enter_bank_acc_name"),
+      onChanged: (value) => onTextChange(),
+      onFieldSubmitted: (value) => onTextChange(),
+      controller: _bankNameController,
+      width: context.screenWidth - 70.auto,
+      textInputType: TextInputType.text,
+      textInputAction: TextInputAction.next,
+    ),
+  );
 
   _buildButton() => Container(
       margin: EdgeInsets.only(
@@ -166,25 +170,23 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
       ));
 
   onTextChange() {
-    if (_isManualDeposit()) {
-      if (_amountController.text != null &&
-          _amountController.text.isNotEmpty &&
-          _bankNameController.text != null &&
-          _bankNameController.text.isNotEmpty) {
-        amount = int.parse(_amountController.text);
-        if (amount >= paymentMin && amount <= paymentMax) {
-          setState(() {
-            isButtonEnabled = true;
-          });
-        }
-      }
-    } else if (_amountController.text != null && _amountController.text.isNotEmpty) {
+    if (_amountController.text != null && _amountController.text.isNotEmpty) {
       amount = int.parse(_amountController.text);
-      if (amount >= paymentMin && amount <= paymentMax) {
-        setState(() {
-          isButtonEnabled = true;
-        });
-      }
+    }else{
+      amount =0;
+    }
+    if (_isManualDeposit() &&
+        _bankNameController.text != null &&
+        _bankNameController.text.isNotEmpty &&
+        amount >= paymentMin &&
+        amount <= paymentMax) {
+      setState(() {
+        isButtonEnabled = true;
+      });
+    } else if (amount >= paymentMin && amount <= paymentMax) {
+      setState(() {
+        isButtonEnabled = true;
+      });
     } else {
       setState(() {
         isButtonEnabled = false;
@@ -223,23 +225,29 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
     });
   }
 
+  _clearTextField(){
+    _amountController.clear();
+    _bankNameController.clear();
+  }
+
   _handleApiState() {
     handleApiState(_vm.getLeepayOrderApiState, isRequireResult: true, onSuccess: (result) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        Navigator.push(
+      WidgetsBinding.instance.addPostFrameCallback((_) async{
+        await Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) => DepositOrderView(
-                      method: _payment.methodCode,
-                      depositRedirect: _vm.getLeepayOrderApiState.result,
-                      depositAmount: Format().currencySymbolWithDecimalFormat(double.parse(_amountController.text)),
-                      depositChannel: channelPickerText,
-                    )));
+                  method: _payment.methodCode,
+                  depositRedirect: _vm.getLeepayOrderApiState.result,
+                  depositAmount: Format().currencySymbolWithDecimalFormat(double.parse(_amountController.text)),
+                  depositChannel: channelPickerText,
+                )));
+        _clearTextField();
       });
     });
-    handleApiState(_vm.primePayDepositOrderApiState,  onSuccess: () {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        Navigator.push(
+    handleApiState(_vm.primePayDepositOrderApiState, onSuccess: () {
+      WidgetsBinding.instance.addPostFrameCallback((_) async{
+        await Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) => DepositOrderView(
@@ -248,6 +256,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
                   depositAmount: Format().currencySymbolWithDecimalFormat(double.parse(_amountController.text)),
                   depositChannel: channelPickerText,
                 )));
+        _clearTextField();
       });
     });
 
@@ -255,18 +264,20 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
       paymentChannelId = result;
     });
     handleApiState(_vm.getDepositOrderApiState, onSuccess: () {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        Navigator.push(
+      WidgetsBinding.instance.addPostFrameCallback((_) async{
+        await Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) => DepositOrderView(
-                      method: _payment.methodCode,
-                      id: paymentChannelId,
-                      manualDepositOrder: _vm.getDepositOrderApiState.result,
-                      payUsername: _bankNameController.text,
-                      depositAmount: Format().currencySymbolWithDecimalFormat(double.parse(_amountController.text)),
-                      depositChannel: channelPickerText,
-                    )));
+                  method: _payment.methodCode,
+                  id: paymentChannelId,
+                  manualDepositOrder: _vm.getDepositOrderApiState.result,
+                  payUsername: _bankNameController.text,
+                  depositAmount: Format().currencySymbolWithDecimalFormat(double.parse(_amountController.text)),
+                  depositChannel: channelPickerText,
+                  orderNo: _vm.orderNo,
+                )));
+        _clearTextField();
       });
     });
   }

@@ -37,7 +37,9 @@ class ContentRepository extends BaseRepository {
               "currency": "CNY",
             },
             converter: (json) => (json as List<dynamic>).map((e) => GameProvider.fromJson(e)).toList(),
-            consumer: (result) => gameProviderList = result,
+            consumer: (result) => setRepoValues(() {
+                  gameProviderList = result;
+                }),
             jwtRefresher: jwtAuth)
         .execute();
   }
@@ -67,29 +69,26 @@ class ContentRepository extends BaseRepository {
               "gpcode": gamePlatformCode,
               "gid": gameId.toString(),
               "language": "en-US",
-              "extends":{
-                "lobbyurl":lobbyUrl
-              }
+              "extends": {"lobbyurl": lobbyUrl}
             },
             converter: (json) => GameUrlResponse.fromJson(json),
             jwtRefresher: jwtAuth)
         .execute();
   }
 
-  Future<EventResult<GameUrlResponse>> getLobbyGameUrl(String gamePlatformCode, GameType gameType, String lobbyUrl) async {
+  Future<EventResult<GameUrlResponse>> getLobbyGameUrl(
+      String gamePlatformCode, GameType gameType, String lobbyUrl) async {
     return await ApiRequestBuilder<GameUrlResponse>(
-        method: HttpMethod.POST,
-        endPoint: "api/Game/lobby/geturl",
-        params: {
-          "gpcode": gamePlatformCode,
-          "gtype": gameType.getJsonValue,
-          "language": "en-US",
-          "extends":{
-            "lobbyurl":lobbyUrl
-          }
-        },
-        converter: (json) => GameUrlResponse.fromJson(json),
-        jwtRefresher: jwtAuth)
+            method: HttpMethod.POST,
+            endPoint: "api/Game/lobby/geturl",
+            params: {
+              "gpcode": gamePlatformCode,
+              "gtype": gameType.getJsonValue,
+              "language": "en-US",
+              "extends": {"lobbyurl": lobbyUrl}
+            },
+            converter: (json) => GameUrlResponse.fromJson(json),
+            jwtRefresher: jwtAuth)
         .execute();
   }
 

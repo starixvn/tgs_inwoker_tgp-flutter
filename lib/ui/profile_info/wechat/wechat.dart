@@ -72,7 +72,7 @@ class _WechatState extends BaseState<Wechat> {
         controller: _wechatController,
         focusNode: null,
         width: context.screenWidth - 70.auto,
-        textInputType: TextInputType.number,
+        textInputType: TextInputType.text,
         textInputAction: TextInputAction.done,
         enabled: isTextFieldEnabled,
       );
@@ -146,7 +146,7 @@ class _WechatState extends BaseState<Wechat> {
 
   _handleApiState() {
     handleApiState(_vm.setWechatApiState, onSuccess: () {
-      CustomToast.show("Success");
+      CustomToast.show(getTranslatedText("success"));
       _getUserProfile();
     });
   }

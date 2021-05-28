@@ -102,43 +102,6 @@ class _EditPasswordState extends BaseState<EditPassword> {
         radius: 9.6,
       ));
 
-  /*_buildFooterText(){
-    var _footerText1, _footerText2;
-    if(isEditPasswordVerified){
-      _footerText1 = "如需修改号码，请点击";
-      _footerText2 = "这里";
-    }else{
-      _footerText1 = "如有任何问题，请联系";
-      _footerText2 = "线上客服";
-   // }
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text(
-          _footerText1,
-          style: TextStyle(
-              fontSize: 12.auto,
-              color: CustomColor.black
-          ),
-        ),
-        InkWell(
-          onTap: isEditPasswordVerified?(){
-            Navigator.of(context).push((widget: route));("/edit_email");
-          }:(){
-            //customer service
-          },
-          child: Text(
-            _footerText2,
-            style: TextStyle(
-                fontSize: 12.auto,
-                color: CustomColor.sand_brown
-            ),
-          ),
-        )
-      ],
-    );
-  }*/
-
   _onTextChange() {
     if (_oldPasswordController.text.isNotEmpty &&
         _newPasswordController.text.isNotEmpty &&
@@ -169,8 +132,8 @@ class _EditPasswordState extends BaseState<EditPassword> {
   }
 
   _handleApiState() {
-    handleApiState(_vm.editPasswordApiState, onSuccess: () {
-      CustomToast.show("Success");
+    handleApiState(_vm.editPasswordApiState, isCheckSessionExpired:false, onSuccess: () {
+      CustomToast.show(getTranslatedText("success"));
       WidgetsBinding.instance.addPostFrameCallback((_) {
         Navigator.pop(context);
       });

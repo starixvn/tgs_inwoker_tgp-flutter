@@ -236,6 +236,14 @@
   "enter_bank_acc_name": "Please enter bank account name",
   "player_not_found": "Player not found",
   "invalid_credentials": "Invalid Credentials",
-  "username_exist": "Username is existed"
+  "username_exist": "Username is existed",
+  "bank_transfer": "Bank Transfer",
+  "crypto": "Crypto",
+  "success": "Success",
+  "operation_not_allow": "The operation is not allowed",
+  "enter_withdraw_amount": "Please enter withdraw amount",
+  "available_withdraw": "Available withdrawal: ",
+  "withdraw_success": "Your withdrawal request has been submitted successfully.",
+  "submit": "Submit"
 }
 

@@ -65,7 +65,7 @@ class _QQAccountState extends BaseState<QQAccount> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.of(context).pop();
           },
         ),
         title: Text(
@@ -157,7 +157,7 @@ class _QQAccountState extends BaseState<QQAccount> {
   _handleApiState() {
     handleApiState(_vm.setQQApiState, onSuccess: () async {
       await _getUserProfile();
-      CustomToast.show("Success");
+      CustomToast.show(getTranslatedText("success"));
     });
   }
 }

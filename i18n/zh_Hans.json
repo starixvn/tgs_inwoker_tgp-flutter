@@ -85,8 +85,8 @@
   "rmb_password": "记住密码",
   "enter_username_hint": "请输入您的账号",
   "enter_password_hint": "请输入您的密码",
-  "signup_username_hint": "请输入用户名(6-20位英文或数字)",
-  "signup_password_hint": "请输入密码(6-20位以上数字+字母)",
+  "signup_username_hint": "请输入用户名(6-20位英文字母或者数字)",
+  "signup_password_hint": "请输入密码(6-20位英文字母或者数字)",
   "confirm_password": "确认密码",
   "signup_pay_password_hint": "提现密码(6位数字)",
   "signup_promotion_code_hint": "请输入邀请码(选填)",
@@ -172,7 +172,7 @@
   "receiver_bank_account": "收款银行账户",
   "receiver_bank_number": "收款银行账号",
   "cancel": "取消",
-  "enter_username_error_message": "用户名需6-20个字符",
+  "enter_username_error_message": "用户名需6-20个英文字母或者数字组成",
   "enter_username_validate_error_message": "用户名只能输入英文字母、数字或特殊符号",
   "enter_password_error_msg": "密码由6-20个英文字母或者数字组成",
   "confirm_password_error_msg": "确认密码与密码不一致",
@@ -188,7 +188,7 @@
   "wechat_no": "微信号码",
   "is_configured": "已设置",
   "wechat_no_hint": "请输入微信号码",
-  "edit_wechat_cs": "如需修改QQ号码，请联系",
+  "edit_wechat_cs": "如需修改微信号码，请联系",
   "email_hint": "请输入您的邮箱地址",
   "enter_email_otp_hint": "请输入您的邮箱验证码",
   "add_pay_password": "添加提款密码",
@@ -236,10 +236,16 @@
   "enter_bank_acc_name": "请输入银行账号名称",
   "player_not_found": "无法查找玩家",
   "invalid_credentials": "无效凭证",
-  "username_exist": "用户名已存在"
+  "username_exist": "用户名已存在",
+  "bank_transfer": "银行转账",
+  "crypto": "加密货币",
+  "success": "成功",
+  "operation_not_allow": "该操作是不允许的",
+  "enter_withdraw_amount":"请输入提款金额",
+  "available_withdraw": "您可提款余额为: ",
+  "withdraw_success": "你的提款请求已成功提交，请耐心等待确认",
+  "submit": "提交"
 }
-
-
 
 
 

@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter/custom/color_button.dart';
+import 'package:tgp_flutter/custom/custom_dialog.dart';
 import 'package:tgp_flutter/custom/custom_picker.dart';
+import 'package:tgp_flutter/custom/custom_picker_dialog.dart';
 import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/custom/custom_text_form_field.dart';
+import 'package:tgp_flutter/entity/bank_card.dart';
+import 'package:tgp_flutter/entity/bank_type.dart';
+import 'package:tgp_flutter/extension/format.dart';
 import 'package:tgp_flutter/my_behavior.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
@@ -24,11 +29,12 @@ class _WithdrawState extends BaseState<Withdraw> {
   var isDetailsButtonEnabled = false, isNextButtonEnabled = false;
   var selectedBankCard;
   TextEditingController _amountController = TextEditingController(), _payPasswordController = TextEditingController();
+  var amount;
 
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      //_vm.getWithdrawalInfo();
+      _vm.getBankCardList();
     });
     super.initState();
   }
@@ -41,35 +47,33 @@ class _WithdrawState extends BaseState<Withdraw> {
           return Scaffold(
             resizeToAvoidBottomInset: false,
             appBar: _buildAppBar(),
-            body:
-                /*_vm.withdrawalInfo ==null || _vm.bankCardList == null?
-            Center(
-              child: CircularProgressIndicator(),
-            ):*/
-                Container(
-              padding: EdgeInsets.only(left: 10.auto, right: 10.auto, bottom: MediaQuery.of(context).viewInsets.bottom),
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(10.0),
-                    topRight: Radius.circular(10.0),
-                  )),
-              child: ScrollConfiguration(
-                behavior: MyBehavior(),
-                child: ListView(
-                  children: [
-                    _buildWithdrawCard(),
-                    _buildEditBankItem(),
-                    _buildBankPicker(),
-                    _buildTextField("金额", "请输入100-450，000元", _amountController),
-                    _buildTextField("提款密码", "请输入提款密码", _payPasswordController),
-                    _buildHintText(),
-                    _buildButton(),
-                    _buildCustomerServiceText()
-                  ],
-                ),
-              ),
-            ),
+            body: _vm.bankCardList == null
+                ? buildProgressDialog()
+                : Container(
+                    padding: EdgeInsets.only(
+                        left: 10.auto, right: 10.auto, bottom: MediaQuery.of(context).viewInsets.bottom),
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(10.0),
+                          topRight: Radius.circular(10.0),
+                        )),
+                    child: ScrollConfiguration(
+                      behavior: MyBehavior(),
+                      child: ListView(
+                        children: [
+                          _buildWithdrawCard(),
+                          _buildEditBankItem(),
+                          _buildBankPicker(),
+                          _buildTextField("amount", "enter_withdraw_amount", _amountController, true),
+                          _buildTextField("pay_password", "enter_pay_password", _payPasswordController, false),
+                          _buildHintText(),
+                          _buildButton(),
+                          //_buildCustomerServiceText()
+                        ],
+                      ),
+                    ),
+                  ),
           );
         });
   }
@@ -91,14 +95,12 @@ class _WithdrawState extends BaseState<Withdraw> {
               margin: EdgeInsets.only(right: 15.auto),
               alignment: Alignment.center,
               child: Text(
-                "¥ 0.00",
-                /*_vm.mainAccountBalance ==null?"-":"¥ ${Format().currencyWithDecimalFormat(
-                          _vm.mainAccountBalance)}",*/
-                style: TextStyle(color: Colors.white),
+                "¥ ${Format().currencyWithDecimalFormat(_vm.wallet?.main ?? 0.0)}",
+                style: TextStyle(color: CustomColor.theme_label_text_highlight_color),
               )),
         ],
         title: Text(
-          "提款",
+          getTranslatedText("withdrawal"),
           style: TextStyle(fontSize: 20.auto),
         ),
       );
@@ -114,35 +116,7 @@ class _WithdrawState extends BaseState<Withdraw> {
           elevation: 5,
           child: Column(
             children: [
-              _buildWithdrawItem("可提资金", "0.00"
-                  //Format().currencyWithDecimalFormat(double.parse(_vm.withdrawalInfo.canWithdrawal))
-                  ),
-              _buildWithdrawItem("未完成流水", "0.00"
-                  //Format().currencyWithDecimalFormat(double.parse(_vm.withdrawalInfo.limitTurnover))
-                  ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  _buildWithdrawItem("红利限额", "0.00"
-                      //Format().currencyWithDecimalFormat(double.parse(_vm.withdrawalInfo.bonusLimitWithdrawal))
-                      ),
-                  Container(
-                    margin: EdgeInsets.only(right: 10.auto),
-                    child: ColorButton(
-                      text: Text(
-                        "查看详情",
-                        style: TextStyle(color: Colors.white, fontSize: 10.auto),
-                      ),
-                      onClick: this.onDetailsClick,
-                      isEnabled: true,
-                      color: Colors.red,
-                      radius: 45,
-                      width: 70.auto,
-                      height: 30.auto,
-                    ),
-                  )
-                ],
-              ),
+              _buildWithdrawItem(getTranslatedText("available_withdraw"), " ${Format().currencyWithDecimalFormat(_vm.wallet?.main ?? 0.0)}"),
             ],
           ),
         ),
@@ -182,93 +156,85 @@ class _WithdrawState extends BaseState<Withdraw> {
       );
 
   _buildEditBankItem() => Container(
-        padding: EdgeInsets.symmetric(vertical: 10.auto),
-        child: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-          Image.asset(
-            "images/ic_edit_card.png",
-            width: 15.auto,
-            height: 15.auto,
+          padding: EdgeInsets.symmetric(vertical: 10.auto, horizontal: 10.auto),
+          alignment: Alignment.centerRight,
+          child: InkWell(
+            onTap: ()=> Navigator.of(context).pushNamed("/main_card"),
+            child: Wrap(children: [
+              Container(
+                margin: EdgeInsets.only(right: 5.auto),
+                child: Image.asset(
+                  "images/withdraw/ic_edit_card.png",
+                  width: 15.auto,
+                  height: 15.auto,
+                ),
+              ),
+              Text(
+                getTranslatedText("manage_card"),
+                style: TextStyle(color: CustomColor.grey, fontSize: 12.auto),
+              )
+            ]),
           ),
-          Text(
-            "管理银行卡",
-            style: TextStyle(color: CustomColor.grey, fontSize: 12.auto),
-          )
-        ]),
-      );
+
+  );
 
   _buildBankPicker() => CustomPicker(
-        title: "银行卡",
-        displayText: _getBankText() ?? "请选择银行卡",
+        title: getTranslatedText("bank_card"),
+        displayText: _getBankText() ?? getTranslatedText("select_bank_card"),
         list: [],
-        isHintText: //selectedBankCard !=null || _vm.bankCardList.first !=null ?
-            true,
-        //:false,
+        isHintText: selectedBankCard != null || _vm.bankCardList.first != null ? true : false,
         width: context.screenWidth,
         onClick: () {
-          //_buildPickerDialog("银行卡", _vm.bankCardList);
+          _buildPickerDialog("bank_card", _vm.bankCardList);
         },
       );
 
-/*  _buildPickerDialog(String title, List<BankCard> list) {
+  _buildPickerDialog(String title, List<BankCard> list) {
     showModalBottomSheet(
         context: context,
         isScrollControlled: true,
         builder: (BuildContext bc) {
-          return CustomPickerDialog(title: title, list: list,
+          return CustomPickerDialog(
+              title: title,
+              list: list,
               onChanged: (value) {
                 setState(() {
                   selectedBankCard = value;
                   Navigator.pop(context);
                 });
-              }
-          );
-        }
-    );
-  }*/
+              });
+        });
+  }
 
   _getBankText() {
     if (selectedBankCard == null) {
-      //selectedBankCard = _vm.bankCardList.first;
+      selectedBankCard = _vm.bankCardList.first;
     }
-    return selectedBankCard?.getDisplayString();
+    return selectedBankCard.bankType == BankType.CRYPTO
+        ? (selectedBankCard.bankDetail.address)
+        : (selectedBankCard.bankDetail.bankAccount ?? "");
   }
 
-  _buildTextField(String titleText, String hintText, TextEditingController controller) => CustomTextFormField(
-        title: titleText,
-        hintText: hintText,
-        onChanged: (value) => onTextChange(value),
-        onFieldSubmitted: (value) => onTextChange(value),
+  _buildTextField(String titleText, String hintText, TextEditingController controller, bool isNum) => CustomTextFormField(
+        title: getTranslatedText(titleText),
+        hintText: getTranslatedText(hintText),
+        onChanged: (value) => onTextChange(),
+        onFieldSubmitted: (value) => onTextChange(),
         controller: controller,
         focusNode: null,
         width: context.screenWidth - 70.auto,
-        textInputType: TextInputType.number,
+        textInputType: isNum?TextInputType.number: TextInputType.text,
         textInputAction: TextInputAction.done,
       );
 
   _buildHintText() => Container(
         margin: EdgeInsets.symmetric(vertical: 10.auto, horizontal: 15.auto),
         child: Text(
-          "此银行卡的开户名必须与您帐号所填写真实姓名一致，否则提款可能失败",
+          getTranslatedText("withdrawal_warning"),
           style: TextStyle(color: Colors.red, fontSize: 11.auto),
         ),
       );
-
-  _buildCustomerServiceText() => Container(
-        margin: EdgeInsets.symmetric(vertical: 15.auto),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              "如有任何问题，请联系",
-              style: TextStyle(fontSize: 12.auto),
-            ),
-            Text(
-              "线上客服",
-              style: TextStyle(color: CustomColor.theme_bar_gradient_2, fontSize: 12.auto),
-            )
-          ],
-        ),
-      );
+  
 
   _buildButton() => ColorButton(
         onClick: this.onNextButtonClick,
@@ -276,54 +242,49 @@ class _WithdrawState extends BaseState<Withdraw> {
         radius: 9.6,
         color: CustomColor.theme_bar_gradient_2,
         text: Text(
-          "下一步",
+          getTranslatedText("submit"),
           style: TextStyle(color: Colors.white, fontSize: 16.auto),
         ),
       );
 
-  onDetailsClick() {
+  _showDialog() {
     showDialog(
       context: context,
-      builder: (BuildContext context) => WithdrawDialog(),
+      builder: (BuildContext context) => CustomDialog(
+        title: "",
+        description: getTranslatedText("withdraw_success"),
+        buttonText1: getTranslatedText("confirm"),
+        onClick: () => Navigator.pop(context),
+      ),
     );
   }
 
-  onTextChange(String amount) {
-    if (amount.isNotEmpty) {
-      setState(() {
-        isNextButtonEnabled = true;
-      });
-    } else {
+  onTextChange() {
+    if(_amountController.text.isNotEmpty){
+      amount = int.parse(_amountController.text);
+    }else amount = 0;
+    if (amount==0||amount> _vm.wallet.main || _payPasswordController.text.isEmpty){
       setState(() {
         isNextButtonEnabled = false;
+      });
+      return;
+    } else {
+      setState(() {
+        isNextButtonEnabled = true;
       });
     }
   }
 
   onNextButtonClick() {
     ProgressDialog.show(context);
-    //_vm.withdraw(selectedBankCard.id, int.parse(_textEditingController.text));
+    _vm.withdraw( amount,selectedBankCard.id, _payPasswordController.text);
   }
 
   _handleApiState() {
-    /*if (_vm.withdrawalApiState == null &&
-        _vm.getWithdrawalInfoApiState == null) {
-      return;
-    }
-    if ((_vm.withdrawalApiState?.isError ?? false)) {
-      CustomToast.show(_vm.withdrawalApiState.error);
-       ProgressDialog.hide();
-      FocusScope.of(context).requestFocus(FocusNode());
-      _vm.resetApiState(isWithdrawalApiState: true);
-    }
-    if ((_vm.getWithdrawalInfoApiState?.isError ?? false)) {
-      CustomToast.show(_vm.getWithdrawalInfoApiState.error);
-      _vm.resetApiState(isGetWithdrawalInfoApiState: true);
-    }
-    if((_vm.withdrawalApiState?.isSuccess ?? false)){
-       ProgressDialog.hide();
-      FocusScope.of(context).requestFocus(FocusNode());
-      _vm.resetApiState(isWithdrawalApiState: true);
-    }*/
+    handleApiState(_vm.withdrawApiState, onSuccess: (){
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _showDialog();
+      });
+    });
   }
 }

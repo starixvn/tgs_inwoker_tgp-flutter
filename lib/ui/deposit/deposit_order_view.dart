@@ -26,6 +26,7 @@ class DepositOrderView extends StatefulWidget {
   final String payUsername;
   final String depositAmount;
   final String depositChannel;
+  final String orderNo;
 
   DepositOrderView(
       {Key key,
@@ -35,7 +36,8 @@ class DepositOrderView extends StatefulWidget {
       this.depositRedirect,
       this.payUsername,
       this.depositAmount,
-      this.depositChannel})
+      this.depositChannel,
+      this.orderNo})
       : super(key: key);
 
   @override
@@ -114,6 +116,7 @@ class _DepositOrderViewState extends BaseState<DepositOrderView> {
                 ),
                 _buildText("deposit_method", widget.method),
                 _buildText("deposit_channel", widget.manualDepositOrder.methodName),
+                _buildOrderText("order_no", widget.orderNo),
                 _buildText("pay_username", widget.payUsername),
                 _buildText("receiver_bank", widget.depositChannel),
                 _buildText("receiver_bank_account", widget.manualDepositOrder.bankAccountName),
@@ -194,7 +197,7 @@ class _DepositOrderViewState extends BaseState<DepositOrderView> {
                   thickness: (1.0).auto,
                   color: CustomColor.very_light_pink_four,
                 ),
-                _buildText("order_no", widget.depositRedirect.formId),
+                _buildOrderText("order_no", widget.depositRedirect.formId),
                 _buildText("deposit_method", widget.method),
                 _buildText("deposit_channel", widget.depositChannel),
                 uploadImage == null
@@ -216,7 +219,7 @@ class _DepositOrderViewState extends BaseState<DepositOrderView> {
         ],
       );
 
-  _buildText(String title, String content) => Container(
+  _buildOrderText(String title, String content) => Container(
         margin: EdgeInsets.only(top: 15.auto),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -238,6 +241,26 @@ class _DepositOrderViewState extends BaseState<DepositOrderView> {
                 textAlign: TextAlign.end,
               ),
             )
+          ],
+        ),
+      );
+
+  _buildText(String title, String content) => Container(
+        margin: EdgeInsets.only(top: 15.auto),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              getTranslatedText(title) ?? title,
+              style: TextStyle(fontSize: 13.auto, color: CustomColor.grey),
+            ),
+            AutoSizeText(
+              content ?? "",
+              style: TextStyle(fontSize: 13.auto, color: Colors.black),
+              minFontSize: 2,
+              maxLines: 1,
+              textAlign: TextAlign.end,
+            ),
           ],
         ),
       );

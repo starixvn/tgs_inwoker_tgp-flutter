@@ -14,7 +14,7 @@ class DepositMethodViewModel extends BaseViewModel {
   var getManualDepositIdApiState, getDepositOrderApiState, getLeepayOrderApiState, primePayDepositOrderApiState;
 
   List<Payment> paymentList;
-  var depositOrder;
+  var depositOrder, orderNo;
 
   filterMethod(String method) async {
     paymentList = depositMethodList[method];
@@ -25,7 +25,8 @@ class DepositMethodViewModel extends BaseViewModel {
     setLoading();
     getManualDepositIdApiState = await depositRepo.getManualDepositId(account, amount, paymentId);
     if (getManualDepositIdApiState.isSuccess) {
-      getManualDepositOrder(getManualDepositIdApiState.result);
+      orderNo = getManualDepositIdApiState.result;
+      getManualDepositOrder(orderNo);
     }
     setLoading(false);
     return getManualDepositIdApiState;

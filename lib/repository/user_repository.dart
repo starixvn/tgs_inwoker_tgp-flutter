@@ -43,8 +43,8 @@ class UserRepository extends BaseRepository {
         .execute();
   }
 
-  Future<EventResult<RegisterResponse>> register(String username, String password, String rpassword,
-      String currency, String invitationCode) async {
+  Future<EventResult<RegisterResponse>> register(
+      String username, String password, String rpassword, String currency, String invitationCode) async {
     return await ApiRequestBuilder<RegisterResponse>(
             isAuthorization: false,
             endPoint: "api/Player/create",
@@ -67,7 +67,9 @@ class UserRepository extends BaseRepository {
             method: HttpMethod.GET,
             endPoint: "api/Player/info",
             converter: (json) => UserProfile.fromJson(json),
-            consumer: (result) => userProfile = result,
+            consumer: (result) => setRepoValues(() {
+                  userProfile = result;
+                }),
             jwtRefresher: jwtAuth)
         .execute();
   }
@@ -80,7 +82,7 @@ class UserRepository extends BaseRepository {
     return apiState;
   }
 
-  clearSession() async{
+  clearSession() async {
     userProfile = null;
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.remove("token");
@@ -124,8 +126,7 @@ class UserRepository extends BaseRepository {
         .execute();
   }
 
-  Future<EventResult<EditPasswordResponse>> editPassword(
-      String oldPassword, String newPassword) async {
+  Future<EventResult<EditPasswordResponse>> editPassword(String oldPassword, String newPassword) async {
     return await ApiRequestBuilder<EditPasswordResponse>(
             method: HttpMethod.PUT,
             endPoint: "api/player/password",

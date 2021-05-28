@@ -180,7 +180,7 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
     handleApiState(_vm.getSmsCodeApiState, onSuccess: () {});
 
     handleApiState(_vm.phoneVerifyApiState, onSuccess: () {
-      CustomToast.show("Success");
+      CustomToast.show(getTranslatedText("success"));
       _getUserProfile();
     });
   }
