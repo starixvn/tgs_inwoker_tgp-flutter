@@ -173,10 +173,10 @@
   "receiver_bank_number":"Receiver Bank Number",
   "cancel":"Cancel",
   "enter_username_error_message": "Username must be between 6-20 characters",
-  "enter_username_validate_error_message": "Username can only enter letters, numbers special symbols",
+  "enter_username_validate_error_message": "Username can only enter letters or numbers",
   "enter_password_error_msg" : "Password must consist of 6-20 letters or numbers",
   "confirm_password_error_msg" : "Confirm password is not same with password",
-  "password_validate_error_msg" :"Password can only enter letters, numbers special symbols",
+  "password_validate_error_msg" :"Password can only enter letters or numbers ",
   "confirm_pay_error_msg" :"Confirm pay password is not same with pay password",
   "slotgame_title": "Slot Game",
   "qq_no": "QQ Number",
@@ -210,7 +210,7 @@
   "promotion_time":"Promotion time",
   "join": "Join",
   "join_success": "Promotion join successfully",
-  "promotion_joined": "Promotion joined",
+  "promotion_joined": "Promotion joined already.",
   "select_bank_type": "Please select bank type",
   "select_bank_name": "Please select bank name",
   "add_card_hint": "Information is encrypted, use bank verification only",
@@ -244,6 +244,11 @@
   "enter_withdraw_amount": "Please enter withdraw amount",
   "available_withdraw": "Available withdrawal: ",
   "withdraw_success": "Your withdrawal request has been submitted successfully.",
-  "submit": "Submit"
+  "submit": "Submit",
+  "back": "Back",
+  "enter_pay_password_error_msg": "Pay password can only enter letters or numbers",
+  "pay_password_length_error_msg": "Pay password must be between 6-20 characters",
+  "verify_current_email": "Verify email address",
+  "set_new_pay_password": "Set new pay password "
 }
 

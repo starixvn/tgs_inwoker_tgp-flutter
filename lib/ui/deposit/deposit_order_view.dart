@@ -245,7 +245,10 @@ class _DepositOrderViewState extends BaseState<DepositOrderView> {
         ),
       );
 
-  _buildText(String title, String content) => Container(
+  _buildText(String title, String content) {
+    if(content == "BankTransfer") content =getTranslatedText( "bank_transfer");
+    else if (content == "Crypto") content = getTranslatedText("crypto");
+    return Container(
         margin: EdgeInsets.only(top: 15.auto),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -263,7 +266,7 @@ class _DepositOrderViewState extends BaseState<DepositOrderView> {
             ),
           ],
         ),
-      );
+      );}
 
   _buildUploadTextRow() => Container(
         margin: EdgeInsets.only(top: 10),

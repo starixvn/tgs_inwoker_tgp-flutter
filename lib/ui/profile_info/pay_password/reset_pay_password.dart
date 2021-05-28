@@ -32,8 +32,14 @@ class _ResetPayPasswordState extends BaseState<ResetPayPassword> {
       _confirmPayPasswordController = TextEditingController(),
       _emailController = TextEditingController(),
       _otpController = TextEditingController();
-  var isButtonEnabled = false, isResetPassword = false, isCodeVisible = false, isOtpEnabled = true, isOtpCountdown = false;
+  var isSubmitButtonEnabled = false,
+      isResetPassword = false,
+      isCodeVisible = false,
+      isOtpEnabled = true,
+      isOtpCountdown = false,
+      isNextButtonEnabled = false;
   InputValidationProvider validate = new InputValidationProvider();
+  int currIndex = 0;
 
   @override
   void initState() {
@@ -60,12 +66,8 @@ class _ResetPayPasswordState extends BaseState<ResetPayPassword> {
                   padding: EdgeInsets.only(top: 10.auto, left: 10.auto, right: 10.auto),
                   child: Column(
                     children: [
-                      _buildPasswordTextFormField("new_pay_password", "enter_new_pay_password", _payPasswordController),
-                      _buildPasswordTextFormField(
-                          "confirm_pay_password", "confirm_pay_password_hint", _confirmPayPasswordController),
-                      _buildTextFormField("email", "enter_phone_hint", _emailController),
-                      _buildOtpTextFormField(),
-                      _buildButton()
+                      CustomTabBar(index: currIndex),
+                      currIndex == 0 ? _buildVerifyEmail() : _buildResetPayPassword()
                     ],
                   )));
         });
@@ -81,6 +83,7 @@ class _ResetPayPasswordState extends BaseState<ResetPayPassword> {
           icon: Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.pop(context);
+            Navigator.pop(context);
           },
         ),
         title: Text(
@@ -89,12 +92,30 @@ class _ResetPayPasswordState extends BaseState<ResetPayPassword> {
         ),
       );
 
+  _buildVerifyEmail() => Column(
+        children: [
+          _buildTextFormField("email", "email_hint", _emailController),
+          _buildOtpTextFormField(),
+          _buildNextButton()
+        ],
+      );
+
+  _buildResetPayPassword() => Column(
+        children: [
+          _buildPasswordTextFormField("new_pay_password", "enter_new_pay_password", _payPasswordController),
+          _buildPasswordTextFormField(
+              "confirm_pay_password", "confirm_pay_password_hint", _confirmPayPasswordController),
+          _buildSubmitButton(),
+          _buildBackButton()
+        ],
+      );
+
   _buildTextFormField(String title, String hint, TextEditingController controller) => Container(
         margin: EdgeInsets.only(top: 15.auto),
         child: CustomTextFormField(
           title: getTranslatedText(title),
           hintText: getTranslatedText(hint),
-          onChanged: (value) => _onTextChange(),
+          onChanged: (value) => onPayPasswordTextChanged(),
           onFieldSubmitted: (value) {},
           controller: controller,
           focusNode: null,
@@ -110,7 +131,7 @@ class _ResetPayPasswordState extends BaseState<ResetPayPassword> {
         child: CustomTextFormField(
           title: getTranslatedText(title),
           hintText: getTranslatedText(hint),
-          onChanged: (value) => _onTextChange(),
+          onChanged: (value) => onPayPasswordTextChanged(),
           onFieldSubmitted: (value) {},
           controller: controller,
           focusNode: null,
@@ -126,7 +147,7 @@ class _ResetPayPasswordState extends BaseState<ResetPayPassword> {
           margin: EdgeInsets.only(top: 15.auto),
           child: OtpTextFormField(
             hintText: getTranslatedText("enter_email_otp_hint"),
-            onChanged: (value) => _onTextChange(),
+            onChanged: (value) => _onOtpTextChange(),
             controller: _otpController,
             textInputAction: TextInputAction.done,
             getOtpCode: () {
@@ -143,19 +164,55 @@ class _ResetPayPasswordState extends BaseState<ResetPayPassword> {
         ),
       );
 
-  _buildButton() => Container(
+  _buildSubmitButton() => Container(
       width: context.screenWidth,
       padding: EdgeInsets.only(top: 50.auto, bottom: 20.auto),
       child: ColorButton(
         text: Text(
-          getTranslatedText("confirm_edit"),
+          getTranslatedText("submit"),
           textAlign: TextAlign.center,
           style: TextStyle(color: Colors.white, fontSize: 16.auto),
         ),
         onClick: () {
           _onClick();
         },
-        isEnabled: isButtonEnabled,
+        isEnabled: isSubmitButtonEnabled,
+        color: CustomColor.theme_bar_gradient_2,
+        radius: 9.6,
+      ));
+
+  _buildNextButton() => Container(
+      width: context.screenWidth,
+      padding: EdgeInsets.only(top: 50.auto, bottom: 20.auto),
+      child: ColorButton(
+        text: Text(
+          getTranslatedText("next"),
+          textAlign: TextAlign.center,
+          style: TextStyle(color: Colors.white, fontSize: 16.auto),
+        ),
+        onClick: () {
+          _onClick();
+        },
+        isEnabled: isNextButtonEnabled,
+        color: CustomColor.theme_bar_gradient_2,
+        radius: 9.6,
+      ));
+
+  _buildBackButton() => Container(
+      width: context.screenWidth,
+      padding: EdgeInsets.only(bottom: 20.auto),
+      child: ColorButton(
+        text: Text(
+          getTranslatedText("back"),
+          textAlign: TextAlign.center,
+          style: TextStyle(color: Colors.white, fontSize: 16.auto),
+        ),
+        onClick: () {
+          setState(() {
+            currIndex =0;
+          });
+        },
+        isEnabled: true,
         color: CustomColor.theme_bar_gradient_2,
         radius: 9.6,
       ));
@@ -165,20 +222,45 @@ class _ResetPayPasswordState extends BaseState<ResetPayPassword> {
     _vm.getPayPasswordCode();
   }
 
-  _onTextChange() {
+  _onOtpTextChange() {
+    if (currIndex == 0 && _otpController.text.isNotEmpty) {
+      setState(() {
+        isNextButtonEnabled = true;
+      });
+
+    } else {
+      setState(() {
+        isNextButtonEnabled = false;
+      });
+    }
+  }
+
+  onPayPasswordTextChanged(){
     if (_payPasswordController.text.isNotEmpty && _confirmPayPasswordController.text.isNotEmpty) {
       setState(() {
-        isButtonEnabled = true;
+        isSubmitButtonEnabled = true;
       });
     } else {
       setState(() {
-        isButtonEnabled = false;
+        isSubmitButtonEnabled = false;
       });
     }
   }
 
   _onClick() async {
-    if (_payPasswordController.text != _confirmPayPasswordController.text) {
+    if (currIndex == 0) {
+      setState(() {
+        currIndex = 1;
+      });
+    }else if(!validate.validateUsernamePassword(_payPasswordController.text)) {
+      setState(() {
+        CustomToast.show(getTranslatedText("enter_pay_password_error_msg"));
+      });
+    }else if (!validate.validateUsernamePasswordLength(_payPasswordController.text)) {
+      setState(() {
+        CustomToast.show(getTranslatedText("pay_password_length_error_msg"));
+      });
+    }else if (_payPasswordController.text != _confirmPayPasswordController.text) {
       setState(() {
         CustomToast.show(getTranslatedText("confirm_pay_password_error_msg"));
       });
@@ -198,8 +280,9 @@ class _ResetPayPasswordState extends BaseState<ResetPayPassword> {
     });
 
     handleApiState(_vm.payPasswordVerifyApiState, onSuccess: () {
-      CustomToast.show("Success");
+      CustomToast.show(getTranslatedText("success"));
       WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.pop(context);
         Navigator.pop(context);
       });
     });

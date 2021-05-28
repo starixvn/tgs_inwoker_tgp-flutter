@@ -23,7 +23,7 @@ extension ProfileInfoItemExtension on ProfileInfoItem {
     ProfileInfoItem.WECHAT_NUMBER: "wechat_no",
    // ProfileInfoItem.ADDRESS: "收货地址",
     ProfileInfoItem.LOGIN_PASSWORD: "edit_password",
-    ProfileInfoItem.PAY_PASSWORD: "edit_pay_password",
+    ProfileInfoItem.PAY_PASSWORD: "pay_password",
     ProfileInfoItem.RESET_PAY_PASSWORD: "reset_pay_password",
   };
 

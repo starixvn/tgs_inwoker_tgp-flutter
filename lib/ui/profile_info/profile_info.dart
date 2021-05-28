@@ -78,12 +78,12 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
                                 [
                                   ProfileInfoItem.LOGIN_PASSWORD,
                                   ProfileInfoItem.PAY_PASSWORD,
-                                  ProfileInfoItem.RESET_PAY_PASSWORD
+                                  //ProfileInfoItem.RESET_PAY_PASSWORD
                                 ],
                                 [
                                   "edit_password",
                                   "pay_password",
-                                  "reset_pay_password"
+                                  //"reset_pay_password"
                                   // if no security will navigate to security answer, else will navigate to edit security answer
                                 ],
                                 isSecurity: true),

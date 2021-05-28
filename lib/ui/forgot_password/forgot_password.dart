@@ -130,7 +130,7 @@ class _ForgotPasswordState extends BaseState<ForgotPassword> {
         CustomToast.show(getTranslatedText("email_format_error_msg"));
       });
     }else {
-      ProgressDialog.show(context);
+      //ProgressDialog.show(context);
       _navigateToUpdatePassword();
     }
   }

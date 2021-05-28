@@ -173,10 +173,10 @@
   "receiver_bank_number": "收款银行账号",
   "cancel": "取消",
   "enter_username_error_message": "用户名需6-20个英文字母或者数字组成",
-  "enter_username_validate_error_message": "用户名只能输入英文字母、数字或特殊符号",
+  "enter_username_validate_error_message": "用户名只能输入英文字母或者数字",
   "enter_password_error_msg": "密码由6-20个英文字母或者数字组成",
   "confirm_password_error_msg": "确认密码与密码不一致",
-  "password_validate_error_msg": "密码只能输入英文字母、数字或特殊符号",
+  "password_validate_error_msg": "密码只能输入英文字母或者数字",
   "confirm_pay_error_msg": "重复提款密码与提款密码不一致",
   "slotgame_title": "电子游戏",
   "qq_no": "QQ号码",
@@ -244,7 +244,12 @@
   "enter_withdraw_amount":"请输入提款金额",
   "available_withdraw": "您可提款余额为: ",
   "withdraw_success": "你的提款请求已成功提交，请耐心等待确认",
-  "submit": "提交"
+  "submit": "提交",
+  "back": "返回",
+  "enter_pay_password_error_msg": "提款密码只能输入英文字母或者数字",
+  "pay_password_length_error_msg": "提款密码需6-20个英文字母或者数字组成",
+  "verify_current_email": "验证原邮箱地址",
+  "set_new_pay_password": "设定新提款密码"
 }
 
 

@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter/custom/color_button.dart';
+import 'package:tgp_flutter/custom/custom_dialog.dart';
 import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/custom/custom_text_form_field.dart';
 import 'package:tgp_flutter/custom/custom_toast.dart';
@@ -29,6 +30,7 @@ class _PayPasswordState extends BaseState<PayPassword> {
 
   @override
   void initState() {
+    _checkEmailIsSet();
     super.initState();
   }
 
@@ -44,19 +46,7 @@ class _PayPasswordState extends BaseState<PayPassword> {
                   ? buildProgressDialog()
                   : Container(
                       padding: EdgeInsets.only(top: 10.auto, left: 10.auto, right: 10.auto),
-                      child: Column(
-                        children: [
-                          Visibility(
-                              visible: _vm.userProfile.isSetPayPassword,
-                              child: _buildTextFormField(
-                                  "old_password", "enter_old_password_hint", _oldPasswordController, false)),
-                          _buildTextFormField("new_password", "enter_new_password_hint", _newPasswordController, false),
-                          _buildTextFormField(
-                              "confirm_new_password", "confirm_new_password_hint", _confirmPasswordController, true),
-                          _buildButton()
-                          //_buildFooterText()
-                        ],
-                      )));
+                      child: _buildSetPayPassword()));
         });
   }
 
@@ -79,6 +69,16 @@ class _PayPasswordState extends BaseState<PayPassword> {
           style: TextStyle(fontSize: 16.auto),
         ),
       );
+
+  _buildSetPayPassword() {
+    return Column(
+      children: [
+        _buildTextFormField("new_password", "enter_new_password_hint", _newPasswordController, false),
+        _buildTextFormField("confirm_new_password", "confirm_new_password_hint", _confirmPasswordController, true),
+        _buildButton()
+      ],
+    );
+  }
 
   _buildTextFormField(String title, String hint, TextEditingController controller, bool isLast) => Container(
         margin: EdgeInsets.only(top: 15.auto),
@@ -110,42 +110,29 @@ class _PayPasswordState extends BaseState<PayPassword> {
         radius: 9.6,
       ));
 
-  /*_buildFooterText(){
-    var _footerText1, _footerText2;
-    if(isEditPayPasswordVerified){
-      _footerText1 = "如需修改号码，请点击";
-      _footerText2 = "这里";
-    }else{
-      _footerText1 = "如有任何问题，请联系";
-      _footerText2 = "线上客服";
-   // }
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text(
-          _footerText1,
-          style: TextStyle(
-              fontSize: 12.auto,
-              color: CustomColor.black
-          ),
-        ),
-        InkWell(
-          onTap: isEditPayPasswordVerified?(){
-            Navigator.of(context).push((widget: route));("/edit_email");
-          }:(){
-            //customer service
-          },
-          child: Text(
-            _footerText2,
-            style: TextStyle(
-                fontSize: 12.auto,
-                color: CustomColor.sand_brown
+  _checkEmailIsSet() {
+    if (_vm.userProfile.isSetPayPassword) {
+      if (_vm.userProfile.email == null) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) => CustomDialog(
+              description: "请绑定邮箱地址",
+              buttonText1: "确认",
+              onClick: () {
+                Navigator.of(context).pushReplacementNamed('/email_verification');
+                Navigator.popAndPushNamed(context, '/email_verification');
+              },
             ),
-          ),
-        )
-      ],
-    );
-  }*/
+          );
+        });
+      } else {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          Navigator.of(context).pushNamed("/reset_pay_password");
+        });
+      }
+    }
+  }
 
   _onTextChange() {
     setState(() {
@@ -166,27 +153,27 @@ class _PayPasswordState extends BaseState<PayPassword> {
   }
 
   _onClick() async {
-    if (!validate.validateUsernamePasswordLength(_newPasswordController.text)) {
+    if (!validate.validateUsernamePassword(_newPasswordController.text)) {
       setState(() {
-        CustomToast.show(getTranslatedText("enter_password_error_msg"));
+        CustomToast.show(getTranslatedText("enter_pay_password_error_msg"));
       });
-    } else if (_newPasswordController.text != _confirmPasswordController.text) {
+    } else if (!validate.validateUsernamePasswordLength(_newPasswordController.text)) {
       setState(() {
-        CustomToast.show(getTranslatedText("confirm_password_error_msg"));
+        CustomToast.show(getTranslatedText("pay_password_length_error_msg"));
+      });
+    } else if (_oldPasswordController.text != _newPasswordController.text) {
+      setState(() {
+        CustomToast.show(getTranslatedText("confirm_pay_password_error_msg"));
       });
     } else {
       ProgressDialog.show(context);
-      if (_vm.userProfile.isSetPayPassword) {
-        //_vm.EditPayPassword(_oldPasswordController.text, _newPasswordController.text);
-      } else {
-        _vm.addPayPassword(_newPasswordController.text);
-      }
+      _vm.addPayPassword(_newPasswordController.text);
     }
   }
 
   _handleApiState() {
     handleApiState(_vm.addPayPasswordApiState, onSuccess: () {
-      CustomToast.show("success");
+      CustomToast.show(getTranslatedText("success"));
       WidgetsBinding.instance.addPostFrameCallback((_) {
         Navigator.pop(context);
       });

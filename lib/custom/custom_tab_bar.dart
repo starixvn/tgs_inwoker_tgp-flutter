@@ -26,7 +26,7 @@ class _CustomTabBarState extends BaseState<CustomTabBar> {
                 style: TextStyle(
                   fontFamily: 'PingFang',
                   fontSize: 10.auto,
-                    color: (widget.index ==1) ? Colors.red: Colors.red
+                    color: (widget.index ==0) ? CustomColor.theme_bar_gradient_2: Colors.grey
                 ),
                 textAlign: TextAlign.center
             ),
@@ -39,17 +39,17 @@ class _CustomTabBarState extends BaseState<CustomTabBar> {
                 ),
                 border: Border.all(
                   width: 2.0,
-                  color: (widget.index ==1) ? Colors.red: Colors.red
+                  color: (widget.index ==0) ? CustomColor.theme_bar_gradient_2: Colors.grey
                 )
               ),
               margin: EdgeInsets.symmetric(vertical: 3.auto),
             ),
             Text(
-                "验证原号码",
+                getTranslatedText("verify_current_email"),
                 style: TextStyle(
                     fontFamily: 'PingFang',
                     fontSize: 14.auto,
-                    color: (widget.index ==1) ? Colors.red: Colors.red
+                    color: (widget.index ==0) ? CustomColor.theme_bar_gradient_2: Colors.grey
                 ),
                 textAlign: TextAlign.center
             ),
@@ -63,7 +63,7 @@ class _CustomTabBarState extends BaseState<CustomTabBar> {
                 style: TextStyle(
                     fontFamily: 'PingFang',
                     fontSize: 10.auto,
-                    color: (widget.index ==2) ? Colors.red: Colors.red
+                    color: (widget.index ==1) ? CustomColor.theme_bar_gradient_2: Colors.grey
                 ),
                 textAlign: TextAlign.center
             ),
@@ -76,17 +76,17 @@ class _CustomTabBarState extends BaseState<CustomTabBar> {
                   ),
                   border: Border.all(
                       width: 2.0,
-                      color: (widget.index ==2) ? Colors.red: Colors.red
+                      color: (widget.index ==1) ? CustomColor.theme_bar_gradient_2: Colors.grey
                   )
               ),
               margin: EdgeInsets.symmetric(vertical: 3.auto),
             ),
             Text(
-                "设定新号码",
+                getTranslatedText("set_new_pay_password"),
                 style: TextStyle(
                     fontFamily: 'PingFang',
                     fontSize: 14.auto,
-                    color: (widget.index ==2) ? Colors.red: Colors.red
+                    color: (widget.index ==1) ? CustomColor.theme_bar_gradient_2: Colors.grey
                 ),
                 textAlign: TextAlign.center
             ),

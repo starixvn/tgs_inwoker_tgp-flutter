@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:tgp_flutter/base_viewmodel.dart';
 import 'package:tgp_flutter/entity/bet_transaction.dart';
+import 'package:tgp_flutter/entity/game_provider.dart';
+import 'package:tgp_flutter/extension/format.dart';
 import 'package:tgp_flutter/repository/base_repository.dart';
 import 'package:tgp_flutter/repository/content_repository.dart';
 import 'package:tgp_flutter/repository/user_repository.dart';
@@ -9,9 +11,8 @@ class TransactionViewModel extends BaseViewModel {
   final userRepo = UserRepository.getSingleton();
   final contentRepo = ContentRepository.getSingleton();
   var getTransactionApiState, getGameProviderApiState;
-  var page = 1, rows = 20;
-  var pStartDate = DateTime.now(), pEndDate = DateTime.now();
-  var startDate = DateTime.now(), endDate = DateTime.now();
+  var page = 1, rows = 10;
+  var pStartDate = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day,0,0,0,0,0), pEndDate = DateTime.now();
   List<BetTransaction> betTransactionList;
   var endRecord = false;
   var accountTransactionList;
@@ -19,6 +20,7 @@ class TransactionViewModel extends BaseViewModel {
   get gameProviderList => contentRepo.gameProviderList;
 
   get wallet => userRepo.wallet;
+
 
   @override
   List<BaseRepository> get repoList => [userRepo, contentRepo];

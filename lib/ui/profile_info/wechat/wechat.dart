@@ -94,19 +94,24 @@ class _WechatState extends BaseState<Wechat> {
         radius: 9.6,
       ));
 
-  _buildFooterText() => Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            getTranslatedText("edit_wechat_cs"),
-            style: TextStyle(fontSize: 12.auto, color: CustomColor.theme_title_text_color),
+  _buildFooterText() => Container(
+    alignment: Alignment.center,
+    child: InkWell(
+      onTap: ()=> Navigator.of(context).pushNamed("/customer_service"),
+      child: Wrap(
+            children: [
+              Text(
+                getTranslatedText("edit_wechat_cs"),
+                style: TextStyle(fontSize: 12.auto, color: CustomColor.theme_title_text_color),
+              ),
+              Text(
+                getTranslatedText("customer_service"),
+                style: TextStyle(fontSize: 12.auto, color: CustomColor.theme_bar_gradient_2),
+              )
+            ],
           ),
-          Text(
-            getTranslatedText("customer_service"),
-            style: TextStyle(fontSize: 12.auto, color: CustomColor.theme_bar_gradient_2),
-          )
-        ],
-      );
+    ),
+  );
 
   _getUserProfile() {
     WidgetsBinding.instance.addPostFrameCallback((_) {

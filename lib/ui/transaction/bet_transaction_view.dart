@@ -85,7 +85,6 @@ class BetTransactionViewState extends BaseState<BetTransactionView> {
                   // ProgressDialog.show(context);
                   _onDateFilter(value);
                 },
-                getPickerBox: _getPickerBox(),
                 startDate: widget.vm.pStartDate,
                 endDate: widget.vm.pEndDate,
                 filterIndex: filterIndex,
@@ -117,8 +116,8 @@ class BetTransactionViewState extends BaseState<BetTransactionView> {
                           widget.vm.betTransactionList[index].winLoss.toString(),
                         ],
                         type: _getTransactionItemType(index),
-                        isLoading: isEndRecord ? false : isLoading,
-                        isEndRecord: isEndRecord),
+                        isLoading: widget.vm.endRecord ? false : isLoading,
+                        isEndRecord: widget.vm.endRecord),
                   );
                 }).toList()),
         ),
@@ -140,7 +139,7 @@ class BetTransactionViewState extends BaseState<BetTransactionView> {
     var currentDate = DateTime.now();
     switch (index) {
       case 0: //today
-        widget.vm.setDate(startDate: currentDate, endDate: currentDate);
+        widget.vm.setDate(startDate: DateTime(currentDate.year, currentDate.month, currentDate.day,0,0,0,0,0), endDate: currentDate);
         break;
       case 1: //week
         widget.vm.setDate(
@@ -160,49 +159,6 @@ class BetTransactionViewState extends BaseState<BetTransactionView> {
     _getTransaction();
   }
 
-  _getPickerBox() {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10.auto),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          CustomPicker(
-              title: "bet_platform",
-              displayText: pickerText1 == null ? getTranslatedText("all") : pickerText1,
-              list: widget.vm.gameProviderList,
-              isHintText: true,
-              width: context.screenWidth - 70.auto,
-              onClick: () {
-                _buildPickerDialog("bet_platform", widget.vm.gameProviderList);
-              }),
-        ],
-      ),
-    );
-  }
-
-  _buildPickerDialog(String title, List<dynamic> list) {
-    showModalBottomSheet(
-        context: context,
-        isScrollControlled: true,
-        builder: (BuildContext bc) {
-          return CustomPickerDialog(
-              title: title,
-              list: list,
-              onChanged: (value) {
-                setState(() {
-                  if (value is GameProvider) {
-                    pickerText1 = value.name;
-                    _getTransaction(/*action: value*/);
-                  } else if (value is TransactionStatusType) {
-                    pickerText2 = value.displayName;
-                    _getTransaction(/*status: value*/);
-                  }
-                  Navigator.pop(context);
-                  // ProgressDialog.show(context);
-                });
-              });
-        });
-  }
 
   _getTransactionItemType(int index) {
     if (widget.vm.betTransactionList.length == 1) {
@@ -220,10 +176,11 @@ class BetTransactionViewState extends BaseState<BetTransactionView> {
 
   _scrollListener() {
     if (_scrollController.offset >= _scrollController.position.maxScrollExtent) {
-      _getTransaction(isLoadMore: true);
+
       setState(() {
         isLoading = true;
       });
+      _getTransaction(isLoadMore: true);
     }
   }
 

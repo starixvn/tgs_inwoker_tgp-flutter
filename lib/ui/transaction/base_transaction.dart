@@ -35,7 +35,7 @@ class BaseTransactionState extends BaseState<BaseTransaction>{
       automaticallyImplyLeading: false,
       pinned: true,
       floating: false,
-      expandedHeight: 240.auto,
+      expandedHeight: 170.auto,
       backgroundColor: Colors.white,
       flexibleSpace: FlexibleSpaceBar(
         collapseMode: CollapseMode.pin,
@@ -46,7 +46,7 @@ class BaseTransactionState extends BaseState<BaseTransaction>{
                 index: widget.filterIndex,
                 onTextChanged:(value) => widget.onFilter(value),
               ),
-              widget.getPickerBox
+              //widget.getPickerBox
             ]
         ),
       ),
@@ -70,7 +70,7 @@ class BaseTransactionState extends BaseState<BaseTransaction>{
       children: [
         TransactionDateItem(
           date: widget.startDate,
-          title: "开始时间",
+          title: getTranslatedText("start_time"),
           onDateChanged: (value){
             widget.onCalendarClick(value, true);
           },
@@ -84,7 +84,7 @@ class BaseTransactionState extends BaseState<BaseTransaction>{
         ),
         TransactionDateItem(
           date: widget.endDate,
-          title: "结束时间",
+          title: getTranslatedText("end_time"),
           onDateChanged: (value){
             widget.onCalendarClick(value, false);
           },

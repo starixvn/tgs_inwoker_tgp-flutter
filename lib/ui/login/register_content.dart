@@ -35,15 +35,6 @@ class _RegisterContentState extends BaseState<RegisterContent> {
   LoginViewModel _vm = LoginViewModel();
 
   @override
-  void dispose() {
-    username.dispose();
-    password.dispose();
-    confirmPassword.dispose();
-    invitationCode.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return ProviderWidget<LoginViewModel>(
       model: _vm,
@@ -188,6 +179,10 @@ class _RegisterContentState extends BaseState<RegisterContent> {
     }else if(!validate.validateUsernamePassword(username.text)) {
       setState(() {
         CustomToast.show(getTranslatedText("enter_username_validate_error_message"));
+      });
+    }else if(!validate.validateUsernamePassword(password.text)) {
+      setState(() {
+        CustomToast.show(getTranslatedText("password_validate_error_msg"));
       });
     }else {
       ProgressDialog.show(context);

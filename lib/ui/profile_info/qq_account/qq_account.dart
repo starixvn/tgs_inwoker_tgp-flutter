@@ -104,8 +104,11 @@ class _QQAccountState extends BaseState<QQAccount> {
         radius: 9.6,
       ));
 
-  _buildFooterText() => Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+  _buildFooterText() =>Container(
+    alignment: Alignment.center,
+    child: InkWell(
+      onTap: ()=> Navigator.of(context).pushNamed("/customer_service"),
+      child: Wrap(
         children: [
           Text(
             getTranslatedText("edit_qq_cs"),
@@ -116,7 +119,9 @@ class _QQAccountState extends BaseState<QQAccount> {
             style: TextStyle(fontSize: 12.auto, color: CustomColor.theme_bar_gradient_2),
           )
         ],
-      );
+      )
+    ),
+  );
 
   _getUserProfile() {
     WidgetsBinding.instance.addPostFrameCallback((_) {

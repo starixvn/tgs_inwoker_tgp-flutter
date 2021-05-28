@@ -131,7 +131,7 @@ class _HomeState extends BaseState<Home> {
       );
 
   _buildTextMarquee() {
-    var announcement = _vm.announcement?.content?.replaceAll(RegExp("/"), " ");
+    var announcement = _vm.announcement?.content?.replaceAll(RegExp("\n"), " ");
     return Expanded(
       child: Container(
         decoration: BoxDecoration(color: CustomColor.theme_bar_gradient_1, borderRadius: BorderRadius.circular(10.0)),

@@ -37,13 +37,6 @@ class _LoginContentState extends BaseState<LoginContent> {
   var _vm = LoginViewModel();
 
   @override
-  void dispose() {
-    username.dispose();
-    password.dispose();
-    super.dispose();
-  }
-
-  @override
   void initState() {
     super.initState();
     initData();
@@ -237,10 +230,8 @@ class _LoginContentState extends BaseState<LoginContent> {
   }
 
   _handleApiState() {
-    handleApiState(_vm.loginApiState, onSuccess: () {
+    handleApiState(_vm.loginApiState, isCheckSessionExpired:false, onSuccess: () {
       _navigateToHome();
-    }, onError: (error) {
-      CustomToast.show(error);
     });
   }
 }

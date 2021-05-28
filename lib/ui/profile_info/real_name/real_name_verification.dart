@@ -98,8 +98,11 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
         radius: 9.6,
       ));
 
-  _buildFooterText() => Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+  _buildFooterText() => Container(
+    alignment: Alignment.center,
+    child: InkWell(
+      onTap: ()=> Navigator.of(context).pushNamed("/customer_service"),
+      child: Wrap(
         children: [
           Text(
             getTranslatedText("edit_ic_no_cs"),
@@ -110,7 +113,9 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
             style: TextStyle(fontSize: 12.auto, color: CustomColor.theme_bar_gradient_2),
           )
         ],
-      );
+      ),
+    ),
+  );
 
   _getUserProfile() {
     WidgetsBinding.instance.addPostFrameCallback((_) {

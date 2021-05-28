@@ -100,8 +100,8 @@ class _PromotionState extends BaseState<PromotionPage> {
           context: context,
           builder: (BuildContext context) => CustomDialog(
             title: null,
-            description: "优惠已参加",
-            buttonText1: "确认",
+            description: getTranslatedText("promotion_joined"),
+            buttonText1: getTranslatedText("confirm"),
             onClick: () {
               Navigator.pop(
                 context,

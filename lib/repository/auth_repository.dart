@@ -69,8 +69,8 @@ class AuthenticationRepository extends BaseRepository {
         .execute();
   }
 
-  Future<EventResult<String>> addPayPassword(String password) async {
-    return await ApiRequestBuilder<String>(
+  Future<EventResult<dynamic>> addPayPassword(String password) async {
+    return await ApiRequestBuilder<dynamic>(
             endPoint: "api/pay/password", params: {"pwd": password}, jwtRefresher: jwtAuth)
         .execute();
   }
