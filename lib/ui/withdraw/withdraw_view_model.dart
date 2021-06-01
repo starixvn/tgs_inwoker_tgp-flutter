@@ -33,7 +33,7 @@ class WithdrawViewModel extends BaseViewModel {
     var status = await bankRepo.withdraw(amount, bankInfoId, payPassword);
     if (status.isSuccess) {
       withdrawApiState = await userRepo.getWalletBalance();
-    }else status = withdrawApiState;
+    }else withdrawApiState = status;
     setLoading(false);
     return withdrawApiState;
   }
