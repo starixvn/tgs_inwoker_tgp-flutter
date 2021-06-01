@@ -12,7 +12,8 @@ class TransactionViewModel extends BaseViewModel {
   final contentRepo = ContentRepository.getSingleton();
   var getTransactionApiState, getGameProviderApiState;
   var page = 1, rows = 10;
-  var pStartDate = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day,0,0,0,0,0), pEndDate = DateTime.now();
+  var pStartDate = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 0, 0, 0, 0, 0),
+      pEndDate = DateTime.now();
   List<BetTransaction> betTransactionList;
   var endRecord = false;
   var accountTransactionList;
@@ -20,7 +21,6 @@ class TransactionViewModel extends BaseViewModel {
   get gameProviderList => contentRepo.gameProviderList;
 
   get wallet => userRepo.wallet;
-
 
   @override
   List<BaseRepository> get repoList => [userRepo, contentRepo];
@@ -45,6 +45,7 @@ class TransactionViewModel extends BaseViewModel {
     if (getTransactionApiState.isSuccess) {
       list = getTransactionApiState.result.items;
       if (betTransactionList == null) betTransactionList = [];
+
       betTransactionList.addAll(list);
       endRecord = betTransactionList.length >= getTransactionApiState.result.totalCount ? true : false;
     }

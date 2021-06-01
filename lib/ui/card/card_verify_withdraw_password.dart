@@ -182,7 +182,7 @@ class _CardVerifyWithdrawPasswordState extends BaseState<CardVerifyWithdrawPassw
   }
 
   _checkValidation() {
-    if (!validate.validateUsernamePasswordLength(_passwordController.text)) {
+    if (!validate.validatePasswordLength(_passwordController.text)) {
       setState(() {
         CustomToast.show(getTranslatedText("enter_password_error_msg"));
       });

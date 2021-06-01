@@ -160,7 +160,7 @@ class _UpdateForgotPasswordState extends BaseState<UpdateForgotPassword> {
   }
 
   _onClick() async {
-    if (!validate.validateUsernamePasswordLength(_newPasswordController.text)) {
+    if (!validate.validatePasswordLength(_newPasswordController.text)) {
       setState(() {
         CustomToast.show(getTranslatedText("enter_password_error_msg"));
       });
@@ -176,6 +176,7 @@ class _UpdateForgotPasswordState extends BaseState<UpdateForgotPassword> {
 
   _handleApiState() {
     handleApiState(_vm.resetPasswordApiState, onSuccess: () {
+      CustomToast.show(getTranslatedText("success"));
       WidgetsBinding.instance.addPostFrameCallback((_) {
         var count = 0;
         Navigator.popUntil(context, (route) {

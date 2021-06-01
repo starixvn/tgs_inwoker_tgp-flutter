@@ -256,7 +256,7 @@ class _ResetPayPasswordState extends BaseState<ResetPayPassword> {
       setState(() {
         CustomToast.show(getTranslatedText("enter_pay_password_error_msg"));
       });
-    }else if (!validate.validateUsernamePasswordLength(_payPasswordController.text)) {
+    }else if (!validate.validatePasswordLength(_payPasswordController.text)) {
       setState(() {
         CustomToast.show(getTranslatedText("pay_password_length_error_msg"));
       });

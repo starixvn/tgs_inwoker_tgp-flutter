@@ -1,9 +1,16 @@
 class InputValidationProvider{
-  validateUsernamePasswordLength(String username){
-    return RegExp("^.{6,20}\$",
+  validateUsernameLength(String username){
+    return RegExp("^.{6,32}\$",
         caseSensitive: false,
         multiLine: false
     ).hasMatch(username);
+  }
+
+  validatePasswordLength(String password){
+    return RegExp("^.{6,20}\$",
+        caseSensitive: false,
+        multiLine: false
+    ).hasMatch(password);
   }
 
   validateUsernamePassword(String username){
@@ -25,5 +32,19 @@ class InputValidationProvider{
         caseSensitive: true,
         multiLine: false
     ).hasMatch(email);
+  }
+
+  validateWechat(String wechat){
+    return RegExp("^[a-zA-Z]{1}[-_a-zA-Z0-9]{5,19}\$",
+        caseSensitive: true,
+        multiLine: false
+    ).hasMatch(wechat);
+  }
+
+  validateQQ(String qq){
+    return RegExp("[1-9]\\d{4,14}",
+        caseSensitive: true,
+        multiLine: false
+    ).hasMatch(qq);
   }
 }

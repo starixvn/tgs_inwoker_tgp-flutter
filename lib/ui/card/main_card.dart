@@ -85,13 +85,14 @@ class _MainCardState extends BaseState<MainCard> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.of(context).pushAndRemoveUntil(
+            /*Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(
                     builder: (context) => MyHomePage(
                           isFirstRun: false,
                           index: 4,
                         )),
-                (Route<dynamic> route) => false);
+                (Route<dynamic> route) => false);*/
+            Navigator.pop(context);
           },
         ),
         title: Text(

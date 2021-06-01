@@ -131,10 +131,24 @@ class _DepositOrderViewState extends BaseState<DepositOrderView> {
           ),
           Container(
             margin: EdgeInsets.only(left: 15.auto, right: 15.auto, top: 10.auto),
-            child: Row(
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                RaisedButton(
+                GradientButton(
+                    title: getTranslatedText("upload_prof"),
+                    onClick: () => _vm.uploadDepositImage(uploadImage.path, widget.id),
+                    isEnabled: uploadImage == null ? false : true,
+                    radius: 4.8,
+                    height: 44.5),
+                Container(
+                    margin: EdgeInsets.only(top: 10.auto),
+                    child: GradientButton(
+                        title: getTranslatedText("cancel_deposit"),
+                        onClick: () => Navigator.pop(context),
+                        isEnabled: true,
+                        radius: 4.8,
+                        height: 44.5))
+                /*RaisedButton(
                   onPressed: () {
                     Navigator.pop(context);
                   },
@@ -160,7 +174,7 @@ class _DepositOrderViewState extends BaseState<DepositOrderView> {
                         textAlign: TextAlign.center,
                         style: TextStyle(color: Colors.white),
                       ),
-                    )),
+                    )),*/
               ],
             ),
           )
@@ -246,27 +260,29 @@ class _DepositOrderViewState extends BaseState<DepositOrderView> {
       );
 
   _buildText(String title, String content) {
-    if(content == "BankTransfer") content =getTranslatedText( "bank_transfer");
+    if (content == "BankTransfer")
+      content = getTranslatedText("bank_transfer");
     else if (content == "Crypto") content = getTranslatedText("crypto");
     return Container(
-        margin: EdgeInsets.only(top: 15.auto),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              getTranslatedText(title) ?? title,
-              style: TextStyle(fontSize: 13.auto, color: CustomColor.grey),
-            ),
-            AutoSizeText(
-              content ?? "",
-              style: TextStyle(fontSize: 13.auto, color: Colors.black),
-              minFontSize: 2,
-              maxLines: 1,
-              textAlign: TextAlign.end,
-            ),
-          ],
-        ),
-      );}
+      margin: EdgeInsets.only(top: 15.auto),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            getTranslatedText(title) ?? title,
+            style: TextStyle(fontSize: 13.auto, color: CustomColor.grey),
+          ),
+          AutoSizeText(
+            content ?? "",
+            style: TextStyle(fontSize: 13.auto, color: Colors.black),
+            minFontSize: 2,
+            maxLines: 1,
+            textAlign: TextAlign.end,
+          ),
+        ],
+      ),
+    );
+  }
 
   _buildUploadTextRow() => Container(
         margin: EdgeInsets.only(top: 10),

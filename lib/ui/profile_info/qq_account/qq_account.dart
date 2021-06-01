@@ -3,6 +3,7 @@ import 'package:tgp_flutter/custom/color_button.dart';
 import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/custom/custom_text_form_field.dart';
 import 'package:tgp_flutter/custom/custom_toast.dart';
+import 'package:tgp_flutter/data/provider/input_validation_provider.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
@@ -21,6 +22,7 @@ class _QQAccountState extends BaseState<QQAccount> {
   TextEditingController _qqController = TextEditingController();
   var isButtonEnabled = false, isTextFieldEnabled = false;
   var buttonText;
+  InputValidationProvider validate = new InputValidationProvider();
 
   @override
   void initState() {
@@ -155,8 +157,14 @@ class _QQAccountState extends BaseState<QQAccount> {
   }
 
   _onClick() async {
-    ProgressDialog.show(context);
-    _vm.setQQAccount(_qqController.text);
+    if (!validate.validateQQ(_qqController.text)) {
+      setState(() {
+        CustomToast.show(getTranslatedText("enter_qq_error_message"));
+      });
+    } else{
+      ProgressDialog.show(context);
+      _vm.setQQAccount(_qqController.text);
+    }
   }
 
   _handleApiState() {
