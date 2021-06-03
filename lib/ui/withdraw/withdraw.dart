@@ -180,12 +180,12 @@ class _WithdrawState extends BaseState<Withdraw> {
 
   _buildBankPicker() => CustomPicker(
         title: getTranslatedText("bank_card"),
-        displayText: _getBankText() ?? getTranslatedText("select_bank_card"),
-        list: [],
-        isHintText: selectedBankCard != null || _vm.bankCardList.first != null ? true : false,
+        displayText: (_vm.bankCardList == null || _vm.bankCardList.isEmpty)?getTranslatedText("select_bank_card"): _getBankText() ,
+        list:  _vm.bankCardList??[],
+        isHintText: selectedBankCard != null || _vm.bankCardList != null || _vm.bankCardList.isNotEmpty? false : true,
         width: context.screenWidth,
         onClick: () {
-          _buildPickerDialog("bank_card", _vm.bankCardList);
+          _buildPickerDialog("bank_card", _vm.bankCardList??[]);
         },
       );
 
@@ -223,7 +223,7 @@ class _WithdrawState extends BaseState<Withdraw> {
         controller: controller,
         focusNode: null,
         width: context.screenWidth - 70.auto,
-        textInputType: isNum?TextInputType.number: TextInputType.text,
+        textInputType: isNum?TextInputType.number: TextInputType.visiblePassword,
         textInputAction: TextInputAction.done,
       );
 
@@ -284,6 +284,9 @@ class _WithdrawState extends BaseState<Withdraw> {
     handleApiState(_vm.withdrawApiState, onSuccess: (){
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _showDialog();
+        _amountController.clear();
+        _payPasswordController.clear();
+        isNextButtonEnabled = false;
       });
     });
   }

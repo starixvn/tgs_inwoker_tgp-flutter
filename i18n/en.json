@@ -85,7 +85,7 @@
   "rmb_password":"Remember Password",
   "enter_username_hint":"Please enter your username",
   "enter_password_hint":"Please enter your password",
-  "signup_username_hint":"Username (6-20 Alphanumeric)",
+  "signup_username_hint":"Username (6-32 Alphanumeric)",
   "signup_password_hint":"Password (6-20 Alphanumeric)",
   "confirm_password":"Confirm Password",
   "signup_pay_password_hint":"Pay Password (6 Digit)",
@@ -172,11 +172,9 @@
   "receiver_bank_account":"Receiver Bank Account",
   "receiver_bank_number":"Receiver Bank Number",
   "cancel":"Cancel",
-  "enter_username_error_message": "Username must be between 6-20 characters",
-  "enter_username_validate_error_message": "Username can only enter letters or numbers",
-  "enter_password_error_msg" : "Password must consist of 6-20 letters or numbers",
+  "enter_username_error_message": "The account length must be between 6 and 32 digits, and must consist of numbers, letters or a combination",
+  "enter_password_error_msg" : "The password length must be between of 6-20 digits, and must consist of numbers, letters or a combination",
   "confirm_password_error_msg" : "Confirm password is not same with password",
-  "password_validate_error_msg" :"Password can only enter letters or numbers ",
   "confirm_pay_error_msg" :"Confirm pay password is not same with pay password",
   "slotgame_title": "Slot Game",
   "qq_no": "QQ Number",
@@ -249,6 +247,9 @@
   "enter_pay_password_error_msg": "Pay password can only enter letters or numbers",
   "pay_password_length_error_msg": "Pay password must be between 6-20 characters",
   "verify_current_email": "Verify email address",
-  "set_new_pay_password": "Set new pay password "
+  "set_new_pay_password": "Set new pay password ",
+  "enter_wechat_error_message": "Invalid Wechat account",
+  "enter_qq_error_message": "Invalid QQ account",
+  "old_password_invalid": "Invalid old password"
 }
 

@@ -126,16 +126,13 @@ class BetTransactionViewState extends BaseState<BetTransactionView> {
   _onCalendarClick(DateTime date, bool isStartDate) {
     if (isStartDate) {
       widget.vm.setDate(startDate: date);
-      _getTransaction(startDate: date);
     } else {
       widget.vm.setDate(endDate: date);
-      _getTransaction(endDate: date);
     }
     _onDateFilter(-1);
-    // ProgressDialog.show(context);
   }
 
-  _onDateFilter(int index) {
+  _onDateFilter(int index, {DateTime startDate}) {
     var currentDate = DateTime.now();
     switch (index) {
       case 0: //today
@@ -148,6 +145,8 @@ class BetTransactionViewState extends BaseState<BetTransactionView> {
       case 2: //month
         widget.vm.setDate(
             startDate: DateTime(currentDate.year, currentDate.month - 1, currentDate.day), endDate: currentDate);
+        break;
+      case -1: //click from calendar
         break;
       default:
         widget.vm.setDate();

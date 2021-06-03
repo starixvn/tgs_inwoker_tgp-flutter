@@ -22,8 +22,7 @@ class PayPassword extends StatefulWidget {
 
 class _PayPasswordState extends BaseState<PayPassword> {
   var _vm = PayPasswordViewModel();
-  TextEditingController _oldPasswordController = TextEditingController(),
-      _newPasswordController = TextEditingController(),
+  TextEditingController _newPasswordController = TextEditingController(),
       _confirmPasswordController = TextEditingController();
   var isButtonEnabled = false;
   InputValidationProvider validate = new InputValidationProvider();
@@ -141,8 +140,7 @@ class _PayPasswordState extends BaseState<PayPassword> {
           isButtonEnabled = true;
         }
       } else if (_vm.userProfile.isSetPayPassword) {
-        if (_oldPasswordController.text.isNotEmpty &&
-            _newPasswordController.text.isNotEmpty &&
+        if (_newPasswordController.text.isNotEmpty &&
             _confirmPasswordController.text.isNotEmpty) {
           isButtonEnabled = true;
         }
@@ -157,11 +155,11 @@ class _PayPasswordState extends BaseState<PayPassword> {
       setState(() {
         CustomToast.show(getTranslatedText("enter_pay_password_error_msg"));
       });
-    } else if (!validate.validateUsernamePasswordLength(_newPasswordController.text)) {
+    } else if (!validate.validatePasswordLength(_newPasswordController.text)) {
       setState(() {
         CustomToast.show(getTranslatedText("pay_password_length_error_msg"));
       });
-    } else if (_oldPasswordController.text != _newPasswordController.text) {
+    } else if (_newPasswordController.text != _confirmPasswordController.text) {
       setState(() {
         CustomToast.show(getTranslatedText("confirm_pay_password_error_msg"));
       });

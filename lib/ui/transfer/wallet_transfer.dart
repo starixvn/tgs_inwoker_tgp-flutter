@@ -415,7 +415,7 @@ class _WalletTransferState extends BaseState<WalletTransfer> with TickerProvider
     if (wallet == null)
       textToWallet = getTranslatedText("please_select");
     else
-      textToWallet = wallet.title ?? getTranslatedText("please_select");
+      textToWallet = (getTranslatedText(wallet.title)?? wallet.title )?? getTranslatedText("please_select");
   }
 
   checkButtonState() {

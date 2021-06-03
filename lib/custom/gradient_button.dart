@@ -57,11 +57,17 @@ class GradientButton extends StatelessWidget {
               shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular((radius).auto),
               )),
+              backgroundColor: MaterialStateProperty.all(Colors.grey),
             ),
-            child: Text(
-              title,
-              textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white),
+            child: Container(
+              alignment: Alignment.center,
+              height: height.auto,
+              width: width??context.screenWidth,
+              child: Text(
+                title,
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.white),
+              ),
             ),
           );
   }

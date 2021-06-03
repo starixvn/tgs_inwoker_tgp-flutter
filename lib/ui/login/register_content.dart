@@ -160,11 +160,11 @@ class _RegisterContentState extends BaseState<RegisterContent> {
       );
 
   _register() {
-    if (!validate.validateUsernamePasswordLength(username.text)) {
+    if (!validate.validateUsernameLength(username.text)||!validate.validateUsernamePassword(username.text)) {
       setState(() {
         CustomToast.show(getTranslatedText("enter_username_error_message"));
       });
-    } else if (!validate.validateUsernamePasswordLength(password.text)) {
+    } else if (!validate.validatePasswordLength(password.text)|| !validate.validateUsernamePassword(password.text)) {
       setState(() {
         CustomToast.show(getTranslatedText("enter_password_error_msg"));
       });
@@ -175,14 +175,6 @@ class _RegisterContentState extends BaseState<RegisterContent> {
     } else if (pay.text != confirmPay.text) {
       setState(() {
         CustomToast.show(getTranslatedText("confirm_pay_error_msg"));
-      });
-    }else if(!validate.validateUsernamePassword(username.text)) {
-      setState(() {
-        CustomToast.show(getTranslatedText("enter_username_validate_error_message"));
-      });
-    }else if(!validate.validateUsernamePassword(password.text)) {
-      setState(() {
-        CustomToast.show(getTranslatedText("password_validate_error_msg"));
       });
     }else {
       ProgressDialog.show(context);
