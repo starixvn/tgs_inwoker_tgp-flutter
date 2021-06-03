@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:tgp_flutter/custom/custom_picker_dialog.dart';
 import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
+import 'package:tgp_flutter/environment_config.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart' as DotEnv;
+
 
 class CustomerService extends StatefulWidget {
   @override
@@ -14,7 +15,7 @@ class CustomerService extends StatefulWidget {
 
 class _CustomerServiceState extends BaseState<CustomerService> {
   InAppWebViewController _webViewController;
-  var url = DotEnv.env["csUrl"];
+  var url = EnvironmentConfig.csUrl;
 
   Widget build(BuildContext context) {
     return Scaffold(

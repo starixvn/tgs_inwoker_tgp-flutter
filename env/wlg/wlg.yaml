@@ -1,0 +1,19 @@
+flutter_icons:
+  android: true
+  ios: true
+  image_path:  "images/ic_profile.png"
+
+environment_config:
+  fields:
+    jwtKey:
+      default: "Sb5G45kyG0QRDmZTL9WctlQJnWz2QZVdDAdrtgDK3xX0KIvnSRrDMf"
+    url:
+      default: "https://operator.srvptt.com/"
+    currency:
+      default: "CNY"
+    imageUrl:
+      default: "https://dev.lobby.tgsdev.gq/assets/images/"
+    csUrl:
+      default: "https://direct.lc.chat/12646566/"
+    appTitleName:
+        default: "WLG Gaming"

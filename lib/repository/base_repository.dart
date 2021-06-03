@@ -8,6 +8,8 @@ import 'package:tgp_flutter/entity/response/login_response.dart';
 import 'package:tgp_flutter/network/api_request_builder.dart';
 import 'package:tgp_flutter/network/event_result.dart';
 
+import '../environment_config.dart';
+
 typedef T ResponseResultConverter<T>(dynamic);
 
 class BaseRepository extends ChangeNotifier {
@@ -16,7 +18,7 @@ class BaseRepository extends ChangeNotifier {
         isAuthorization: false,
         isJWTAuthRequest: true,
         endPoint: "api/Auth/jwt",
-        params: {"client": "I7nKiimrZQOqnJ6ryjUw74c0Hi64KC6Myunhob4cHh8VOUIuZh4p63czefxyyzbZ", "currency": "CNY"},
+        params: {"client": EnvironmentConfig.jwtKey, "currency": EnvironmentConfig.currency},
         converter: (json) => LoginResponse.fromJson(json)).execute();
 
     if (apiState.isSuccess) {

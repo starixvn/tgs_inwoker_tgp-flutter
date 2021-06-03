@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:tgp_flutter/environment_config.dart';
 import 'package:tgp_flutter/localizations/language_provider.dart';
 import 'package:tgp_flutter/localizations/my_localizations.dart';
 import 'package:tgp_flutter/my_behavior.dart';
@@ -37,7 +38,7 @@ import 'package:tgp_flutter/ui/profile_info/security/security_answer.dart';
 import 'package:tgp_flutter/ui/profile_info/wechat/wechat.dart';
 import 'package:tgp_flutter/ui/promotion/promotion_item_details.dart';
 import 'package:tgp_flutter/ui/promotion/promotion_page.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart' as DotEnv;
+
 import 'package:tgp_flutter/ui/referFriend/refer_friend.dart';
 import 'package:tgp_flutter/ui/splash/splash.dart';
 import 'package:tgp_flutter/ui/transaction/transaction.dart';
@@ -47,7 +48,12 @@ import 'package:tgp_flutter/ui/transfer/wallet_transfer.dart';
 
 Future main() async {
   //await DotEnv.load();
-  await DotEnv.load(fileName: ".env");
+  // await DotEnv.load(fileName: ".env");
+  // PackageInfo packageInfo = await PackageInfo.fromPlatform();
+  // DotEnv.env["appName"] = packageInfo.appName;
+  // // String packageName = packageInfo.packageName;
+  // // String version = packageInfo.version;
+  // // String buildNumber = packageInfo.buildNumber;
   runApp(MyApp());
 }
 
@@ -62,7 +68,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends BaseState<MyApp> {
-  final appTitle = 'PG Gaming';
+  final appTitle = EnvironmentConfig.appTitleName;
   Locale _locale;
   var langList = LanguageProvider().list.map((e) => e.locale).toList();
 
@@ -227,67 +233,67 @@ class _MyHomePageState extends BaseState<MyHomePage> {
   }
 
   _buildBottomBarItem(int index, String imagePath, String title, {bool isNewMessage = false}) => Expanded(
-        child: Stack(
-          children: [
-            _buildNotification(isNewMessage),
-            SizedBox(
-              height: 58.auto,
-              width: context.screenWidth / 5,
-              child: Material(
-                type: MaterialType.transparency,
-                child: InkWell(
-                  onTap: () {
-                    if (index == 1) {
-                      Navigator.of(context).pushNamed("/promotion");
-                    } else if (index == 3) {
-                      Navigator.of(context).pushNamed("/customer_service");
-                    } else {
-                      setState(() {
-                        currentBottomIndex = index;
-                      });
-                    }
-                  },
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      index != 2 ? _buildImageIcon(imagePath, index, isNewMessage) : _buildMenuIcon(imagePath, index),
-                      Visibility(
-                        visible: index != 2,
-                        child: Container(
-                          margin: EdgeInsets.only(top: 3.auto),
-                          child: Text(
-                            getTranslatedText(title) ?? "",
-                            style: TextStyle(
-                              fontSize: 11.auto,
-                              color: currentBottomIndex == index ? Colors.yellow : Colors.white,
-                            ),
-                          ),
+    child: Stack(
+      children: [
+        _buildNotification(isNewMessage),
+        SizedBox(
+          height: 58.auto,
+          width: context.screenWidth / 5,
+          child: Material(
+            type: MaterialType.transparency,
+            child: InkWell(
+              onTap: () {
+                if (index == 1) {
+                  Navigator.of(context).pushNamed("/promotion");
+                } else if (index == 3) {
+                  Navigator.of(context).pushNamed("/customer_service");
+                } else {
+                  setState(() {
+                    currentBottomIndex = index;
+                  });
+                }
+              },
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  index != 2 ? _buildImageIcon(imagePath, index, isNewMessage) : _buildMenuIcon(imagePath, index),
+                  Visibility(
+                    visible: index != 2,
+                    child: Container(
+                      margin: EdgeInsets.only(top: 3.auto),
+                      child: Text(
+                        getTranslatedText(title) ?? "",
+                        style: TextStyle(
+                          fontSize: 11.auto,
+                          color: currentBottomIndex == index ? Colors.yellow : Colors.white,
                         ),
-                      )
-                    ],
-                  ),
-                ),
+                      ),
+                    ),
+                  )
+                ],
               ),
             ),
-          ],
+          ),
         ),
-      );
+      ],
+    ),
+  );
 
   _buildImageIcon(String imagePath, int index, bool isNewMessage) => ImageIcon(
-        AssetImage("images/bottom_navigation_bar/$imagePath.png"),
-        size: 23.auto,
-        color: currentBottomIndex == index ? Colors.yellow : Colors.white,
-      );
+    AssetImage("images/bottom_navigation_bar/$imagePath.png"),
+    size: 23.auto,
+    color: currentBottomIndex == index ? Colors.yellow : Colors.white,
+  );
 
   _buildMenuIcon(String imagePath, int index) => CircleAvatar(
-        backgroundColor: CustomColor.theme_circle_button_bg,
-        child: ImageIcon(
-          AssetImage("images/bottom_navigation_bar/$imagePath.png"),
-          size: 41.auto,
-          color: currentBottomIndex == index ? Colors.yellow : Colors.white,
-        ),
-      );
+    backgroundColor: CustomColor.theme_circle_button_bg,
+    child: ImageIcon(
+      AssetImage("images/bottom_navigation_bar/$imagePath.png"),
+      size: 41.auto,
+      color: currentBottomIndex == index ? Colors.yellow : Colors.white,
+    ),
+  );
 
   _buildNotification(bool isNewMessage) => Visibility(
       visible: isNewMessage,

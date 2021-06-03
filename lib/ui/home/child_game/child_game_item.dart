@@ -7,6 +7,7 @@ import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/custom/custom_toast.dart';
 import 'package:tgp_flutter/entity/game.dart';
 import 'package:tgp_flutter/entity/game_type.dart';
+import 'package:tgp_flutter/environment_config.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
@@ -15,7 +16,7 @@ import 'package:tgp_flutter/ui/base_state.dart';
 import 'package:tgp_flutter/ui/home/game/game_view_model.dart';
 import 'package:tgp_flutter/ui/home/game/game_web_view.dart';
 import 'package:tgp_flutter/ui/home/home_view_model.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart' as DotEnv;
+
 
 class ChildGameItem extends StatefulWidget {
   final bool isFavourite;
@@ -54,7 +55,7 @@ class _ChildGameItemState extends BaseState<ChildGameItem> {
     var imagePath = widget.game.type.getImagePath();
     var gamePlatformCode = widget.game.gamePlatformCode.toLowerCase();
     var gameName = widget.game.code.replaceAll(RegExp("_"), "");
-    var imageUrl = DotEnv.env["imageUrl"] + (imagePath=="fish"?"slotGame":imagePath) + "/" + (gamePlatformCode) + "/" + gameName;
+    var imageUrl = EnvironmentConfig.imageUrl + (imagePath=="fish"?"slotGame":imagePath) + "/" + (gamePlatformCode) + "/" + gameName;
     var imageType = gamePlatformCode=="jdb"?".jpg":".png";
     return Expanded(
         flex: 4,

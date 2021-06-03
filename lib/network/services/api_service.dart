@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tgp_flutter/custom/custom_toast.dart';
 import 'package:tgp_flutter/entity/http_method.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart' as DotEnv;
+import 'package:tgp_flutter/environment_config.dart';
 
 http.Client client;
 const timeoutDuration = Duration(seconds: 3);
@@ -18,7 +18,7 @@ Future<http.Response> api(HttpMethod method, final endPoint,
   }
 
   var header = await _getHeader(isAuthorization);
-  var url = DotEnv.env["url"] + endPoint;
+  var url = EnvironmentConfig.url + endPoint;
 
   var onTimeout = (){
    // CustomToast.show("Debug:Timeout -> $url");
