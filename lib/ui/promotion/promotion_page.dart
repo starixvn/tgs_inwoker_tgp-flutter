@@ -44,6 +44,7 @@ class _PromotionState extends BaseState<PromotionPage> {
             body: _vm.promotionList == null
                 ? buildProgressDialog()
                 : ListView(
+                    padding: EdgeInsets.only(bottom: 10.auto),
                     children: List.generate(_vm.promotionList.length, (index) {
                       return PromotionItem(
                           imagePath: "promotion_BN_${(index % 3 + 1).toString()}",

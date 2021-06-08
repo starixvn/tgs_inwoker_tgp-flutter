@@ -3,7 +3,7 @@
 #$2 = App Id
 #$3 = App Name
 echo "Configurating"
-c
+
 #Launcher Icon
 flutter pub run --no-sound-null-safety flutter_launcher_icons:main -f env/$1
 

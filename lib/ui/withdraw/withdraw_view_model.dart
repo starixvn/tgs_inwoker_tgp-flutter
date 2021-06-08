@@ -17,6 +17,8 @@ class WithdrawViewModel extends BaseViewModel {
 
   get wallet => userRepo.wallet;
 
+  get userProfile => userRepo.userProfile;
+
   getBankCardList() async {
     setLoading();
     getBankCardListApiState = await bankRepo.getBankCardList();
@@ -27,13 +29,13 @@ class WithdrawViewModel extends BaseViewModel {
     return getBankCardListApiState;
   }
 
-
   withdraw(int amount, String bankInfoId, String payPassword) async {
     setLoading();
     var status = await bankRepo.withdraw(amount, bankInfoId, payPassword);
     if (status.isSuccess) {
       withdrawApiState = await userRepo.getWalletBalance();
-    }else withdrawApiState = status;
+    } else
+      withdrawApiState = status;
     setLoading(false);
     return withdrawApiState;
   }

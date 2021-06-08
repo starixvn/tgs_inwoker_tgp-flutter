@@ -173,7 +173,7 @@ class _PayPasswordState extends BaseState<PayPassword> {
     handleApiState(_vm.addPayPasswordApiState, onSuccess: () {
       CustomToast.show(getTranslatedText("success"));
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        Navigator.pop(context);
+        Navigator.pop(context, true);
       });
     });
   }

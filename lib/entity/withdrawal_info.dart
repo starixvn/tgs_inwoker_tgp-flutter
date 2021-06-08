@@ -18,6 +18,8 @@ class WithdrawalInfo {
   String channelId;
   @JsonKey(name: "channelname")
   String channelName;
+  @JsonKey(name: "channelcode")
+  String channelCode;
   @JsonKey(name: "methodcode")
   String methodCode;
   @JsonKey(name: "methodid")

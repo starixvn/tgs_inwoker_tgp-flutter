@@ -12,6 +12,7 @@ WithdrawalInfo _$WithdrawalInfoFromJson(Map<String, dynamic> json) {
     ..bankType = _$enumDecodeNullable(_$BankTypeEnumMap, json['banktype'])
     ..channelId = json['channelid'] as String
     ..channelName = json['channelname'] as String
+    ..channelCode = json['channelcode'] as String
     ..methodCode = json['methodcode'] as String
     ..methodId = json['methodid'] as String
     ..paymentCode = json['paymentcode'] as String
@@ -30,6 +31,7 @@ Map<String, dynamic> _$WithdrawalInfoToJson(WithdrawalInfo instance) =>
       'banktype': _$BankTypeEnumMap[instance.bankType],
       'channelid': instance.channelId,
       'channelname': instance.channelName,
+      'channelcode': instance.channelCode,
       'methodcode': instance.methodCode,
       'methodid': instance.methodId,
       'paymentcode': instance.paymentCode,

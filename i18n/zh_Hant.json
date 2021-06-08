@@ -250,5 +250,13 @@
   "set_new_pay_password": "设定新提款密碼",
   "enter_wechat_error_message": "微信碼格式不正確",
   "enter_qq_error_message": "QQ碼格式不正確",
-  "old_password_invalid": "舊密碼輸入錯誤"
+  "invalid_old_password": "舊密碼輸入錯誤",
+  "invalid_invitation_code":"邀請密碼輸入錯誤",
+  "deposit_not_available":"存款功能無法使用",
+  "promotion_picker": "優惠活動",
+  "promotion_picker_hint": "請選擇優惠活動",
+  "channel": "渠道",
+  "select_channel": "請選擇渠道",
+  "custom_bank": "自定銀行",
+  "turnover_required": "流水未達標"
 }

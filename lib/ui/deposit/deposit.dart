@@ -126,7 +126,7 @@ class _DepositState extends BaseState<Deposit> {
   _handleApiState() {
     handleApiState(_vm.getPaymentApiState, isAutoHideLoading: false, onSuccess: () {
       if (_vm.getPaymentApiState.result.isEmpty) {
-        CustomToast.show("Deposit feature not available");
+        CustomToast.show(getTranslatedText("deposit_not_available"));
       }
     });
   }

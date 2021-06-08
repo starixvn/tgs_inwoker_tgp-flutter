@@ -250,7 +250,15 @@
   "set_new_pay_password": "设定新提款密码",
   "enter_wechat_error_message": "微信码格式不正确",
   "enter_qq_error_message": "QQ码格式不正确",
-  "old_password_invalid": "旧密码输入错误"
+  "invalid_old_password": "旧密码输入错误",
+  "invalid_invitation_code": "邀请密码输入错误",
+  "deposit_not_available":"存款功能无法使用",
+  "promotion_picker": "优惠活动",
+  "promotion_picker_hint": "请选择优惠活动",
+  "channel": "渠道",
+  "select_channel": "请选择渠道",
+  "custom_bank": "自定银行",
+  "turnover_required": "流水未达标"
 }
 
 

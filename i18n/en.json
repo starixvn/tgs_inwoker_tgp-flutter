@@ -250,6 +250,14 @@
   "set_new_pay_password": "Set new pay password ",
   "enter_wechat_error_message": "Invalid Wechat account",
   "enter_qq_error_message": "Invalid QQ account",
-  "old_password_invalid": "Invalid old password"
+  "invalid_old_password": "Invalid old password",
+  "invalid_invitation_code": "Invalid invitation code",
+  "deposit_not_available":"Deposit feature not available",
+  "promotion_picker": "Promotion",
+  "promotion_picker_hint": "Please select promotion",
+  "channel": "Channel",
+  "select_channel": "Please select channel",
+  "custom_bank": "Custom bank",
+  "turnover_required": "Turnover required"
 }
 

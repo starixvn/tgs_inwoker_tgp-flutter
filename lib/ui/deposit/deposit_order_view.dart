@@ -8,6 +8,7 @@ import 'package:tgp_flutter/custom/custom_dialog.dart';
 import 'package:tgp_flutter/custom/gradient_button.dart';
 import 'package:tgp_flutter/entity/deposit_redirect.dart';
 import 'package:tgp_flutter/entity/manual_deposit_order.dart';
+import 'package:tgp_flutter/entity/promotion.dart';
 import 'package:tgp_flutter/extension/format.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
@@ -27,6 +28,7 @@ class DepositOrderView extends StatefulWidget {
   final String depositAmount;
   final String depositChannel;
   final String orderNo;
+  final Promotion promotion;
 
   DepositOrderView(
       {Key key,
@@ -37,7 +39,8 @@ class DepositOrderView extends StatefulWidget {
       this.payUsername,
       this.depositAmount,
       this.depositChannel,
-      this.orderNo})
+      this.orderNo,
+      this.promotion})
       : super(key: key);
 
   @override
@@ -121,6 +124,7 @@ class _DepositOrderViewState extends BaseState<DepositOrderView> {
                 _buildText("receiver_bank", widget.depositChannel),
                 _buildText("receiver_bank_account", widget.manualDepositOrder.bankAccountName),
                 _buildText("receiver_bank_number", widget.manualDepositOrder.bankAccount),
+                Visibility(visible: widget.promotion!=null, child: _buildText("promotion_picker", widget.promotion?.name ??""),),
                 _buildUploadTextRow(),
                 uploadImage == null
                     ? Container()
@@ -214,6 +218,7 @@ class _DepositOrderViewState extends BaseState<DepositOrderView> {
                 _buildOrderText("order_no", widget.depositRedirect.formId),
                 _buildText("deposit_method", widget.method),
                 _buildText("deposit_channel", widget.depositChannel),
+                Visibility(visible: widget.promotion!=null, child: _buildText("promotion_title", widget.promotion?.name ??""),),
                 uploadImage == null
                     ? Container()
                     : Container(

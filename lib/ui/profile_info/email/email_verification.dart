@@ -17,6 +17,10 @@ import 'package:tgp_flutter/ui/profile_info/phone/phone_verification_view_model.
 import 'package:tgp_flutter/extension/screen_apis.dart';
 
 class EmailVerification extends StatefulWidget {
+  final int popDirection;
+
+  EmailVerification(this.popDirection);
+
   @override
   _EmailVerificationState createState() => _EmailVerificationState();
 }
@@ -69,7 +73,10 @@ class _EmailVerificationState extends BaseState<EmailVerification> {
         centerTitle: true,
         leading: IconButton(
             icon: Icon(Icons.arrow_back),
-            onPressed: () => Navigator.popUntil(context, ModalRoute.withName('/profile_info'))),
+            onPressed: () {
+              Navigator.pop(context);
+              //Navigator.popUntil(context, ModalRoute.withName('/profile_info'));
+            }),
         title: Text(
           getTranslatedText("email"),
           style: TextStyle(fontSize: 16.auto),
@@ -193,6 +200,7 @@ class _EmailVerificationState extends BaseState<EmailVerification> {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         CustomToast.show(getTranslatedText("success"));
         _getUserProfile();
+        if(widget.popDirection == 1) Navigator.of(context).pop(true);
       });
     });
   }

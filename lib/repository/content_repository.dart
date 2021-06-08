@@ -123,4 +123,19 @@ class ContentRepository extends BaseRepository {
             method: HttpMethod.POST, endPoint: "api/promotion/$id/join", jwtRefresher: jwtAuth)
         .execute();
   }
+
+  Future<EventResult<ListResponse<Promotion>>> getPlayerPromotionList(int page, int rows, bool desc, bool all) async {
+    return await ApiRequestBuilder<ListResponse<Promotion>>(
+        method: HttpMethod.GET,
+        endPoint: "api/playerpromotion",
+        params: {
+          "page": page.toString(),
+          "rows": rows.toString(),
+          "desc": desc.toString(),
+          "all": all.toString(),
+        },
+        converter: (json) => ListResponse.fromJson(json, (res) => Promotion.fromJson(res)),
+        jwtRefresher: jwtAuth)
+        .execute();
+  }
 }

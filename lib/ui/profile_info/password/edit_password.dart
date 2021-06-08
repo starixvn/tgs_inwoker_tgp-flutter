@@ -138,7 +138,7 @@ class _EditPasswordState extends BaseState<EditPassword> {
         Navigator.pop(context);
       });
     }, onError: (errorMsg){
-      if(_vm.editPasswordApiState.errorCode == 101) CustomToast.show(getTranslatedText("old_password_invalid"));
+      if(_vm.editPasswordApiState.errorCode == 101) CustomToast.show(getTranslatedText("invalid_old_password"));
       else CustomToast.show(errorMsg);
     });
   }

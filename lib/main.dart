@@ -125,7 +125,7 @@ class _MyAppState extends BaseState<MyApp> {
           RoutePath.profileInfo: (context) => ProfileInfo(),
           RoutePath.realNameVerification: (context) => RealNameVerification(),
           RoutePath.phoneVerification: (context) => PhoneVerification(),
-          RoutePath.emailVerification: (context) => EmailVerification(),
+          RoutePath.emailVerification: (context) => EmailVerification(0),
           RoutePath.qqAccount: (context) => QQAccount(),
           RoutePath.wechat: (context) => Wechat(),
           RoutePath.address: (context) => Address(),

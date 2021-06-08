@@ -49,7 +49,7 @@ class _ResetPayPasswordState extends BaseState<ResetPayPassword> {
           _emailController.text = _vm.userProfile.email;
         });
       } else
-        Navigator.of(context).pushNamed("/email_verification");
+        Navigator.of(context).pushNamed("/reset_pay_password");
     });
     super.initState();
   }

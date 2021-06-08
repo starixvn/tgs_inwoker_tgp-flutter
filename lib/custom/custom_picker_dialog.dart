@@ -3,6 +3,7 @@ import 'package:tgp_flutter/entity/bank_card.dart';
 import 'package:tgp_flutter/entity/bank_type.dart';
 import 'package:tgp_flutter/entity/game_provider.dart';
 import 'package:tgp_flutter/entity/payment.dart';
+import 'package:tgp_flutter/entity/promotion.dart';
 import 'package:tgp_flutter/entity/wallet.dart';
 import 'package:tgp_flutter/entity/withdrawal_info.dart';
 import 'package:tgp_flutter/extension/format.dart';
@@ -62,7 +63,7 @@ class _CustomPickerDialogState extends BaseState<CustomPickerDialog> {
   }
 
   _getText(int index) {
-    if (widget.list is List<Payment> || widget.list is List<WithdrawalInfo>) {
+    if (widget.list is List<Payment>) {
       var name = widget.list[index].channelName.replaceAll(RegExp("_"), " ");
       return name;
     } else if (widget.list is List<GameProvider>) {
@@ -74,7 +75,17 @@ class _CustomPickerDialogState extends BaseState<CustomPickerDialog> {
     } else if (widget.list is List<Wallet>) {
       Wallet wallet = widget.list[index];
       return (wallet.isMainWallet) ? getTranslatedText(wallet.title) : wallet.title;
-    } else{
+    } else if (widget.list is List<Promotion>) {
+      Promotion promotion = widget.list[index];
+      return getTranslatedText(promotion.name)?? promotion.name;
+    }else if (widget.list is List<WithdrawalInfo>) {
+      if(widget.list[index].bankType == BankType.CRYPTO){
+        var code = widget.list[index].channelCode;
+        return code;
+      }else{
+        return getTranslatedText("custom_bank");
+      }
+    }else{
       //string
       if(widget.list[index] =="BankTransfer")
         return getTranslatedText("bank_transfer");

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:tgp_flutter/custom/custom_dialog.dart';
 import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/custom/leave_game_dialog.dart';
@@ -34,7 +35,8 @@ class _GameWebState extends BaseState<GameWeb> {
 
   @override
   void initState() {
-    lobbyUrl = "http://gci.aggdemo.com:81/forwardGame.do?params=4DJlwdGL1cWclbwxZFKgtr6rJmU8Mqe0y4VXswlHs8uWLV/LAwtfY9/SYLWTh/MBrOQNAdd/nZiuIaXx1/ZDX71ziYHXpHj9WeekhidF60CbLBd9VFlD9EYcWQOX7ALM/w3Ww5Yy86wEsd/IgnUTGwU7vX+3btJezXPCNriz+iYgg9d9jU6yEAXdEN0H7L/tkDdt8IWJGjAqQ2334aF5vlPc2f7DCzM7&key=8dc57f4377fc86da1d0d9e47495993e0";
+    lobbyUrl =
+        "http://gci.aggdemo.com:81/forwardGame.do?params=4DJlwdGL1cWclbwxZFKgtr6rJmU8Mqe0y4VXswlHs8uWLV/LAwtfY9/SYLWTh/MBrOQNAdd/nZiuIaXx1/ZDX71ziYHXpHj9WeekhidF60CbLBd9VFlD9EYcWQOX7ALM/w3Ww5Yy86wEsd/IgnUTGwU7vX+3btJezXPCNriz+iYgg9d9jU6yEAXdEN0H7L/tkDdt8IWJGjAqQ2334aF5vlPc2f7DCzM7&key=8dc57f4377fc86da1d0d9e47495993e0";
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (widget.gameType == null)
         _vm.getGameUrl(widget.gamePlatformCode, widget.gameId, lobbyUrl);
@@ -91,9 +93,9 @@ class _GameWebState extends BaseState<GameWeb> {
       initialUrl: _getValidUrl(url),
       initialOptions: InAppWebViewGroupOptions(
           crossPlatform: InAppWebViewOptions(
-            debuggingEnabled: true,
-            javaScriptEnabled: true,
-            useShouldOverrideUrlLoading: true
+              debuggingEnabled: true,
+              javaScriptEnabled: true,
+              useShouldOverrideUrlLoading: true
           ),
           android: AndroidInAppWebViewOptions(
             useWideViewPort: true,
@@ -103,20 +105,25 @@ class _GameWebState extends BaseState<GameWeb> {
         _webViewController = controller;
         _webViewController.loadUrl(url: _getValidUrl(url));
       },
+      onExitFullscreen: (InAppWebViewController controller){
+        Navigator.pop(
+          context,
+        );
+      },
       onLoadStart: (InAppWebViewController controller, String url) {
         //ProgressDialog.show(context);
       },
       onLoadStop: (InAppWebViewController controller, String url) async {
-       // ProgressDialog.hide();
+        // ProgressDialog.hide();
       },
       shouldOverrideUrlLoading: (controller, shouldOverrideUrlLoadingRequest) async {
-        if (url == lobbyUrl) {
+        if (shouldOverrideUrlLoadingRequest.url == lobbyUrl) {
           showDialog(
             context: context,
             builder: (BuildContext context) => LeaveGameDialog(),
           );
           return ShouldOverrideUrlLoadingAction.CANCEL;
-        }else {
+        } else {
           return ShouldOverrideUrlLoadingAction.ALLOW;
         }
       },
@@ -124,13 +131,13 @@ class _GameWebState extends BaseState<GameWeb> {
   }
 
   _getValidUrl(String url) {
-   if(url!=null){
-     if ((url.contains("https://") || url.contains("http://"))) {
-       return url;
-     } else {
-       return "https:" + url;
-     }
-   }
+    if (url != null) {
+      if ((url.contains("https://") || url.contains("http://"))) {
+        return url;
+      } else {
+        return "https:" + url;
+      }
+    }
   }
 
   _displayDialog() {
@@ -143,9 +150,9 @@ class _GameWebState extends BaseState<GameWeb> {
   _loadWebView() {
     isLoading = true;
     if (widget.gameType == null)
-      _vm.getGameUrl(widget.gamePlatformCode, widget.gameId,lobbyUrl);
+      _vm.getGameUrl(widget.gamePlatformCode, widget.gameId, lobbyUrl);
     else
-      _vm.getLobbyGameUrl(widget.gamePlatformCode, widget.gameType,lobbyUrl);
+      _vm.getLobbyGameUrl(widget.gamePlatformCode, widget.gameType, lobbyUrl);
   }
 
   _handleApiState() {

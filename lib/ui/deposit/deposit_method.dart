@@ -5,6 +5,7 @@ import 'package:tgp_flutter/custom/custom_picker_dialog.dart';
 import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/custom/custom_text_form_field.dart';
 import 'package:tgp_flutter/entity/payment.dart';
+import 'package:tgp_flutter/entity/promotion.dart';
 import 'package:tgp_flutter/extension/format.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
@@ -25,15 +26,16 @@ class DepositMethod extends StatefulWidget {
 }
 
 class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAliveClientMixin {
-  String methodPickerText, channelPickerText;
+  String methodPickerText, channelPickerText, promotionPickerText;
   TextEditingController _amountController = TextEditingController(), _bankNameController = TextEditingController();
-  var isButtonEnabled = false;
+  var isButtonEnabled = false, isHintText = false;
   var selectedPayment;
   var paymentMin, paymentMax;
   int amount;
 
   DepositMethodViewModel _vm;
   Payment _payment;
+  Promotion _promotion;
   var paymentChannelId;
 
   void initState() {
@@ -43,6 +45,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
       WidgetsBinding.instance.addPostFrameCallback((_) {
         onSelectedMethod(methodPickerText);
       });
+      _vm.getPlayerPromotionList(1);
     }
     super.initState();
   }
@@ -65,6 +68,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
                 _buildCard("deposit_channel", _vm.paymentList),
                 if (_isManualDeposit()) _buildBankNameTextField(),
                 _buildAmountTextField(),
+                _buildCard("promotion_picker", _vm.promotionList),
                 _buildButton(),
               ],
             ),
@@ -74,18 +78,33 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
 
   _buildCard(String title, List<dynamic> list, {bool isDepositMethod = false}) {
     var display;
-    if(methodPickerText == "BankTransfer") display = "bank_transfer";
-    else display = methodPickerText.toLowerCase();
+    if (list is List<String>){
+      if(methodPickerText == "BankTransfer") display = getTranslatedText("bank_transfer");
+      else display = getTranslatedText(methodPickerText.toLowerCase());
+      isHintText = true;
+    }else if (list is List<Payment>){
+      display = channelPickerText;
+      isHintText = true;
+    }else if (list is List<Promotion>){
+      if(_promotion!=null) {
+        display = _promotion.name;
+        isHintText = true;
+      }
+      else {
+        display = getTranslatedText("promotion_picker_hint");
+        isHintText = false;
+      }
+    }else display ="";
     return Container(
         margin: EdgeInsets.only(top: 10.auto),
         child: Opacity(
           opacity: 1,
           child: CustomPicker(
             title: title,
-            displayText: isDepositMethod ? getTranslatedText(display) ?? "" : channelPickerText ?? "",
+            displayText: display??"",
             //isDeposit? depositText??"请选择红利": pickerText?? "",
             list: list,
-            isHintText: true,
+            isHintText: isHintText,
             width: context.screenWidth,
             onClick: () {
               _buildBottomSheet(title, list);
@@ -107,6 +126,10 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
                     onSelectedMethod(value);
                   else if (value is Payment) {
                     onSelectedChannel(
+                      value,
+                    );
+                  }else if (value is Promotion) {
+                    onSelectedPromotion(
                       value,
                     );
                   }
@@ -197,11 +220,11 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
   _onClick() {
     ProgressDialog.show(context);
     if (_isManualDeposit())
-      _vm.getManualDepositId(_bankNameController.text, _amountController.text, _payment.id);
+      _vm.getManualDepositId(_bankNameController.text, _amountController.text, _payment.id, _promotion?.id?? null);
     else if (widget.paymentCode == "PrimePay") {
-      _vm.primePayDepositOrder(_amountController.text, _payment.id);
+      _vm.primePayDepositOrder(_amountController.text, _payment.id, _promotion?.id?? null);
     } else //currently is LeePay
-      _vm.leePayDepositOrder(_amountController.text, _payment.id);
+      _vm.leePayDepositOrder(_amountController.text, _payment.id, _promotion?.id?? null);
   }
 
   _isManualDeposit() {
@@ -225,9 +248,16 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
     });
   }
 
+  onSelectedPromotion(Promotion promotion) {
+    setState(() {
+      _promotion = promotion;
+    });
+  }
+
   _clearTextField(){
     _amountController.clear();
     _bankNameController.clear();
+    _promotion =null;
   }
 
   _handleApiState() {
@@ -241,6 +271,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
                   depositRedirect: _vm.getLeepayOrderApiState.result,
                   depositAmount: Format().currencySymbolWithDecimalFormat(double.parse(_amountController.text)),
                   depositChannel: channelPickerText,
+                  promotion: _promotion,
                 )));
         _clearTextField();
       });
@@ -255,6 +286,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
                   depositRedirect: _vm.primePayDepositOrderApiState.result,
                   depositAmount: Format().currencySymbolWithDecimalFormat(double.parse(_amountController.text)),
                   depositChannel: channelPickerText,
+                  promotion: _promotion,
                 )));
         _clearTextField();
       });
@@ -276,6 +308,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
                   depositAmount: Format().currencySymbolWithDecimalFormat(double.parse(_amountController.text)),
                   depositChannel: channelPickerText,
                   orderNo: _vm.orderNo,
+                  promotion: _promotion,
                 )));
         _clearTextField();
       });

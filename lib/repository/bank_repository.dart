@@ -38,11 +38,16 @@ class BankRepository extends BaseRepository {
         .execute();
   }
 
-  Future<EventResult<String>> getManualDepositId(String account, String amount, String paymentId) async {
+  Future<EventResult<String>> getManualDepositId(String account, String amount, String paymentId, String promotionId) async {
     return await ApiRequestBuilder<String>(
             method: HttpMethod.PUT,
             endPoint: "api/deposit/manual",
-            params: {
+            params: promotionId!=null?{
+              "account": account,
+              "amount": amount,
+              "paymentid": paymentId,
+              "promotionid": promotionId,
+            }:{
               "account": account,
               "amount": amount,
               "paymentid": paymentId,
@@ -120,11 +125,15 @@ class BankRepository extends BaseRepository {
         .execute();
   }
 
-  Future<EventResult<DepositRedirect>> leePayDepositOrder(String amount, String paymentId) async {
+  Future<EventResult<DepositRedirect>> leePayDepositOrder(String amount, String paymentId, String promotionId) async {
     return await ApiRequestBuilder<DepositRedirect>(
             method: HttpMethod.PUT,
             endPoint: "api/deposit/crypto/leepay",
-            params: {
+            params: promotionId!=null?{
+              "amount": amount,
+              "paymentid": paymentId,
+              "promotionid": promotionId,
+            }:{
               "amount": amount,
               "paymentid": paymentId,
             },
@@ -133,11 +142,15 @@ class BankRepository extends BaseRepository {
         .execute();
   }
 
-  Future<EventResult<DepositRedirect>> primePayDepositOrder(String amount, String paymentId) async {
+  Future<EventResult<DepositRedirect>> primePayDepositOrder(String amount, String paymentId, String promotionId) async {
     return await ApiRequestBuilder<DepositRedirect>(
             method: HttpMethod.POST,
             endPoint: "api/deposit/bank/primepay",
-            params: {
+            params: promotionId!=null?{
+              "amount": amount,
+              "paymentid": paymentId,
+              "promotionid": promotionId,
+            }:{
               "amount": amount,
               "paymentid": paymentId,
             },

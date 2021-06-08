@@ -17,7 +17,9 @@ class PayPasswordViewModel extends BaseViewModel{
 
   addPayPassword(String password)async{
     setLoading();
-    addPayPasswordApiState = await authRepo.addPayPassword(password);
+    var status = await authRepo.addPayPassword(password);
+    if(status.isSuccess) addPayPasswordApiState = await userRepo.getBasicInfo();
+    else addPayPasswordApiState = status;
     setLoading(false);
     return addPayPasswordApiState;
   }

@@ -12,6 +12,7 @@ import 'package:tgp_flutter/my_behavior.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
+import 'package:tgp_flutter/ui/profile_info/email/email_verification.dart';
 import 'package:tgp_flutter/ui/withdraw/withdraw_dialog.dart';
 import 'package:tgp_flutter/ui/withdraw/withdraw_view_model.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
@@ -34,7 +35,7 @@ class _WithdrawState extends BaseState<Withdraw> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _vm.getBankCardList();
+      _checkUserProfile();
     });
     super.initState();
   }
@@ -278,6 +279,30 @@ class _WithdrawState extends BaseState<Withdraw> {
   onNextButtonClick() {
     ProgressDialog.show(context);
     _vm.withdraw( amount,selectedBankCard.id, _payPasswordController.text);
+  }
+
+  _checkUserProfile() async {
+    var result;
+    //fetch bank list
+    if(_vm.userProfile.email == null){
+      result = await Navigator.push(
+        context,
+        new MaterialPageRoute(
+          builder: (context) => EmailVerification(1),
+        ),
+      );
+      //Navigator.of(context).pushNamed("/email_verification");
+    }
+    else if(_vm.userProfile.isSetPayPassword == false){
+      result = await Navigator.of(context).pushNamed("/pay_password");
+    }else{
+      _vm.getBankCardList();
+      return;
+    }
+
+    if (result == null) //no result mean not set email or pay password
+      Navigator.pop(context);
+    else _checkUserProfile();
   }
 
   _handleApiState() {

@@ -13,14 +13,12 @@ import 'package:tgp_flutter/repository/user_repository.dart';
 class DepositViewModel extends BaseViewModel {
   final userRepo = UserRepository.getSingleton();
   final depositRepo = BankRepository.getSingleton();
+  final contentRepo = ContentRepository.getSingleton();
 
   @override
   List<BaseRepository> get repoList => [];
   var getPaymentApiState,
-      getManualDepositIdApiState,
-      getManualDepositOrderApiState,
-      uploadDepositImageApiState,
-      getCryptoIdApiState;
+      uploadDepositImageApiState;
   Map<String, Map<String, List<Payment>>> paymentCodeList;
   List<Payment> paymentList;
   var manualDepositOrder;
