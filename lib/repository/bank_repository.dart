@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:tgp_flutter/entity/bank_card.dart';
 import 'package:tgp_flutter/entity/bank_type.dart';
 import 'package:tgp_flutter/entity/deposit_redirect.dart';
+import 'package:tgp_flutter/entity/deposit_redirect_applepay.dart';
 import 'package:tgp_flutter/entity/manual_deposit_order.dart';
 import 'package:tgp_flutter/entity/game_provider.dart';
 import 'package:tgp_flutter/entity/http_method.dart';
@@ -168,6 +169,25 @@ class BankRepository extends BaseRepository {
           "bankinfoid": bankInfoId,
           "paypassword": payPassword,
         },
+        jwtRefresher: jwtAuth)
+        .execute();
+  }
+
+  Future<EventResult<DepositRedirectApplePay>> applePayDepositOrder(String amount, String paymentId, String promotionId, String transName) async {
+    return await ApiRequestBuilder<DepositRedirectApplePay>(
+        method: HttpMethod.POST,
+        endPoint: "api/deposit/bank/applepay",
+        params: promotionId!=null?{
+          "amount": int.parse(amount),
+          "paymentid": paymentId,
+          "promotionid": promotionId,
+          "transname":transName
+        }:{
+          "amount": int.parse(amount),
+          "paymentid": paymentId,
+          "transname": transName
+        },
+        converter: (json) => DepositRedirectApplePay.fromJson(json),
         jwtRefresher: jwtAuth)
         .execute();
   }

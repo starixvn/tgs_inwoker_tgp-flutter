@@ -17,7 +17,6 @@ import 'package:tgp_flutter/ui/home/game/game_view_model.dart';
 import 'package:tgp_flutter/ui/home/game/game_web_view.dart';
 import 'package:tgp_flutter/ui/home/home_view_model.dart';
 
-
 class ChildGameItem extends StatefulWidget {
   final bool isFavourite;
   final Game game;
@@ -55,61 +54,72 @@ class _ChildGameItemState extends BaseState<ChildGameItem> {
     var imagePath = widget.game.type.getImagePath();
     var gamePlatformCode = widget.game.gamePlatformCode.toLowerCase();
     var gameName = widget.game.code.replaceAll(RegExp("_"), "");
-    var imageUrl = EnvironmentConfig.imageUrl + (imagePath=="fish"?"slotGame":imagePath) + "/" + (gamePlatformCode) + "/" + gameName;
-    var imageType = gamePlatformCode=="jdb"?".jpg":".png";
+    var imageUrl = EnvironmentConfig.imageUrl +
+        (imagePath == "fish" ? "slotGame" : imagePath) +
+        "/" +
+        (gamePlatformCode) +
+        "/" +
+        gameName;
+    var imageType = gamePlatformCode == "jdb" ? ".jpg" : ".png";
+
+    var slotGameUrl = EnvironmentConfig.slotGameUrl + "${widget.game.gamePlatformCode.toUpperCase()}/$gameName.jpg";
     return Expanded(
         flex: 4,
         child: CachedNetworkImage(
-                placeholder: (context, url) => Container(
-                      color: CustomColor.very_light_pink_four,
-                    ),
-                imageUrl: imageUrl+ imageType,
-                //handling error
-                width: 165.5.auto,
-                fit: BoxFit.cover));
+            placeholder: (context, url) => Container(
+                  color: CustomColor.very_light_pink_four,
+                ),
+            imageUrl: imagePath == "slotGame" ? slotGameUrl : imageUrl + imageType,
+            //handling error
+            width: 165.5.auto,
+            fit: BoxFit.cover));
   }
 
-  _buildImageTitleAndFavouriteIcon() => Expanded(
-        flex: 1,
-        child: Container(
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [CustomColor.theme_bar_gradient_1, CustomColor.theme_bar_gradient_2],
-                begin: Alignment.bottomCenter,
-                end: Alignment.topCenter,
+  _buildImageTitleAndFavouriteIcon() {
+    var gameName = widget.game.type == GameType.Slot ? getTranslatedText(widget.game.code) : widget.game.name;
+    // print(getTranslatedText(widget.game.code)+ "||"+widget.game.name??"");
+    return Expanded(
+      flex: 1,
+      child: Container(
+        decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [CustomColor.theme_bar_gradient_1, CustomColor.theme_bar_gradient_2],
+              begin: Alignment.bottomCenter,
+              end: Alignment.topCenter,
+            ),
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(5),
+              bottomRight: Radius.circular(5),
+            )),
+        padding: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 5.auto),
+        child: Row(
+          children: [
+            Expanded(
+              flex: 9,
+              child: AutoSizeText(
+                gameName == null ? widget.game.name : gameName,
+                style: TextStyle(color: Colors.white),
+                minFontSize: 3,
+                stepGranularity: 1,
+                maxLines: 1,
               ),
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(5),
-                bottomRight: Radius.circular(5),
-              )),
-          padding: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 5.auto),
-          child: Row(
-            children: [
-              Expanded(
-                flex: 9,
-                child: AutoSizeText(
-                  widget.game.name,
-                  style: TextStyle(color: Colors.white),
-                  minFontSize: 3,
-                  stepGranularity: 1,
-                  maxLines: 1,
+            ),
+            Expanded(
+              flex: 1,
+              child: InkWell(
+                onTap: () {},
+                child: Image.asset(
+                  widget.isFavourite ? "images/child_game/ic_like.png" : "images/child_game/ic_unlike.png",
+                  width: 20.auto,
+                  height: 20.auto,
                 ),
               ),
-              Expanded(
-                flex: 1,
-                child: InkWell(
-                  onTap: () {},
-                  child: Image.asset(
-                    widget.isFavourite ? "images/child_game/ic_like.png" : "images/child_game/ic_unlike.png",
-                    width: 20.auto,
-                    height: 20.auto,
-                  ),
-                ),
-              )
-            ],
-          ),
+            )
+          ],
         ),
-      );
+      ),
+    );
+  }
 
   _buildPlatformText() => Positioned(
         top: context.screenWidth / 3.1,
@@ -126,7 +136,13 @@ class _ChildGameItemState extends BaseState<ChildGameItem> {
 
   _navigateToGameWeb(Game game) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => GameWeb(gamePlatformCode: game.gamePlatformCode, gameId: game.id,)));
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => GameWeb(
+                    gamePlatformCode: game.gamePlatformCode,
+                    gameId: game.id,
+                  )));
     });
   }
 }

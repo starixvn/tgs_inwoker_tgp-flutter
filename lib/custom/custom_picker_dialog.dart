@@ -79,11 +79,11 @@ class _CustomPickerDialogState extends BaseState<CustomPickerDialog> {
       Promotion promotion = widget.list[index];
       return getTranslatedText(promotion.name)?? promotion.name;
     }else if (widget.list is List<WithdrawalInfo>) {
-      if(widget.list[index].bankType == BankType.CRYPTO){
+      if(widget.list[index].channelName == "PrimePay_BankTransfer_Custom"){
+        return getTranslatedText("custom_bank");
+      } else{
         var code = widget.list[index].channelCode;
         return code;
-      }else{
-        return getTranslatedText("custom_bank");
       }
     }else{
       //string

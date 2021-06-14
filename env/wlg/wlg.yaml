@@ -17,3 +17,5 @@ environment_config:
       default: "https://direct.lc.chat/12646566/"
     appTitleName:
         default: "WLG Gaming"
+    slotGameUrl:
+      default: "https://images.srvptt.com/"

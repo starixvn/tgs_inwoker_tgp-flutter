@@ -90,29 +90,6 @@ class _PromotionItemDetailsState extends BaseState<PromotionItemDetails> {
         ),
       );
 
-  _buildPromotionDescriptionText() {
-    String description;
-    switch (widget.imagePath) {
-      case "promo1":
-        description =
-            "每日存款并完成有效投注额任务，即可领最高8，888元彩金。活动累计可获得最高96,658元彩金。活动期间如会员使用虚拟币存款，切虚拟币存款金额占当天终存款金额的50%，则每日存款彩金可获得最高25%加增";
-        break;
-      case "promo2":
-        description = "活動期間，會員投注指定中超賽事，有效投注額滿足活動要求，即可瓜分對應彩池比例，彩池獎金888萬！保底彩金8元！僅需一倍流水即可取款！";
-        break;
-      case "promo3":
-        description = "活動期間，會員每日投注亞博棋牌場館，有效投注額到達以下關卡檔位，即可獲得對應關卡獎勵，且闖關獎勵可以累積獲得，最高1,888元彩金。僅需一倍流水即可取款！";
-        break;
-      default:
-        description = "活動期間，會員每日投注亞博棋牌場館，有效投注額到達以下關卡檔位，即可獲得對應關卡獎勵，且闖關獎勵可以累積獲得，最高1,888元彩金。僅需一倍流水即可取款！";
-        break;
-    }
-    return Container(
-      margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 10.auto),
-      child: Text(description),
-    );
-  }
-
   _buildJoinButton() => Container(
         margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 15.auto),
         child: ColorButton(

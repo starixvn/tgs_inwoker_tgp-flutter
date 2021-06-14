@@ -7,6 +7,7 @@ import 'package:tgp_flutter/custom/color_button.dart';
 import 'package:tgp_flutter/custom/custom_dialog.dart';
 import 'package:tgp_flutter/custom/gradient_button.dart';
 import 'package:tgp_flutter/entity/deposit_redirect.dart';
+import 'package:tgp_flutter/entity/deposit_redirect_applepay.dart';
 import 'package:tgp_flutter/entity/manual_deposit_order.dart';
 import 'package:tgp_flutter/entity/promotion.dart';
 import 'package:tgp_flutter/extension/format.dart';
@@ -29,6 +30,8 @@ class DepositOrderView extends StatefulWidget {
   final String depositChannel;
   final String orderNo;
   final Promotion promotion;
+  final String transName;
+  final DepositRedirectApplePay depositRedirectApplePay;
 
   DepositOrderView(
       {Key key,
@@ -40,7 +43,10 @@ class DepositOrderView extends StatefulWidget {
       this.depositAmount,
       this.depositChannel,
       this.orderNo,
-      this.promotion})
+      this.promotion,
+      this.transName,
+        this.depositRedirectApplePay
+      })
       : super(key: key);
 
   @override
@@ -65,7 +71,7 @@ class _DepositOrderViewState extends BaseState<DepositOrderView> {
               resizeToAvoidBottomInset: false,
               backgroundColor: Colors.grey[100],
               appBar: _buildAppBar(),
-              body: widget.depositRedirect != null ? _buildLeepayOrder() : _buildManualDepositOrder());
+              body: widget.depositRedirect != null || widget.depositRedirectApplePay !=null ? _buildLeepayOrder() : _buildManualDepositOrder());
         });
   }
 
@@ -215,14 +221,11 @@ class _DepositOrderViewState extends BaseState<DepositOrderView> {
                   thickness: (1.0).auto,
                   color: CustomColor.very_light_pink_four,
                 ),
-                _buildOrderText("order_no", widget.depositRedirect.formId),
+                widget.depositRedirect!=null?_buildOrderText("order_no", widget.depositRedirect.formId):_buildOrderText("order_no", widget.depositRedirectApplePay.formId),
                 _buildText("deposit_method", widget.method),
                 _buildText("deposit_channel", widget.depositChannel),
+                Visibility(visible: widget.transName!=null, child: _buildText("transfer_name", widget.transName ??""),),
                 Visibility(visible: widget.promotion!=null, child: _buildText("promotion_title", widget.promotion?.name ??""),),
-                uploadImage == null
-                    ? Container()
-                    : Container(
-                        alignment: Alignment.centerRight, child: SizedBox(height: 80, child: Image.file(uploadImage)))
               ],
             ),
           ),
@@ -234,7 +237,7 @@ class _DepositOrderViewState extends BaseState<DepositOrderView> {
                   height: 44.5,
                   isEnabled: true,
                   onClick: () => Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => DepositWeb(url: widget.depositRedirect.paymentUrl)))))
+                      MaterialPageRoute(builder: (context) => DepositWeb(url: widget.depositRedirect!=null?widget.depositRedirect.paymentUrl: widget.depositRedirectApplePay.paymentUrl)))))
         ],
       );
 

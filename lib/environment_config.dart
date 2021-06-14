@@ -11,4 +11,6 @@ class EnvironmentConfig {
   static const String csUrl = 'https://direct.lc.chat/12646566/';
 
   static const String appTitleName = 'PG Gaming';
+
+  static const String slotGameUrl = "https://images.srvptt.com/";
 }

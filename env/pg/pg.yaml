@@ -1,19 +1,22 @@
 flutter_icons:
-  android: true
-  ios: true
-  image_path:  "images/PG_logo.png"
+    android: true
+    ios: true
+    image_path:  "images/PG_logo.png"
 
-environment_config:
-  fields:
-    jwtKey:
-      default: "I7nKiimrZQOqnJ6ryjUw74c0Hi64KC6Myunhob4cHh8VOUIuZh4p63czefxyyzbZ"
-    url:
-      default: "https://dev.operator.tgsdev.gq/"
-    currency:
-      default: "CNY"
-    imageUrl:
-      default: "https://dev.lobby.tgsdev.gq/assets/images/"
-    csUrl:
-      default: "https://direct.lc.chat/12646566/"
-    appTitleName:
-      default: "PG Gaming"
+  environment_config:
+    fields:
+      jwtKey:
+        default: "I7nKiimrZQOqnJ6ryjUw74c0Hi64KC6Myunhob4cHh8VOUIuZh4p63czefxyyzbZ"
+      url:
+        default: "https://dev.operator.tgsdev.gq/"
+      currency:
+        default: "CNY"
+      imageUrl:
+        default: "https://dev.lobby.tgsdev.gq/assets/images/"
+      csUrl:
+        default: "https://direct.lc.chat/12646566/"
+      appTitleName:
+        default: "PG Gaming"
+      slotGameUrl:
+        default: "https://images.srvptt.com/"
+

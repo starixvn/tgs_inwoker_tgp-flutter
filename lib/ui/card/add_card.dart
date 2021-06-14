@@ -254,10 +254,10 @@ class _AddCardState extends BaseState<AddCard> {
     await _vm.onSelectedWithdrawalInfo(withdrawalInfo: withdrawalInfo);
     setState(() {
     //  channelPickerText = _vm.pWithdrawalInfo.channelName.replaceAll(RegExp("_"), " ");
-      if(_vm.pWithdrawalInfo.bankType == BankType.CRYPTO){
-        channelPickerText = _vm.pWithdrawalInfo.channelCode;
-      }else{
+      if(_vm.pWithdrawalInfo.channelName == "PrimePay_BankTransfer_Custom"){
         channelPickerText = getTranslatedText("custom_bank");
+      } else{
+        channelPickerText = _vm.pWithdrawalInfo.channelCode;
       }
     });
   }

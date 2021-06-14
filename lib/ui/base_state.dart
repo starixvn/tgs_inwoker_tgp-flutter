@@ -85,8 +85,11 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
       201: "player_not_found",
       206: "invalid_invitation_code",
       207:"turnover_required",
+      208:"transfer_failed",
+      209:"transfer_failed",
       401: "enter_username_error_message",
       405: "invalid_otp",
+      407:"failed_participate_promotion",
       901: "operation_not_allow"
     };
     final errorKey = errorMap[eventResult.errorCode];

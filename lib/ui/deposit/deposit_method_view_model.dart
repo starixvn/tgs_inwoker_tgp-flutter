@@ -14,8 +14,12 @@ class DepositMethodViewModel extends BaseViewModel {
 
   @override
   List<BaseRepository> get repoList => [];
-  var getManualDepositIdApiState, getDepositOrderApiState, getLeepayOrderApiState, primePayDepositOrderApiState, getPlayerPromotionListApiState;
-
+  var getManualDepositIdApiState,
+      getDepositOrderApiState,
+      getLeepayOrderApiState,
+      primePayDepositOrderApiState,
+      getPlayerPromotionListApiState,
+      applePayDepositOrderApiState;
   List<Payment> paymentList;
   var depositOrder, orderNo;
   List<Promotion> promotionList;
@@ -56,12 +60,12 @@ class DepositMethodViewModel extends BaseViewModel {
 
   primePayDepositOrder(String amount, String paymentId, String promotionId) async {
     setLoading();
-    primePayDepositOrderApiState = await depositRepo.primePayDepositOrder(amount, paymentId,promotionId);
+    primePayDepositOrderApiState = await depositRepo.primePayDepositOrder(amount, paymentId, promotionId);
     setLoading(false);
     return primePayDepositOrderApiState;
   }
 
-  getPlayerPromotionList(int page) async{
+  getPlayerPromotionList(int page) async {
     setLoading();
     getPlayerPromotionListApiState = await contentRepo.getPlayerPromotionList(page, rows, false, false);
     if (getPlayerPromotionListApiState.isSuccess) {
@@ -69,5 +73,12 @@ class DepositMethodViewModel extends BaseViewModel {
     }
     setLoading(false);
     return getPlayerPromotionListApiState;
+  }
+
+  applePayDepositOrder(String amount, String paymentId, String promotionId, String transName) async {
+    setLoading();
+    applePayDepositOrderApiState = await depositRepo.applePayDepositOrder(amount, paymentId, promotionId, transName);
+    setLoading(false);
+    return applePayDepositOrderApiState;
   }
 }
