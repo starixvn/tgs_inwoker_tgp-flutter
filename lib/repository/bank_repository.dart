@@ -5,6 +5,7 @@ import 'package:tgp_flutter/entity/bank_card.dart';
 import 'package:tgp_flutter/entity/bank_type.dart';
 import 'package:tgp_flutter/entity/deposit_redirect.dart';
 import 'package:tgp_flutter/entity/deposit_redirect_applepay.dart';
+import 'package:tgp_flutter/entity/exchange_rate.dart';
 import 'package:tgp_flutter/entity/manual_deposit_order.dart';
 import 'package:tgp_flutter/entity/game_provider.dart';
 import 'package:tgp_flutter/entity/http_method.dart';
@@ -188,6 +189,16 @@ class BankRepository extends BaseRepository {
           "transname": transName
         },
         converter: (json) => DepositRedirectApplePay.fromJson(json),
+        jwtRefresher: jwtAuth)
+        .execute();
+  }
+
+  Future<EventResult<ExchangeRate>> getExchangeRate(String paymentId) async {
+    return await ApiRequestBuilder<ExchangeRate>(
+        method: HttpMethod.GET,
+        endPoint: "api/deposit/crypto/leepay/exchangerate",
+        params: paymentId,
+        converter: (json) => ExchangeRate.fromJson(json),
         jwtRefresher: jwtAuth)
         .execute();
   }

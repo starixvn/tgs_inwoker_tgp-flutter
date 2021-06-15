@@ -32,6 +32,8 @@ class DepositOrderView extends StatefulWidget {
   final Promotion promotion;
   final String transName;
   final DepositRedirectApplePay depositRedirectApplePay;
+  final String exchangeRate;
+  final String expectedAmount;
 
   DepositOrderView(
       {Key key,
@@ -45,7 +47,9 @@ class DepositOrderView extends StatefulWidget {
       this.orderNo,
       this.promotion,
       this.transName,
-        this.depositRedirectApplePay
+        this.depositRedirectApplePay,
+        this.exchangeRate,
+        this.expectedAmount
       })
       : super(key: key);
 
@@ -130,7 +134,7 @@ class _DepositOrderViewState extends BaseState<DepositOrderView> {
                 _buildText("receiver_bank", widget.depositChannel),
                 _buildText("receiver_bank_account", widget.manualDepositOrder.bankAccountName),
                 _buildText("receiver_bank_number", widget.manualDepositOrder.bankAccount),
-                Visibility(visible: widget.promotion!=null, child: _buildText("promotion_picker", widget.promotion?.name ??""),),
+                if(widget.promotion!=null)_buildText("promotion_picker", widget.promotion?.name ??""),
                 _buildUploadTextRow(),
                 uploadImage == null
                     ? Container()
@@ -224,8 +228,11 @@ class _DepositOrderViewState extends BaseState<DepositOrderView> {
                 widget.depositRedirect!=null?_buildOrderText("order_no", widget.depositRedirect.formId):_buildOrderText("order_no", widget.depositRedirectApplePay.formId),
                 _buildText("deposit_method", widget.method),
                 _buildText("deposit_channel", widget.depositChannel),
-                Visibility(visible: widget.transName!=null, child: _buildText("transfer_name", widget.transName ??""),),
-                Visibility(visible: widget.promotion!=null, child: _buildText("promotion_title", widget.promotion?.name ??""),),
+                if(widget.exchangeRate!=null) _buildText("exchange_rate", widget.exchangeRate),
+                if(widget.expectedAmount!=null) _buildText("expected_amount", widget.expectedAmount),
+                if(widget.transName!=null) _buildText("transfer_name", widget.transName ??""),
+                if(widget.promotion!=null) _buildText("promotion_title", widget.promotion?.name ??""),
+
               ],
             ),
           ),

@@ -28,6 +28,7 @@ class _DepositState extends BaseState<Deposit> {
   @override
   void initState() {
     _vm.getPayment();
+    _vm.getPlayerPromotionList(1);
     super.initState();
   }
 
@@ -84,7 +85,9 @@ class _DepositState extends BaseState<Deposit> {
                             children: List.generate(_vm.paymentCodeList.keys.length, (index) {
                               return DepositMethod(
                                   paymentCode: _vm.paymentCodeList.keys.toList()[index],
-                                  depositMethodList: _vm.paymentCodeList.values.toList()[index]);
+                                  depositMethodList: _vm.paymentCodeList.values.toList()[index],
+                                promotionList: _vm.promotionList,
+                              );
                             }).toList(),
                           ),
                         )

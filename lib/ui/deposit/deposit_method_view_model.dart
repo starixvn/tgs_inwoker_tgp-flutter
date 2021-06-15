@@ -18,12 +18,10 @@ class DepositMethodViewModel extends BaseViewModel {
       getDepositOrderApiState,
       getLeepayOrderApiState,
       primePayDepositOrderApiState,
-      getPlayerPromotionListApiState,
-      applePayDepositOrderApiState;
+      applePayDepositOrderApiState,
+  getExchangeRateApiState;
   List<Payment> paymentList;
-  var depositOrder, orderNo;
-  List<Promotion> promotionList;
-  var rows = 20;
+  var depositOrder, orderNo, exchangeRate;
 
   filterMethod(String method) async {
     paymentList = depositMethodList[method];
@@ -65,20 +63,21 @@ class DepositMethodViewModel extends BaseViewModel {
     return primePayDepositOrderApiState;
   }
 
-  getPlayerPromotionList(int page) async {
-    setLoading();
-    getPlayerPromotionListApiState = await contentRepo.getPlayerPromotionList(page, rows, false, false);
-    if (getPlayerPromotionListApiState.isSuccess) {
-      promotionList = getPlayerPromotionListApiState.result.items;
-    }
-    setLoading(false);
-    return getPlayerPromotionListApiState;
-  }
 
   applePayDepositOrder(String amount, String paymentId, String promotionId, String transName) async {
     setLoading();
     applePayDepositOrderApiState = await depositRepo.applePayDepositOrder(amount, paymentId, promotionId, transName);
     setLoading(false);
     return applePayDepositOrderApiState;
+  }
+
+  getExchangeRate(String paymentId) async{
+    setLoading();
+    getExchangeRateApiState = await depositRepo.getExchangeRate(paymentId);
+    if(getExchangeRateApiState.isSuccess){
+      exchangeRate = getExchangeRateApiState.result.buyPrice;
+    }
+    setLoading(false);
+    return getExchangeRateApiState;
   }
 }

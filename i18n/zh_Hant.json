@@ -261,9 +261,11 @@
   "custom_bank": "自定銀行",
   "turnover_required": "您的投注流水不足，無法提款。如有問題，請聯繫客服。",
   "transfer_failed": "轉賬失敗",
-  "failed_participate_promotion": "參加優惠活動失敗",
+  "failed_participate_promotion": "您無法參加此活動。如有問題，請聯繫客服。",
   "transfer_name": "轉賬名稱",
   "enter_transfer_name":"請輸入轉賬名稱",
+  "exchange_rate": "匯率",
+  "expected_amount": "預計支付",
 
   "3_Genie_Wishes": "3個精靈願望",
   "5_Lions": "5 雄獅",

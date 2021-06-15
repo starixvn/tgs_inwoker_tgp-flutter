@@ -19,8 +19,9 @@ import 'package:tgp_flutter/ui/deposit/deposit_web.dart';
 class DepositMethod extends StatefulWidget {
   final String paymentCode;
   final Map<String, List<Payment>> depositMethodList;
+  final List<Promotion> promotionList;
 
-  DepositMethod({Key key, this.paymentCode, this.depositMethodList}) : super(key: key);
+  DepositMethod({Key key, this.paymentCode, this.depositMethodList, this.promotionList}) : super(key: key);
 
   @override
   _DepositMethodState createState() => _DepositMethodState();
@@ -48,7 +49,6 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
       WidgetsBinding.instance.addPostFrameCallback((_) {
         onSelectedMethod(methodPickerText);
       });
-      _vm.getPlayerPromotionList(1);
     }
     super.initState();
   }
@@ -74,7 +74,8 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
                 if (_isApplePayDeposit())
                   _buildNameTextField("transfer_name", "enter_transfer_name", _transferNameController),
                 _buildAmountTextField(),
-                _buildCard("promotion_picker", _vm.promotionList),
+                if (_isLeePayDeposit()) _buildExchangeRateText(),
+                _buildCard("promotion_picker", widget.promotionList),
                 _buildButton(),
               ],
             ),
@@ -200,6 +201,42 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
         isEnabled: isButtonEnabled,
       ));
 
+  _buildExchangeRateText() => Container(
+        margin: EdgeInsets.only(
+          left: 10.auto,
+          right: 10.auto,
+          top: 5.auto,
+        ),
+        child: Row(
+          children: [
+            Text(
+              getTranslatedText("exchange_rate")+": ",
+              style: TextStyle(fontSize: 13.auto, color: CustomColor.grey),
+            ),
+            Text(
+              _vm.exchangeRate ?? "0.00",
+              style: TextStyle(fontSize: 13.auto, color: CustomColor.theme_bar_gradient_2),
+            ),
+            Spacer(),
+            Text(
+              getTranslatedText("expected_amount")+": ",
+              style: TextStyle(fontSize: 13.auto, color: CustomColor.grey),
+            ),
+            Text(
+              _calculateExpectedAmount(),
+              style: TextStyle(fontSize: 13.auto, color: CustomColor.theme_bar_gradient_2),
+            ),
+          ],
+        ),
+      );
+
+  _calculateExpectedAmount(){
+    if(_vm.exchangeRate !=null){
+      var expectedAmount =  (amount??0)*(1/double.parse(_vm.exchangeRate) ) ?? 0.00;
+      return Format().doubleToString(expectedAmount);
+    }else return "0.00";
+  }
+
   onTextChange() {
     if (_amountController.text != null && _amountController.text.isNotEmpty) {
       amount = int.parse(_amountController.text);
@@ -222,6 +259,10 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
       setState(() {
         isButtonEnabled = false;
       });
+    }
+
+    if (_isLeePayDeposit()) {
+      _vm.getExchangeRate(_payment.id);
     }
   }
 
@@ -246,6 +287,10 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
     return widget.paymentCode == "ApplePay";
   }
 
+  _isLeePayDeposit() {
+    return widget.paymentCode == "LeePay";
+  }
+
   onSelectedMethod(String method) async {
     _vm.filterMethod(method);
     onSelectedChannel(_vm.paymentList.first);
@@ -261,6 +306,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
       paymentMin = payment.transferLimit.from;
       paymentMax = payment.transferLimit.to;
     });
+    if (_isLeePayDeposit()) _vm.getExchangeRate(_payment.id);
   }
 
   onSelectedPromotion(Promotion promotion) {
@@ -288,6 +334,8 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
                       depositAmount: Format().currencySymbolWithDecimalFormat(double.parse(_amountController.text)),
                       depositChannel: channelPickerText,
                       promotion: _promotion,
+                  exchangeRate: _vm.exchangeRate,
+                  expectedAmount: _calculateExpectedAmount(),
                     )));
         _clearTextField();
       });

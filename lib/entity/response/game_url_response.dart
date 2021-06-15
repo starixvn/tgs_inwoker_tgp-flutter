@@ -7,7 +7,6 @@ part 'game_url_response.g.dart';
 class GameUrlResponse {
   GameUrlResponse( this.url);
 
-
   String url;
 
   factory GameUrlResponse.fromJson(Map<String, dynamic> json) => _$GameUrlResponseFromJson(json);

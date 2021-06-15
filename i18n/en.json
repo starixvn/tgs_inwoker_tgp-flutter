@@ -264,6 +264,8 @@
   "failed_participate_promotion": "Failed to participate in the promotion activity",
   "transfer_name": "Transfer Name",
   "enter_transfer_name":"Please enter transfer name",
+  "exchange_rate": "Exchange Rate",
+  "expected_amount": "Expected Amount",
 
   "Fruit_Rainbow": "Fruit Rainbow",
   "The_Wild_Machine": "The Wild Machine",
