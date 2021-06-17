@@ -287,7 +287,7 @@ class _MyHomePageState extends BaseState<MyHomePage> {
   );
 
   _buildMenuIcon(String imagePath, int index) => CircleAvatar(
-    backgroundColor: CustomColor.theme_circle_button_bg,
+    backgroundColor: CustomColor.theme_title_text_color,
     child: ImageIcon(
       AssetImage("images/bottom_navigation_bar/$imagePath.png"),
       size: 41.auto,

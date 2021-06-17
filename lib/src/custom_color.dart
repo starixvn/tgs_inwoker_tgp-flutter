@@ -1,8 +1,10 @@
 import 'dart:ui';
 
+import 'package:tgp_flutter/environment_config.dart';
+
 class CustomColor{
-  static const Color theme_bar_gradient_1 = Color(0xff91030c);
-  static const Color theme_bar_gradient_2 = Color(0xffc40511);
+  static const Color theme_bar_gradient_1 = Color(EnvironmentConfig.primaryColorCode);
+  static const Color theme_bar_gradient_2 = Color(EnvironmentConfig.primaryGradientColorCode);
   static const Color theme_button_disable_bg = Color(0xff404040);
   static const Color theme_value_text_color = Color(0xff91030c);
   static const Color theme_circle_button_bg = Color(0xff670108);
@@ -18,5 +20,4 @@ class CustomColor{
   static const Color black = Color(0xff2b2b2b);
   static const Color grey_five = Color(0xff7f7f7f);
   static const Color faded_red = Color(0xffe73f42);
-
 }

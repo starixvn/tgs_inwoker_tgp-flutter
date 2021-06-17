@@ -12,5 +12,11 @@ class EnvironmentConfig {
 
   static const String appTitleName = 'PG Gaming';
 
-  static const String slotGameUrl = "https://images.srvptt.com/";
+  static const String slotGameUrl = 'https://images.srvptt.com/';
+
+  static const int primaryColorCode = 4287693580;
+
+  static const int primaryGradientColorCode = 4291036433;
+
+  static const String imageLogo = 'pg_login_logo';
 }

@@ -29,7 +29,7 @@ class DepositOrderView extends StatefulWidget {
   final String depositAmount;
   final String depositChannel;
   final String orderNo;
-  final Promotion promotion;
+  final String promotionName;
   final String transName;
   final DepositRedirectApplePay depositRedirectApplePay;
   final String exchangeRate;
@@ -45,12 +45,11 @@ class DepositOrderView extends StatefulWidget {
       this.depositAmount,
       this.depositChannel,
       this.orderNo,
-      this.promotion,
+      this.promotionName,
       this.transName,
-        this.depositRedirectApplePay,
-        this.exchangeRate,
-        this.expectedAmount
-      })
+      this.depositRedirectApplePay,
+      this.exchangeRate,
+      this.expectedAmount})
       : super(key: key);
 
   @override
@@ -75,7 +74,9 @@ class _DepositOrderViewState extends BaseState<DepositOrderView> {
               resizeToAvoidBottomInset: false,
               backgroundColor: Colors.grey[100],
               appBar: _buildAppBar(),
-              body: widget.depositRedirect != null || widget.depositRedirectApplePay !=null ? _buildLeepayOrder() : _buildManualDepositOrder());
+              body: widget.depositRedirect != null || widget.depositRedirectApplePay != null
+                  ? _buildLeepayOrder()
+                  : _buildManualDepositOrder());
         });
   }
 
@@ -134,7 +135,7 @@ class _DepositOrderViewState extends BaseState<DepositOrderView> {
                 _buildText("receiver_bank", widget.depositChannel),
                 _buildText("receiver_bank_account", widget.manualDepositOrder.bankAccountName),
                 _buildText("receiver_bank_number", widget.manualDepositOrder.bankAccount),
-                if(widget.promotion!=null)_buildText("promotion_picker", widget.promotion?.name ??""),
+                if (widget.promotionName != null) _buildText("promotion_picker", widget.promotionName ?? ""),
                 _buildUploadTextRow(),
                 uploadImage == null
                     ? Container()
@@ -225,14 +226,15 @@ class _DepositOrderViewState extends BaseState<DepositOrderView> {
                   thickness: (1.0).auto,
                   color: CustomColor.very_light_pink_four,
                 ),
-                widget.depositRedirect!=null?_buildOrderText("order_no", widget.depositRedirect.formId):_buildOrderText("order_no", widget.depositRedirectApplePay.formId),
+                widget.depositRedirect != null
+                    ? _buildOrderText("order_no", widget.depositRedirect.formId)
+                    : _buildOrderText("order_no", widget.depositRedirectApplePay.formId),
                 _buildText("deposit_method", widget.method),
                 _buildText("deposit_channel", widget.depositChannel),
-                if(widget.exchangeRate!=null) _buildText("exchange_rate", widget.exchangeRate),
-                if(widget.expectedAmount!=null) _buildText("expected_amount", widget.expectedAmount),
-                if(widget.transName!=null) _buildText("transfer_name", widget.transName ??""),
-                if(widget.promotion!=null) _buildText("promotion_title", widget.promotion?.name ??""),
-
+                if (widget.exchangeRate != null) _buildText("exchange_rate", widget.exchangeRate),
+                if (widget.expectedAmount != null) _buildText("expected_amount", widget.expectedAmount),
+                if (widget.transName != null) _buildText("transfer_name", widget.transName ?? ""),
+                if (widget.promotionName != null) _buildText("promotion_picker", widget.promotionName ?? ""),
               ],
             ),
           ),
@@ -243,8 +245,13 @@ class _DepositOrderViewState extends BaseState<DepositOrderView> {
                   radius: 4.8,
                   height: 44.5,
                   isEnabled: true,
-                  onClick: () => Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => DepositWeb(url: widget.depositRedirect!=null?widget.depositRedirect.paymentUrl: widget.depositRedirectApplePay.paymentUrl)))))
+                  onClick: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => DepositWeb(
+                              url: widget.depositRedirect != null
+                                  ? widget.depositRedirect.paymentUrl
+                                  : widget.depositRedirectApplePay.paymentUrl)))))
         ],
       );
 

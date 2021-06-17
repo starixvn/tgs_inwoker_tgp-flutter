@@ -82,7 +82,7 @@ class _GameViewState extends BaseState<GameView> {
   }
 
   _buildGameTab(int tabIndex, String title) {
-    var bgImage = tabIndex == currentTabIndex ? "btn_home_game_category_selected_bg" : "btn_home_game_category_bg";
+    var colorG = tabIndex == currentTabIndex ? "btn_home_game_category_selected_bg" : "btn_home_game_category_bg";
     return InkWell(
       onTap: () {
         _onTabClick(tabIndex);
@@ -90,12 +90,7 @@ class _GameViewState extends BaseState<GameView> {
       child: Container(
         width: (62.5).auto,
         height: (33.5).auto,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("images/home/$bgImage.png"),
-            fit: BoxFit.fill,
-          ),
-        ),
+        decoration: tabIndex == currentTabIndex ? gameTabGradientDecoration : gameTabColorDecoration,
         padding: EdgeInsets.all(3.auto),
         child: Center(
             child: AutoSizeText(

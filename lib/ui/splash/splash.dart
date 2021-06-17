@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:tgp_flutter/custom/color_button.dart';
 import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/custom/custom_toast.dart';
+import 'package:tgp_flutter/environment_config.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/main.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
@@ -44,7 +45,7 @@ class _SplashState extends BaseState<Splash> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Container(width: context.screenWidth / 1.5, child: Image.asset("images/ic_logo.png")),
+                      Container(width: context.screenWidth / 1.5, child: Image.asset("images/login/${EnvironmentConfig.imageLogo}.png")),
                       Container(
                         width: context.screenWidth / 2.5,
                         alignment: Alignment.bottomCenter,

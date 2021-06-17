@@ -76,7 +76,7 @@ class _HomeUserInfoViewState extends BaseState<HomeUserInfoView> {
 
   _buildBottomRowContainer() => Container(
         padding: EdgeInsets.only(top: 5.auto, bottom: 5.auto, left: 10.auto, right: 10.auto),
-        color: CustomColor.theme_color_1_40.withOpacity(0.4),
+        color: CustomColor.theme_bar_gradient_1.withOpacity(0.4),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -167,7 +167,7 @@ class _HomeUserInfoViewState extends BaseState<HomeUserInfoView> {
           child: Column(
             children: [
               CircleAvatar(
-                backgroundColor: CustomColor.theme_circle_button_bg,
+                backgroundColor: CustomColor.theme_title_text_color,
                 child: Center(child: Image.asset("images/home/$imagePath.png")),
               ),
               Text(

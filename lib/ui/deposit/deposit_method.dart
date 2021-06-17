@@ -19,7 +19,7 @@ import 'package:tgp_flutter/ui/deposit/deposit_web.dart';
 class DepositMethod extends StatefulWidget {
   final String paymentCode;
   final Map<String, List<Payment>> depositMethodList;
-  final List<Promotion> promotionList;
+  final List<Map<String, String>> promotionList;
 
   DepositMethod({Key key, this.paymentCode, this.depositMethodList, this.promotionList}) : super(key: key);
 
@@ -39,7 +39,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
 
   DepositMethodViewModel _vm;
   Payment _payment;
-  Promotion _promotion;
+  String promotionName, promotionId;
   var paymentChannelId;
 
   void initState() {
@@ -94,13 +94,13 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
     } else if (list is List<Payment>) {
       display = channelPickerText;
       isHintText = true;
-    } else if (list is List<Promotion>) {
-      if (_promotion != null) {
-        display = _promotion.name;
+    } else if (list is List<Map<String, dynamic>>) {
+      if (promotionName != null) {
+        display = promotionName;
         isHintText = true;
       } else {
         display = getTranslatedText("promotion_picker_hint");
-        isHintText = false;
+        isHintText = true;
       }
     } else
       display = "";
@@ -137,7 +137,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
                     onSelectedChannel(
                       value,
                     );
-                  } else if (value is Promotion) {
+                  } else if (value is Map<String, String>) {
                     onSelectedPromotion(
                       value,
                     );
@@ -210,7 +210,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
         child: Row(
           children: [
             Text(
-              getTranslatedText("exchange_rate")+": ",
+              getTranslatedText("exchange_rate") + ": ",
               style: TextStyle(fontSize: 13.auto, color: CustomColor.grey),
             ),
             Text(
@@ -219,7 +219,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
             ),
             Spacer(),
             Text(
-              getTranslatedText("expected_amount")+": ",
+              getTranslatedText("expected_amount") + ": ",
               style: TextStyle(fontSize: 13.auto, color: CustomColor.grey),
             ),
             Text(
@@ -230,11 +230,12 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
         ),
       );
 
-  _calculateExpectedAmount(){
-    if(_vm.exchangeRate !=null){
-      var expectedAmount =  (amount??0)*(1/double.parse(_vm.exchangeRate) ) ?? 0.00;
+  _calculateExpectedAmount() {
+    if (_vm.exchangeRate != null) {
+      var expectedAmount = (amount ?? 0) * (1 / double.parse(_vm.exchangeRate)) ?? 0.00;
       return Format().doubleToString(expectedAmount);
-    }else return "0.00";
+    } else
+      return "0.00";
   }
 
   onTextChange() {
@@ -260,23 +261,19 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
         isButtonEnabled = false;
       });
     }
-
-    if (_isLeePayDeposit()) {
-      _vm.getExchangeRate(_payment.id);
-    }
   }
 
   _onClick() {
     ProgressDialog.show(context);
     if (_isManualDeposit())
-      _vm.getManualDepositId(_bankNameController.text, _amountController.text, _payment.id, _promotion?.id ?? null);
+      _vm.getManualDepositId(_bankNameController.text, _amountController.text, _payment.id, promotionId ?? null);
     else if (_isApplePayDeposit())
       _vm.applePayDepositOrder(
-          _amountController.text, _payment.id, _promotion?.id ?? null, _transferNameController.text);
+          _amountController.text, _payment.id, promotionId ?? null, _transferNameController.text);
     else if (widget.paymentCode == "PrimePay") {
-      _vm.primePayDepositOrder(_amountController.text, _payment.id, _promotion?.id ?? null);
+      _vm.primePayDepositOrder(_amountController.text, _payment.id, promotionId ?? null);
     } else //currently is LeePay
-      _vm.leePayDepositOrder(_amountController.text, _payment.id, _promotion?.id ?? null);
+      _vm.leePayDepositOrder(_amountController.text, _payment.id, promotionId ?? null);
   }
 
   _isManualDeposit() {
@@ -309,9 +306,14 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
     if (_isLeePayDeposit()) _vm.getExchangeRate(_payment.id);
   }
 
-  onSelectedPromotion(Promotion promotion) {
+  onSelectedPromotion(Map<String, String> map) {
     setState(() {
-      _promotion = promotion;
+      promotionName = getTranslatedText(map["name"])?? map["name"];
+      if(map["id"] == "-1"){
+        promotionId =null;
+      }else{
+        promotionId = map["id"];
+      }
     });
   }
 
@@ -319,7 +321,8 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
     _amountController.clear();
     _bankNameController.clear();
     _transferNameController.clear();
-    _promotion = null;
+    promotionId = null;
+    isButtonEnabled = false;
   }
 
   _handleApiState() {
@@ -333,9 +336,9 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
                       depositRedirect: _vm.getLeepayOrderApiState.result,
                       depositAmount: Format().currencySymbolWithDecimalFormat(double.parse(_amountController.text)),
                       depositChannel: channelPickerText,
-                      promotion: _promotion,
-                  exchangeRate: _vm.exchangeRate,
-                  expectedAmount: _calculateExpectedAmount(),
+                      promotionName: promotionId !="-1"?promotionName:null,
+                      exchangeRate: _vm.exchangeRate,
+                      expectedAmount: _calculateExpectedAmount(),
                     )));
         _clearTextField();
       });
@@ -350,7 +353,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
                       depositRedirect: _vm.primePayDepositOrderApiState.result,
                       depositAmount: Format().currencySymbolWithDecimalFormat(double.parse(_amountController.text)),
                       depositChannel: channelPickerText,
-                      promotion: _promotion,
+                      promotionName: promotionId !="-1"?promotionName:null,
                     )));
         _clearTextField();
       });
@@ -372,7 +375,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
                       depositAmount: Format().currencySymbolWithDecimalFormat(double.parse(_amountController.text)),
                       depositChannel: channelPickerText,
                       orderNo: _vm.orderNo,
-                      promotion: _promotion,
+                      promotionName: promotionId !="-1"?promotionName:null,
                     )));
         _clearTextField();
       });
@@ -390,7 +393,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
                         depositAmount: Format().currencySymbolWithDecimalFormat(double.parse(_amountController.text)),
                         depositChannel: channelPickerText,
                         transName: _transferNameController.text,
-                        promotion: _promotion,
+                        promotionName: promotionId !="-1"?promotionName:null,
                       )));
 
           _clearTextField();

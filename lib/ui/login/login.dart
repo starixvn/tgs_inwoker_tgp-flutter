@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:package_info/package_info.dart';
+import 'package:tgp_flutter/environment_config.dart';
 import 'package:tgp_flutter/extension/screen_util.dart';
+import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
 import 'package:tgp_flutter/ui/login/login_tab.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
@@ -12,16 +15,19 @@ class Login extends StatefulWidget {
 
 class _LoginState extends BaseState<Login> {
   var _vm = LoginViewModel();
+  PackageInfo packageInfo;
+  String version;
 
   @override
   void initState() {
+    _getPackageInfo();
     super.initState();
   }
 
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: Container(
+      body: version ==null?buildProgressDialog():Container(
         height: context.screenHeight,
         width: context.screenWidth,
         decoration: BoxDecoration(
@@ -34,18 +40,44 @@ class _LoginState extends BaseState<Login> {
                 child: Container(
               margin: EdgeInsets.symmetric(horizontal: 27.auto),
               child: LoginTab(),
-            ))
+            )),
+            _buildVersionText(),
           ],
         ),
       ),
     );
   }
 
+  _buildVersionText() {
+    return Column(
+    children: [
+      VerticalDivider(
+        color: CustomColor.grey_five,
+        width: 0.5,
+      ),
+      Container(
+        margin: EdgeInsets.only(right: 2.auto, bottom: 2.auto),
+        alignment: Alignment.centerRight,
+        child: Text("Version $version (staging)",
+        style: TextStyle(
+          fontSize: 8.auto
+        ),),
+      )
+    ],
+  );}
+
   _buildLogoImage() => Container(
       margin: EdgeInsets.only(top: ScreenUtil.getInstance().statusBarHeight),
       child: Image.asset(
-        "images/ic_logo.png",
+        "images/login/${EnvironmentConfig.imageLogo}.png",
         height: 100.auto,
         fit: BoxFit.contain,
       ));
+
+  _getPackageInfo() async{
+    packageInfo = await PackageInfo.fromPlatform();
+    setState(() {
+      version = packageInfo.version;
+    });
+  }
 }

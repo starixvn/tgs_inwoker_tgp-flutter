@@ -422,7 +422,7 @@ class _WalletTransferState extends BaseState<WalletTransfer> with TickerProvider
     if(_amountController.text.isNotEmpty){
       amount = int.parse(_amountController.text);
     }else amount = 0;
-    if (fromWallet == null || toWallet == null || amount==0||amount> _vm.userMainWalletBalance){
+    if (fromWallet == null || toWallet == null || amount==0||amount> fromWallet.balance){
       setState(() {
         isEnabled = false;
       });

@@ -19,3 +19,11 @@ environment_config:
         default: "WLG Gaming"
     slotGameUrl:
       default: "https://images.srvptt.com/"
+    primaryColorCode:
+      type: int
+      default: 0xff91030c
+    primaryGradientColorCode:
+      type: int
+      default: 0xffc40511
+    imageLogo:
+      default: "pg_login_logo"

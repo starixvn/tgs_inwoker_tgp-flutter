@@ -18,13 +18,14 @@ class DepositViewModel extends BaseViewModel {
 
   @override
   List<BaseRepository> get repoList => [];
-  var getPaymentApiState,
-      uploadDepositImageApiState,
-      getPlayerPromotionListApiState;
+  var getPaymentApiState, uploadDepositImageApiState, getPlayerPromotionListApiState;
   Map<String, Map<String, List<Payment>>> paymentCodeList;
   List<Payment> paymentList;
   var manualDepositOrder;
   List<Promotion> promotionList;
+  List<Map<String, String>> displayPromotionList = [
+    {"name": "promotion_picker_hint", "payment_id": "-1"}
+  ];
   var rows = 20;
 
   get wallet => userRepo.wallet;
@@ -49,12 +50,14 @@ class DepositViewModel extends BaseViewModel {
     return uploadDepositImageApiState;
   }
 
-
   getPlayerPromotionList(int page) async {
     setLoading();
     getPlayerPromotionListApiState = await contentRepo.getPlayerPromotionList(page, rows, false, false);
     if (getPlayerPromotionListApiState.isSuccess) {
-      promotionList = getPlayerPromotionListApiState.result.items;
+      var list = getPlayerPromotionListApiState.result.items;
+      list.asMap().forEach((index, value) {
+        displayPromotionList.add({"name": value.name, "payment_id": value.id});
+      });
     }
     setLoading(false);
     return getPlayerPromotionListApiState;
