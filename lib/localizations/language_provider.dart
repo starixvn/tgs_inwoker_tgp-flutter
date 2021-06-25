@@ -13,14 +13,14 @@ class LanguageProvider{
   
   Future<Locale> setLocale(Language language) async {
     SharedPreferences _prefs = await SharedPreferences.getInstance();
-    await _prefs.setString("LANGUAGE_CODE", language.code);
+    await _prefs.setString("LANGUAGE_CODE", language.apiCode);
     return _locale(language);
   }
 
   Future<Locale> getLocale() async {
     SharedPreferences _prefs = await SharedPreferences.getInstance();
     String languageCode = _prefs.getString("LANGUAGE_CODE");
-    return _locale(languageCode != null ? list.singleWhere((e) => e.code == languageCode) : null);
+    return _locale(languageCode != null ? list.singleWhere((e) => e.apiCode == languageCode) : null);
   }
 
   Locale _locale(Language language) {

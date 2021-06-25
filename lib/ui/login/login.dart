@@ -58,7 +58,7 @@ class _LoginState extends BaseState<Login> {
       Container(
         margin: EdgeInsets.only(right: 2.auto, bottom: 2.auto),
         alignment: Alignment.centerRight,
-        child: Text("Version $version (staging)",
+        child: Text("Version $version (${EnvironmentConfig.environmentStage})",
         style: TextStyle(
           fontSize: 8.auto
         ),),

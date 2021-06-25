@@ -1,3 +1,6 @@
+
+import 'package:flutter/cupertino.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tgp_flutter/entity/announcement.dart';
 import 'package:tgp_flutter/entity/game.dart';
 import 'package:tgp_flutter/entity/game_provider.dart';
@@ -8,6 +11,7 @@ import 'package:tgp_flutter/entity/promotion.dart';
 import 'package:tgp_flutter/entity/response/game_url_response.dart';
 import 'package:tgp_flutter/entity/response/list_response.dart';
 import 'package:tgp_flutter/entity/user_profile.dart';
+import 'package:tgp_flutter/localizations/language_provider.dart';
 import 'package:tgp_flutter/network/api_request_builder.dart';
 import 'package:tgp_flutter/network/event_result.dart';
 import 'package:tgp_flutter/network/services/api_service.dart';
@@ -26,6 +30,11 @@ class ContentRepository extends BaseRepository {
     return _singleton;
   }
 
+   getLanguage() async {
+    SharedPreferences _prefs = await SharedPreferences.getInstance();
+    return _prefs.getString("LANGUAGE_CODE") ?? "en-US";
+  }
+
   Future<EventResult<List<GameProvider>>> getGameProviderList() async {
     return await ApiRequestBuilder<List<GameProvider>>(
             isAuthorization: false,
@@ -33,7 +42,7 @@ class ContentRepository extends BaseRepository {
             endPoint: "api/GameProvider/list",
             params: {
               "platformtype": "1",
-              "language": "en-US",
+              "language": await getLanguage(),
               "currency": "CNY",
             },
             converter: (json) => (json as List<dynamic>).map((e) => GameProvider.fromJson(e)).toList(),
@@ -53,7 +62,7 @@ class ContentRepository extends BaseRepository {
               "gpcode": gamePlatformCode,
               "gametypes": gameType.getJsonValue.toString(),
               "platformtype": "1",
-              "language": "en-US",
+              "language": await getLanguage(),
               "currency": "CNY"
             },
             converter: (json) => (json as List<dynamic>).map((e) => Game.fromJson(e)).toList(),
@@ -68,7 +77,7 @@ class ContentRepository extends BaseRepository {
             params: {
               "gpcode": gamePlatformCode,
               "gid": gameId.toString(),
-              "language": "en-US",
+              "language": await getLanguage(),
               "extends": {"lobbyurl": lobbyUrl}
             },
             converter: (json) => GameUrlResponse.fromJson(json),
@@ -84,7 +93,7 @@ class ContentRepository extends BaseRepository {
             params: {
               "gpcode": gamePlatformCode,
               "gtype": gameType.getJsonValue,
-              "language": "en-US",
+              "language": await getLanguage(),
               "extends": {"lobbyurl": lobbyUrl}
             },
             converter: (json) => GameUrlResponse.fromJson(json),
@@ -105,7 +114,7 @@ class ContentRepository extends BaseRepository {
   Future<EventResult<ListResponse<Promotion>>> getPromotionList(int page, int rows, bool desc, bool all) async {
     return await ApiRequestBuilder<ListResponse<Promotion>>(
             method: HttpMethod.GET,
-            endPoint: "api/promotion",
+            endPoint: "api/promotion/${await getLanguage()}",
             params: {
               "page": page.toString(),
               "rows": rows.toString(),
@@ -127,7 +136,7 @@ class ContentRepository extends BaseRepository {
   Future<EventResult<ListResponse<Promotion>>> getPlayerPromotionList(int page, int rows, bool desc, bool all) async {
     return await ApiRequestBuilder<ListResponse<Promotion>>(
         method: HttpMethod.GET,
-        endPoint: "api/playerpromotion",
+        endPoint: "api/playerpromotion/${await getLanguage()}",
         params: {
           "page": page.toString(),
           "rows": rows.toString(),

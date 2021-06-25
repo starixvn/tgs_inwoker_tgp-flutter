@@ -268,8 +268,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
     if (_isManualDeposit())
       _vm.getManualDepositId(_bankNameController.text, _amountController.text, _payment.id, promotionId ?? null);
     else if (_isApplePayDeposit())
-      _vm.applePayDepositOrder(
-          _amountController.text, _payment.id, promotionId ?? null, _transferNameController.text);
+      _vm.applePayDepositOrder(_amountController.text, _payment.id, promotionId ?? null, _transferNameController.text);
     else if (widget.paymentCode == "PrimePay") {
       _vm.primePayDepositOrder(_amountController.text, _payment.id, promotionId ?? null);
     } else //currently is LeePay
@@ -308,21 +307,23 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
 
   onSelectedPromotion(Map<String, String> map) {
     setState(() {
-      promotionName = getTranslatedText(map["name"])?? map["name"];
-      if(map["id"] == "-1"){
-        promotionId =null;
-      }else{
+      promotionName = getTranslatedText(map["name"]) ?? map["name"];
+      if (map["id"] == "-1") {
+        promotionId = null;
+      } else {
         promotionId = map["id"];
       }
     });
   }
 
   _clearTextField() {
-    _amountController.clear();
-    _bankNameController.clear();
-    _transferNameController.clear();
-    promotionId = null;
-    isButtonEnabled = false;
+    setState(() {
+      _amountController.clear();
+      _bankNameController.clear();
+      _transferNameController.clear();
+      promotionId = null;
+      isButtonEnabled = false;
+    });
   }
 
   _handleApiState() {
@@ -336,7 +337,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
                       depositRedirect: _vm.getLeepayOrderApiState.result,
                       depositAmount: Format().currencySymbolWithDecimalFormat(double.parse(_amountController.text)),
                       depositChannel: channelPickerText,
-                      promotionName: promotionId !="-1"?promotionName:null,
+                      promotionName: promotionId != "-1" ? promotionName : null,
                       exchangeRate: _vm.exchangeRate,
                       expectedAmount: _calculateExpectedAmount(),
                     )));
@@ -353,7 +354,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
                       depositRedirect: _vm.primePayDepositOrderApiState.result,
                       depositAmount: Format().currencySymbolWithDecimalFormat(double.parse(_amountController.text)),
                       depositChannel: channelPickerText,
-                      promotionName: promotionId !="-1"?promotionName:null,
+                      promotionName: promotionId != "-1" ? promotionName : null,
                     )));
         _clearTextField();
       });
@@ -375,7 +376,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
                       depositAmount: Format().currencySymbolWithDecimalFormat(double.parse(_amountController.text)),
                       depositChannel: channelPickerText,
                       orderNo: _vm.orderNo,
-                      promotionName: promotionId !="-1"?promotionName:null,
+                      promotionName: promotionId != "-1" ? promotionName : null,
                     )));
         _clearTextField();
       });
@@ -393,9 +394,8 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
                         depositAmount: Format().currencySymbolWithDecimalFormat(double.parse(_amountController.text)),
                         depositChannel: channelPickerText,
                         transName: _transferNameController.text,
-                        promotionName: promotionId !="-1"?promotionName:null,
+                        promotionName: promotionId != "-1" ? promotionName : null,
                       )));
-
           _clearTextField();
         });
       } else

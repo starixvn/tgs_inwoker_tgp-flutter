@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter/custom/color_button.dart';
 import 'package:tgp_flutter/custom/custom_dialog.dart';
@@ -33,15 +34,23 @@ class _PromotionItemDetailsState extends BaseState<PromotionItemDetails> {
         children: [
           Stack(
             children: [
-              Image.asset(
-                "images/promotion/${widget.imagePath}.jpg",
-                fit: BoxFit.fitWidth,
-              ),
+              widget.promotion.promotionLocalization?.mobileBanner == null
+                  ? Image.asset(
+                      "images/promotion/${widget.imagePath}.jpg",
+                      fit: BoxFit.fill,
+                    )
+                  : CachedNetworkImage(
+                      placeholder: (context, url) => Container(
+                            color: CustomColor.very_light_pink_four,
+                          ),
+                      imageUrl: widget.promotion.promotionLocalization.mobileBanner,
+                      //handling error
+                      fit: BoxFit.fill),
               Container(
                 margin: EdgeInsets.only(left: 15.auto, right: 15.auto, top: 15.auto, bottom: 15.auto),
                 width: 150.auto,
                 child: Text(
-                  widget.promotion.name,
+                  _getPromotionTitleName(),
                   style: TextStyle(color: Colors.white, fontSize: 19.auto),
                 ),
               )
@@ -116,5 +125,12 @@ class _PromotionItemDetailsState extends BaseState<PromotionItemDetails> {
     }
     ProgressDialog.show(context);
     widget.vm.joinPromotion(widget.promotion.id);
+  }
+
+  _getPromotionTitleName() {
+    if (widget.promotion.promotionLocalization == null)
+      return widget.promotion.name;
+    else
+      return widget.promotion.promotionLocalization.name;
   }
 }

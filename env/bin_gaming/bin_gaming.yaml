@@ -27,3 +27,5 @@ environment_config:
       default: 0xff1b86c7
     imageLogo:
       default: "bin_login_logo"
+    environmentStage:
+      default: "staging"

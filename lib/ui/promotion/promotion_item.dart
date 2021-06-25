@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter/entity/promotion.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
@@ -33,16 +34,24 @@ class _PromotionItemState extends BaseState<PromotionItem> {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(8),
-              child: Image.asset(
-                "images/promotion/${widget.imagePath}.jpg",
-                fit: BoxFit.fill,
-              ),
+              child: widget.promotion.promotionLocalization?.mobileBanner == null
+                  ? Image.asset(
+                      "images/promotion/${widget.imagePath}.jpg",
+                      fit: BoxFit.fill,
+                    )
+                  : CachedNetworkImage(
+                  placeholder: (context, url) => Container(
+                    color: CustomColor.very_light_pink_four,
+                  ),
+                  imageUrl: widget.promotion.promotionLocalization.mobileBanner,
+                  //handling error
+                  fit: BoxFit.fill)
             ),
             Container(
               margin: EdgeInsets.only(left: 15.auto, right: 15.auto, top: 15.auto, bottom: 15.auto),
               width: 150.auto,
               child: Text(
-                widget.promotion.name,
+                _getPromotionTitleName(),
                 style: TextStyle(color: Colors.white, fontSize: 19.auto),
               ),
             )
@@ -50,5 +59,12 @@ class _PromotionItemState extends BaseState<PromotionItem> {
         ),
       ),
     );
+  }
+
+  _getPromotionTitleName() {
+    if (widget.promotion.promotionLocalization == null)
+      return widget.promotion.name;
+    else
+      return widget.promotion.promotionLocalization.name;
   }
 }

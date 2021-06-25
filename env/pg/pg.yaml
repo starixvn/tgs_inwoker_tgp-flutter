@@ -27,3 +27,5 @@ environment_config:
       default: 0xffc40511
     imageLogo:
       default: "pg_login_logo"
+    environmentStage:
+      default: "staging"

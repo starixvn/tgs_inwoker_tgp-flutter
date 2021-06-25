@@ -82,7 +82,7 @@ class _GameViewState extends BaseState<GameView> {
   }
 
   _buildGameTab(int tabIndex, String title) {
-    var colorG = tabIndex == currentTabIndex ? "btn_home_game_category_selected_bg" : "btn_home_game_category_bg";
+   // var bgImage = tabIndex == currentTabIndex ? "btn_home_game_category_selected_bg" : "btn_home_game_category_bg";
     return InkWell(
       onTap: () {
         _onTabClick(tabIndex);

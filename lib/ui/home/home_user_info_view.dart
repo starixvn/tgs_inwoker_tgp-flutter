@@ -110,7 +110,7 @@ class _HomeUserInfoViewState extends BaseState<HomeUserInfoView> {
         children: [
           AutoSizeText(
             "¥ ${Format().currencyWithDecimalFormat(widget.wallet?.main ?? 0.0)}",
-            style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w500),
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
             minFontSize: 10,
             stepGranularity: 1,
           ),

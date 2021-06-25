@@ -19,4 +19,6 @@ class EnvironmentConfig {
   static const int primaryGradientColorCode = 4291036433;
 
   static const String imageLogo = 'pg_login_logo';
+
+  static const String environmentStage = 'staging';
 }
