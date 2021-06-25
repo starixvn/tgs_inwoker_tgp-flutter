@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tgp_flutter/entity/announcement.dart';
@@ -30,9 +29,13 @@ class ContentRepository extends BaseRepository {
     return _singleton;
   }
 
-   getLanguage() async {
+  getLanguage() async {
     SharedPreferences _prefs = await SharedPreferences.getInstance();
-    return _prefs.getString("LANGUAGE_CODE") ?? "en-US";
+    var languageCode = _prefs.getString("LANGUAGE_CODE") ?? "en-US";
+    if (languageCode == "zh-TW")
+      return "zh-CN";
+    else
+      return languageCode;
   }
 
   Future<EventResult<List<GameProvider>>> getGameProviderList() async {
@@ -135,16 +138,16 @@ class ContentRepository extends BaseRepository {
 
   Future<EventResult<ListResponse<Promotion>>> getPlayerPromotionList(int page, int rows, bool desc, bool all) async {
     return await ApiRequestBuilder<ListResponse<Promotion>>(
-        method: HttpMethod.GET,
-        endPoint: "api/playerpromotion/${await getLanguage()}",
-        params: {
-          "page": page.toString(),
-          "rows": rows.toString(),
-          "desc": desc.toString(),
-          "all": all.toString(),
-        },
-        converter: (json) => ListResponse.fromJson(json, (res) => Promotion.fromJson(res)),
-        jwtRefresher: jwtAuth)
+            method: HttpMethod.GET,
+            endPoint: "api/playerpromotion/${await getLanguage()}",
+            params: {
+              "page": page.toString(),
+              "rows": rows.toString(),
+              "desc": desc.toString(),
+              "all": all.toString(),
+            },
+            converter: (json) => ListResponse.fromJson(json, (res) => Promotion.fromJson(res)),
+            jwtRefresher: jwtAuth)
         .execute();
   }
 }

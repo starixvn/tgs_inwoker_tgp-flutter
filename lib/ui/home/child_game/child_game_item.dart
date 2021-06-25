@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/custom/custom_toast.dart';
 import 'package:tgp_flutter/entity/game.dart';
@@ -30,6 +31,25 @@ class ChildGameItem extends StatefulWidget {
 }
 
 class _ChildGameItemState extends BaseState<ChildGameItem> {
+  var languageCode;
+
+  @override
+  void initState() {
+    _initData();
+    super.initState();
+  }
+
+  _initData() async {
+    SharedPreferences _prefs = await SharedPreferences.getInstance();
+    var code = _prefs.getString("LANGUAGE_CODE");
+    setState(() {
+      if (code == "zh-TW")
+        languageCode = "zh-CN";
+      else
+        languageCode = code;
+    });
+  }
+
   Widget build(BuildContext context) {
     return InkWell(
       onTap: widget.isDisabled ? () {} : () => _navigateToGameWeb(widget.game),
@@ -51,28 +71,32 @@ class _ChildGameItemState extends BaseState<ChildGameItem> {
   }
 
   _buildImage() {
-    var imagePath = widget.game.type.getImagePath();
-    var gamePlatformCode = widget.game.gamePlatformCode.toLowerCase();
-    var gameName = widget.game.code.replaceAll(RegExp("_"), "");
-    var imageUrl = EnvironmentConfig.imageUrl +
-        (imagePath == "fish" ? "slotGame" : imagePath) +
-        "/" +
-        (gamePlatformCode) +
-        "/" +
-        gameName;
-    var imageType = gamePlatformCode == "jdb" ? ".jpg" : ".png";
-
-    var slotGameUrl = EnvironmentConfig.slotGameUrl + "${widget.game.gamePlatformCode.toUpperCase()}/$gameName.jpg";
     return Expanded(
         flex: 4,
         child: CachedNetworkImage(
             placeholder: (context, url) => Container(
                   color: CustomColor.very_light_pink_four,
                 ),
-            imageUrl: imagePath == "slotGame" ? slotGameUrl : imageUrl + imageType,
+            imageUrl: _getImageUrl(),
             //handling error
             width: 165.5.auto,
             fit: BoxFit.cover));
+  }
+
+  _getImageUrl() {
+    //http://images.srvptt.com/PP/PowerofThorMegaways.jpg
+    //https://images.srvptt.com/HABA/BirdofThunder.jpg
+    //https://images.srvptt.com/SW/zh-CN/3CardBrag.jpg
+    //https://images.srvptt.com/JDB/zh-CN/CaiShenFishing.jpg
+    var gameName = widget.game.code.replaceAll(RegExp("_"), "");
+
+    if (widget.game.gamePlatformCode == "PP" || widget.game.gamePlatformCode == "HABA")
+      return EnvironmentConfig.slotGameUrl + "${widget.game.gamePlatformCode.toUpperCase()}/$gameName.jpg";
+    else if (gameName == "FishingYiLuFa")
+      return EnvironmentConfig.slotGameUrl + "${widget.game.gamePlatformCode.toUpperCase()}/zh-CN/$gameName.jpg";
+    else
+      return EnvironmentConfig.slotGameUrl +
+          "${widget.game.gamePlatformCode.toUpperCase()}/${languageCode ?? "en-US"}/$gameName.jpg";
   }
 
   _buildImageTitleAndFavouriteIcon() {

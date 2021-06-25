@@ -56,8 +56,10 @@ class DepositViewModel extends BaseViewModel {
     if (getPlayerPromotionListApiState.isSuccess) {
       var list = getPlayerPromotionListApiState.result.items;
       list.asMap().forEach((index, value) {
-        if(value.promotionLocalization==null)displayPromotionList.add({"name": value.name, "payment_id": value.id});
-        else displayPromotionList.add({"name": value.promotionLocalization.name, "payment_id": value.id});
+        if (value.promotionLocalization == null || value.promotionLocalization.name.isEmpty)
+          displayPromotionList.add({"name": value.name, "payment_id": value.id});
+        else
+          displayPromotionList.add({"name": value.promotionLocalization.name, "payment_id": value.id});
       });
     }
     setLoading(false);

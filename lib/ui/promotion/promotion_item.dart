@@ -62,7 +62,7 @@ class _PromotionItemState extends BaseState<PromotionItem> {
   }
 
   _getPromotionTitleName() {
-    if (widget.promotion.promotionLocalization == null)
+    if (widget.promotion.promotionLocalization == null|| widget.promotion.promotionLocalization.name.isEmpty)
       return widget.promotion.name;
     else
       return widget.promotion.promotionLocalization.name;
