@@ -29,6 +29,7 @@ class Promotion {
   String updatedByUsername;
   @JsonKey(name: 'localization')
   PromotionLocalization promotionLocalization;
+  String mobileBanner;
 
   factory Promotion.fromJson(Map<String, dynamic> json) => _$PromotionFromJson(json);
   Map<String, dynamic> toJson() => _$PromotionToJson(this);

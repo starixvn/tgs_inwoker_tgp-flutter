@@ -38,7 +38,7 @@ enum GameType {
   @JsonValue(15)
   Slot,
   @JsonValue(16)
-  TableGame,
+  EGame,
 }
 
 extension GameTypeExtension on GameType {
@@ -47,7 +47,7 @@ extension GameTypeExtension on GameType {
       case GameType.Sportsbook:
         return getTranslatedText(context, "cat_sport");
       case GameType.ESports: 
-        return getTranslatedText(context,  "cat_laohu");
+        return getTranslatedText(context,  "cat_e_sports");
       case GameType.LiveDealerLobby:
         return getTranslatedText(context,  "cat_livecasino");
       case GameType.CardGameLobby:
@@ -58,8 +58,8 @@ extension GameTypeExtension on GameType {
         return getTranslatedText(context,  "cat_lottery");
       case GameType.Slot: 
         return getTranslatedText(context,  "cat_slotgame");
-      case GameType.TableGame: 
-        return getTranslatedText(context,  "cat_table");
+      case GameType.EGame:
+        return getTranslatedText(context,  "cat_e_game");
       default :
         return "";
     }
@@ -76,15 +76,15 @@ extension GameTypeExtension on GameType {
     GameType.Lottery:13,
     GameType.LotteryLobby: 14,
     GameType.Slot: 15,
-    GameType.TableGame: 16,
+    GameType.EGame: 16,
   };
 
   String getImagePath() {
     switch(this){
       case GameType.Slot:
         return   "slotGame" ;
-      case GameType.TableGame:
-        return   "slotGame" ;
+      case GameType.EGame:
+        return   "eGame" ;
       case GameType.Sportsbook:
         return   "sports" ;
       case GameType.LiveDealerLobby:
@@ -95,6 +95,8 @@ extension GameTypeExtension on GameType {
         return   "fish" ;
       case GameType.CardGameLobby:
         return   "qipai" ;
+      case GameType.ESports:
+        return   "esports" ;
       default :
         return "";
     }

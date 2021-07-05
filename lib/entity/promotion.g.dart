@@ -31,7 +31,8 @@ Promotion _$PromotionFromJson(Map<String, dynamic> json) {
     ..promotionLocalization = json['localization'] == null
         ? null
         : PromotionLocalization.fromJson(
-            json['localization'] as Map<String, dynamic>);
+            json['localization'] as Map<String, dynamic>)
+    ..mobileBanner = json['mobileBanner'] as String;
 }
 
 Map<String, dynamic> _$PromotionToJson(Promotion instance) => <String, dynamic>{
@@ -55,4 +56,5 @@ Map<String, dynamic> _$PromotionToJson(Promotion instance) => <String, dynamic>{
       'createdByUsername': instance.createdByUsername,
       'updatedByUsername': instance.updatedByUsername,
       'localization': instance.promotionLocalization,
+      'mobileBanner': instance.mobileBanner,
     };

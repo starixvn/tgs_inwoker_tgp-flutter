@@ -28,41 +28,40 @@ class _PromotionItemState extends BaseState<PromotionItem> {
                 builder: (context) =>
                     PromotionItemDetails(imagePath: widget.imagePath, promotion: widget.promotion, vm: widget.vm)));
       },
-      child: Container(
-        margin: EdgeInsets.only(left: 11.auto, right: 11.auto, top: 10.auto),
-        child: Stack(
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: widget.promotion.promotionLocalization?.mobileBanner == null
-                  ? Image.asset(
-                      "images/promotion/${widget.imagePath}.jpg",
-                      fit: BoxFit.fill,
-                    )
-                  : CachedNetworkImage(
-                  placeholder: (context, url) => Container(
-                    color: CustomColor.very_light_pink_four,
-                  ),
-                  imageUrl: widget.promotion.promotionLocalization.mobileBanner,
-                  //handling error
-                  fit: BoxFit.fill)
-            ),
-            Container(
-              margin: EdgeInsets.only(left: 15.auto, right: 15.auto, top: 15.auto, bottom: 15.auto),
-              width: 150.auto,
-              child: Text(
-                _getPromotionTitleName(),
-                style: TextStyle(color: Colors.white, fontSize: 19.auto),
+      child: widget.promotion.promotionLocalization?.mobileBanner == null && widget.promotion.mobileBanner == null
+          ? Container()
+          : Container(
+              margin: EdgeInsets.only(left: 11.auto, right: 11.auto, top: 10.auto),
+              child: Stack(
+                children: [
+                  ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: CachedNetworkImage(
+                          placeholder: (context, url) => Container(
+                                width: 375,
+                                height: 183,
+                                color: CustomColor.very_light_pink_four,
+                              ),
+                          imageUrl:
+                              (widget.promotion.promotionLocalization?.mobileBanner) ?? widget.promotion.mobileBanner,
+                          //handling error
+                          fit: BoxFit.fill)),
+                  Container(
+                    margin: EdgeInsets.only(left: 15.auto, right: 15.auto, top: 15.auto, bottom: 15.auto),
+                    width: 150.auto,
+                    child: Text(
+                      _getPromotionTitleName(),
+                      style: TextStyle(color: Colors.white, fontSize: 19.auto),
+                    ),
+                  )
+                ],
               ),
-            )
-          ],
-        ),
-      ),
+            ),
     );
   }
 
   _getPromotionTitleName() {
-    if (widget.promotion.promotionLocalization == null|| widget.promotion.promotionLocalization.name.isEmpty)
+    if (widget.promotion.promotionLocalization == null || widget.promotion.promotionLocalization.name.isEmpty)
       return widget.promotion.name;
     else
       return widget.promotion.promotionLocalization.name;

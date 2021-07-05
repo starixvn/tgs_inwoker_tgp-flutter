@@ -34,11 +34,8 @@ class _PromotionItemDetailsState extends BaseState<PromotionItemDetails> {
         children: [
           Stack(
             children: [
-              widget.promotion.promotionLocalization?.mobileBanner == null
-                  ? Image.asset(
-                      "images/promotion/${widget.imagePath}.jpg",
-                      fit: BoxFit.fill,
-                    )
+              widget.promotion.promotionLocalization?.mobileBanner==null && widget.promotion.mobileBanner==null
+                  ? Container()
                   : CachedNetworkImage(
                       placeholder: (context, url) => Container(
                             color: CustomColor.very_light_pink_four,
@@ -128,7 +125,7 @@ class _PromotionItemDetailsState extends BaseState<PromotionItemDetails> {
   }
 
   _getPromotionTitleName() {
-    if (widget.promotion.promotionLocalization == null|| widget.promotion.promotionLocalization.name.isEmpty)
+    if (widget.promotion.promotionLocalization == null || widget.promotion.promotionLocalization.name.isEmpty)
       return widget.promotion.name;
     else
       return widget.promotion.promotionLocalization.name;

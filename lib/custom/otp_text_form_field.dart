@@ -70,7 +70,7 @@ class _OtpTextFormFieldState extends BaseState<OtpTextFormField> {
                     autofocus: false,
                     onChanged: (value) => widget.onChanged(value),
                     controller: widget.controller,
-                    keyboardType: TextInputType.number,
+                    keyboardType: TextInputType.text,
                     textInputAction: widget.textInputAction,
                     style: TextStyle(color: CustomColor.theme_value_text_color, fontSize: 13.auto),
                     decoration: InputDecoration(

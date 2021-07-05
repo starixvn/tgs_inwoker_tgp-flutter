@@ -29,7 +29,8 @@ class PromotionViewModel extends BaseViewModel {
     } else
       page = 1;
 
-    getPromotionListApiState = await contentRepo.getPromotionList(page, rows, true, true);
+    if(userProfile==null) getPromotionListApiState = await contentRepo.getPromotionList(page, rows, true, true);
+    else getPromotionListApiState = await contentRepo.getPlayerPromotionList(page, rows, true, true);
     List<Promotion> list = [];
     if (getPromotionListApiState.isSuccess) {
       list = getPromotionListApiState.result.items;

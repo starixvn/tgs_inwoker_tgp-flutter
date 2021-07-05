@@ -17,7 +17,8 @@ Game _$GameFromJson(Map<String, dynamic> json) {
     ..type = _$enumDecodeNullable(_$GameTypeEnumMap, json['type'])
     ..tag = json['tag'] == null
         ? null
-        : GameTag.fromJson(json['tag'] as Map<String, dynamic>);
+        : GameTag.fromJson(json['tag'] as Map<String, dynamic>)
+    ..localizedName = json['localizedName'] as String;
 }
 
 Map<String, dynamic> _$GameToJson(Game instance) => <String, dynamic>{
@@ -29,6 +30,7 @@ Map<String, dynamic> _$GameToJson(Game instance) => <String, dynamic>{
       'isactive': instance.isActive,
       'type': _$GameTypeEnumMap[instance.type],
       'tag': instance.tag,
+      'localizedName': instance.localizedName,
     };
 
 T _$enumDecode<T>(
@@ -79,5 +81,5 @@ const _$GameTypeEnumMap = {
   GameType.Lottery: 13,
   GameType.LotteryLobby: 14,
   GameType.Slot: 15,
-  GameType.TableGame: 16,
+  GameType.EGame: 16,
 };

@@ -106,21 +106,24 @@ class _HomeUserInfoViewState extends BaseState<HomeUserInfoView> {
       );
 
   _buildWalletText() => Expanded(
-          child: Column(
+          child: Container(
+            alignment: Alignment.centerLeft,
+            child: Column(
         children: [
-          AutoSizeText(
-            "¥ ${Format().currencyWithDecimalFormat(widget.wallet?.main ?? 0.0)}",
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
-            minFontSize: 10,
-            stepGranularity: 1,
-          ),
-          Text(
-            getTranslatedText("main_wallet"),
-            style: TextStyle(color: Colors.white, fontSize: 10.auto),
-            textAlign: TextAlign.center,
-          ),
+            AutoSizeText(
+              "${Format().currencyWithDecimalFormat(widget.wallet?.main ?? 0.0)}",
+              style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
+              minFontSize: 10,
+              stepGranularity: 1,
+            ),
+            Text(
+              getTranslatedText("main_wallet"),
+              style: TextStyle(color: Colors.white, fontSize: 10.auto),
+              textAlign: TextAlign.center,
+            ),
         ],
-      ));
+      ),
+          ));
 
   _buildLoginRegisterButton() {
     var string = getTranslatedText("login_or_signup").split("/");

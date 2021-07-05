@@ -173,7 +173,7 @@ class _GameViewState extends BaseState<GameView> {
   }
 
   _navigate(String gamePlatformCode, GameType gameType) async {
-    if (gameType == GameType.Slot || gameType == GameType.TableGame || gameType == GameType.Fishing) {
+    if (gameType == GameType.Slot || gameType == GameType.EGame || gameType == GameType.Fishing) {
       //navigate to child game
       WidgetsBinding.instance.addPostFrameCallback((_) {
         Navigator.push(

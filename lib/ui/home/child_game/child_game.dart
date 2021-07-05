@@ -53,7 +53,7 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
   _initData() async {
     await _vm.getGameProviderList();
     _vm.getPlatformList(widget.gameType);
-    _vm.filter(gamePlatformCode: widget.gamePlatformCode, gameType: widget.gameType);
+    _vm.filter(context: context, gamePlatformCode: widget.gamePlatformCode, gameType: widget.gameType);
   }
 
   Widget build(BuildContext context) {
@@ -64,22 +64,10 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
           builder: (ctx, vm, _) {
             _handleApiState();
             return Scaffold(
-              resizeToAvoidBottomInset: false,
-              backgroundColor: Colors.grey[100],
-              appBar: _buildAppBar(),
-              body: _vm.filteredGameList == null || _vm.gameProviderList == null
-                  ? buildProgressDialog()
-                  : Stack(
-                      children: [
-                        _buildChildGame(),
-                        _buildOverlay(),
-                        ChildGameSuggestion(
-                          isVisible: isVisibleSuggestionList,
-                          recommendList: _vm.recommendGameList,
-                        )
-                      ],
-                    ),
-            );
+                resizeToAvoidBottomInset: false,
+                backgroundColor: Colors.grey[100],
+                appBar: _buildAppBar(),
+                body: _buildWidget());
           }),
     );
   }
@@ -104,6 +92,26 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
               ),
         actions: [_getAction()],
       );
+
+  _buildWidget() {
+    if (_vm.filteredGameList == null || _vm.gameProviderList == null)
+      return buildProgressDialog();
+    else {
+        return Stack(
+          children: [
+            _buildChildGame(),
+            _buildOverlay(),
+            Visibility(
+              visible: _vm.recommendGameList.isNotEmpty&& _vm.recommendGameList != null,
+              child: ChildGameSuggestion(
+                isVisible: isVisibleSuggestionList,
+                recommendList: _vm.recommendGameList,
+              ),
+            )
+          ],
+        );
+    }
+  }
 
   _buildChildGame() => Column(
         children: [

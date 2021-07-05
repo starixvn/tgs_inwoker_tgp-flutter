@@ -73,5 +73,5 @@ const _$GameTypeEnumMap = {
   GameType.Lottery: 13,
   GameType.LotteryLobby: 14,
   GameType.Slot: 15,
-  GameType.TableGame: 16,
+  GameType.EGame: 16,
 };

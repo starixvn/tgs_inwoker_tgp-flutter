@@ -1,3 +1,5 @@
+
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -5,6 +7,7 @@ import 'package:tgp_flutter/base_viewmodel.dart';
 import 'package:tgp_flutter/entity/game.dart';
 import 'package:tgp_flutter/entity/game_provider2.dart';
 import 'package:tgp_flutter/entity/game_type.dart';
+import 'package:tgp_flutter/localizations/language_provider.dart';
 import 'package:tgp_flutter/network/event_result.dart';
 import 'package:tgp_flutter/repository/base_repository.dart';
 import 'package:tgp_flutter/repository/content_repository.dart';
@@ -17,7 +20,8 @@ class GameViewModel extends BaseViewModel {
 
   @override
   List<BaseRepository> get repoList => [contentRepo];
-  EventResult getGameApiState, getGameUrlApiState, getGameProviderListApiState, getLobbyGameUrlApiState;
+  EventResult<List<Game>> getGameApiState;
+  EventResult getGameUrlApiState, getGameProviderListApiState, getLobbyGameUrlApiState;
   List<Game> _gameList, filteredGameList;
   Map<String, List<Game>> gameListMap = new Map<String, List<Game>>();
   int mCategory = 0;
@@ -28,13 +32,15 @@ class GameViewModel extends BaseViewModel {
   List<List<GameProvider2>> gameProviderList;
   List<GameType> gameTypeList = [
     GameType.Sportsbook,
+    GameType.ESports,
     GameType.LiveDealerLobby,
     GameType.CardGameLobby,
     GameType.LotteryLobby,
     GameType.Slot,
-    GameType.TableGame,
+    GameType.EGame,
     GameType.Fishing,
   ];
+  var _context;
 
   get userProfile => userRepo.userProfile;
 
@@ -67,7 +73,10 @@ class GameViewModel extends BaseViewModel {
     setLoading();
     getGameApiState = await contentRepo.getGameList(gamePlatformCode, gameType);
     if (getGameApiState.isSuccess) {
-      gameListMap[gamePlatformCode] = getGameApiState.result;
+      gameListMap[gamePlatformCode] = getGameApiState.result.map((e){
+        e.localizedName = LanguageProvider().getTranslated(_context, e.code);
+        return e;
+      }).toList();
     }
     setLoading(false);
     return getGameApiState;
@@ -100,7 +109,8 @@ class GameViewModel extends BaseViewModel {
       return <Game>[];
   }
 
-  filter({int category, String searchQuery, String gamePlatformCode, GameType gameType}) async {
+  filter({BuildContext context, int category, String searchQuery, String gamePlatformCode, GameType gameType}) async {
+    if (context != null) _context = context;
     if (gamePlatformCode != null && gameType != null) {
       mGameType = gameType;
       mPlatform = gamePlatformCode;
@@ -161,7 +171,7 @@ class GameViewModel extends BaseViewModel {
     if (mSearchQuery == null || mSearchQuery.isEmpty) {
       return gameList;
     } else {
-      var list = gameList.where((element) => element.name.toLowerCase().contains(mSearchQuery.toLowerCase())).toList();
+      var list = gameList.where((element) => element.localizedName.toLowerCase().contains(mSearchQuery.toLowerCase())).toList();
       return list;
     }
   }

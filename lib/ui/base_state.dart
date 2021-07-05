@@ -91,6 +91,7 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
       401: "enter_username_error_message",
       405: "invalid_otp",
       407:"failed_participate_promotion",
+      900:"request_failed",
       901: "operation_not_allow"
     };
     final errorKey = errorMap[eventResult.errorCode];

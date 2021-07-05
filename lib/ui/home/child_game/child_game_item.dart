@@ -80,7 +80,8 @@ class _ChildGameItemState extends BaseState<ChildGameItem> {
             imageUrl: _getImageUrl(),
             //handling error
             width: 165.5.auto,
-            fit: BoxFit.cover));
+            fit: BoxFit.cover)
+    );
   }
 
   _getImageUrl() {
@@ -100,8 +101,6 @@ class _ChildGameItemState extends BaseState<ChildGameItem> {
   }
 
   _buildImageTitleAndFavouriteIcon() {
-    var gameName = widget.game.type == GameType.Slot ? getTranslatedText(widget.game.code) : widget.game.name;
-    // print(getTranslatedText(widget.game.code)+ "||"+widget.game.name??"");
     return Expanded(
       flex: 1,
       child: Container(
@@ -116,19 +115,19 @@ class _ChildGameItemState extends BaseState<ChildGameItem> {
               bottomRight: Radius.circular(5),
             )),
         padding: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 5.auto),
-        child: Row(
-          children: [
-            Expanded(
-              flex: 9,
-              child: AutoSizeText(
-                gameName == null ? widget.game.name : gameName,
+        child: /*Row(
+          children: [ */
+            Container(
+              width: context.screenWidth,
+              child:AutoSizeText(
+                widget.game.localizedName?? widget.game.name,
                 style: TextStyle(color: Colors.white),
                 minFontSize: 3,
                 stepGranularity: 1,
                 maxLines: 1,
               ),
-            ),
-            Expanded(
+     ),
+     /*       Expanded(
               flex: 1,
               child: InkWell(
                 onTap: () {},
@@ -140,7 +139,7 @@ class _ChildGameItemState extends BaseState<ChildGameItem> {
               ),
             )
           ],
-        ),
+        ),*/
       ),
     );
   }

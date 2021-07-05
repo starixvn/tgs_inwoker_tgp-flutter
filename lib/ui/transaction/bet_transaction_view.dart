@@ -127,7 +127,11 @@ class BetTransactionViewState extends BaseState<BetTransactionView> {
     if (isStartDate) {
       widget.vm.setDate(startDate: date);
     } else {
-      widget.vm.setDate(endDate: date);
+      if(date.isBefore(widget.vm.pStartDate)){
+        CustomToast.show(getTranslatedText("transaction_after_start_date"));
+        return;
+      }
+      else widget.vm.setDate(endDate: date);
     }
     _onDateFilter(-1);
   }

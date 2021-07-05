@@ -83,7 +83,7 @@ class _GameWebState extends BaseState<GameWeb> {
           decoration: gradientDecoration,
         ),
         title: Text(
-          "Game",
+          getTranslatedText("game"),
           style: TextStyle(fontSize: 20.auto),
         ),
         leading: IconButton(

@@ -35,67 +35,74 @@ class _MessageItemState extends BaseState<MessageItem> {
 
   Widget build(BuildContext context) {
     _checkIsSelectedMessage();
-    return Container(
-      margin: EdgeInsets.only(bottom: 10.auto),
-      child: Row(
-        children: [
-          Visibility(
-              visible: widget.isEditing,
-              child: Expanded(
-                flex: 1,
-                child: InkWell(
-                  highlightColor: Colors.transparent,
-                  splashColor: Colors.transparent,
-                  onTap: () {
-                    widget.onSelected(widget.message);
-                  },
-                  child: isSelected
-                      ? Image.asset(
-                          "images/message/ic_message_selected_dot.png",
-                          width: 22.auto,
-                          height: 22.auto,
-                        )
-                      : Container(
-                          width: 22.auto,
-                          height: 22.auto,
-                          margin: EdgeInsets.only(left: 6.auto, right: 6.auto),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(100),
-                              border: Border.all(width: 2, color: CustomColor.theme_button_disable_bg)),
-                        ),
+    return InkWell(
+      highlightColor: Colors.transparent,
+      splashColor: Colors.transparent,
+      onTap: () {
+        widget.onSelected(widget.message);
+      },
+      child: Container(
+        margin: EdgeInsets.only(bottom: 10.auto),
+        child: Row(
+          children: [
+            Visibility(
+                visible: widget.isEditing,
+                child: Expanded(
+                  flex: 1,
+                  child: /*InkWell(
+                    highlightColor: Colors.transparent,
+                    splashColor: Colors.transparent,
+                    onTap: () {
+                      widget.onSelected(widget.message);
+                    },
+                    child: */isSelected
+                        ? Image.asset(
+                            "images/message/ic_message_selected_dot.png",
+                            width: 22.auto,
+                            height: 22.auto,
+                          )
+                        : Container(
+                            width: 22.auto,
+                            height: 22.auto,
+                            margin: EdgeInsets.only(left: 6.auto, right: 6.auto),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(100),
+                                border: Border.all(width: 2, color: CustomColor.theme_button_disable_bg)),
+                          ),
+                  ),
                 ),
-              )),
-          Expanded(
-            flex: 9,
-            child: InkWell(
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => MessageDetails(
-                              message: widget.message,
-                            )));
-                widget.onReadMessage(widget.message.id);
-              },
-              child: Card(
-                semanticContainer: true,
-                clipBehavior: Clip.antiAliasWithSaveLayer,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5.0),
-                ),
-                elevation: 5,
-                child: Container(
-                  padding: EdgeInsets.all(15.auto),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [_messageDot(), _messageContent()],
+            Expanded(
+              flex: 9,
+              child: InkWell(
+                onTap: widget.isEditing?null:() {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => MessageDetails(
+                                message: widget.message,
+                              )));
+                  widget.onReadMessage(widget.message.id);
+                },
+                child: Card(
+                  semanticContainer: true,
+                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5.0),
+                  ),
+                  elevation: 5,
+                  child: Container(
+                    padding: EdgeInsets.all(15.auto),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [_messageDot(), _messageContent()],
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
