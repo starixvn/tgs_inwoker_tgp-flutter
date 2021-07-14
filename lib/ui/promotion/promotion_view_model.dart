@@ -11,7 +11,8 @@ class PromotionViewModel extends BaseViewModel {
   EventResult getPromotionState;
 
   @override
-  List<BaseRepository> get repoList => [userRepo,contentRepo];
+  List<BaseRepository> get repoList => [userRepo, contentRepo];
+
   get userProfile => userRepo.userProfile;
   var getPromotionListApiState, joinPromotionApiState;
   var promotionList;
@@ -29,15 +30,18 @@ class PromotionViewModel extends BaseViewModel {
     } else
       page = 1;
 
-    if(userProfile==null) getPromotionListApiState = await contentRepo.getPromotionList(page, rows, true, true);
-    else getPromotionListApiState = await contentRepo.getPlayerPromotionList(page, rows, true, true);
+    if (userProfile == null)
+      getPromotionListApiState = await contentRepo.getPromotionList(page, rows, true, true);
+    else
+      getPromotionListApiState = await contentRepo.getPlayerPromotionList(page, rows, true, true);
     List<Promotion> list = [];
     if (getPromotionListApiState.isSuccess) {
       list = getPromotionListApiState.result.items;
       if (promotionList == null) promotionList = [];
       promotionList.addAll(list);
       endRecord = promotionList.length >= getPromotionListApiState.result.totalCount ? true : false;
-    }
+    } else
+      promotionList = [];
     setLoading(false);
     return getPromotionListApiState;
   }
@@ -45,9 +49,6 @@ class PromotionViewModel extends BaseViewModel {
   joinPromotion(String id) async {
     setLoading();
     joinPromotionApiState = await contentRepo.joinPromotion(id);
-    if (joinPromotionApiState.isSuccess) {
-
-    }
     setLoading(false);
     return joinPromotionApiState;
   }

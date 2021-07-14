@@ -14,6 +14,7 @@ import 'package:tgp_flutter/ui/home/home.dart';
 import 'package:tgp_flutter/ui/promotion/promotion_item.dart';
 import 'package:tgp_flutter/ui/promotion/promotion_view_model.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
+import 'package:html/parser.dart';
 
 class PromotionItemDetails extends StatefulWidget {
   final String imagePath;
@@ -32,18 +33,18 @@ class _PromotionItemDetailsState extends BaseState<PromotionItemDetails> {
       appBar: _buildAppBar(),
       body: ListView(
         children: [
-          Stack(
-            children: [
-              widget.promotion.promotionLocalization?.mobileBanner==null && widget.promotion.mobileBanner==null
-                  ? Container()
-                  : CachedNetworkImage(
-                      placeholder: (context, url) => Container(
-                            color: CustomColor.very_light_pink_four,
-                          ),
-                      imageUrl: widget.promotion.promotionLocalization.mobileBanner,
-                      //handling error
-                      fit: BoxFit.fill),
-              Container(
+          /*Stack(
+            children: [*/
+          widget.promotion.promotionLocalization?.mobileBanner == null && widget.promotion.mobileBanner == null
+              ? Container()
+              : CachedNetworkImage(
+                  placeholder: (context, url) => Container(
+                        color: CustomColor.very_light_pink_four,
+                      ),
+                  imageUrl: widget.promotion.promotionLocalization.mobileBanner,
+                  //handling error
+                  fit: BoxFit.fill),
+          /*Container(
                 margin: EdgeInsets.only(left: 15.auto, right: 15.auto, top: 15.auto, bottom: 15.auto),
                 width: 150.auto,
                 child: Text(
@@ -52,7 +53,7 @@ class _PromotionItemDetailsState extends BaseState<PromotionItemDetails> {
                 ),
               )
             ],
-          ),
+          ),*/
           Container(
               margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 15.auto),
               child: Text(
@@ -60,18 +61,13 @@ class _PromotionItemDetailsState extends BaseState<PromotionItemDetails> {
                 style:
                     TextStyle(color: CustomColor.theme_bar_gradient_1, fontSize: 14.auto, fontWeight: FontWeight.bold),
               )),
-          Container(
-            margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 15.auto),
-            child: Text("${getTranslatedText("promotion_person")}：\n VIP" + widget.promotion.vipLevels.join(", VIP")),
-          ),
-          Container(
-            margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 15.auto),
-            child: Text("${getTranslatedText("promotion_time")}：\n " +
-                Format().dateTimeFormat(widget.promotion.from) +
-                " - " +
-                Format().dateTimeFormat(widget.promotion.to)),
-          ),
-          //_buildPromotionDescriptionText(),
+          _buildPromotionText(
+              "${getTranslatedText("promotion_person")}：\n VIP" + widget.promotion.vipLevels.join(", VIP")),
+          _buildPromotionText("${getTranslatedText("promotion_time")}：\n " +
+              Format().dateTimeFormat(widget.promotion.from) +
+              " - " +
+              Format().dateTimeFormat(widget.promotion.to)),
+          _buildPromotionText(_parseHtmlString(widget.promotion.promotionLocalization.content)),
           _buildJoinButton()
         ],
       ),
@@ -124,10 +120,22 @@ class _PromotionItemDetailsState extends BaseState<PromotionItemDetails> {
     widget.vm.joinPromotion(widget.promotion.id);
   }
 
+  _buildPromotionText(String displayText) => Container(
+        margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 15.auto),
+        child: Text(displayText),
+      );
+
   _getPromotionTitleName() {
     if (widget.promotion.promotionLocalization == null || widget.promotion.promotionLocalization.name.isEmpty)
       return widget.promotion.name;
     else
       return widget.promotion.promotionLocalization.name;
+  }
+
+  String _parseHtmlString(String htmlString) {
+    final document = parse(htmlString);
+    final String parsedString = parse(document.body.text).documentElement.text;
+
+    return parsedString;
   }
 }

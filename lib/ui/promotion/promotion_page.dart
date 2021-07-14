@@ -62,6 +62,76 @@ class _PromotionState extends BaseState<PromotionPage> {
         ),
       );
 
+  _buildPromotion() {
+    if (_vm.promotionList == null)
+      return buildProgressDialog();
+    else if (_vm.promotionList.isEmpty) {
+      return Container(
+        margin: EdgeInsets.only(left: 11.auto, right: 11.auto, top: 10.auto),
+        height: 150.auto,
+        child: Stack(
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: Container(
+                child: Image.asset(
+                  "images/promotion/promo_empty.png",
+                  fit: BoxFit.fill,
+                ),
+              ),
+            ),
+            Container(
+                margin: EdgeInsets.only(
+                  left: 15.auto,
+                  right: 15.auto,
+                ),
+                width: context.screenWidth / 2.3,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    GradientText(
+                      getTranslatedText("promotion_empty1"),
+                      style: TextStyle(fontSize: context.screenWidth / 25, fontWeight: FontWeight.bold),
+                      gradient: LinearGradient(
+                        colors: [
+                          Color(0xff446597),
+                          Color(0xff282828),
+                        ],
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    GradientText(
+                      getTranslatedText("promotion_empty2"),
+                      //getTranslatedText("promotion_empty"),
+                      style: TextStyle(fontSize: context.screenWidth / 25, fontWeight: FontWeight.bold),
+                      gradient: LinearGradient(
+                        colors: [
+                          Color(0xff446597),
+                          Color(0xff282828),
+                        ],
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                      ),
+                      textAlign: TextAlign.center,
+                    )
+                  ],
+                ))
+          ],
+        ),
+      );
+    } else {
+      return ListView(
+        padding: EdgeInsets.only(bottom: 10.auto),
+        children: List.generate(_vm.promotionList.length, (index) {
+          return PromotionItem(
+              imagePath: "promotion_BN_${(index % 3 + 1).toString()}", promotion: _vm.promotionList[index], vm: _vm);
+        }),
+      );
+    }
+  }
+
   _handleApiState() {
     handleApiState(_vm.joinPromotionApiState, onSuccess: () {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -104,72 +174,6 @@ class _PromotionState extends BaseState<PromotionPage> {
         );
       });
     });
-  }
-
-  _buildPromotion() {
-    if (_vm.promotionList == null)
-      return buildProgressDialog();
-    else if (_vm.promotionList.isEmpty) {
-      return Container(
-        margin: EdgeInsets.only(left: 11.auto, right: 11.auto, top: 10.auto),
-        height: 150.auto,
-        child: Stack(
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: Container(
-                child: Image.asset(
-                  "images/promotion/promo_empty.png",
-                  fit: BoxFit.fill,
-                ),
-              ),
-            ),
-            Container(
-                margin: EdgeInsets.only(left: 15.auto, right: 15.auto, ),
-                width: context.screenWidth/2.3,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    GradientText(
-                      getTranslatedText("promotion_empty1"),
-                      style: TextStyle(fontSize: context.screenWidth/25, fontWeight: FontWeight.bold),
-                      gradient: LinearGradient(
-                        colors: [
-                          Color(0xff446597),
-                          Color(0xff282828),
-                        ],
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    GradientText(
-                      getTranslatedText("promotion_empty2"),
-                      //getTranslatedText("promotion_empty"),
-                      style: TextStyle(fontSize: context.screenWidth/25, fontWeight: FontWeight.bold),
-                      gradient: LinearGradient(
-                        colors: [
-                          Color(0xff446597),
-                          Color(0xff282828),
-                        ],
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                      ),
-                      textAlign: TextAlign.center,
-                    )
-                  ],
-                ))
-          ],
-        ),
-      );
-    } else {
-      return ListView(
-        padding: EdgeInsets.only(bottom: 10.auto),
-        children: List.generate(_vm.promotionList.length, (index) {
-          return PromotionItem(
-              imagePath: "promotion_BN_${(index % 3 + 1).toString()}", promotion: _vm.promotionList[index], vm: _vm);
-        }),
-      );
-    }
+    handleApiState(_vm.getPromotionListApiState, onSuccess: () {});
   }
 }

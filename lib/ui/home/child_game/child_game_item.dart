@@ -80,8 +80,7 @@ class _ChildGameItemState extends BaseState<ChildGameItem> {
             imageUrl: _getImageUrl(),
             //handling error
             width: 165.5.auto,
-            fit: BoxFit.cover)
-    );
+            fit: BoxFit.fill));
   }
 
   _getImageUrl() {
@@ -89,11 +88,12 @@ class _ChildGameItemState extends BaseState<ChildGameItem> {
     //https://images.srvptt.com/HABA/BirdofThunder.jpg
     //https://images.srvptt.com/SW/zh-CN/3CardBrag.jpg
     //https://images.srvptt.com/JDB/zh-CN/CaiShenFishing.jpg
-    var gameName = widget.game.code.replaceAll(RegExp("_"), "");
+    var gameName = widget.game.code;
 
-    if (widget.game.gamePlatformCode == "PP" || widget.game.gamePlatformCode == "HABA")
+    /*if (widget.game.gamePlatformCode == "PP" || widget.game.gamePlatformCode == "HABA")
       return EnvironmentConfig.slotGameUrl + "${widget.game.gamePlatformCode.toUpperCase()}/$gameName.jpg";
-    else if (gameName == "FishingYiLuFa")
+    else*/
+    if (gameName == "FishingYiLuFa")
       return EnvironmentConfig.slotGameUrl + "${widget.game.gamePlatformCode.toUpperCase()}/zh-CN/$gameName.jpg";
     else
       return EnvironmentConfig.slotGameUrl +
@@ -114,20 +114,20 @@ class _ChildGameItemState extends BaseState<ChildGameItem> {
               bottomLeft: Radius.circular(5),
               bottomRight: Radius.circular(5),
             )),
-        padding: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 5.auto),
+        padding: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 7.auto),
         child: /*Row(
           children: [ */
             Container(
-              width: context.screenWidth,
-              child:AutoSizeText(
-                widget.game.localizedName?? widget.game.name,
-                style: TextStyle(color: Colors.white),
-                minFontSize: 3,
-                stepGranularity: 1,
-                maxLines: 1,
-              ),
-     ),
-     /*       Expanded(
+          width: context.screenWidth,
+          child: AutoSizeText(
+            widget.game.name,
+            style: TextStyle(color: Colors.white),
+            minFontSize: 3,
+            stepGranularity: 1,
+            maxLines: 1,
+          ),
+        ),
+        /*       Expanded(
               flex: 1,
               child: InkWell(
                 onTap: () {},

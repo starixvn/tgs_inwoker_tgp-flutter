@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 import 'dart:math';
 
@@ -35,10 +34,10 @@ class GameViewModel extends BaseViewModel {
     GameType.ESports,
     GameType.LiveDealerLobby,
     GameType.CardGameLobby,
+    GameType.Fishing,
     GameType.LotteryLobby,
     GameType.Slot,
     GameType.EGame,
-    GameType.Fishing,
   ];
   var _context;
 
@@ -61,9 +60,11 @@ class GameViewModel extends BaseViewModel {
         }
       });
     });
-    gameProviderList = gameTypeList.map((type) =>
-         list.where((element) => element.gameType == type).toList(),
-    ).toList();
+    gameProviderList = gameTypeList
+        .map(
+          (type) => list.where((element) => element.gameType == type).toList(),
+        )
+        .toList();
     print(gameProviderList);
     setLoading(false);
     return getGameProviderListApiState;
@@ -73,7 +74,7 @@ class GameViewModel extends BaseViewModel {
     setLoading();
     getGameApiState = await contentRepo.getGameList(gamePlatformCode, gameType);
     if (getGameApiState.isSuccess) {
-      gameListMap[gamePlatformCode] = getGameApiState.result.map((e){
+      gameListMap[gamePlatformCode] = getGameApiState.result.map((e) {
         e.localizedName = LanguageProvider().getTranslated(_context, e.code);
         return e;
       }).toList();
@@ -171,7 +172,9 @@ class GameViewModel extends BaseViewModel {
     if (mSearchQuery == null || mSearchQuery.isEmpty) {
       return gameList;
     } else {
-      var list = gameList.where((element) => element.localizedName.toLowerCase().contains(mSearchQuery.toLowerCase())).toList();
+      var list = gameList
+          .where((element) => element.localizedName.toLowerCase().contains(mSearchQuery.toLowerCase()))
+          .toList();
       return list;
     }
   }

@@ -32,8 +32,8 @@ class _PromotionItemState extends BaseState<PromotionItem> {
           ? Container()
           : Container(
               margin: EdgeInsets.only(left: 11.auto, right: 11.auto, top: 10.auto),
-              child: Stack(
-                children: [
+              child: /*Stack(
+                children: [*/
                   ClipRRect(
                       borderRadius: BorderRadius.circular(8),
                       child: CachedNetworkImage(
@@ -46,7 +46,7 @@ class _PromotionItemState extends BaseState<PromotionItem> {
                               (widget.promotion.promotionLocalization?.mobileBanner) ?? widget.promotion.mobileBanner,
                           //handling error
                           fit: BoxFit.fill)),
-                  Container(
+              /*Container(
                     margin: EdgeInsets.only(left: 15.auto, right: 15.auto, top: 15.auto, bottom: 15.auto),
                     width: 150.auto,
                     child: Text(
@@ -55,15 +55,15 @@ class _PromotionItemState extends BaseState<PromotionItem> {
                     ),
                   )
                 ],
-              ),
+              ),*/
             ),
     );
   }
 
   _getPromotionTitleName() {
-    if (widget.promotion.promotionLocalization == null || widget.promotion.promotionLocalization.name.isEmpty)
-      return widget.promotion.name;
-    else
+    if (widget.promotion.promotionLocalization.name != null)
       return widget.promotion.promotionLocalization.name;
+    else
+      return widget.promotion.name;
   }
 }

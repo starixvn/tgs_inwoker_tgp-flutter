@@ -12,14 +12,20 @@ import 'package:html/parser.dart';
 
 class MessageItem extends StatefulWidget {
   final Message message;
-  final bool isEditing;
-  final Function(Message) onSelected;
-  final Function(String) onReadMessage;
-  final bool isSelected;
-  final List<String> selectedMessageList;
 
-  MessageItem(
-      {this.message, this.isEditing, this.onSelected, this.onReadMessage, this.isSelected, this.selectedMessageList});
+  //final bool isEditing;
+  //final Function(Message) onSelected;
+  final Function(String) onReadMessage;
+
+  //final bool isSelected;
+  //final List<String> selectedMessageList;
+
+  MessageItem({
+    this.message,
+    /*this.isEditing, this.onSelected,*/
+    this.onReadMessage,
+    /* this.isSelected, this.selectedMessageList*/
+  });
 
   @override
   _MessageItemState createState() => _MessageItemState();
@@ -34,8 +40,8 @@ class _MessageItemState extends BaseState<MessageItem> {
   }
 
   Widget build(BuildContext context) {
-    _checkIsSelectedMessage();
-    return InkWell(
+    //_checkIsSelectedMessage();
+    return /*InkWell(
       highlightColor: Colors.transparent,
       splashColor: Colors.transparent,
       onTap: () {
@@ -49,13 +55,13 @@ class _MessageItemState extends BaseState<MessageItem> {
                 visible: widget.isEditing,
                 child: Expanded(
                   flex: 1,
-                  child: /*InkWell(
+                  child: */ /*InkWell(
                     highlightColor: Colors.transparent,
                     splashColor: Colors.transparent,
                     onTap: () {
                       widget.onSelected(widget.message);
                     },
-                    child: */isSelected
+                    child: */ /*isSelected
                         ? Image.asset(
                             "images/message/ic_message_selected_dot.png",
                             width: 22.auto,
@@ -73,37 +79,38 @@ class _MessageItemState extends BaseState<MessageItem> {
                 ),
             Expanded(
               flex: 9,
-              child: InkWell(
-                onTap: widget.isEditing?null:() {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => MessageDetails(
-                                message: widget.message,
-                              )));
-                  widget.onReadMessage(widget.message.id);
-                },
-                child: Card(
-                  semanticContainer: true,
-                  clipBehavior: Clip.antiAliasWithSaveLayer,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5.0),
-                  ),
-                  elevation: 5,
-                  child: Container(
-                    padding: EdgeInsets.all(15.auto),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [_messageDot(), _messageContent()],
-                    ),
-                  ),
-                ),
-              ),
+              child: */
+        InkWell(
+      onTap: /*widget.isEditing?null:*/ () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => MessageDetails(
+                      message: widget.message,
+                    )));
+        widget.onReadMessage(widget.message.id);
+      },
+      child: Card(
+        semanticContainer: true,
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(5.0),
+        ),
+        elevation: 5,
+        child: Container(
+          padding: EdgeInsets.all(15.auto),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [_messageDot(), _messageContent()],
+          ),
+        ),
+      ),
+      /* ),
             ),
           ],
         ),
-      ),
+      ),*/
     );
   }
 
@@ -144,7 +151,7 @@ class _MessageItemState extends BaseState<MessageItem> {
         ),
       );
 
-  _checkIsSelectedMessage() {
+  /*_checkIsSelectedMessage() {
     if (widget.selectedMessageList != null && widget.selectedMessageList.isNotEmpty) {
       isSelected =
           widget.selectedMessageList.singleWhere((element) => element == widget.message.id, orElse: () => null) != null
@@ -152,7 +159,7 @@ class _MessageItemState extends BaseState<MessageItem> {
               : false;
     } else
       isSelected = false;
-  }
+  }*/
 
   String _parseHtmlString(String htmlString) {
     final document = parse(htmlString);

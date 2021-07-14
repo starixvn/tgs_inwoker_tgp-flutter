@@ -48,7 +48,7 @@ class _MessageDetailsState extends BaseState<MessageDetails> {
           getTranslatedText("message_center"),
           style: TextStyle(fontSize: 16.auto),
         ),
-        actions: [
+        /*actions: [
           InkWell(
             onTap: () => _showActionDialog(),
             child: Container(
@@ -58,7 +58,7 @@ class _MessageDetailsState extends BaseState<MessageDetails> {
               child: Image.asset("images/message/ic_message_action.png"),
             ),
           ),
-        ],
+        ],*/
       ),
       body: Container(
           margin: EdgeInsets.all(20.auto),
@@ -92,12 +92,12 @@ class _MessageDetailsState extends BaseState<MessageDetails> {
     );
   }
 
-  _showActionDialog() {
+  /*_showActionDialog() {
     showModalBottomSheet(
         context: context,
         backgroundColor: Colors.transparent,
         builder: (BuildContext bc) {
           return MessageActionDialog();
         });
-  }
+  }*/
 }

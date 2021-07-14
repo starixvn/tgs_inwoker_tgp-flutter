@@ -57,7 +57,7 @@ class _MessageViewState extends BaseState<MessageView> {
                 getTranslatedText("message_center"),
                 style: TextStyle(fontSize: 16.auto),
               ),
-              actions: [
+              /*actions: [
                 Visibility(
                   visible: _vm.messageList != null && _vm.messageList.isNotEmpty,
                   child: InkWell(
@@ -76,27 +76,28 @@ class _MessageViewState extends BaseState<MessageView> {
                         )),
                   ),
                 ),
-              ],
+              ],*/
             ),
-            bottomNavigationBar: _buildBottomNavigationBar(),
+            //bottomNavigationBar: _buildBottomNavigationBar(),
             body: _vm.messageList == null
                 ? Container()
                 : ListView(controller: _controller, padding: EdgeInsets.all(8.0), children: [
                     Column(
                       children: List.generate(_vm.messageList.length, (index) {
                         return MessageItem(
-                            message: _vm.messageList[index],
-                            isEditing: isEditing,
-                            onSelected: (message) => _onSelected(message),
-                            onReadMessage: (id) {
-                              //ProgressDialog.show(context);
-                              _vm.readMessage([id]); //call api silently
-                            },
-                            selectedMessageList: selectedMessageList ?? []);
+                          message: _vm.messageList[index],
+                          //isEditing: isEditing,
+                          //onSelected: (message) => _onSelected(message),
+                          onReadMessage: (id) {
+                            //ProgressDialog.show(context);
+                            _vm.readMessage([id]); //call api silently
+                          },
+                          //selectedMessageList: selectedMessageList ?? []
+                        );
                       }),
                     ),
                     Visibility(
-                        visible: _vm.endRecord?false:isLoading,
+                        visible: _vm.endRecord ? false : isLoading,
                         child: Container(alignment: Alignment.center, child: CircularProgressIndicator())),
                     Visibility(
                         visible: _vm.endRecord && _vm.messageList.isNotEmpty,
@@ -151,7 +152,7 @@ class _MessageViewState extends BaseState<MessageView> {
             )),
       );
 
-  _onSelected(Message _selectedMessage) {
+  /*_onSelected(Message _selectedMessage) {
     setState(() {
       isSelected = !isSelected;
       if (isSelected)
@@ -160,7 +161,7 @@ class _MessageViewState extends BaseState<MessageView> {
         selectedMessageList.removeWhere((element) => element == _selectedMessage.id);
       }
     });
-  }
+  }*/
 
   _scrollListener() {
     if (_controller.offset >= _controller.position.maxScrollExtent) {
@@ -174,7 +175,7 @@ class _MessageViewState extends BaseState<MessageView> {
   _handleApiState() {
     handleApiState(_vm.getMessageListApiState, onSuccess: () {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        if(isLoading){
+        if (isLoading) {
           setState(() {
             isLoading = false;
           });
