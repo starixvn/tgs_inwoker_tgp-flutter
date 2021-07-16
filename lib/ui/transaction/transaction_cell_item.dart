@@ -12,10 +12,10 @@ import 'package:tgp_flutter/ui/base_state.dart';
 class TransactionCellItem extends StatefulWidget {
   final List list;
   final TransactionCellItemType type;
-  final bool isLoading;
+
   final bool isEndRecord;
 
-  TransactionCellItem({Key key, this.list, this.type, this.isLoading, this.isEndRecord}) : super(key: key);
+  TransactionCellItem({Key key, this.list, this.type, this.isEndRecord}) : super(key: key);
 
   @override
   _TransactionCellItemState createState() => _TransactionCellItemState();
@@ -92,7 +92,7 @@ class _TransactionCellItemState extends BaseState<TransactionCellItem> {
               //first header (time) flex number is 2, others will be 1
               flex: index == 0 || index == 1 ? 4 : 3,
               child: AutoSizeText(
-                widget.list[index],
+                widget.list[index]??"",
                 style: TextStyle(fontSize: 12, color: Colors.grey[700]),
                 textAlign: TextAlign.center,
                 minFontSize: 5,

@@ -60,15 +60,15 @@ class _MenuItemState extends BaseState<MenuItem> {
   }
 
   _onClick() {
-    //if (widget.navigationID == 0) {
+    if (widget.navigationID == 0) {
     Navigator.of(context).pushNamed("/${widget.navigationPath}");
-    /*} else {
+    } else {
       Navigator.push(
           context,
           MaterialPageRoute(
               builder: (context) => Transaction(
-                    tabIndex: 0//widget.navigationID,
+                    tabIndex: widget.navigationID,
                   )));
-    }*/
+    }
   }
 }

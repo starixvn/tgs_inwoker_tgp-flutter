@@ -10,6 +10,7 @@ import 'package:tgp_flutter/entity/game.dart';
 import 'package:tgp_flutter/entity/game_type.dart';
 import 'package:tgp_flutter/environment_config.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
+import 'package:tgp_flutter/localizations/language_provider.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
@@ -56,13 +57,17 @@ class _ChildGameItemState extends BaseState<ChildGameItem> {
       child: Container(
         child: ClipRRect(
           borderRadius: BorderRadius.circular(5),
-          child: Stack(
+          child: Column(
             children: [
-              Column(children: [
-                _buildImage(),
-                _buildImageTitleAndFavouriteIcon(),
-              ]),
-              _buildPlatformText()
+              Stack(
+                children: [
+                  Column(children: [
+                    _buildImage(),
+                    _buildImageTitleAndFavouriteIcon(),
+                  ]),
+                  _buildPlatformText()
+                ],
+              ),
             ],
           ),
         ),
@@ -71,28 +76,20 @@ class _ChildGameItemState extends BaseState<ChildGameItem> {
   }
 
   _buildImage() {
-    return Expanded(
-        flex: 4,
-        child: CachedNetworkImage(
-            placeholder: (context, url) => Container(
-                  color: CustomColor.very_light_pink_four,
-                ),
-            imageUrl: _getImageUrl(),
-            //handling error
-            width: 165.5.auto,
-            fit: BoxFit.fill));
+    return AspectRatio(
+      aspectRatio: 1,
+      child: CachedNetworkImage(
+          placeholder: (context, url) => Container(
+                color: CustomColor.very_light_pink_four,
+              ),
+          imageUrl: _getImageUrl(),
+          //handling error
+          fit: BoxFit.fill),
+    );
   }
 
   _getImageUrl() {
-    //http://images.srvptt.com/PP/PowerofThorMegaways.jpg
-    //https://images.srvptt.com/HABA/BirdofThunder.jpg
-    //https://images.srvptt.com/SW/zh-CN/3CardBrag.jpg
-    //https://images.srvptt.com/JDB/zh-CN/CaiShenFishing.jpg
-    var gameName = widget.game.code;
-
-    /*if (widget.game.gamePlatformCode == "PP" || widget.game.gamePlatformCode == "HABA")
-      return EnvironmentConfig.slotGameUrl + "${widget.game.gamePlatformCode.toUpperCase()}/$gameName.jpg";
-    else*/
+    var gameName = _getGameName();
     if (gameName == "FishingYiLuFa")
       return EnvironmentConfig.slotGameUrl + "${widget.game.gamePlatformCode.toUpperCase()}/zh-CN/$gameName.jpg";
     else
@@ -100,34 +97,43 @@ class _ChildGameItemState extends BaseState<ChildGameItem> {
           "${widget.game.gamePlatformCode.toUpperCase()}/${languageCode ?? "en-US"}/$gameName.jpg";
   }
 
+  _getGameName(){
+    var list = LanguageProvider().list;
+    var deviceLanguage = list.singleWhere((e) => e.locale == Localizations.localeOf(context));
+    if((deviceLanguage.apiCode == "zh-CN" && (widget.game.gamePlatformCode == "HABA"|| widget.game.gamePlatformCode == "PP"))|| widget.game.gamePlatformCode =="SW") return widget.game.code;
+    else return  widget.game.code.replaceAll(RegExp("_"), "");
+  }
+
   _buildImageTitleAndFavouriteIcon() {
-    return Expanded(
+    return /*Expanded(
       flex: 1,
-      child: Container(
-        decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [CustomColor.theme_bar_gradient_1, CustomColor.theme_bar_gradient_2],
-              begin: Alignment.bottomCenter,
-              end: Alignment.topCenter,
-            ),
-            borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(5),
-              bottomRight: Radius.circular(5),
-            )),
-        padding: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 7.auto),
-        child: /*Row(
-          children: [ */
-            Container(
-          width: context.screenWidth,
-          child: AutoSizeText(
-            widget.game.name,
-            style: TextStyle(color: Colors.white),
-            minFontSize: 3,
-            stepGranularity: 1,
-            maxLines: 1,
+      child:*/
+        Container(
+      height: 32.auto,
+      decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [CustomColor.theme_bar_gradient_1, CustomColor.theme_bar_gradient_2],
+            begin: Alignment.bottomCenter,
+            end: Alignment.topCenter,
           ),
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(5),
+            bottomRight: Radius.circular(5),
+          )),
+      padding: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 7.auto),
+      child: /*Row(
+          children: [ */
+          Container(
+        width: context.screenWidth,
+        child: AutoSizeText(
+          widget.game.name,
+          style: TextStyle(color: Colors.white),
+          minFontSize: 3,
+          stepGranularity: 1,
+          maxLines: 1,
         ),
-        /*       Expanded(
+      ),
+      /*       Expanded(
               flex: 1,
               child: InkWell(
                 onTap: () {},
@@ -140,12 +146,12 @@ class _ChildGameItemState extends BaseState<ChildGameItem> {
             )
           ],
         ),*/
-      ),
+      //),
     );
   }
 
   _buildPlatformText() => Positioned(
-        top: context.screenWidth / 3.1,
+        top: context.screenWidth / 2.45,
         child: Container(
           margin: EdgeInsets.only(left: 10.auto, top: 5.auto),
           padding: EdgeInsets.symmetric(vertical: 5.auto, horizontal: 15.auto),

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tgp_flutter/entity/account_transaction.dart';
 import 'package:tgp_flutter/entity/bank_card.dart';
 import 'package:tgp_flutter/entity/http_method.dart';
 import 'package:tgp_flutter/entity/response/check_username_response.dart';
@@ -8,6 +9,8 @@ import 'package:tgp_flutter/entity/response/list_response.dart';
 import 'package:tgp_flutter/entity/response/login_response.dart';
 import 'package:tgp_flutter/entity/response/register_response.dart';
 import 'package:tgp_flutter/entity/bet_transaction.dart';
+import 'package:tgp_flutter/entity/response/transaction_response.dart';
+import 'package:tgp_flutter/entity/status.dart';
 import 'package:tgp_flutter/entity/user_profile.dart';
 import 'package:tgp_flutter/entity/main_wallet.dart';
 import 'package:tgp_flutter/entity/withdrawal_info.dart';
@@ -199,6 +202,68 @@ class UserRepository extends BaseRepository {
                   wallet = result;
                 }),
             jwtRefresher: jwtAuth)
+        .execute();
+  }
+
+  Future<EventResult<TransactionResponse<AccountTransaction>>> getAccountTransaction(
+      DateTime startDate,
+      DateTime endDate,
+      int page,
+      int rows,
+      Status status
+      /*int orderBy,
+      bool isDesc,
+      String sortBy,
+      bool showAll*/
+      ) async {
+    return await ApiRequestBuilder<TransactionResponse<AccountTransaction>>(
+        method: HttpMethod.GET,
+        endPoint: "api/deposit/player/list",
+        params: status==null || status == Status.All?{
+          "begincreate": startDate.toString(),
+          "endcreate": endDate.toString(),
+          "Page": page.toString(),
+          "Rows": rows.toString(),
+        }:{
+          "begincreate": startDate.toString(),
+          "endcreate": endDate.toString(),
+          "Page": page.toString(),
+          "Rows": rows.toString(),
+          "status":status.getJson().toString()
+        },
+        converter: (json) => TransactionResponse.fromJson(json, (res) => AccountTransaction.fromJson(res)),
+        jwtRefresher: jwtAuth)
+        .execute();
+  }
+
+  Future<EventResult<TransactionResponse<AccountTransaction>>> getWithdrawTransaction(
+      DateTime startDate,
+      DateTime endDate,
+      int page,
+      int rows,
+      Status status
+      /*int orderBy,
+      bool isDesc,
+      String sortBy,
+      bool showAll*/
+      ) async {
+    return await ApiRequestBuilder<TransactionResponse<AccountTransaction>>(
+        method: HttpMethod.GET,
+        endPoint: "api/withdraw/player/list",
+        params: status==null|| status == Status.All?{
+          "begincreate": startDate.toString(),
+          "endcreate": endDate.toString(),
+          "Page": page.toString(),
+          "Rows": rows.toString(),
+        }:{
+          "begincreate": startDate.toString(),
+          "endcreate": endDate.toString(),
+          "Page": page.toString(),
+          "Rows": rows.toString(),
+          "status":status.getJson().toString()
+        },
+        converter: (json) => TransactionResponse.fromJson(json, (res) => AccountTransaction.fromJson(res)),
+        jwtRefresher: jwtAuth)
         .execute();
   }
 }

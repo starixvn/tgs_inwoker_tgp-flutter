@@ -11,8 +11,10 @@ import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
 import 'package:tgp_flutter/ui/transaction/account_transaction_view.dart';
+import 'package:tgp_flutter/ui/transaction/base_transaction_view.dart';
 import 'package:tgp_flutter/ui/transaction/bet_transaction_view.dart';
 import 'package:tgp_flutter/ui/transaction/transaction_view_model.dart';
+import 'package:tgp_flutter/ui/transaction/withdraw_transaction_view.dart';
 
 class Transaction extends StatefulWidget {
   final int tabIndex;
@@ -27,26 +29,19 @@ class _TransactionState extends BaseState<Transaction> with SingleTickerProvider
   var _tabController;
   var currentTabIndex = 0;
   var tabList = [
-    // {"id": "0", "text": "转换记录"},
     {"id": "0", "text": "bet_history"},
-    /* {"id": "2", "text": "提现记录"},
-    {"id": "3", "text": "充值记录"},
+    {"id": "1", "text": "deposit_history"},
+    {"id": "2", "text": "withdrawal_history"},
+    /*{"id": "3", "text": "充值记录"},
     {"id": "4", "text": "返水记录"},*/
   ];
-  var accountTransactionList;
   TransactionViewModel _vm = TransactionViewModel();
 
   @override
   void initState() {
-    _tabController = TabController(length: tabList.length, vsync: this, initialIndex: (widget.tabIndex) ?? 0);
-    _vm.getGameProviderList();
+    currentTabIndex = widget.tabIndex??0;
+    _tabController = TabController(length: tabList.length, vsync: this, initialIndex: currentTabIndex);
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
   }
 
   Widget build(BuildContext context) {
@@ -90,7 +85,7 @@ class _TransactionState extends BaseState<Transaction> with SingleTickerProvider
                   color: Colors.black87,
                   child: TabBar(
                     controller: _tabController,
-                    isScrollable: true,
+                    isScrollable: false,
                     unselectedLabelColor: Colors.white,
                     labelColor: CustomColor.theme_label_text_highlight_color,
                     indicatorColor: CustomColor.theme_label_text_highlight_color,
@@ -103,7 +98,7 @@ class _TransactionState extends BaseState<Transaction> with SingleTickerProvider
                     unselectedLabelStyle: TextStyle(color: CustomColor.grey),
                     tabs: tabList.map((item) {
                       return Tab(
-                        child: Text(getTranslatedText(item["text"]),
+                        child: Text(getTranslatedText(item["text"]) ?? tabList[currentTabIndex]["text"],
                             style: TextStyle(
                               fontFamily: 'PingFang',
                               fontSize: 14.auto,
@@ -116,11 +111,26 @@ class _TransactionState extends BaseState<Transaction> with SingleTickerProvider
                   child: TabBarView(
                     controller: _tabController,
                     children: [
-                      // AccountTransactionView(vm: _vm, transactionHeaderList: ["time", "status", "wallet", "amount"]),
                       BetTransactionView(
                         vm: _vm,
                       ),
-                      /*AccountTransactionView(
+                      AccountTransactionView(
+                        vm: _vm,
+                      ),
+                      WithdrawTransactionView(
+                        vm: _vm,
+                      ),
+    /*     BaseTransactionView<AccountTransaction>(
+                        isWithdraw: false,
+                      ),
+                      BaseTransactionView<BetTransaction>(
+                        isWithdraw: false,
+                      ),
+                      BaseTransactionView<AccountTransaction>(
+                        isWithdraw: true,
+                      ),
+
+                      AccountTransactionView(
                           vm: _vm, transactionHeaderList: ["time", "trade_order_no", "status", "amount"]),
                       AccountTransactionView(
                           vm: _vm, transactionHeaderList: ["time", "trade_order_no", "status", "amount"]),
@@ -136,7 +146,5 @@ class _TransactionState extends BaseState<Transaction> with SingleTickerProvider
         });
   }
 
-  _handleApiState() {
-    handleApiState(_vm.getGameProviderApiState, isAutoHideLoading: false, onSuccess: () {});
-  }
+
 }

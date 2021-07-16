@@ -30,7 +30,7 @@
   "total_balance": "总资金",
   "transfer_history": "转换记录",
   "tab_transfer_history": "转换记录",
-  "bet_history": "投注明细",
+  "bet_history": "投注记录",
   "refer_friend": "推荐好友",
   "notice": "公告",
   "collect_all": "一键回收",
@@ -933,7 +933,12 @@
   "promotion_empty1": "目前尚未有活动",
   "promotion_empty2": "请敬请期待",
   "request_failed": "请求失败，请联系客服。",
-  "transaction_after_start_date": "结束日期需在开始日期之后"
+  "transaction_after_start_date": "结束日期需在开始日期之后",
+
+  "waiting_payment": "等待付款",
+  "review": "审核中",
+  "approved": "已通过",
+  "rejected": "已拒绝"
 }
 
 

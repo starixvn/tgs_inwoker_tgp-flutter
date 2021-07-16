@@ -31,7 +31,7 @@
   "total_balance": "總資金",
   "transfer_history": "轉換記錄",
   "tab_transfer_history": "轉換記錄",
-  "bet_history": "投註明細",
+  "bet_history": "投註記錄",
   "refer_friend": "推薦好友",
   "notice": "公告",
   "collect_all": "一鍵回收",
@@ -935,5 +935,9 @@
   "promotion_empty1": "目前尚未有活動",
   "promotion_empty2": "請敬請期待",
   "request_failed": "請求失敗，請聯繫客服。",
-  "transaction_after_start_date": "結束日期需在開始日期之後"
+  "transaction_after_start_date": "結束日期需在開始日期之後",
+  "waiting_payment": "等待付款",
+  "review": "審核中",
+  "approved": "已通過",
+  "rejected": "已拒絕"
 }

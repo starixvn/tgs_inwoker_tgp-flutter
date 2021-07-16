@@ -28,17 +28,14 @@ import 'package:tgp_flutter/ui/transaction/transaction_filter_button_item.dart';
 import 'package:tgp_flutter/ui/transaction/transaction_header_item.dart';
 import 'package:tgp_flutter/ui/transaction/transaction_view_model.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:tgp_flutter/ui/transaction/transaction_view_model.dart';
 import '../../my_behavior.dart';
 
 class BetTransactionView extends StatefulWidget {
   final List<String> transactionHeaderList;
   final TransactionViewModel vm;
 
-  BetTransactionView({
-    Key key,
-    this.transactionHeaderList,
-    this.vm
-  }) : super(key: key);
+  BetTransactionView({Key key, this.transactionHeaderList, this.vm}) : super(key: key);
 
   @override
   BetTransactionViewState createState() => BetTransactionViewState();
@@ -50,12 +47,11 @@ class BetTransactionViewState extends BaseState<BetTransactionView> {
   RefreshController _refreshController = RefreshController();
   var pickerText1, pickerText2, pickerText3;
   var filterIndex = 0;
-  var isFirst = true;
+  TransactionViewModel _vm = TransactionViewModel();
 
   void initState() {
     _scrollController.addListener(_scrollListener);
-    isFirst = false;
-   // widget.vm.getGameProviderList();
+    // _vm.getGameProviderList();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _onDateFilter(0);
     });
@@ -63,42 +59,48 @@ class BetTransactionViewState extends BaseState<BetTransactionView> {
   }
 
   Widget build(BuildContext context) {
-    _handleApiState();
-    return Container(
-      height: context.screenHeight,
-      child: ScrollConfiguration(
-          behavior: MyBehavior(),
-          child: SmartRefresher(
-            controller: _refreshController,
-            enablePullDown: true,
-            onRefresh: () {
-              _getTransaction(isLoadMore: false);
-              _refreshController.refreshCompleted();
-            },
-            child: widget.vm.betTransactionList == null
-                ? buildProgressDialog()
-                : CustomScrollView(controller: _scrollController, slivers: [
-              BaseTransaction(
-                transactionHeaderList: ["bet_time", "bet_platform", "bet_amount", "win_loss"],
-                onCalendarClick: (value, isStartDate) => _onCalendarClick(value, isStartDate),
-                onFilter: (value) {
-                  // ProgressDialog.show(context);
-                  _onDateFilter(value);
-                },
-                startDate: widget.vm.pStartDate,
-                endDate: widget.vm.pEndDate,
-                filterIndex: filterIndex,
-              ),
-              _buildTransactionItem()
-            ]),
-          )),
-    );
+    return ProviderWidget<TransactionViewModel>(
+        model: _vm,
+        builder: (ctx, vm, _) {
+          _handleApiState();
+          return Container(
+            height: context.screenHeight,
+            child: ScrollConfiguration(
+                behavior: MyBehavior(),
+                child: SmartRefresher(
+                  controller: _refreshController,
+                  enablePullDown: true,
+                  onRefresh: () {
+                    _getTransaction(isLoadMore: false);
+                    _refreshController.refreshCompleted();
+                  },
+                  child: _vm.betTransactionList == null
+                      ? buildProgressDialog()
+                      : CustomScrollView(controller: _scrollController, slivers: [
+                          BaseTransaction(
+                            transactionHeaderList: ["bet_time", "bet_platform", "bet_amount", "win_loss"],
+                            onCalendarClick: (value, isStartDate) => _onCalendarClick(value, isStartDate),
+                            onFilter: (value) {
+                              // ProgressDialog.show(context);
+                              _onDateFilter(value);
+                            },
+                            startDate: _vm.pStartDate,
+                            endDate: _vm.pEndDate,
+                            filterIndex: filterIndex,
+                            expandedHeight: 170,
+                            getPickerBox: Container(),
+                          ),
+                          _buildTransactionItem()
+                        ]),
+                )),
+          );
+        });
   }
 
   _buildTransactionItem() => SliverPadding(
         padding: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 5.auto),
         sliver: SliverList(
-          delegate: SliverChildListDelegate(widget.vm.betTransactionList.length == 0
+          delegate: SliverChildListDelegate(_vm.betTransactionList.length == 0
               ? List.generate(
                   1,
                   (index) => Container(
@@ -106,18 +108,14 @@ class BetTransactionViewState extends BaseState<BetTransactionView> {
                         child: Container(
                             width: 75.auto, height: 75.auto, child: Image.asset("images/transaction/ic_no_record.png")),
                       ))
-              : List.generate(widget.vm.betTransactionList.length, (index) {
+              : List.generate(_vm.betTransactionList.length, (index) {
                   return Container(
-                    child: TransactionCellItem(
-                        list: [
-                          Format().dateTimeFormat(widget.vm.betTransactionList[index].createdOn),
-                          widget.vm.betTransactionList[index].gameProviderName,
-                          widget.vm.betTransactionList[index].betAmount.toString(),
-                          widget.vm.betTransactionList[index].winLoss.toString(),
-                        ],
-                        type: _getTransactionItemType(index),
-                        isLoading: widget.vm.endRecord ? false : isLoading,
-                        isEndRecord: widget.vm.endRecord),
+                    child: TransactionCellItem(list: [
+                      Format().dateTimeFormat(_vm.betTransactionList[index].createdOn),
+                      _vm.betTransactionList[index].gameProviderName,
+                      _vm.betTransactionList[index].betAmount.toString(),
+                      _vm.betTransactionList[index].winLoss.toString(),
+                    ], type: _getTransactionItemType(index), isEndRecord: _vm.endRecord),
                   );
                 }).toList()),
         ),
@@ -125,51 +123,53 @@ class BetTransactionViewState extends BaseState<BetTransactionView> {
 
   _onCalendarClick(DateTime date, bool isStartDate) {
     if (isStartDate) {
-      widget.vm.setDate(startDate: date);
+      _vm.setDate(startDate: date);
     } else {
-      if(date.isBefore(widget.vm.pStartDate)){
+      if (date.isBefore(_vm.pStartDate)) {
         CustomToast.show(getTranslatedText("transaction_after_start_date"));
         return;
-      }
-      else widget.vm.setDate(endDate: date);
+      } else
+        _vm.setDate(endDate: date);
     }
     _onDateFilter(-1);
   }
 
-  _onDateFilter(int index, {DateTime startDate}) {
+  _onDateFilter(int index) {
     var currentDate = DateTime.now();
     switch (index) {
       case 0: //today
-        widget.vm.setDate(startDate: DateTime(currentDate.year, currentDate.month, currentDate.day,0,0,0,0,0), endDate: currentDate);
+        _vm.setDate(
+            startDate: DateTime(currentDate.year, currentDate.month, currentDate.day, 0, 0, 0, 0, 0),
+            endDate: currentDate);
         break;
       case 1: //week
-        widget.vm.setDate(
+        _vm.setDate(
             startDate: DateTime(currentDate.year, currentDate.month, currentDate.day - 7), endDate: currentDate);
         break;
       case 2: //month
-        widget.vm.setDate(
+        _vm.setDate(
             startDate: DateTime(currentDate.year, currentDate.month - 1, currentDate.day), endDate: currentDate);
         break;
       case -1: //click from calendar
         break;
       default:
-        widget.vm.setDate();
+        _vm.setDate();
         break;
     }
+    _getTransaction();
+    //WidgetsBinding.instance.addPostFrameCallback((_) {
     setState(() {
       filterIndex = index;
     });
-    _getTransaction();
   }
 
-
   _getTransactionItemType(int index) {
-    if (widget.vm.betTransactionList.length == 1) {
+    if (_vm.betTransactionList.length == 1) {
       return TransactionCellItemType.SINGLE;
     } else {
       if (index == 0) {
         return TransactionCellItemType.TOP;
-      } else if (index == widget.vm.betTransactionList.length - 1) {
+      } else if (index == _vm.betTransactionList.length - 1) {
         return TransactionCellItemType.BOTTOM;
       } else {
         return TransactionCellItemType.CENTER;
@@ -179,7 +179,6 @@ class BetTransactionViewState extends BaseState<BetTransactionView> {
 
   _scrollListener() {
     if (_scrollController.offset >= _scrollController.position.maxScrollExtent) {
-
       setState(() {
         isLoading = true;
       });
@@ -188,16 +187,10 @@ class BetTransactionViewState extends BaseState<BetTransactionView> {
   }
 
   _getTransaction({DateTime startDate, DateTime endDate, GameProvider platform, bool isLoadMore}) async {
-    await widget.vm.getTransaction(isLoadMore: isLoadMore ?? false);
+    await _vm.getTransaction(isLoadMore: isLoadMore ?? false);
   }
 
   _handleApiState() {
-    handleApiState(widget.vm.getTransactionApiState, isAutoHideLoading: false, onSuccess: () {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        setState(() {
-          if (!isFirst) isFirst = !isFirst;
-        });
-      });
-    });
+    handleApiState(_vm.getTransactionApiState, isAutoHideLoading: false, onSuccess: () {});
   }
 }

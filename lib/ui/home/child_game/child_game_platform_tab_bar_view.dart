@@ -22,6 +22,7 @@ class _ChildGamePlatformTabBarViewState extends BaseState<ChildGamePlatformTabBa
     return GridView.count(
       padding: EdgeInsets.all(10.auto),
       crossAxisCount: 2,
+     childAspectRatio: 165.5/198,
       shrinkWrap: true,
       physics: AlwaysScrollableScrollPhysics(),
       crossAxisSpacing: 10,

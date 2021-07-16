@@ -4,6 +4,7 @@ import 'package:tgp_flutter/entity/bank_type.dart';
 import 'package:tgp_flutter/entity/game_provider.dart';
 import 'package:tgp_flutter/entity/payment.dart';
 import 'package:tgp_flutter/entity/promotion.dart';
+import 'package:tgp_flutter/entity/status.dart';
 import 'package:tgp_flutter/entity/wallet.dart';
 import 'package:tgp_flutter/entity/withdrawal_info.dart';
 import 'package:tgp_flutter/extension/format.dart';
@@ -77,24 +78,29 @@ class _CustomPickerDialogState extends BaseState<CustomPickerDialog> {
       return (wallet.isMainWallet) ? getTranslatedText(wallet.title) : wallet.title;
     } else if (widget.list is List<Promotion>) {
       Promotion promotion = widget.list[index];
-      return getTranslatedText(promotion.name)?? promotion.name;
-    }else if (widget.list is List<WithdrawalInfo>) {
-      if(widget.list[index].channelName == "PrimePay_BankTransfer_Custom"){
+      return getTranslatedText(promotion.name) ?? promotion.name;
+    } else if (widget.list is List<Status>) {
+      Status status = widget.list[index];
+      String name = status.getName(context);
+      return name;
+    } else if (widget.list is List<WithdrawalInfo>) {
+      if (widget.list[index].channelName == "PrimePay_BankTransfer_Custom") {
         return getTranslatedText("custom_bank");
-      } else{
+      } else {
         var code = widget.list[index].channelCode;
         return code;
       }
-    }else if (widget.list is List<Map<String, String>>) {
+    } else if (widget.list is List<Map<String, String>>) {
       String promotionName = widget.list[index]["name"];
-      return getTranslatedText(promotionName)?? promotionName;
-    }else{
+      return getTranslatedText(promotionName) ?? promotionName;
+    } else {
       //string
-      if(widget.list[index] =="BankTransfer")
+      if (widget.list[index] == "BankTransfer")
         return getTranslatedText("bank_transfer");
-      else if(widget.list[index] =="Crypto")
+      else if (widget.list[index] == "Crypto")
         return getTranslatedText("crypto");
-      else return widget.list[index];
+      else
+        return widget.list[index];
     }
   }
 
@@ -107,7 +113,7 @@ class _CustomPickerDialogState extends BaseState<CustomPickerDialog> {
         );
 
   _getBankCardPickerItem(index) {
-    BankType bankType= widget.list[index].bankType;
+    BankType bankType = widget.list[index].bankType;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [

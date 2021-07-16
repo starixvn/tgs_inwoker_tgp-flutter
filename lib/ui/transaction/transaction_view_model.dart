@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:tgp_flutter/base_viewmodel.dart';
+import 'package:tgp_flutter/entity/account_transaction.dart';
 import 'package:tgp_flutter/entity/bet_transaction.dart';
 import 'package:tgp_flutter/entity/game_provider.dart';
+import 'package:tgp_flutter/entity/status.dart';
 import 'package:tgp_flutter/extension/format.dart';
 import 'package:tgp_flutter/repository/base_repository.dart';
 import 'package:tgp_flutter/repository/content_repository.dart';
@@ -10,16 +12,17 @@ import 'package:tgp_flutter/repository/user_repository.dart';
 class TransactionViewModel extends BaseViewModel {
   final userRepo = UserRepository.getSingleton();
   final contentRepo = ContentRepository.getSingleton();
-  var getTransactionApiState, getGameProviderApiState;
+  var getTransactionApiState, getGameProviderApiState, getAccountTransactionApiState, getWithdrawTransactionApiState;
   var page = 1, rows = 10;
   var pStartDate = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 0, 0, 0, 0, 0),
       pEndDate = DateTime.now();
   List<BetTransaction> betTransactionList;
+  List<AccountTransaction> accountTransactionList, withdrawTransactionList;
   var endRecord = false;
-  var accountTransactionList;
+  var statusList = Status.values;
+  var pStatus = Status.All;
 
   get gameProviderList => contentRepo.gameProviderList;
-
   get wallet => userRepo.wallet;
 
   @override
@@ -48,21 +51,78 @@ class TransactionViewModel extends BaseViewModel {
 
       betTransactionList.addAll(list);
       endRecord = betTransactionList.length >= getTransactionApiState.result.totalCount ? true : false;
+      notifyListeners();
     }
     setLoading(false);
     return getTransactionApiState;
   }
 
-  setDate({DateTime startDate, endDate}) {
-    if (startDate != null) pStartDate = startDate;
-    if (endDate != null) pEndDate = endDate;
-    notifyListeners();
+  getAccountTransaction({bool isLoadMore = false, Status status}) async {
+    setLoading();
+
+    if (isLoadMore) {
+      if (page * rows < getAccountTransactionApiState.result.totalCount) {
+        page++;
+      } else
+        return;
+    } else {
+      page = 1;
+      getAccountTransactionApiState = null;
+      accountTransactionList = null;
+    }
+
+    if (status != null) pStatus = status;
+    getAccountTransactionApiState = await userRepo.getAccountTransaction(pStartDate, pEndDate, page, rows, pStatus);
+
+    List<AccountTransaction> list = [];
+    if (getAccountTransactionApiState.isSuccess) {
+      list = getAccountTransactionApiState.result.items;
+      if (accountTransactionList == null) accountTransactionList = [];
+
+      accountTransactionList.addAll(list);
+      endRecord = accountTransactionList.length >= getAccountTransactionApiState.result.totalCount ? true : false;
+      notifyListeners();
+    }
+    setLoading(false);
+    return getAccountTransactionApiState;
   }
 
-  getGameProviderList() async {
+  getWithdrawTransaction({bool isLoadMore = false, Status status}) async {
     setLoading();
-    getGameProviderApiState = await contentRepo.getGameProviderList();
+
+    if (isLoadMore) {
+      if (page * rows < getWithdrawTransactionApiState.result.totalCount) {
+        page++;
+      } else
+        return;
+    } else {
+      page = 1;
+      getWithdrawTransactionApiState = null;
+      withdrawTransactionList = null;
+    }
+    if (status != null) pStatus = status;
+    getWithdrawTransactionApiState = await userRepo.getWithdrawTransaction(pStartDate, pEndDate, page, rows, pStatus);
+
+    List<AccountTransaction> list = [];
+    if (getWithdrawTransactionApiState.isSuccess) {
+      list = getWithdrawTransactionApiState.result.items;
+      if (withdrawTransactionList == null) withdrawTransactionList = [];
+
+      withdrawTransactionList.addAll(list);
+      endRecord = withdrawTransactionList.length >= getWithdrawTransactionApiState.result.totalCount ? true : false;
+      notifyListeners();
+    }
     setLoading(false);
-    return getGameProviderApiState;
+    return getWithdrawTransactionApiState;
+  }
+
+  setDate({DateTime startDate, endDate}) {
+    if (startDate != null) pStartDate = startDate;
+    if (endDate != null) {
+      if(endDate == pStartDate) pEndDate = DateTime(endDate.year, endDate.month, endDate.day,23,59,59,59,59);
+      else pEndDate = endDate;
+    }
+      notifyListeners();
+
   }
 }

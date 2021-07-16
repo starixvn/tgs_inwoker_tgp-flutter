@@ -9,6 +9,7 @@ import 'package:tgp_flutter/entity/bet_transaction.dart';
 import 'package:tgp_flutter/entity/daily_transaction.dart';
 import 'package:tgp_flutter/entity/bet_transaction.dart';
 import 'package:tgp_flutter/entity/game_provider.dart';
+import 'package:tgp_flutter/entity/status.dart';
 import 'package:tgp_flutter/entity/transaction_action_type.dart';
 import 'package:tgp_flutter/entity/transaction_bet_status_type.dart';
 import 'package:tgp_flutter/entity/transaction_cell_item_type.dart';
@@ -17,6 +18,7 @@ import 'package:tgp_flutter/entity/transaction_third_party.dart';
 import 'package:tgp_flutter/entity/transaction_third_party_type.dart';
 import 'package:tgp_flutter/extension/format.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
+import 'package:tgp_flutter/network/event_result.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
@@ -28,13 +30,22 @@ import 'package:tgp_flutter/ui/transaction/transaction_filter_button_item.dart';
 import 'package:tgp_flutter/ui/transaction/transaction_header_item.dart';
 import 'package:tgp_flutter/ui/transaction/transaction_view_model.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:tgp_flutter/ui/transaction/transaction_view_model.dart';
 import '../../my_behavior.dart';
 
 class AccountTransactionView extends StatefulWidget {
-  final List<String> transactionHeaderList;
+  //final List<String> transactionHeaderList;
   final TransactionViewModel vm;
 
-  AccountTransactionView({Key key, this.transactionHeaderList, this.vm}) : super(key: key);
+  /* final List<dynamic> list;
+  final Function(bool) apiFunction;
+  final EventResult<dynamic> apiState;*/
+
+  AccountTransactionView({
+    Key key,
+    /*this.transactionHeaderList, */
+    this.vm,
+  }) : super(key: key);
 
   @override
   AccountTransactionViewState createState() => AccountTransactionViewState();
@@ -46,11 +57,13 @@ class AccountTransactionViewState extends BaseState<AccountTransactionView> {
   RefreshController _refreshController = RefreshController();
   var pickerText1, pickerText2, pickerText3;
   var filterIndex = 0;
-  var isFirst = true;
+  TransactionViewModel _vm = TransactionViewModel();
+
+//  var isFirst = true;
 
   void initState() {
     _scrollController.addListener(_scrollListener);
-    isFirst = false;
+    //   isFirst = false;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _onDateFilter(0);
     });
@@ -58,43 +71,48 @@ class AccountTransactionViewState extends BaseState<AccountTransactionView> {
   }
 
   Widget build(BuildContext context) {
-    _handleApiState();
-    return Container(
-      height: context.screenHeight,
-      child: ScrollConfiguration(
-          behavior: MyBehavior(),
-          child: SmartRefresher(
-            controller: _refreshController,
-            enablePullDown: true,
-            onRefresh: () {
-              _getTransaction(isLoadMore: false);
-              _refreshController.refreshCompleted();
-            },
-            child: widget.vm.betTransactionList == null
-                ? buildProgressDialog()
-                : CustomScrollView(controller: _scrollController, slivers: [
-                    BaseTransaction(
-                      transactionHeaderList: widget.transactionHeaderList,
-                      onCalendarClick: (value, isStartDate) => _onCalendarClick(value, isStartDate),
-                      onFilter: (value) {
-                        // ProgressDialog.show(context);
-                        _onDateFilter(value);
-                      },
-                      getPickerBox: _getPickerBox(),
-                      startDate: widget.vm.pStartDate,
-                      endDate: widget.vm.pEndDate,
-                      filterIndex: filterIndex,
-                    ),
-                    _buildTransactionItem()
-                  ]),
-          )),
-    );
+    return ProviderWidget<TransactionViewModel>(
+        model: _vm,
+        builder: (ctx, vm, _) {
+          _handleApiState();
+          return Container(
+            height: context.screenHeight,
+            child: ScrollConfiguration(
+                behavior: MyBehavior(),
+                child: SmartRefresher(
+                  controller: _refreshController,
+                  enablePullDown: true,
+                  onRefresh: () {
+                    _getTransaction(isLoadMore: false);
+                    _refreshController.refreshCompleted();
+                  },
+                  child: _vm.accountTransactionList == null
+                      ? buildProgressDialog()
+                      : CustomScrollView(controller: _scrollController, slivers: [
+                          BaseTransaction(
+                            transactionHeaderList: ["time", "status", "amount"],
+                            onCalendarClick: (value, isStartDate) => _onCalendarClick(value, isStartDate),
+                            onFilter: (value) {
+                              // ProgressDialog.show(context);
+                              _onDateFilter(value);
+                            },
+                            getPickerBox: _getPickerBox(),
+                            startDate: _vm.pStartDate,
+                            endDate: _vm.pEndDate,
+                            filterIndex: filterIndex,
+                            expandedHeight: 250,
+                          ),
+                          _buildTransactionItem()
+                        ]),
+                )),
+          );
+        });
   }
 
   _buildTransactionItem() => SliverPadding(
         padding: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 5.auto),
         sliver: SliverList(
-          delegate: SliverChildListDelegate(widget.vm.betTransactionList.length == 0
+          delegate: SliverChildListDelegate(_vm.accountTransactionList.length == 0
               ? List.generate(
                   1,
                   (index) => Container(
@@ -102,18 +120,13 @@ class AccountTransactionViewState extends BaseState<AccountTransactionView> {
                         child: Container(
                             width: 75.auto, height: 75.auto, child: Image.asset("images/transaction/ic_no_record.png")),
                       ))
-              : List.generate(widget.vm.accountTransactionList.length, (index) {
+              : List.generate(_vm.accountTransactionList.length, (index) {
                   return Container(
-                    child: TransactionCellItem(
-                        list: [
-                          Format().dateTimeFormat(widget.vm.accountTransactionList[index].createdOn),
-                          widget.vm.accountTransactionList[index].gameProviderName,
-                          widget.vm.accountTransactionList[index].betAmount.toString(),
-                          widget.vm.accountTransactionList[index].winLoss.toString(),
-                        ],
-                        type: _getTransactionItemType(index),
-                        isLoading: isEndRecord ? false : isLoading,
-                        isEndRecord: isEndRecord),
+                    child: TransactionCellItem(list: [
+                      Format().dateTimeFormat(_vm.accountTransactionList[index].createdOn),
+                      _vm.accountTransactionList[index].status.getName(context),
+                      _vm.accountTransactionList[index].amount.toString(),
+                    ], type: _getTransactionItemType(index), isEndRecord: _vm.endRecord),
                   );
                 }).toList()),
         ),
@@ -121,38 +134,43 @@ class AccountTransactionViewState extends BaseState<AccountTransactionView> {
 
   _onCalendarClick(DateTime date, bool isStartDate) {
     if (isStartDate) {
-      widget.vm.setDate(startDate: date);
-      _getTransaction(startDate: date);
+      _vm.setDate(startDate: date);
     } else {
-      widget.vm.setDate(endDate: date);
-      _getTransaction(endDate: date);
+      if (date.isBefore(_vm.pStartDate)) {
+        CustomToast.show(getTranslatedText("transaction_after_start_date"));
+        return;
+      } else
+        _vm.setDate(endDate: date);
     }
     _onDateFilter(-1);
-    // ProgressDialog.show(context);
   }
 
   _onDateFilter(int index) {
     var currentDate = DateTime.now();
     switch (index) {
       case 0: //today
-        widget.vm.setDate(startDate: currentDate, endDate: currentDate);
+        _vm.setDate(
+            startDate: DateTime(currentDate.year, currentDate.month, currentDate.day, 0, 0, 0, 0, 0),
+            endDate: currentDate);
         break;
       case 1: //week
-        widget.vm.setDate(
+        _vm.setDate(
             startDate: DateTime(currentDate.year, currentDate.month, currentDate.day - 7), endDate: currentDate);
         break;
       case 2: //month
-        widget.vm.setDate(
+        _vm.setDate(
             startDate: DateTime(currentDate.year, currentDate.month - 1, currentDate.day), endDate: currentDate);
         break;
+      case -1: //click from calendar
+        break;
       default:
-        widget.vm.setDate();
+        _vm.setDate();
         break;
     }
+    _getTransaction();
     setState(() {
       filterIndex = index;
     });
-    _getTransaction();
   }
 
   _getPickerBox() {
@@ -162,13 +180,13 @@ class AccountTransactionViewState extends BaseState<AccountTransactionView> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           CustomPicker(
-              title: "bet_platform",
+              title: "status",
               displayText: pickerText1 == null ? getTranslatedText("all") : pickerText1,
-              list: widget.vm.gameProviderList,
+              list: _vm.statusList,
               isHintText: true,
               width: context.screenWidth - 70.auto,
               onClick: () {
-                _buildPickerDialog("bet_platform", widget.vm.gameProviderList);
+                _buildPickerDialog("status", _vm.statusList);
               }),
         ],
       ),
@@ -185,12 +203,9 @@ class AccountTransactionViewState extends BaseState<AccountTransactionView> {
               list: list,
               onChanged: (value) {
                 setState(() {
-                  if (value is GameProvider) {
-                    pickerText1 = value.name;
-                    _getTransaction(/*action: value*/);
-                  } else if (value is TransactionStatusType) {
-                    pickerText2 = value.displayName;
-                    _getTransaction(/*status: value*/);
+                  if (value is Status) {
+                    pickerText1 = value.getName(context);
+                    _getTransaction(status: value);
                   }
                   Navigator.pop(context);
                   // ProgressDialog.show(context);
@@ -200,12 +215,12 @@ class AccountTransactionViewState extends BaseState<AccountTransactionView> {
   }
 
   _getTransactionItemType(int index) {
-    if (widget.vm.betTransactionList.length == 1) {
+    if (_vm.accountTransactionList.length == 1) {
       return TransactionCellItemType.SINGLE;
     } else {
       if (index == 0) {
         return TransactionCellItemType.TOP;
-      } else if (index == widget.vm.betTransactionList.length - 1) {
+      } else if (index == _vm.accountTransactionList.length - 1) {
         return TransactionCellItemType.BOTTOM;
       } else {
         return TransactionCellItemType.CENTER;
@@ -222,19 +237,11 @@ class AccountTransactionViewState extends BaseState<AccountTransactionView> {
     }
   }
 
-  _getTransaction({DateTime startDate, DateTime endDate, GameProvider platform, bool isLoadMore}) async {
-    await widget.vm.getTransaction(isLoadMore: isLoadMore ?? false);
+  _getTransaction({bool isLoadMore, Status status}) async {
+    await _vm.getAccountTransaction(isLoadMore: isLoadMore ?? false, status: status);
   }
 
   _handleApiState() {
-    handleApiState(widget.vm.getTransactionApiState, isAutoHideLoading: false, onSuccess: () {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        setState(() {
-          if (!isFirst) isFirst = !isFirst;
-        });
-      });
-    });
-
-    handleApiState(widget.vm.getGameProviderApiState, isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getAccountTransactionApiState, isAutoHideLoading: false, onSuccess: () {});
   }
 }

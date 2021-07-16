@@ -161,8 +161,9 @@ class _ProfileState extends BaseState<Profile> {
                 children: [
                   _buildProfileBottomItem("profile_detail", "ic_profile_user_detail", "profile_info", 0),
                   _buildProfileBottomItem("message_center", "ic_message", "message", 0, isMessage: false),
-                  //_buildProfileBottomItem("transfer_history", "ic_account_detail", "transaction", 0),
-                  _buildProfileBottomItem("bet_history", "ic_bet_transaction", "transaction", 1),
+                  _buildProfileBottomItem("bet_history", "ic_bet_transaction", "transaction", 0),
+                  _buildProfileBottomItem("deposit_history", "ic_account_detail", "transaction", 1),
+                  _buildProfileBottomItem("withdrawal_history", "ic_account_detail", "transaction", 2),
                   _buildProfileBottomItem("manage_card", "ic_card_detail", "main_card", 0),
                   //_buildProfileBottomItem("refer_friend", "ic_refer_friend", "refer_friend", 0),
                   //_buildProfileBottomItem("frequent_question", "ic_profile_question", "frequent_question", 0),

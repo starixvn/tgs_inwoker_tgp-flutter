@@ -68,20 +68,20 @@ class _MenuState extends BaseState<Menu> {
                   image: "ic_menu_bet_history",
                   text: getTranslatedText("bet_history"),
                   navigationPath: "transaction",
-                  navigationID: 1,
-                ),
-                /*MenuItem(
-                  image: "ic_menu_withdraw_history",
-                  text: getTranslatedText("withdrawal_history"),
-                  navigationPath: "transaction",
-                  navigationID: 2,
+                  navigationID: 0,
                 ),
                 MenuItem(
                   image: "ic_menu_deposit_history",
                   text: getTranslatedText("deposit_history"),
                   navigationPath: "transaction",
-                  navigationID: 3,
-                ),*/
+                  navigationID: 1,
+                ),
+                MenuItem(
+                  image: "ic_menu_withdraw_history",
+                  text: getTranslatedText("withdrawal_history"),
+                  navigationPath: "transaction",
+                  navigationID: 2,
+                ),
                 MenuItem(
                   image: "ic_menu_card",
                   text: getTranslatedText("manage_card"),
