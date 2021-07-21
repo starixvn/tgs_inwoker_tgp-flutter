@@ -8,6 +8,7 @@ class AccountTransaction {
   AccountTransaction();
 
   String id;
+  @JsonKey(name: 'createdon')
   String createdOn;
   String updatedOn;
   Status status;

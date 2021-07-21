@@ -85,21 +85,46 @@ class _TransactionCellItemState extends BaseState<TransactionCellItem> {
 
   _getTransactionCellItem({bool isLast = false}) => Column(children: [
         Container(
-          margin: EdgeInsets.only(top: 5.auto),
-          child: Row(
-              children: List.generate(widget.list.length, (index) {
-            return Expanded(
-              //first header (time) flex number is 2, others will be 1
-              flex: index == 0 || index == 1 ? 4 : 3,
-              child: AutoSizeText(
-                widget.list[index]??"",
-                style: TextStyle(fontSize: 12, color: Colors.grey[700]),
-                textAlign: TextAlign.center,
-                minFontSize: 5,
-                stepGranularity: 1,
+          margin: EdgeInsets.symmetric(horizontal:10.auto),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Text(
+                    getTranslatedText("order_number"),
+                    style: TextStyle(fontSize: 12, color: Colors.grey[700]),
+                  ),
+                  AutoSizeText(
+                    widget.list[0],
+                    style: TextStyle(color: Colors.grey[700]),
+                    minFontSize: 10,
+                    maxFontSize: 12,
+                    stepGranularity: 1,
+                  )
+                ],
               ),
-            );
-          }).toList()),
+              Container(
+                margin: EdgeInsets.only(top: 5.auto),
+                child: Row(
+                    children: List.generate(widget.list.length, (index) {
+                      return index == 0
+                          ? Container()
+                          : Expanded(
+                        //first header (time) flex number is 2, others will be 1
+                        flex: 3, //index == 1 || index == 2 ? 4 : 3,
+                        child: AutoSizeText(
+                          widget.list[index] ?? "",
+                          style: TextStyle(color: Colors.grey[700]),
+                          textAlign: index == 1 ? TextAlign.start : TextAlign.center,
+                          minFontSize: 5,
+                          maxFontSize: 12,
+                          stepGranularity: 1,
+                        ),
+                      );
+                    }).toList()),
+              ),
+            ],
+          ),
         ),
         isLast
             ? Container()

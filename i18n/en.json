@@ -951,5 +951,6 @@
   "waiting_payment": "Waiting payment",
   "review": "Review",
   "approved": "Approved",
-  "rejected": "Rejected"
+  "rejected": "Rejected",
+  "order_number": "Order Number : "
 }

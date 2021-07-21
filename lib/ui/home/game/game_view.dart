@@ -54,16 +54,20 @@ class _GameViewState extends BaseState<GameView> {
                   child: Container(
                     margin: EdgeInsets.only(left: 10.auto, right: 10.auto, bottom: 5.auto),
                     child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Container(
-                          margin: EdgeInsets.only(right: 10.auto, bottom: 5.auto),
-                          child: Column(
-                            children: List.generate(_vm.gameTypeList.length, (index) {
-                              return Container(
-                                margin: EdgeInsets.only(top: 8.auto),
-                                child: _buildGameTab(index, _vm.gameTypeList[index].getName(context)),
-                              );
-                            }),
+                        FittedBox(
+                          fit: BoxFit.fitHeight,
+                          child: Container(
+                            margin: EdgeInsets.only(right: 10.auto, bottom: 5.auto),
+                            child: Column(
+                              children: List.generate(_vm.gameTypeList.length, (index) {
+                                return Container(
+                                  margin: EdgeInsets.only(top: 8.auto),
+                                  child: _buildGameTab(index, _vm.gameTypeList[index].getName(context)),
+                                );
+                              }),
+                            ),
                           ),
                         ),
                         Container(
@@ -82,21 +86,21 @@ class _GameViewState extends BaseState<GameView> {
   }
 
   _buildGameTab(int tabIndex, String title) {
-   // var bgImage = tabIndex == currentTabIndex ? "btn_home_game_category_selected_bg" : "btn_home_game_category_bg";
+    // var bgImage = tabIndex == currentTabIndex ? "btn_home_game_category_selected_bg" : "btn_home_game_category_bg";
     return InkWell(
       onTap: () {
         _onTabClick(tabIndex);
       },
       child: Container(
-        width: (62.5).auto,
-        height: (33.5).auto,
+        width: (62.5).auto,//context.screenWidth/7,
+        height: (33.5).auto,//context.screenHeight/23,
         decoration: tabIndex == currentTabIndex ? gameTabGradientDecoration : gameTabColorDecoration,
         padding: EdgeInsets.all(3.auto),
         child: Center(
             child: AutoSizeText(
           title,
           style: TextStyle(
-              fontSize: 17,
+            fontSize: 17,
               shadows: [
                 tabIndex == currentTabIndex
                     ? Shadow(

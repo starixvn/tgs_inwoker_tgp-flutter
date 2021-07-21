@@ -111,6 +111,7 @@ class BetTransactionViewState extends BaseState<BetTransactionView> {
               : List.generate(_vm.betTransactionList.length, (index) {
                   return Container(
                     child: TransactionCellItem(list: [
+                      _vm.betTransactionList[index].id,
                       Format().dateTimeFormat(_vm.betTransactionList[index].createdOn),
                       _vm.betTransactionList[index].gameProviderName,
                       _vm.betTransactionList[index].betAmount.toString(),

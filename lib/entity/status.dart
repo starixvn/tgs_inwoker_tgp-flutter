@@ -3,6 +3,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:tgp_flutter/localizations/language_provider.dart';
 
 enum Status {
+  All,
   @JsonValue(1)
   WaitingPayment,
   @JsonValue(2)
@@ -11,7 +12,6 @@ enum Status {
   Approved,
   @JsonValue(4)
   Rejected,
-  All
 }
 
 extension StatusExtension on Status {

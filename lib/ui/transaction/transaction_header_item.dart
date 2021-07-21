@@ -21,11 +21,11 @@ class _TransactionHeaderItemState extends BaseState<TransactionHeaderItem> {
           children: List.generate(widget.headerList.length, (index) {
         return Expanded(
           //first header (time) flex number is 2, others will be 1
-          flex: index == 0 || index == 1 ? 4 : 3,
+          flex: 3,//index == 0 || index == 1 ? 4 : 3,
           child: Text(
             getTranslatedText(widget.headerList[index]),
             style: TextStyle(fontSize: 12.auto),
-            textAlign: TextAlign.center,
+            textAlign: index==0?TextAlign.start: TextAlign.center,
           ),
         );
       }).toList()),

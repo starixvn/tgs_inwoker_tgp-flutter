@@ -938,7 +938,8 @@
   "waiting_payment": "等待付款",
   "review": "审核中",
   "approved": "已通过",
-  "rejected": "已拒绝"
+  "rejected": "已拒绝",
+  "order_number": "单号 : "
 }
 
 

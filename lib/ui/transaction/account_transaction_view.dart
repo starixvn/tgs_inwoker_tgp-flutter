@@ -123,6 +123,7 @@ class AccountTransactionViewState extends BaseState<AccountTransactionView> {
               : List.generate(_vm.accountTransactionList.length, (index) {
                   return Container(
                     child: TransactionCellItem(list: [
+                      _vm.accountTransactionList[index].id,
                       Format().dateTimeFormat(_vm.accountTransactionList[index].createdOn),
                       _vm.accountTransactionList[index].status.getName(context),
                       _vm.accountTransactionList[index].amount.toString(),

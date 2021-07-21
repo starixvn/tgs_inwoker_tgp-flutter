@@ -9,7 +9,7 @@ part of 'account_transaction.dart';
 AccountTransaction _$AccountTransactionFromJson(Map<String, dynamic> json) {
   return AccountTransaction()
     ..id = json['id'] as String
-    ..createdOn = json['createdOn'] as String
+    ..createdOn = json['createdon'] as String
     ..updatedOn = json['updatedOn'] as String
     ..status = _$enumDecodeNullable(_$StatusEnumMap, json['status'])
     ..amount = (json['amount'] as num)?.toDouble();
@@ -18,7 +18,7 @@ AccountTransaction _$AccountTransactionFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$AccountTransactionToJson(AccountTransaction instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'createdOn': instance.createdOn,
+      'createdon': instance.createdOn,
       'updatedOn': instance.updatedOn,
       'status': _$StatusEnumMap[instance.status],
       'amount': instance.amount,
@@ -57,9 +57,9 @@ T _$enumDecodeNullable<T>(
 }
 
 const _$StatusEnumMap = {
+  Status.All: 'All',
   Status.WaitingPayment: 1,
   Status.Review: 2,
   Status.Approved: 3,
   Status.Rejected: 4,
-  Status.All: 'All',
 };

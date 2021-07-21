@@ -38,7 +38,7 @@ class PromotionViewModel extends BaseViewModel {
     if (getPromotionListApiState.isSuccess) {
       list = getPromotionListApiState.result.items;
       if (promotionList == null) promotionList = [];
-      promotionList.addAll(list);
+      if(list.isNotEmpty) promotionList.addAll(list);
       endRecord = promotionList.length >= getPromotionListApiState.result.totalCount ? true : false;
     } else
       promotionList = [];
