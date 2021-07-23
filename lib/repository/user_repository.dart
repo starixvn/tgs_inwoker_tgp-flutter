@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tgp_flutter/entity/account_transaction.dart';
 import 'package:tgp_flutter/entity/bank_card.dart';
+import 'package:tgp_flutter/entity/brand_communication.dart';
 import 'package:tgp_flutter/entity/http_method.dart';
 import 'package:tgp_flutter/entity/response/check_username_response.dart';
 import 'package:tgp_flutter/entity/response/edit_password_response.dart';
@@ -24,6 +25,7 @@ class UserRepository extends BaseRepository {
   static UserRepository _singleton;
   UserProfile userProfile;
   MainWallet wallet;
+  Map<String, dynamic> apiError;
 
   static UserRepository getSingleton() {
     if (_singleton == null) {
@@ -263,6 +265,27 @@ class UserRepository extends BaseRepository {
           "status":status.getJson().toString()
         },
         converter: (json) => TransactionResponse.fromJson(json, (res) => AccountTransaction.fromJson(res)),
+        jwtRefresher: jwtAuth)
+        .execute();
+  }
+
+  Future<EventResult<List<BrandCommunication>>> getBrandCommunication() async {
+    return await ApiRequestBuilder<List<BrandCommunication>>(
+        method: HttpMethod.GET,
+        endPoint: "api/brandcommunication",
+        converter: (json)=>(json as List<dynamic>).map((e) => BrandCommunication.fromJson(e)).toList(),
+        jwtRefresher: jwtAuth)
+        .execute();
+  }
+
+  Future<EventResult> getApiErrorLocalization() async {
+    return await ApiRequestBuilder(
+        method: HttpMethod.GET,
+        endPoint: "api/localization",
+       // converter: (json) => json,
+        consumer: (result) => setRepoValues(() {
+          apiError = result;
+        }),
         jwtRefresher: jwtAuth)
         .execute();
   }

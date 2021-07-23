@@ -108,7 +108,7 @@ class ContentRepository extends BaseRepository {
     return await ApiRequestBuilder<List<Announcement>>(
             method: HttpMethod.GET,
             isAuthorization: false,
-            endPoint: "api/announcement/list",
+            endPoint: "api/announcement/list/${await getLanguage()}",
             converter: (json) => (json as List<dynamic>).map((e) => Announcement.fromJson(e)).toList(),
             jwtRefresher: jwtAuth)
         .execute();

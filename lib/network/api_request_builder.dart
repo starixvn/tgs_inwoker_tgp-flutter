@@ -60,7 +60,7 @@ class ApiRequestBuilder<T> extends ChangeNotifier {
       if (onSuccess != null) onSuccess(result);
       return EventResult.success(result);
     } else {
-      return EventResult.failure(baseResponse.error, baseResponse.msg);
+      return EventResult.failure(baseResponse.error, baseResponse.msg, baseResponse.errorMsgId);
     }
   }
 }

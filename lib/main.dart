@@ -11,6 +11,8 @@ import 'package:tgp_flutter/ui/base_state.dart';
 import 'package:tgp_flutter/ui/card/add_card.dart';
 import 'package:tgp_flutter/ui/card/main_card.dart';
 import 'package:tgp_flutter/ui/customer_service/customer_service.dart';
+import 'package:tgp_flutter/ui/customer_service/customer_service_qr_code.dart';
+import 'package:tgp_flutter/ui/customer_service/customer_service_web_view.dart';
 import 'package:tgp_flutter/ui/deposit/deposit.dart';
 import 'package:tgp_flutter/ui/forgot_password/forgot_password.dart';
 import 'package:tgp_flutter/ui/frequent_question/frequent_question.dart';
@@ -140,6 +142,8 @@ class _MyAppState extends BaseState<MyApp> {
           RoutePath.addCard: (context) => AddCard(),
           RoutePath.customerService: (context) => CustomerService(),
           RoutePath.promotionItemDetails: (context) => PromotionItemDetails(),
+          RoutePath.csWebView: (context) => CustomerServiceWebView(),
+          RoutePath.csQrCode: (context) => CustomerServiceQrCode(),
         },
         localizationsDelegates: [
           MyLocalizations.delegate,

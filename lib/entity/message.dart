@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:tgp_flutter/entity/localization.dart';
 part 'message.g.dart';
 @JsonSerializable()
 
@@ -15,6 +16,7 @@ class Message {
   String subject;
   @JsonKey(name: 'isread')
   bool isRead;
+  Localization localization;
 
   factory Message.fromJson(Map<String, dynamic> json) => _$MessageFromJson(json);
   Map<String, dynamic> toJson() => _$MessageToJson(this);

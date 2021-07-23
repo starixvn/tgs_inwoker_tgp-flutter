@@ -35,13 +35,13 @@ class _PromotionItemDetailsState extends BaseState<PromotionItemDetails> {
         children: [
           /*Stack(
             children: [*/
-          widget.promotion.promotionLocalization?.mobileBanner == null && widget.promotion.mobileBanner == null
+          widget.promotion.localization?.mobileBanner == null && widget.promotion.mobileBanner == null
               ? Container()
               : CachedNetworkImage(
                   placeholder: (context, url) => Container(
                         color: CustomColor.very_light_pink_four,
                       ),
-                  imageUrl: widget.promotion.promotionLocalization.mobileBanner,
+                  imageUrl: widget.promotion.localization.mobileBanner,
                   //handling error
                   fit: BoxFit.fill),
           /*Container(
@@ -67,7 +67,7 @@ class _PromotionItemDetailsState extends BaseState<PromotionItemDetails> {
               Format().dateTimeFormat(widget.promotion.from) +
               " - " +
               Format().dateTimeFormat(widget.promotion.to)),
-          _buildPromotionText(_parseHtmlString(widget.promotion.promotionLocalization.content)),
+          _buildPromotionText(parseHtmlString(widget.promotion.localization.content)),
           _buildJoinButton()
         ],
       ),
@@ -126,16 +126,9 @@ class _PromotionItemDetailsState extends BaseState<PromotionItemDetails> {
       );
 
   _getPromotionTitleName() {
-    if (widget.promotion.promotionLocalization == null || widget.promotion.promotionLocalization.name.isEmpty)
+    if (widget.promotion.localization == null || widget.promotion.localization.name.isEmpty)
       return widget.promotion.name;
     else
-      return widget.promotion.promotionLocalization.name;
-  }
-
-  String _parseHtmlString(String htmlString) {
-    final document = parse(htmlString);
-    final String parsedString = parse(document.body.text).documentElement.text;
-
-    return parsedString;
+      return widget.promotion.localization.name;
   }
 }

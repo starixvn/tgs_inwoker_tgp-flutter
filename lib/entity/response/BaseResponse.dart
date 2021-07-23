@@ -5,7 +5,7 @@ part 'BaseResponse.g.dart';
 @JsonSerializable()
 
 class BaseResponse {
-  BaseResponse(this.error, this.data, this.msg);
+  BaseResponse(this.error, this.data, this.msg, this.errorMsgId);
 
   @JsonKey(name: 'err')
   int error;
@@ -13,6 +13,8 @@ class BaseResponse {
   @JsonKey(name: 'errmsg')
   String msg;
   bool success;
+  @JsonKey(name: 'errmsgid')
+  String errorMsgId;
 
   factory BaseResponse.fromJson(Map<String, dynamic> json) => _$BaseResponseFromJson(json);
   Map<String, dynamic> toJson() => _$BaseResponseToJson(this);

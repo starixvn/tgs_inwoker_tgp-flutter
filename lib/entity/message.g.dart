@@ -12,7 +12,10 @@ Message _$MessageFromJson(Map<String, dynamic> json) {
     ..createdOn = json['createon'] as String
     ..content = json['content'] as String
     ..subject = json['subject'] as String
-    ..isRead = json['isread'] as bool;
+    ..isRead = json['isread'] as bool
+    ..localization = json['localization'] == null
+        ? null
+        : Localization.fromJson(json['localization'] as Map<String, dynamic>);
 }
 
 Map<String, dynamic> _$MessageToJson(Message instance) => <String, dynamic>{
@@ -21,4 +24,5 @@ Map<String, dynamic> _$MessageToJson(Message instance) => <String, dynamic>{
       'content': instance.content,
       'subject': instance.subject,
       'isread': instance.isRead,
+      'localization': instance.localization,
     };

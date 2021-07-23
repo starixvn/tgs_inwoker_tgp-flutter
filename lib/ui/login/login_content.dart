@@ -136,7 +136,7 @@ class _LoginContentState extends BaseState<LoginContent> {
             activeColor: Colors.black,
             onChanged: (val) => this.setState(() {
               this._isRememberMe = !this._isRememberMe;
-              if(!_isRememberMe) _vm.removePrefs();
+              if (!_isRememberMe) _vm.removePrefs();
             }),
           ),
           Text(
@@ -216,7 +216,7 @@ class _LoginContentState extends BaseState<LoginContent> {
     }
   }
 
-  _navigateToHome() async{
+  _navigateToHome() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool("login_later", true);
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -230,7 +230,7 @@ class _LoginContentState extends BaseState<LoginContent> {
   }
 
   _handleApiState() {
-    handleApiState(_vm.loginApiState, isCheckSessionExpired:false, onSuccess: () {
+    handleApiState(_vm.loginApiState, isCheckSessionExpired: false, onSuccess: () {
       _navigateToHome();
     });
   }

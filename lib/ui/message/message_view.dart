@@ -57,26 +57,6 @@ class _MessageViewState extends BaseState<MessageView> {
                 getTranslatedText("message_center"),
                 style: TextStyle(fontSize: 16.auto),
               ),
-              /*actions: [
-                Visibility(
-                  visible: _vm.messageList != null && _vm.messageList.isNotEmpty,
-                  child: InkWell(
-                    onTap: () {
-                      setState(() {
-                        isEditing = !isEditing;
-                        selectedMessageList = [];
-                      });
-                    },
-                    child: Container(
-                        margin: EdgeInsets.only(right: 15.auto),
-                        alignment: Alignment.center,
-                        child: Text(
-                          isEditing ? getTranslatedText("cancel") : getTranslatedText("edit"),
-                          style: TextStyle(fontSize: 12.auto),
-                        )),
-                  ),
-                ),
-              ],*/
             ),
             //bottomNavigationBar: _buildBottomNavigationBar(),
             body: _vm.messageList == null
@@ -86,13 +66,9 @@ class _MessageViewState extends BaseState<MessageView> {
                       children: List.generate(_vm.messageList.length, (index) {
                         return MessageItem(
                           message: _vm.messageList[index],
-                          //isEditing: isEditing,
-                          //onSelected: (message) => _onSelected(message),
                           onReadMessage: (id) {
-                            //ProgressDialog.show(context);
                             _vm.readMessage([id]); //call api silently
                           },
-                          //selectedMessageList: selectedMessageList ?? []
                         );
                       }),
                     ),

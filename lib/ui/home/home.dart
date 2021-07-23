@@ -43,6 +43,7 @@ class _HomeState extends BaseState<Home> {
   @override
   void initState() {
     _vm.getAnnouncement();
+    _vm.getApiError();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _vm.resumeIfNeed();
     });
@@ -131,7 +132,7 @@ class _HomeState extends BaseState<Home> {
       );
 
   _buildTextMarquee() {
-    var announcement = _vm.announcement?.content?.replaceAll(RegExp("\n"), " ");
+    var announcement = parseHtmlString(_vm.announcement?.localization?.content ?? _vm.announcement?.content);
     return Expanded(
       child: Container(
         decoration: BoxDecoration(color: CustomColor.theme_bar_gradient_1, borderRadius: BorderRadius.circular(10.0)),

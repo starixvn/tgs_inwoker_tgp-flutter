@@ -10,8 +10,12 @@ import 'package:tgp_flutter/network/event_result.dart';
 import 'package:tgp_flutter/repository/user_repository.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/ui/login/login.dart';
+import 'package:html/parser.dart';
 
 abstract class BaseState<T extends StatefulWidget> extends State<T> {
+  final userRepo = UserRepository.getSingleton();
+  get apiError => userRepo.apiError;
+
   getTranslatedText(String key) => LanguageProvider().getTranslated(context, key);
 
   handleApiState(EventResult eventResult,
@@ -27,6 +31,10 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
         if (onError != null) {
           onError(eventResult.error);
         } else {
+          if(eventResult.errorMsgId!=null){
+            String error = userRepo.apiError[eventResult.errorMsgId];
+            CustomToast.show(error);
+          }
           if ((eventResult.errorCode == 102 || eventResult.errorCode == 101) && isCheckSessionExpired) {
             UserRepository.getSingleton().clearSession();
             WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -99,5 +107,12 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
       errorMessage = getTranslatedText(errorKey);
     }
     CustomToast.show(errorMessage);
+  }
+
+  String parseHtmlString(String htmlString) {
+    final document = parse(htmlString ??"");
+    final String parsedString = parse(document.body.text).documentElement.text;
+
+    return parsedString;
   }
 }

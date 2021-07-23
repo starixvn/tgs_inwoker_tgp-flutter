@@ -18,5 +18,4 @@ class SplashViewModel extends BaseViewModel{
     setLoading(false);
     return authApiState;
   }
-
 }

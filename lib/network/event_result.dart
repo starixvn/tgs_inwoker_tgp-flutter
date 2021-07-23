@@ -4,6 +4,7 @@ class EventResult<T> {
   int errorCode;
   bool isLoading, isSuccess, isError;
   bool isHandled = false; //always false when init
+  String errorMsgId;
 
   EventResult(
       {this.result,
@@ -11,9 +12,10 @@ class EventResult<T> {
         this.errorCode,
       this.isLoading = false,
       this.isSuccess = false,
-      this.isError = false});
+      this.isError = false,
+      this.errorMsgId});
 
   EventResult.loading() : this(isLoading: true);
   EventResult.success(T result) : this(result: result, isSuccess: true);
-  EventResult.failure(int errorCode, String error) : this(errorCode: errorCode, error: error, isError: true);
+  EventResult.failure(int errorCode, String error, String errorMsgId) : this(errorCode: errorCode, error: error, isError: true, errorMsgId: errorMsgId);
 }

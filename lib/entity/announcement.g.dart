@@ -11,7 +11,10 @@ Announcement _$AnnouncementFromJson(Map<String, dynamic> json) {
     ..subject = json['subject'] as String
     ..content = json['content'] as String
     ..from = json['from'] as int
-    ..to = json['to'] as int;
+    ..to = json['to'] as int
+    ..localization = json['localization'] == null
+        ? null
+        : Localization.fromJson(json['localization'] as Map<String, dynamic>);
 }
 
 Map<String, dynamic> _$AnnouncementToJson(Announcement instance) =>
@@ -20,4 +23,5 @@ Map<String, dynamic> _$AnnouncementToJson(Announcement instance) =>
       'content': instance.content,
       'from': instance.from,
       'to': instance.to,
+      'localization': instance.localization,
     };

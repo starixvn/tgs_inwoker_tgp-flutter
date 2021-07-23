@@ -1,3 +1,4 @@
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tgp_flutter/entity/game.dart';
 import 'package:tgp_flutter/entity/game_provider.dart';
 import 'package:tgp_flutter/entity/http_method.dart';
@@ -23,10 +24,19 @@ class MessageRepository extends BaseRepository {
     return _singleton;
   }
 
+  getLanguage() async {
+    SharedPreferences _prefs = await SharedPreferences.getInstance();
+    var languageCode = _prefs.getString("LANGUAGE_CODE") ?? "en-US";
+    if (languageCode == "zh-TW")
+      return "zh-CN";
+    else
+      return languageCode;
+  }
+
   Future<EventResult<ListResponse<Message>>> getMessageList(int page, int rows) async {
     return await ApiRequestBuilder<ListResponse<Message>>(
             method: HttpMethod.GET,
-            endPoint: "api/letter",
+            endPoint: "api/letter/${await getLanguage()}",
             params: {
               "page": page.toString(),
               "rows": rows.toString(),

@@ -28,7 +28,7 @@ class _PromotionItemState extends BaseState<PromotionItem> {
                 builder: (context) =>
                     PromotionItemDetails(imagePath: widget.imagePath, promotion: widget.promotion, vm: widget.vm)));
       },
-      child: widget.promotion.promotionLocalization?.mobileBanner == null && widget.promotion.mobileBanner == null
+      child: widget.promotion.localization?.mobileBanner == null && widget.promotion.mobileBanner == null
           ? Container()
           : Container(
               margin: EdgeInsets.only(left: 11.auto, right: 11.auto, top: 10.auto),
@@ -43,7 +43,7 @@ class _PromotionItemState extends BaseState<PromotionItem> {
                                 color: CustomColor.very_light_pink_four,
                               ),
                           imageUrl:
-                              (widget.promotion.promotionLocalization?.mobileBanner) ?? widget.promotion.mobileBanner,
+                              (widget.promotion.localization?.mobileBanner) ?? widget.promotion.mobileBanner,
                           //handling error
                           fit: BoxFit.fill)),
               /*Container(
@@ -61,8 +61,8 @@ class _PromotionItemState extends BaseState<PromotionItem> {
   }
 
   _getPromotionTitleName() {
-    if (widget.promotion.promotionLocalization.name != null)
-      return widget.promotion.promotionLocalization.name;
+    if (widget.promotion.localization.name != null)
+      return widget.promotion.localization.name;
     else
       return widget.promotion.name;
   }

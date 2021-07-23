@@ -45,4 +45,6 @@ class RoutePath{
   static final forgotPassword = '/forgot_password';
   static final language = '/language';
   static final promotionItemDetails = '/promotion_item_details';
+  static final csWebView = '/cs_web_view';
+  static final csQrCode = '/cs_qr_code';
 }

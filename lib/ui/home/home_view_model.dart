@@ -20,7 +20,7 @@ class HomeViewModel extends BaseViewModel {
 
   get wallet => userRepo.wallet;
   bool isNotLogin = false, isExpired = false;
-  var getWalletBalanceApiState, getBasicInfoApiState, getAnnouncementApiState;
+  var getWalletBalanceApiState, getBasicInfoApiState, getAnnouncementApiState, getApiErrorLocalizationApiState;
   Announcement announcement;
 
   resumeIfNeed() async {
@@ -52,5 +52,9 @@ class HomeViewModel extends BaseViewModel {
     }
     setLoading(false);
     return getAnnouncementApiState;
+  }
+
+  getApiError() async {
+    await userRepo.getApiErrorLocalization();
   }
 }
