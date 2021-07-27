@@ -34,16 +34,10 @@ import 'package:tgp_flutter/ui/transaction/transaction_view_model.dart';
 import '../../my_behavior.dart';
 
 class AccountTransactionView extends StatefulWidget {
-  //final List<String> transactionHeaderList;
   final TransactionViewModel vm;
-
-  /* final List<dynamic> list;
-  final Function(bool) apiFunction;
-  final EventResult<dynamic> apiState;*/
 
   AccountTransactionView({
     Key key,
-    /*this.transactionHeaderList, */
     this.vm,
   }) : super(key: key);
 
@@ -53,19 +47,17 @@ class AccountTransactionView extends StatefulWidget {
 
 class AccountTransactionViewState extends BaseState<AccountTransactionView> {
   ScrollController _scrollController = ScrollController();
-  var isEndRecord = false, isLoading = false;
+  var isLoading = false;
   RefreshController _refreshController = RefreshController();
-  var pickerText1, pickerText2, pickerText3;
+  var pickerText1;
   var filterIndex = 0;
   TransactionViewModel _vm = TransactionViewModel();
 
-//  var isFirst = true;
 
   void initState() {
     _scrollController.addListener(_scrollListener);
-    //   isFirst = false;
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _onDateFilter(0);
+      _getTransaction();
     });
     super.initState();
   }
@@ -75,103 +67,51 @@ class AccountTransactionViewState extends BaseState<AccountTransactionView> {
         model: _vm,
         builder: (ctx, vm, _) {
           _handleApiState();
-          return Container(
-            height: context.screenHeight,
-            child: ScrollConfiguration(
-                behavior: MyBehavior(),
-                child: SmartRefresher(
-                  controller: _refreshController,
-                  enablePullDown: true,
-                  onRefresh: () {
-                    _getTransaction(isLoadMore: false);
-                    _refreshController.refreshCompleted();
-                  },
-                  child: _vm.accountTransactionList == null
-                      ? buildProgressDialog()
-                      : CustomScrollView(controller: _scrollController, slivers: [
-                          BaseTransaction(
-                            transactionHeaderList: ["time", "status", "amount"],
-                            onCalendarClick: (value, isStartDate) => _onCalendarClick(value, isStartDate),
-                            onFilter: (value) {
-                              // ProgressDialog.show(context);
-                              _onDateFilter(value);
-                            },
-                            getPickerBox: _getPickerBox(),
-                            startDate: _vm.pStartDate,
-                            endDate: _vm.pEndDate,
-                            filterIndex: filterIndex,
-                            expandedHeight: 250,
-                          ),
-                          _buildTransactionItem()
-                        ]),
-                )),
+          return BaseTransaction(
+            transactionHeaderList: ["time", "status", "amount"],
+            getPickerBox: _getPickerBox(),
+            filterIndex: filterIndex,
+            expandedHeight: 250,
+            vm: _vm,
+            getTransaction: (mIsLoadMore, mStatus) {
+              _getTransaction(isLoadMore: mIsLoadMore, status: mStatus);
+            },
+            setIndex: (value) {
+              setState(() {
+                filterIndex = value;
+              });
+            },
+            scrollController: _scrollController,
+            refreshController: _refreshController,
+            list: _vm.accountTransactionList,
+            displayItemList: _getList(),
           );
         });
   }
 
-  _buildTransactionItem() => SliverPadding(
-        padding: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 5.auto),
-        sliver: SliverList(
-          delegate: SliverChildListDelegate(_vm.accountTransactionList.length == 0
-              ? List.generate(
-                  1,
-                  (index) => Container(
-                        margin: EdgeInsets.only(top: 60.auto),
-                        child: Container(
-                            width: 75.auto, height: 75.auto, child: Image.asset("images/transaction/ic_no_record.png")),
-                      ))
-              : List.generate(_vm.accountTransactionList.length, (index) {
-                  return Container(
-                    child: TransactionCellItem(list: [
-                      _vm.accountTransactionList[index].id,
-                      Format().dateTimeFormat(_vm.accountTransactionList[index].createdOn),
-                      _vm.accountTransactionList[index].status.getName(context),
-                      _vm.accountTransactionList[index].amount.toString(),
-                    ], type: _getTransactionItemType(index), isEndRecord: _vm.endRecord),
-                  );
-                }).toList()),
-        ),
-      );
+  _getList() => _vm.accountTransactionList ==null?[]:List.generate(_vm.accountTransactionList.length, (index) {
+        return Container(
+          child: TransactionCellItem(list: [
+            _vm.accountTransactionList[index].id,
+            Format().dateTimeFormat(_vm.accountTransactionList[index].createdOn),
+            _vm.accountTransactionList[index].status.getName(context),
+            _vm.accountTransactionList[index].amount.toString(),
+          ], type: _getTransactionItemType(index), isEndRecord: _vm.endRecord),
+        );
+      }).toList();
 
-  _onCalendarClick(DateTime date, bool isStartDate) {
-    if (isStartDate) {
-      _vm.setDate(startDate: date);
+  _getTransactionItemType(int index) {
+    if (_vm.accountTransactionList.length == 1) {
+      return TransactionCellItemType.SINGLE;
     } else {
-      if (date.isBefore(_vm.pStartDate)) {
-        CustomToast.show(getTranslatedText("transaction_after_start_date"));
-        return;
-      } else
-        _vm.setDate(endDate: date);
+      if (index == 0) {
+        return TransactionCellItemType.TOP;
+      } else if (index == _vm.accountTransactionList.length - 1) {
+        return TransactionCellItemType.BOTTOM;
+      } else {
+        return TransactionCellItemType.CENTER;
+      }
     }
-    _onDateFilter(-1);
-  }
-
-  _onDateFilter(int index) {
-    var currentDate = DateTime.now();
-    switch (index) {
-      case 0: //today
-        _vm.setDate(
-            startDate: DateTime(currentDate.year, currentDate.month, currentDate.day, 0, 0, 0, 0, 0),
-            endDate: currentDate);
-        break;
-      case 1: //week
-        _vm.setDate(
-            startDate: DateTime(currentDate.year, currentDate.month, currentDate.day - 7), endDate: currentDate);
-        break;
-      case 2: //month
-        _vm.setDate(
-            startDate: DateTime(currentDate.year, currentDate.month - 1, currentDate.day), endDate: currentDate);
-        break;
-      case -1: //click from calendar
-        break;
-      default:
-        _vm.setDate();
-        break;
-    }
-    _getTransaction();
-    setState(() {
-      filterIndex = index;
-    });
   }
 
   _getPickerBox() {
@@ -213,20 +153,6 @@ class AccountTransactionViewState extends BaseState<AccountTransactionView> {
                 });
               });
         });
-  }
-
-  _getTransactionItemType(int index) {
-    if (_vm.accountTransactionList.length == 1) {
-      return TransactionCellItemType.SINGLE;
-    } else {
-      if (index == 0) {
-        return TransactionCellItemType.TOP;
-      } else if (index == _vm.accountTransactionList.length - 1) {
-        return TransactionCellItemType.BOTTOM;
-      } else {
-        return TransactionCellItemType.CENTER;
-      }
-    }
   }
 
   _scrollListener() {

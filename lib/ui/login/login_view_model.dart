@@ -84,4 +84,8 @@ class LoginViewModel extends BaseViewModel {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString("password") ?? "";
   }
+
+  getApiError() async {
+    await userRepo.getApiErrorLocalization();
+  }
 }

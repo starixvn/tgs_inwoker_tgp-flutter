@@ -40,8 +40,7 @@ class _ProfileState extends BaseState<Profile> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (_vm.userProfile != null) {
-        //_vm.getWalletBalance();
-        //_getVipDetails();
+         _vm.computeTotalBalance();
       } else {
         Navigator.of(context).pushNamed("/login");
       }
@@ -57,7 +56,7 @@ class _ProfileState extends BaseState<Profile> {
           return Scaffold(
               resizeToAvoidBottomInset: false,
               backgroundColor: Colors.white,
-              body: _vm.userProfile == null || _vm.wallet == null ? buildProgressDialog() : _buildUserInfoContainer());
+              body: _vm.userProfile == null || _vm.balance == null ? buildProgressDialog() : _buildUserInfoContainer());
         });
   }
 
@@ -108,13 +107,13 @@ class _ProfileState extends BaseState<Profile> {
             padding: EdgeInsets.only(top: 3.auto, bottom: 3.auto),
             //"¥ ${widget.userProfile?.balance}",
             child: Text(
-              getTranslatedText("main_wallet") + " :  ¥ ${Format().currencyWithDecimalFormat(_vm.wallet.main)}",
+              getTranslatedText("main_wallet") + " :  ¥ ${Format().currencyWithDecimalFormat(_vm.balance)}",
               style: TextStyle(color: Colors.white, fontSize: (11.2).auto),
               textAlign: TextAlign.start,
             ),
           ),
           Text(
-            getTranslatedText("total_balance") + " : ¥ 0.00",
+            getTranslatedText("total_balance") + " :"+(_vm.totalBalance != null ? "¥ ${Format().currencyWithDecimalFormat(_vm.totalBalance ?? 0.0)}": "-"),
             //"总资金  "+(_vm.totalBalance != null ? "¥ "+ Format().currencyWithDecimalFormat(_vm.totalBalance) : "-"),
             style: TextStyle(color: Colors.white, fontSize: (11.2).auto),
             textAlign: TextAlign.start,
@@ -164,8 +163,9 @@ class _ProfileState extends BaseState<Profile> {
                   _buildProfileBottomItem("bet_history", "ic_bet_transaction", "transaction", 0),
                   _buildProfileBottomItem("deposit_history", "ic_account_detail", "transaction", 1),
                   _buildProfileBottomItem("withdrawal_history", "ic_account_detail", "transaction", 2),
+                  _buildProfileBottomItem("transfer_history", "ic_account_detail", "transaction", 3),
                   _buildProfileBottomItem("manage_card", "ic_card_detail", "main_card", 0),
-                  //_buildProfileBottomItem("refer_friend", "ic_refer_friend", "refer_friend", 0),
+                  _buildProfileBottomItem("customer_service", "ic_customer_service", "customer_service", 0),
                   //_buildProfileBottomItem("frequent_question", "ic_profile_question", "frequent_question", 0),
                   _buildProfileBottomItem("language", "ic_lang", "language", 0),
                 ],

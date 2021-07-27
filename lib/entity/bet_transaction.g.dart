@@ -13,7 +13,8 @@ BetTransaction _$BetTransactionFromJson(Map<String, dynamic> json) {
     ..gameProviderName = json['gameProviderName'] as String
     ..betAmount = (json['betAmount'] as num)?.toDouble()
     ..validBetAmount = (json['validBetAmount'] as num)?.toDouble()
-    ..winLoss = (json['winLoss'] as num)?.toDouble();
+    ..winLoss = (json['winLoss'] as num)?.toDouble()
+    ..gameName = json['gameName'] as String;
 }
 
 Map<String, dynamic> _$BetTransactionToJson(BetTransaction instance) =>
@@ -24,4 +25,5 @@ Map<String, dynamic> _$BetTransactionToJson(BetTransaction instance) =>
       'betAmount': instance.betAmount,
       'validBetAmount': instance.validBetAmount,
       'winLoss': instance.winLoss,
+      'gameName': instance.gameName,
     };

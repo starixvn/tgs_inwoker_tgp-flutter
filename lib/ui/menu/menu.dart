@@ -83,6 +83,12 @@ class _MenuState extends BaseState<Menu> {
                   navigationID: 2,
                 ),
                 MenuItem(
+                  image: "ic_menu_withdraw_history",
+                  text: getTranslatedText("transfer_history"),
+                  navigationPath: "transaction",
+                  navigationID: 3,
+                ),
+                MenuItem(
                   image: "ic_menu_card",
                   text: getTranslatedText("manage_card"),
                   navigationPath: "main_card",

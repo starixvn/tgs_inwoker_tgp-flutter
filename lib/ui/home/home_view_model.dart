@@ -8,20 +8,23 @@ import 'package:tgp_flutter/repository/base_repository.dart';
 import 'package:tgp_flutter/repository/content_repository.dart';
 import 'package:tgp_flutter/repository/user_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tgp_flutter/repository/wallet_repository.dart';
 
 class HomeViewModel extends BaseViewModel {
   final userRepo = UserRepository.getSingleton();
   final contentRepo = ContentRepository.getSingleton();
+  final walletRepo = WalletRepository.getSingleton();
 
   @override
   List<BaseRepository> get repoList => [userRepo, contentRepo];
 
   get userProfile => userRepo.userProfile;
 
-  get wallet => userRepo.wallet;
+  get balance => userRepo.wallet.main;
   bool isNotLogin = false, isExpired = false;
   var getWalletBalanceApiState, getBasicInfoApiState, getAnnouncementApiState, getApiErrorLocalizationApiState;
   Announcement announcement;
+  double gameBalance = 0.0, totalBalance;
 
   resumeIfNeed() async {
     setLoading();
@@ -31,6 +34,7 @@ class HomeViewModel extends BaseViewModel {
       print(token);
       await userRepo.getBasicInfo();
       await userRepo.getWalletBalance();
+      await _computeTotalBalance();
       if (userProfile == null) isExpired = true;
       print("Token: " + token);
       print("Authorization: " + prefs.getString("auth_token"));
@@ -56,5 +60,25 @@ class HomeViewModel extends BaseViewModel {
 
   getApiError() async {
     await userRepo.getApiErrorLocalization();
+  }
+
+  _computeTotalBalance() async {
+    var gameList = contentRepo.gameProviderList.where((element) => element.transferWallet == true);
+
+    var task = <Future>[];
+    gameList.forEach((game) {
+      task.add(_getGameWalletBalance(game));
+    });
+    await Future.wait(task);
+    totalBalance = balance+gameBalance;
+    notifyListeners();
+  }
+
+  _getGameWalletBalance(GameProvider game) async {
+    var state = await walletRepo.getGameWallet(game.code);
+    if (state.isSuccess) {
+      gameBalance += state.result.balance;
+    }
+    notifyListeners();
   }
 }

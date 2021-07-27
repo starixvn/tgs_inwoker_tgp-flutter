@@ -88,7 +88,7 @@ class _TransactionCellItemState extends BaseState<TransactionCellItem> {
           margin: EdgeInsets.symmetric(horizontal:10.auto),
           child: Column(
             children: [
-              Row(
+              widget.list[0].isEmpty?Container():Row(
                 children: [
                   Text(
                     getTranslatedText("order_number"),
@@ -111,14 +111,17 @@ class _TransactionCellItemState extends BaseState<TransactionCellItem> {
                           ? Container()
                           : Expanded(
                         //first header (time) flex number is 2, others will be 1
-                        flex: 3, //index == 1 || index == 2 ? 4 : 3,
-                        child: AutoSizeText(
-                          widget.list[index] ?? "",
-                          style: TextStyle(color: Colors.grey[700]),
-                          textAlign: index == 1 ? TextAlign.start : TextAlign.center,
-                          minFontSize: 5,
-                          maxFontSize: 12,
-                          stepGranularity: 1,
+                        flex: 3,
+                        child: Container(
+                          margin: EdgeInsets.symmetric(horizontal: 2.auto),
+                          child: AutoSizeText(
+                            widget.list[index] ?? "",
+                            style: TextStyle(color: Colors.grey[700]),
+                            textAlign: index == 1 ? TextAlign.start : TextAlign.center,
+                            minFontSize: 5,
+                            maxFontSize: 12,
+                            stepGranularity: 1,
+                          ),
                         ),
                       );
                     }).toList()),
@@ -132,73 +135,5 @@ class _TransactionCellItemState extends BaseState<TransactionCellItem> {
                 thickness: (1.0).auto,
                 color: CustomColor.very_light_pink_four,
               )
-      ])
-      /* Column(
-      children:[
-        Container(
-          margin: EdgeInsets.only(top:5.auto),
-          child: Row(
-            children: [
-              Expanded(
-                flex:2,
-                child: AutoSizeText(
-                  text1??"",
-                  style: TextStyle(
-                      fontSize: 12.auto,
-                      color: Colors.grey[700]
-                  ),
-                  textAlign: TextAlign.center,
-                  maxLines: 1,
-                ),
-
-              ),
-              Expanded(
-                flex: 1,
-                child: AutoSizeText(
-                  text2??"",
-                  style: TextStyle(
-                      fontSize: 12.auto,
-                      color: Colors.grey[700]
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-
-              ),
-              Expanded(
-                flex: 1,
-                child: AutoSizeText(
-                  text3??"",
-                  style: TextStyle(
-                      fontSize: 12.auto,
-                      color: Colors.grey[700]
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-
-            ],
-          ),
-        ),
-        isLast?Container():Divider(
-          thickness: (1.0).auto,
-          color: CustomColor.very_light_pink_four,
-        )
-      ]
-  )*/
-      ;
-
-  _buildCellItem(String text) => AutoSizeText(
-        text,
-        style: TextStyle(fontSize: 12.auto, color: Colors.grey[700]),
-        textAlign: TextAlign.center,
-        minFontSize: 10,
-        stepGranularity: 1,
-      );
-
-/*  _getDisplayText() {
-    text1 = value.createdOn;
-    text2 = value.gameProviderName;
-    text3 = value.betAmount.toString();
-
-  }*/
+      ]);
 }

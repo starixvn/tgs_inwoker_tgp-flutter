@@ -35,7 +35,7 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
             String error = userRepo.apiError[eventResult.errorMsgId];
             CustomToast.show(error);
           }
-          if ((eventResult.errorCode == 102 || eventResult.errorCode == 101) && isCheckSessionExpired) {
+          else if ((eventResult.errorCode == 102 || eventResult.errorCode == 101) && isCheckSessionExpired) {
             UserRepository.getSingleton().clearSession();
             WidgetsBinding.instance.addPostFrameCallback((_) {
               showDialog(

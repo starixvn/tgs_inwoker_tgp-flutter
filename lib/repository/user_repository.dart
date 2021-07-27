@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tgp_flutter/entity/account_transaction.dart';
 import 'package:tgp_flutter/entity/bank_card.dart';
 import 'package:tgp_flutter/entity/brand_communication.dart';
+import 'package:tgp_flutter/entity/transfer_transaction.dart';
 import 'package:tgp_flutter/entity/http_method.dart';
 import 'package:tgp_flutter/entity/response/check_username_response.dart';
 import 'package:tgp_flutter/entity/response/edit_password_response.dart';
@@ -265,6 +266,32 @@ class UserRepository extends BaseRepository {
           "status":status.getJson().toString()
         },
         converter: (json) => TransactionResponse.fromJson(json, (res) => AccountTransaction.fromJson(res)),
+        jwtRefresher: jwtAuth)
+        .execute();
+  }
+
+  Future<EventResult<TransactionResponse<TransferTransaction>>> getTransferTransaction(
+      DateTime startDate,
+      DateTime endDate,
+      int page,
+      int rows,
+      /*int orderBy,
+      bool isDesc,
+      String sortBy,
+      bool showAll*/
+      ) async {
+    return await ApiRequestBuilder<TransactionResponse<TransferTransaction>>(
+        method: HttpMethod.GET,
+        endPoint: "api/game/balance/list",
+        params:{
+          "begincreate": startDate.toString(),
+          "endcreate": endDate.toString(),
+          "Page": page.toString(),
+          "Rows": rows.toString(),
+          "OrderBy":"1",
+          "SortBy":"BalanceTime"
+        },
+        converter: (json) => TransactionResponse.fromJson(json, (res) => TransferTransaction.fromJson(res)),
         jwtRefresher: jwtAuth)
         .execute();
   }

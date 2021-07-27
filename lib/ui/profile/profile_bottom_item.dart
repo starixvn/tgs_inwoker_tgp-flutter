@@ -58,7 +58,9 @@ class _ProfileBottomItemState extends BaseState<ProfileBottomItem> {
   }
 
   _buildImageIcon() => ImageIcon(
-        AssetImage("images/profile/${widget.imagePath}.png"),
+        widget.imagePath == "ic_customer_service"
+            ? AssetImage("images/bottom_navigation_bar/ic_customer_service.png")
+            : AssetImage("images/profile/${widget.imagePath}.png"),
         size: 27.auto,
       );
 
@@ -76,7 +78,7 @@ class _ProfileBottomItemState extends BaseState<ProfileBottomItem> {
 
   _navigate() => WidgetsBinding.instance.addPostFrameCallback((_) {
         if (widget.navigationID == 0) {
-        Navigator.of(context).pushNamed("/${widget.routePath}");
+          Navigator.of(context).pushNamed("/${widget.routePath}");
         } else {
           Navigator.push(
               context,

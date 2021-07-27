@@ -143,7 +143,7 @@
   "bet_platform": "Bet Platform",
   "contact_cs": "Contact CS",
   "any_question_please_contact": "Any question, Please contact&#160;",
-  "online_cs": "Online CS",
+  "online_cs": "Online Customer Service",
   "here": "Here",
   "edit_phone_cs": "If want to edit phone，Click;",
   "edit_ic_no_cs": "If want edit Ic No, Please contact;",
@@ -952,5 +952,9 @@
   "review": "Review",
   "approved": "Approved",
   "rejected": "Rejected",
-  "order_number": "Order Number : "
+  "order_number": "Order Number : ",
+  "qr_cs": "QR Customer Service",
+  "contact": "Contact",
+  "cs_join": "Join",
+  "contact_now": "Contact Now"
 }

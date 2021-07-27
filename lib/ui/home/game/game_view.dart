@@ -98,7 +98,7 @@ class _GameViewState extends BaseState<GameView> {
         padding: EdgeInsets.all(3.auto),
         child: Center(
             child: AutoSizeText(
-          title,
+          title ??"",
           style: TextStyle(
             fontSize: 17,
               shadows: [

@@ -109,6 +109,7 @@ flutter:
     - images/language/
     - images/banner/
     - images/withdraw/
+    - images/support/
 
 
     - i18n/

@@ -1,24 +1,28 @@
 import 'package:tgp_flutter/base_viewmodel.dart';
+import 'package:tgp_flutter/entity/game.dart';
+import 'package:tgp_flutter/entity/game_provider.dart';
+import 'package:tgp_flutter/entity/wallet.dart';
 import 'package:tgp_flutter/network/event_result.dart';
 import 'package:tgp_flutter/repository/base_repository.dart';
+import 'package:tgp_flutter/repository/content_repository.dart';
 import 'package:tgp_flutter/repository/user_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tgp_flutter/repository/wallet_repository.dart';
 
 class ProfileViewModel extends BaseViewModel {
   final userRepo = UserRepository.getSingleton();
+  final contentRepo = ContentRepository.getSingleton();
+  final walletRepo = WalletRepository.getSingleton();
 
   var logoutApiState, getWalletBalanceApiState;
-
-  //get totalBalance => _computeTotalBalance();
+  double gameBalance = 0.0, totalBalance;
 
   @override
-  List<BaseRepository> get repoList => [
-        userRepo,
-      ];
+  List<BaseRepository> get repoList => [userRepo];
 
   get userProfile => userRepo.userProfile;
 
-  get wallet => userRepo.wallet;
+  get balance => userRepo.wallet.main;
 
   logout() async {
     setLoading();
@@ -27,23 +31,23 @@ class ProfileViewModel extends BaseViewModel {
     return logoutApiState;
   }
 
-/*  getWalletBalance()async{
-    setLoading();
-    getWalletBalanceApiState = await userRepo.getWalletBalance();
-    setLoading(false);
-    return getWalletBalanceApiState;
-  }*/
+  computeTotalBalance() async {
+    var gameList = contentRepo.gameProviderList.where((element) => element.transferWallet == true);
 
-/*getTotalBalance(){
-    WalletRepository.getSingleton().getAllWallet();
+    var task = <Future>[];
+    gameList.forEach((game) {
+      task.add(_getGameWalletBalance(game));
+    });
+    await Future.wait(task);
+    totalBalance = balance + gameBalance;
+    notifyListeners();
   }
 
-  _computeTotalBalance(){
-    var total;
-    walletRepo.walletList?.forEach((element) {
-      if(total == null) total = 0.0;
-      total += double.tryParse(element.balance.toString()) ?? 0.0;
-    });
-    return total;
-  }*/
+  _getGameWalletBalance(GameProvider game) async {
+    var state = await walletRepo.getGameWallet(game.code);
+    if (state.isSuccess) {
+      gameBalance += state.result.balance;
+    }
+    notifyListeners();
+  }
 }

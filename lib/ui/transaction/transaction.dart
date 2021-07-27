@@ -11,8 +11,8 @@ import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
 import 'package:tgp_flutter/ui/transaction/account_transaction_view.dart';
-import 'package:tgp_flutter/ui/transaction/base_transaction_view.dart';
 import 'package:tgp_flutter/ui/transaction/bet_transaction_view.dart';
+import 'package:tgp_flutter/ui/transaction/transfer_transaction_view.dart';
 import 'package:tgp_flutter/ui/transaction/transaction_view_model.dart';
 import 'package:tgp_flutter/ui/transaction/withdraw_transaction_view.dart';
 
@@ -32,8 +32,8 @@ class _TransactionState extends BaseState<Transaction> with SingleTickerProvider
     {"id": "0", "text": "bet_history"},
     {"id": "1", "text": "deposit_history"},
     {"id": "2", "text": "withdrawal_history"},
-    /*{"id": "3", "text": "充值记录"},
-    {"id": "4", "text": "返水记录"},*/
+    {"id": "3", "text": "transfer_history"},
+    /*{"id": "4", "text": "返水记录"},*/
   ];
   TransactionViewModel _vm = TransactionViewModel();
 
@@ -85,7 +85,7 @@ class _TransactionState extends BaseState<Transaction> with SingleTickerProvider
                   color: Colors.black87,
                   child: TabBar(
                     controller: _tabController,
-                    isScrollable: false,
+                    isScrollable: true,
                     unselectedLabelColor: Colors.white,
                     labelColor: CustomColor.theme_label_text_highlight_color,
                     indicatorColor: CustomColor.theme_label_text_highlight_color,
@@ -120,6 +120,7 @@ class _TransactionState extends BaseState<Transaction> with SingleTickerProvider
                       WithdrawTransactionView(
                         vm: _vm,
                       ),
+    TransferTransactionView(vm:_vm)
     /*     BaseTransactionView<AccountTransaction>(
                         isWithdraw: false,
                       ),
@@ -145,6 +146,4 @@ class _TransactionState extends BaseState<Transaction> with SingleTickerProvider
           );
         });
   }
-
-
 }

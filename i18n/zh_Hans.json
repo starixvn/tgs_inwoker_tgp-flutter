@@ -939,7 +939,11 @@
   "review": "审核中",
   "approved": "已通过",
   "rejected": "已拒绝",
-  "order_number": "单号 : "
+  "order_number": "单号 : ",
+  "qr_cs": "二维码客服",
+  "contact": "联系",
+  "cs_join": "加入",
+  "contact_now": "立即联系"
 }
 
 

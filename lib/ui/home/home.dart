@@ -44,9 +44,9 @@ class _HomeState extends BaseState<Home> {
   void initState() {
     _vm.getAnnouncement();
     _vm.getApiError();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+   // WidgetsBinding.instance.addPostFrameCallback((_) {
       _vm.resumeIfNeed();
-    });
+   // });
     super.initState();
   }
 
@@ -64,7 +64,7 @@ class _HomeState extends BaseState<Home> {
                 _buildMarqueeRow(),
                 HomeUserInfoView(
                     userProfile: _vm.userProfile,
-                    wallet: _vm.wallet,
+                    wallet: _vm.totalBalance,
                     onLoginTap: () {
                       navigateToLogin();
                     }),
@@ -132,14 +132,14 @@ class _HomeState extends BaseState<Home> {
       );
 
   _buildTextMarquee() {
-    var announcement = parseHtmlString(_vm.announcement?.localization?.content ?? _vm.announcement?.content);
+   // var announcement = parseHtmlString(_vm.announcement?.localization?.content ?? _vm.announcement?.content);
     return Expanded(
       child: Container(
         decoration: BoxDecoration(color: CustomColor.theme_bar_gradient_1, borderRadius: BorderRadius.circular(10.0)),
         margin: EdgeInsets.only(left: 10.auto, right: 10.auto),
         height: 18.auto,
         child: Marquee(
-            text: announcement ?? marquee,
+            text: _getAnnouncementText(),
             style: TextStyle(
               color: Colors.white,
               fontSize: 10.auto,
@@ -151,6 +151,11 @@ class _HomeState extends BaseState<Home> {
             showFadingOnlyWhenScrolling: false),
       ),
     );
+  }
+
+  _getAnnouncementText(){
+    if(_vm.announcement?.content !=null)return parseHtmlString(_vm.announcement?.localization?.content ?? _vm.announcement?.content);
+    else return marquee;
   }
 
   navigateToLogin() {

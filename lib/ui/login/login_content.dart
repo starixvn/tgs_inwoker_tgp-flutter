@@ -50,6 +50,7 @@ class _LoginContentState extends BaseState<LoginContent> {
   void _changeLanguage(Language language) async {
     Locale _locale = await LanguageProvider().setLocale(language);
     MyApp.setLocale(context, _locale);
+    await _vm.getApiError();
   }
 
   @override

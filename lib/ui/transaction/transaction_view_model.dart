@@ -2,9 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:tgp_flutter/base_viewmodel.dart';
 import 'package:tgp_flutter/entity/account_transaction.dart';
 import 'package:tgp_flutter/entity/bet_transaction.dart';
+import 'package:tgp_flutter/entity/transfer_transaction.dart';
 import 'package:tgp_flutter/entity/game_provider.dart';
 import 'package:tgp_flutter/entity/status.dart';
 import 'package:tgp_flutter/extension/format.dart';
+import 'package:tgp_flutter/network/event_result.dart';
 import 'package:tgp_flutter/repository/base_repository.dart';
 import 'package:tgp_flutter/repository/content_repository.dart';
 import 'package:tgp_flutter/repository/user_repository.dart';
@@ -12,12 +14,13 @@ import 'package:tgp_flutter/repository/user_repository.dart';
 class TransactionViewModel extends BaseViewModel {
   final userRepo = UserRepository.getSingleton();
   final contentRepo = ContentRepository.getSingleton();
-  var getTransactionApiState, getGameProviderApiState, getAccountTransactionApiState, getWithdrawTransactionApiState;
+  var getTransactionApiState, getGameProviderApiState, getAccountTransactionApiState, getWithdrawTransactionApiState, getTransferTransactionApiState;
   var page = 1, rows = 10;
   var pStartDate = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 0, 0, 0, 0, 0),
       pEndDate = DateTime.now();
   List<BetTransaction> betTransactionList;
   List<AccountTransaction> accountTransactionList, withdrawTransactionList;
+  List<TransferTransaction> transferTransactionList;
   var endRecord = false;
   var statusList = Status.values;
   var pStatus = Status.All;
@@ -116,6 +119,35 @@ class TransactionViewModel extends BaseViewModel {
     return getWithdrawTransactionApiState;
   }
 
+  getTransferTransaction({bool isLoadMore = false}) async {
+    setLoading();
+
+    if (isLoadMore) {
+      if (page * rows < getTransferTransactionApiState.result.totalCount) {
+        page++;
+      } else
+        return;
+    } else {
+      page = 1;
+      getTransferTransactionApiState = null;
+      transferTransactionList = null;
+    }
+    getTransferTransactionApiState = await userRepo.getTransferTransaction(pStartDate, pEndDate, page, rows);
+
+    List<TransferTransaction> list = [];
+    if (getTransferTransactionApiState.isSuccess) {
+      list = getTransferTransactionApiState.result.items;
+      if (transferTransactionList == null) transferTransactionList = [];
+
+      transferTransactionList.addAll(list);
+      endRecord = transferTransactionList.length >= getTransferTransactionApiState.result.totalCount ? true : false;
+      notifyListeners();
+    }
+    setLoading(false);
+    return getTransferTransactionApiState;
+  }
+
+
   setDate({DateTime startDate, endDate}) {
     if (startDate != null) pStartDate = startDate;
     if (endDate != null) {
@@ -123,6 +155,5 @@ class TransactionViewModel extends BaseViewModel {
       else pEndDate = endDate;
     }
       notifyListeners();
-
   }
 }

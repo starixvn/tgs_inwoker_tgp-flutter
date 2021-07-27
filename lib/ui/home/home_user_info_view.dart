@@ -18,7 +18,7 @@ import 'package:tgp_flutter/ui/withdraw/withdraw.dart';
 
 class HomeUserInfoView extends StatefulWidget {
   final UserProfile userProfile;
-  final MainWallet wallet;
+  final double wallet;
   final void Function() onLoginTap;
 
   HomeUserInfoView({@required this.userProfile, this.wallet, this.onLoginTap});
@@ -111,7 +111,7 @@ class _HomeUserInfoViewState extends BaseState<HomeUserInfoView> {
             child: Column(
         children: [
             AutoSizeText(
-              "${Format().currencyWithDecimalFormat(widget.wallet?.main ?? 0.0)}",
+            widget.wallet ==null?"-":"${Format().currencyWithDecimalFormat(widget.wallet) ?? 0.0}",
               style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
               minFontSize: 10,
               stepGranularity: 1,

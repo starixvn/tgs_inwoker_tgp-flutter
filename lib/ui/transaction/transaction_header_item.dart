@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter/extension/format.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
@@ -22,9 +23,12 @@ class _TransactionHeaderItemState extends BaseState<TransactionHeaderItem> {
         return Expanded(
           //first header (time) flex number is 2, others will be 1
           flex: 3,//index == 0 || index == 1 ? 4 : 3,
-          child: Text(
+          child: AutoSizeText(
             getTranslatedText(widget.headerList[index]),
-            style: TextStyle(fontSize: 12.auto),
+            minFontSize: 5,
+            maxFontSize: 12,
+            stepGranularity: 1,
+            maxLines: 1,
             textAlign: index==0?TextAlign.start: TextAlign.center,
           ),
         );

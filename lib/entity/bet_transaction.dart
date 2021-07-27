@@ -13,6 +13,7 @@ class BetTransaction {
   double betAmount;
   double validBetAmount;
   double winLoss;
+  String gameName;
 
   factory BetTransaction.fromJson(Map<String, dynamic> json) => _$BetTransactionFromJson(json);
   Map<String, dynamic> toJson() => _$BetTransactionToJson(this);

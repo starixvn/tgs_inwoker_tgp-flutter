@@ -1,15 +1,18 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:tgp_flutter/custom/custom_picker_dialog.dart';
 import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/custom/gradient_button.dart';
+import 'package:tgp_flutter/entity/brand_communication.dart';
 import 'package:tgp_flutter/environment_config.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
+import 'package:tgp_flutter/ui/customer_service/customer_service_qr_code.dart';
 import 'package:tgp_flutter/ui/customer_service/customer_service_view_model.dart';
 
 class CustomerService extends StatefulWidget {
@@ -18,56 +21,75 @@ class CustomerService extends StatefulWidget {
 }
 
 class _CustomerServiceState extends BaseState<CustomerService> {
-  Widget build(BuildContext context) {
-    return Scaffold(
-        resizeToAvoidBottomInset: false,
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          flexibleSpace: Container(
-            decoration: gradientDecoration,
-          ),
-          centerTitle: true,
-          title: Text(
-            getTranslatedText("customer_service"),
-            style: TextStyle(fontSize: 20.auto),
-          ),
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-        ),
-        body: Container(
-          width: context.screenWidth,
-          height: context.screenHeight,
-          padding: EdgeInsets.only(top: 150.auto, left: 20.auto, right: 20.auto),
-          decoration: BoxDecoration(
-            image: DecorationImage(image: AssetImage("images/customer_service.png"), fit: BoxFit.fill),
-          ),
-          child: Column(children: [
-            Container(
-              margin: EdgeInsets.only(bottom: 10.auto),
-              child: GradientButton(
-                title: "立即联系",
-                onClick: () => Navigator.of(context).pushNamed("/cs_web_view"),
-                isEnabled: true,
-                radius: 15,
-                height: 40.auto,
-                width: 150.auto,
-              ),
-            ),
-            _buildCSRow("在线客服", "联系", "cs_web_view"),
-            _buildCSRow("二维码客服", "加入", "cs_qr_code"),
-          ]),
-        ));
+  CustomerServiceViewModel _vm = CustomerServiceViewModel();
+  var isShowing = false;
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _vm.getBrandCommunication();
+    });
+    super.initState();
   }
 
-  _buildCSRow(String title, String text, String routePath) => InkWell(
-        onTap: () => Navigator.of(context).pushNamed("/$routePath"),
+  Widget build(BuildContext context) {
+    return ProviderWidget<CustomerServiceViewModel>(
+        model: _vm,
+        builder: (ctx, vm, _) {
+          _handleApiState();
+          return Scaffold(
+              resizeToAvoidBottomInset: false,
+              backgroundColor: Colors.white,
+              appBar: AppBar(
+                automaticallyImplyLeading: false,
+                flexibleSpace: Container(
+                  decoration: gradientDecoration,
+                ),
+                centerTitle: true,
+                title: Text(
+                  getTranslatedText("customer_service"),
+                  style: TextStyle(fontSize: 20.auto),
+                ),
+                leading: IconButton(
+                  icon: Icon(Icons.arrow_back),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ),
+              body: _vm.communicationList == null
+                  ? buildProgressDialog()
+                  : Stack(
+                      children: [
+                        Container(
+                          width: context.screenWidth,
+                          height: context.screenHeight,
+                          padding: EdgeInsets.only(top: 230.auto, left: 20.auto, right: 20.auto),
+                          decoration: BoxDecoration(
+                            image: DecorationImage(image: AssetImage("images/customer_service.png"), fit: BoxFit.fill),
+                          ),
+                          child: Column(children: [
+                            _buildCSRow("online_cs", "contact", "cs_web_view", "support-call"),
+                            Column(
+                              children: List.generate(_vm.communicationList.length, (index) {
+                                return Container(
+                                  child: _buildCSRow(_vm.communicationList[index].type, "cs_join", "cs_qr_code",
+                                      "support-" + _vm.communicationList[index].type.toLowerCase(),
+                                      qrCode: _vm.communicationList[index]),
+                                );
+                              }),
+                            )
+                          ]),
+                        ),
+                      ],
+                    ));
+        });
+  }
+
+  _buildCSRow(String title, String text, String routePath, String imagePath, {BrandCommunication qrCode}) => InkWell(
+        onTap: () => qrCode != null ? _showDialog(qrCode) : Navigator.of(context).pushNamed("/$routePath"),
         child: Container(
-          padding: EdgeInsets.only(left: 30.auto, right: 50.auto),
+          padding: EdgeInsets.only(left: 30.auto, right: 20.auto),
           margin: EdgeInsets.only(top: 15.auto),
           height: 40.auto,
           decoration: BoxDecoration(
@@ -75,17 +97,63 @@ class _CustomerServiceState extends BaseState<CustomerService> {
             borderRadius: BorderRadius.circular(10),
           ),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                title,
+              Expanded(
+                flex: 1,
+                child: ImageIcon(
+                  AssetImage("images/support/$imagePath.png"),
+                  size: 23.auto,
+                  color: CustomColor.theme_bar_gradient_1,
+                ),
               ),
-              Text(
-                text,
-                style: TextStyle(color: CustomColor.theme_bar_gradient_1),
+              Expanded(
+                flex: 6,
+                child: Container(
+                  margin: EdgeInsets.only(left: 10.auto),
+                  child: Text(
+                    getTranslatedText(title) ?? title,
+                  ),
+                ),
+              ),
+              Expanded(
+                flex: 2,
+                child: Text(
+                  getTranslatedText(text),
+                  style: TextStyle(color: CustomColor.theme_bar_gradient_1),
+                ),
               )
             ],
           ),
         ),
       );
+
+  _buildQrCodeDialog(BrandCommunication qrCode) {
+    return Dialog(
+      elevation: 5,
+      backgroundColor: Colors.white,
+      insetPadding: EdgeInsets.symmetric(horizontal: 80.auto),
+      child: Container(
+        width: 50.auto,
+        height: 170.auto,
+        alignment: Alignment.center,
+        margin: EdgeInsets.symmetric(vertical: 10.auto),
+        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+          QrImage(
+            data: qrCode.qrCodeUrl,
+            version: QrVersions.auto,
+            size: 150.0,
+          ),
+          Text(qrCode.type, textAlign: TextAlign.center,)
+        ]),
+      ),
+    );
+  }
+
+  _showDialog(BrandCommunication qrCode) {
+    showDialog(context: context, builder: (_) => _buildQrCodeDialog(qrCode));
+  }
+
+  _handleApiState() {
+    handleApiState(_vm.getBrandCommunicationApiState, onSuccess: () {});
+  }
 }
