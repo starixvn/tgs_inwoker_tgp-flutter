@@ -20,6 +20,7 @@ import 'package:tgp_flutter/ui/home/home.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/ui/language/language_view.dart';
 import 'package:tgp_flutter/ui/login/login.dart';
+import 'package:tgp_flutter/ui/maintenance/maintenance.dart';
 import 'package:tgp_flutter/ui/menu/menu.dart';
 import 'package:flutter/services.dart';
 import 'package:tgp_flutter/ui/message/message_view.dart';
@@ -144,6 +145,7 @@ class _MyAppState extends BaseState<MyApp> {
           RoutePath.promotionItemDetails: (context) => PromotionItemDetails(),
           RoutePath.csWebView: (context) => CustomerServiceWebView(),
           RoutePath.csQrCode: (context) => CustomerServiceQrCode(),
+          RoutePath.maintenance: (context) => Maintenance(),
         },
         localizationsDelegates: [
           MyLocalizations.delegate,

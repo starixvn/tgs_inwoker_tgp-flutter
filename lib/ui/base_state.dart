@@ -32,8 +32,15 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
           onError(eventResult.error);
         } else {
           if(eventResult.errorMsgId!=null){
-            String error = userRepo.apiError[eventResult.errorMsgId];
-            CustomToast.show(error);
+            if(eventResult.errorMsgId == 'UnderMaintenance'){
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                Navigator.of(context).pushNamed("/maintenance");
+              });
+            }
+            else{
+              String error = userRepo.apiError[eventResult.errorMsgId];
+              CustomToast.show(error);
+            }
           }
           else if ((eventResult.errorCode == 102 || eventResult.errorCode == 101) && isCheckSessionExpired) {
             UserRepository.getSingleton().clearSession();
