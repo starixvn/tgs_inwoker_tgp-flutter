@@ -97,11 +97,16 @@ class _ChildGameItemState extends BaseState<ChildGameItem> {
           "${widget.game.gamePlatformCode.toUpperCase()}/${languageCode ?? "en-US"}/$gameName.jpg";
   }
 
-  _getGameName(){
+  _getGameName() {
     var list = LanguageProvider().list;
     var deviceLanguage = list.singleWhere((e) => e.locale == Localizations.localeOf(context));
-    if((deviceLanguage.apiCode == "zh-CN" && (widget.game.gamePlatformCode == "HABA"|| widget.game.gamePlatformCode == "PP"))|| widget.game.gamePlatformCode =="SW") return widget.game.code;
-    else return  widget.game.code.replaceAll(RegExp("_"), "");
+    if ((deviceLanguage.apiCode == "zh-CN" &&
+            (widget.game.gamePlatformCode == "HABA" || widget.game.gamePlatformCode == "PP")) ||
+        widget.game.gamePlatformCode == "SW" ||
+        widget.game.type == GameType.Fishing)
+      return widget.game.code;
+    else
+      return widget.game.code.replaceAll(RegExp("_"), "");
   }
 
   _buildImageTitleAndFavouriteIcon() {
