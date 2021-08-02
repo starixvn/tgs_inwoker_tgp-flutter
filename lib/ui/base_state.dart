@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:api_package/api_package.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tgp_flutter/custom/custom_dialog.dart';
 import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/custom/custom_toast.dart';
 import 'package:tgp_flutter/environment_config.dart';
-import 'package:shared_api/localizations/language_provider.dart';
-import 'package:shared_api/network/event_result.dart';
-import 'package:shared_api/repository/user_repository.dart';
+import 'package:api_package/localizations/language_provider.dart';
+import 'package:api_package/network/event_result.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/ui/login/login.dart';
 import 'package:html/parser.dart';

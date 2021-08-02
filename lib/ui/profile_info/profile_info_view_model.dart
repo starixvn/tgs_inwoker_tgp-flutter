@@ -1,7 +1,6 @@
 
 import 'package:tgp_flutter/base_viewmodel.dart';
-import 'package:shared_api/repository/base_repository.dart';
-import 'package:shared_api/repository/user_repository.dart';
+ import 'package:api_package/api_package.dart';
 
 
 class ProfileInfoViewModel extends BaseViewModel{

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:tgp_flutter/environment_config.dart';
-import 'package:shared_api/localizations/language_provider.dart';
-import 'package:shared_api/localizations/my_localizations.dart';
+import 'package:api_package/localizations/language_provider.dart';
+import 'package:api_package/localizations/my_localizations.dart';
 import 'package:tgp_flutter/my_behavior.dart';
 import 'package:tgp_flutter/route_path.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
@@ -17,7 +17,7 @@ import 'package:tgp_flutter/ui/deposit/deposit.dart';
 import 'package:tgp_flutter/ui/forgot_password/forgot_password.dart';
 import 'package:tgp_flutter/ui/frequent_question/frequent_question.dart';
 import 'package:tgp_flutter/ui/home/home.dart';
-import 'package:shared_api/extension/screen_apis.dart';
+import 'package:api_package/extension/screen_apis.dart';
 import 'package:tgp_flutter/ui/language/language_view.dart';
 import 'package:tgp_flutter/ui/login/login.dart';
 import 'package:tgp_flutter/ui/maintenance/maintenance.dart';
@@ -239,67 +239,67 @@ class _MyHomePageState extends BaseState<MyHomePage> {
   }
 
   _buildBottomBarItem(int index, String imagePath, String title, {bool isNewMessage = false}) => Expanded(
-    child: Stack(
-      children: [
-        _buildNotification(isNewMessage),
-        SizedBox(
-          height: 58.auto,
-          width: context.screenWidth / 5,
-          child: Material(
-            type: MaterialType.transparency,
-            child: InkWell(
-              onTap: () {
-                if (index == 1) {
-                  Navigator.of(context).pushNamed("/promotion");
-                } else if (index == 3) {
-                  Navigator.of(context).pushNamed("/customer_service");
-                } else {
-                  setState(() {
-                    currentBottomIndex = index;
-                  });
-                }
-              },
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  index != 2 ? _buildImageIcon(imagePath, index, isNewMessage) : _buildMenuIcon(imagePath, index),
-                  Visibility(
-                    visible: index != 2,
-                    child: Container(
-                      margin: EdgeInsets.only(top: 3.auto),
-                      child: Text(
-                        getTranslatedText(title) ?? "",
-                        style: TextStyle(
-                          fontSize: 11.auto,
-                          color: currentBottomIndex == index ? Colors.yellow : Colors.white,
+        child: Stack(
+          children: [
+            _buildNotification(isNewMessage),
+            SizedBox(
+              height: 58.auto,
+              width: context.screenWidth / 5,
+              child: Material(
+                type: MaterialType.transparency,
+                child: InkWell(
+                  onTap: () {
+                    if (index == 1) {
+                      Navigator.of(context).pushNamed("/promotion");
+                    } else if (index == 3) {
+                      Navigator.of(context).pushNamed("/customer_service");
+                    } else {
+                      setState(() {
+                        currentBottomIndex = index;
+                      });
+                    }
+                  },
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      index != 2 ? _buildImageIcon(imagePath, index, isNewMessage) : _buildMenuIcon(imagePath, index),
+                      Visibility(
+                        visible: index != 2,
+                        child: Container(
+                          margin: EdgeInsets.only(top: 3.auto),
+                          child: Text(
+                            getTranslatedText(title) ?? "",
+                            style: TextStyle(
+                              fontSize: 11.auto,
+                              color: currentBottomIndex == index ? Colors.yellow : Colors.white,
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                  )
-                ],
+                      )
+                    ],
+                  ),
+                ),
               ),
             ),
-          ),
+          ],
         ),
-      ],
-    ),
-  );
+      );
 
   _buildImageIcon(String imagePath, int index, bool isNewMessage) => ImageIcon(
-    AssetImage("images/bottom_navigation_bar/$imagePath.png"),
-    size: 23.auto,
-    color: currentBottomIndex == index ? Colors.yellow : Colors.white,
-  );
+        AssetImage("images/bottom_navigation_bar/$imagePath.png"),
+        size: 23.auto,
+        color: currentBottomIndex == index ? Colors.yellow : Colors.white,
+      );
 
   _buildMenuIcon(String imagePath, int index) => CircleAvatar(
-    backgroundColor: CustomColor.theme_title_text_color,
-    child: ImageIcon(
-      AssetImage("images/bottom_navigation_bar/$imagePath.png"),
-      size: 41.auto,
-      color: currentBottomIndex == index ? Colors.yellow : Colors.white,
-    ),
-  );
+        backgroundColor: CustomColor.theme_title_text_color,
+        child: ImageIcon(
+          AssetImage("images/bottom_navigation_bar/$imagePath.png"),
+          size: 41.auto,
+          color: currentBottomIndex == index ? Colors.yellow : Colors.white,
+        ),
+      );
 
   _buildNotification(bool isNewMessage) => Visibility(
       visible: isNewMessage,

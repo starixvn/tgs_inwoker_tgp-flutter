@@ -1,9 +1,8 @@
 import 'package:tgp_flutter/base_viewmodel.dart';
-import 'package:shared_api/entity/message.dart';
-import 'package:shared_api/entity/promotion.dart';
-import 'package:shared_api/network/event_result.dart';
-import 'package:shared_api/repository/base_repository.dart';
-import 'package:shared_api/repository/message_repository.dart';
+import 'package:api_package/entity/message.dart';
+import 'package:api_package/entity/promotion.dart';
+import 'package:api_package/network/event_result.dart';
+ import 'package:api_package/api_package.dart';
 
 class MessageViewModel extends BaseViewModel {
   final messageRepo = MessageRepository.getSingleton();

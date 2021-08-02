@@ -1,9 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:tgp_flutter/base_viewmodel.dart';
-import 'package:shared_api/entity/event_type.dart';
-import 'package:shared_api/repository/auth_repository.dart';
-import 'package:shared_api/repository/base_repository.dart';
-import 'package:shared_api/repository/user_repository.dart';
+import 'package:api_package/entity/event_type.dart';
+ import 'package:api_package/api_package.dart';
 
 class EmailVerificationViewModel extends BaseViewModel {
   final authRepo = AuthenticationRepository.getSingleton();

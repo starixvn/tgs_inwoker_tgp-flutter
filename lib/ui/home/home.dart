@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tgp_flutter/custom/custom_dialog.dart';
-import 'package:shared_api/entity/language.dart';
-import 'package:shared_api/entity/user_profile.dart';
-import 'package:shared_api/localizations/language_provider.dart';
+import 'package:api_package/entity/language.dart';
+import 'package:api_package/entity/user_profile.dart';
+import 'package:api_package/localizations/language_provider.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
@@ -11,7 +11,7 @@ import 'package:tgp_flutter/ui/home/home_user_info_view.dart';
 import 'package:tgp_flutter/ui/home/home_view_model.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:marquee/marquee.dart';
-import 'package:shared_api/extension/screen_apis.dart';
+import 'package:api_package/extension/screen_apis.dart';
 
 import 'game/game_view.dart';
 

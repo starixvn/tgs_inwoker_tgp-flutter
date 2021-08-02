@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gradient_text/gradient_text.dart';
 import 'package:tgp_flutter/custom/custom_dialog.dart';
 import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
-import 'package:shared_api/localizations/language_provider.dart';
+import 'package:api_package/localizations/language_provider.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
@@ -10,7 +10,7 @@ import 'package:tgp_flutter/ui/base_state.dart';
 import 'package:tgp_flutter/ui/home/home.dart';
 import 'package:tgp_flutter/ui/promotion/promotion_item.dart';
 import 'package:tgp_flutter/ui/promotion/promotion_view_model.dart';
-import 'package:shared_api/extension/screen_apis.dart';
+import 'package:api_package/extension/screen_apis.dart';
 
 class PromotionPage extends StatefulWidget {
   @override

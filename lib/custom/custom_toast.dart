@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:shared_api/extension/screen_apis.dart';
+import 'package:api_package/extension/screen_apis.dart';
 
 class CustomToast{
 

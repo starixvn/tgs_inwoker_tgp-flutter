@@ -1,11 +1,11 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_api/extension/format.dart';
+import 'package:api_package/extension/format.dart';
 import 'package:tgp_flutter/custom/color_button.dart';
-import 'package:shared_api/entity/user_profile.dart';
+import 'package:api_package/entity/user_profile.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
-import 'package:shared_api/extension/screen_apis.dart';
+import 'package:api_package/extension/screen_apis.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
 
 class HomeUserInfoView extends StatefulWidget {

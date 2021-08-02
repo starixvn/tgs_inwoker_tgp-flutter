@@ -1,9 +1,7 @@
-import 'package:shared_api/entity/promotion.dart';
-import 'package:shared_api/network/event_result.dart';
-import 'package:shared_api/repository/base_repository.dart';
-import 'package:shared_api/repository/content_repository.dart';
+import 'package:api_package/entity/promotion.dart';
+import 'package:api_package/network/event_result.dart';
+ import 'package:api_package/api_package.dart';
 import 'package:tgp_flutter/base_viewmodel.dart';
-import 'package:shared_api/repository/user_repository.dart';
 
 class PromotionViewModel extends BaseViewModel {
   final contentRepo = ContentRepository.getSingleton();

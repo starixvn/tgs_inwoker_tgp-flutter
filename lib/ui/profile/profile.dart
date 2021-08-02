@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shared_api/extension/format.dart';
+import 'package:api_package/extension/format.dart';
 import 'package:tgp_flutter/custom/color_button.dart';
 import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/my_behavior.dart';
@@ -10,7 +10,7 @@ import 'package:tgp_flutter/ui/login/login.dart';
 import 'package:tgp_flutter/ui/profile/profile_bottom_item.dart';
 import 'package:tgp_flutter/ui/profile/profile_top_item.dart';
 import 'package:tgp_flutter/ui/profile/profile_view_model.dart';
-import 'package:shared_api/extension/screen_apis.dart';
+import 'package:api_package/extension/screen_apis.dart';
 
 class Profile extends StatefulWidget {
   @override

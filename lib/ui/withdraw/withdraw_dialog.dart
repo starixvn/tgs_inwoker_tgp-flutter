@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shared_api/extension/screen_apis.dart';
+import 'package:api_package/extension/screen_apis.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 
 class WithdrawDialog extends StatelessWidget {

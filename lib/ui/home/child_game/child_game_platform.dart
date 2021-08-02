@@ -2,9 +2,9 @@ import 'dart:convert';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:shared_api/entity/game.dart';
-import 'package:shared_api/entity/game_provider2.dart';
-import 'package:shared_api/extension/screen_apis.dart';
+import 'package:api_package/entity/game.dart';
+import 'package:api_package/entity/game_provider2.dart';
+import 'package:api_package/extension/screen_apis.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/ui/home/child_game/child_game_platform_tab_bar_view.dart';
 import 'package:tgp_flutter/ui/base_state.dart';

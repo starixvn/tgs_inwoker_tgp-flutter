@@ -22,6 +22,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.0"
+  api_package:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: abf96b3bf2ec4cd668614e1a520baf8863f01bce
+      url: "https://gitlab.com/yewtungcheong/api_package"
+    source: git
+    version: "0.0.1"
   archive:
     dependency: transitive
     description:
@@ -728,13 +737,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.25.0"
-  shared_api:
-    dependency: "direct main"
-    description:
-      path: "packages/shared_api"
-      relative: true
-    source: path
-    version: "0.0.1"
   shared_preferences:
     dependency: "direct main"
     description:
