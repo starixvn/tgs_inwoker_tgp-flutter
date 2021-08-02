@@ -7,7 +7,7 @@ import 'package:tgp_flutter/environment_config.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
-import 'package:tgp_flutter/extension/screen_apis.dart';
+import 'package:shared_api/extension/screen_apis.dart';
 import 'package:tgp_flutter/ui/customer_service/customer_service_view_model.dart';
 
 class Maintenance extends StatefulWidget {

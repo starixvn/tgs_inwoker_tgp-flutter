@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter/custom/color_button.dart';
 import 'package:tgp_flutter/custom/custom_dialog.dart';
-import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/custom/custom_text_form_field.dart';
-import 'package:tgp_flutter/custom/custom_toast.dart';
-import 'package:tgp_flutter/extension/format.dart';
-import 'package:tgp_flutter/extension/screen_apis.dart';
+import 'package:shared_api/extension/screen_apis.dart';
 import 'package:tgp_flutter/my_behavior.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:package_info/package_info.dart';
+import 'package:shared_api/extension/screen_util.dart';
 import 'package:tgp_flutter/environment_config.dart';
-import 'package:tgp_flutter/extension/screen_util.dart';
+import 'package:shared_api/extension/screen_util.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
 import 'package:tgp_flutter/ui/login/login_tab.dart';
-import 'package:tgp_flutter/extension/screen_apis.dart';
+import 'package:shared_api/extension/screen_apis.dart';
 import 'package:tgp_flutter/ui/login/login_view_model.dart';
 
 class Login extends StatefulWidget {

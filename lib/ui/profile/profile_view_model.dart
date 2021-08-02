@@ -1,13 +1,13 @@
 import 'package:tgp_flutter/base_viewmodel.dart';
-import 'package:tgp_flutter/entity/game.dart';
-import 'package:tgp_flutter/entity/game_provider.dart';
-import 'package:tgp_flutter/entity/wallet.dart';
-import 'package:tgp_flutter/network/event_result.dart';
-import 'package:tgp_flutter/repository/base_repository.dart';
-import 'package:tgp_flutter/repository/content_repository.dart';
-import 'package:tgp_flutter/repository/user_repository.dart';
+import 'package:shared_api/entity/game.dart';
+import 'package:shared_api/entity/game_provider.dart';
+import 'package:shared_api/entity/wallet.dart';
+import 'package:shared_api/network/event_result.dart';
+import 'package:shared_api/repository/base_repository.dart';
+import 'package:shared_api/repository/content_repository.dart';
+import 'package:shared_api/repository/user_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tgp_flutter/repository/wallet_repository.dart';
+import 'package:shared_api/repository/wallet_repository.dart';
 
 class ProfileViewModel extends BaseViewModel {
   final userRepo = UserRepository.getSingleton();

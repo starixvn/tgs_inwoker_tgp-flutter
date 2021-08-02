@@ -1,9 +1,9 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:tgp_flutter/entity/message.dart';
-import 'package:tgp_flutter/extension/screen_apis.dart';
-import 'package:tgp_flutter/localizations/language_provider.dart';
+import 'package:shared_api/entity/message.dart';
+import 'package:shared_api/extension/screen_apis.dart';
+import 'package:shared_api/localizations/language_provider.dart';
 import 'package:tgp_flutter/main.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/ui/base_state.dart';

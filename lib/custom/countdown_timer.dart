@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tgp_flutter/extension/screen_apis.dart';
+import 'package:shared_api/extension/screen_apis.dart';
 
 class CountdownTimer extends AnimatedWidget {
   CountdownTimer({Key key, this.animation}) : super(key: key, listenable: animation);

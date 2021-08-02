@@ -1,13 +1,9 @@
-import 'dart:async';
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
-import 'package:tgp_flutter/extension/screen_apis.dart';
-import 'package:tgp_flutter/src/custom_color.dart';
+import 'package:shared_api/extension/screen_apis.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
-//import 'package:webview_flutter/webview_flutter.dart';
 
 class DepositWeb extends StatefulWidget {
   final String url;

@@ -1,20 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_api/extension/format.dart';
 import 'package:tgp_flutter/custom/color_button.dart';
-import 'package:tgp_flutter/custom/custom_dialog.dart';
 import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
-import 'package:tgp_flutter/entity/promotion.dart';
-import 'package:tgp_flutter/extension/format.dart';
-import 'package:tgp_flutter/localizations/language_provider.dart';
-import 'package:tgp_flutter/provider/provider_widget.dart';
+import 'package:shared_api/entity/promotion.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
-import 'package:tgp_flutter/ui/home/home.dart';
-import 'package:tgp_flutter/ui/promotion/promotion_item.dart';
 import 'package:tgp_flutter/ui/promotion/promotion_view_model.dart';
-import 'package:tgp_flutter/extension/screen_apis.dart';
-import 'package:html/parser.dart';
+import 'package:shared_api/extension/screen_apis.dart';
 
 class PromotionItemDetails extends StatefulWidget {
   final String imagePath;

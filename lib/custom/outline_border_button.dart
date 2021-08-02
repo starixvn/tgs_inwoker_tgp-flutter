@@ -1,6 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:tgp_flutter/extension/screen_apis.dart';
+import 'package:shared_api/extension/screen_apis.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 
 class OutlineBorderButton extends StatelessWidget {

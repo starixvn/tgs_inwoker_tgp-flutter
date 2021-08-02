@@ -5,7 +5,7 @@ import 'package:tgp_flutter/custom/color_button.dart';
 import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/custom/custom_text_form_field.dart';
 import 'package:tgp_flutter/custom/custom_toast.dart';
-import 'package:tgp_flutter/data/provider/input_validation_provider.dart';
+import 'package:shared_api/data/provider/input_validation_provider.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
@@ -13,7 +13,7 @@ import 'package:tgp_flutter/ui/base_state.dart';
 import 'package:tgp_flutter/ui/forgot_password/forgot_password_view_model.dart';
 import 'package:tgp_flutter/ui/login/login.dart';
 import 'package:tgp_flutter/ui/profile_info/password/edit_password_view_model.dart';
-import 'package:tgp_flutter/extension/screen_apis.dart';
+import 'package:shared_api/extension/screen_apis.dart';
 
 class UpdateForgotPassword extends StatefulWidget {
   final String code;

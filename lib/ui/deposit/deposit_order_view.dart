@@ -1,17 +1,14 @@
 import 'dart:io';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tgp_flutter/custom/color_button.dart';
 import 'package:tgp_flutter/custom/custom_dialog.dart';
 import 'package:tgp_flutter/custom/gradient_button.dart';
-import 'package:tgp_flutter/entity/deposit_redirect.dart';
-import 'package:tgp_flutter/entity/deposit_redirect_applepay.dart';
-import 'package:tgp_flutter/entity/manual_deposit_order.dart';
-import 'package:tgp_flutter/entity/promotion.dart';
-import 'package:tgp_flutter/extension/format.dart';
-import 'package:tgp_flutter/extension/screen_apis.dart';
+import 'package:shared_api/entity/deposit_redirect.dart';
+import 'package:shared_api/entity/deposit_redirect_applepay.dart';
+import 'package:shared_api/entity/manual_deposit_order.dart';
+import 'package:shared_api/extension/screen_apis.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';

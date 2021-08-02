@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:tgp_flutter/localizations/language_provider.dart';
+import 'package:shared_api/localizations/language_provider.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
 import 'package:tgp_flutter/ui/login/login_content.dart';
 import 'package:tgp_flutter/ui/login/register_content.dart';
-import 'package:tgp_flutter/extension/screen_apis.dart';
+import 'package:shared_api/extension/screen_apis.dart';
 
 class LoginTab extends StatefulWidget {
   @override

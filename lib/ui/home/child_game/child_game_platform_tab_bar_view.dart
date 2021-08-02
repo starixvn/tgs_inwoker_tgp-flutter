@@ -1,8 +1,8 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:tgp_flutter/entity/game.dart';
-import 'package:tgp_flutter/extension/screen_apis.dart';
+import 'package:shared_api/entity/game.dart';
+import 'package:shared_api/extension/screen_apis.dart';
 import 'package:tgp_flutter/ui/home/child_game/child_game_item.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
 

@@ -1,14 +1,10 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:tgp_flutter/custom/round_check_box.dart';
-import 'package:tgp_flutter/entity/message.dart';
-import 'package:tgp_flutter/extension/format.dart';
-import 'package:tgp_flutter/extension/screen_apis.dart';
+import 'package:shared_api/extension/format.dart';
+import 'package:shared_api/entity/message.dart';
+import 'package:shared_api/extension/screen_apis.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
-import 'package:tgp_flutter/ui/message/message_details.dart';
-import 'package:html/parser.dart';
 
 class MessageItem extends StatefulWidget {
   final Message message;

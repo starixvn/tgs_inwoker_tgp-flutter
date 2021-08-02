@@ -8,11 +8,11 @@ import 'package:qr_flutter/qr_flutter.dart';
 import 'package:tgp_flutter/custom/custom_dialog.dart';
 import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/custom/leave_game_dialog.dart';
-import 'package:tgp_flutter/entity/brand_communication.dart';
-import 'package:tgp_flutter/entity/game.dart';
-import 'package:tgp_flutter/entity/game_type.dart';
+import 'package:shared_api/entity/brand_communication.dart';
+import 'package:shared_api/entity/game.dart';
+import 'package:shared_api/entity/game_type.dart';
 import 'package:tgp_flutter/environment_config.dart';
-import 'package:tgp_flutter/extension/screen_apis.dart';
+import 'package:shared_api/extension/screen_apis.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 

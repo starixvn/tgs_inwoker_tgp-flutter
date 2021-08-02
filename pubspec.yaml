@@ -64,6 +64,9 @@ dependencies:
   qr_flutter: ^4.0.0
   #package_info: ^0.4.0+16
 
+  shared_api:
+    path: packages/shared_api
+
 
 dev_dependencies:
   flutter_test:

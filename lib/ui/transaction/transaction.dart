@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
-import 'package:tgp_flutter/entity/account_transaction.dart';
-import 'package:tgp_flutter/entity/bet_transaction.dart';
-import 'package:tgp_flutter/entity/daily_transaction.dart';
-import 'package:tgp_flutter/extension/format.dart';
-import 'package:tgp_flutter/extension/screen_apis.dart';
-import 'package:tgp_flutter/my_behavior.dart';
+import 'package:shared_api/extension/format.dart';
+import 'package:shared_api/extension/screen_apis.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';

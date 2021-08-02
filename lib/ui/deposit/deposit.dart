@@ -1,15 +1,13 @@
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
+import 'package:shared_api/extension/format.dart';
 import 'package:tgp_flutter/custom/custom_toast.dart';
-import 'package:tgp_flutter/extension/format.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
 import 'package:tgp_flutter/ui/deposit/deposit_method.dart';
 import 'package:tgp_flutter/ui/deposit/deposit_view_model.dart';
-import 'package:tgp_flutter/extension/screen_apis.dart';
+import 'package:shared_api/extension/screen_apis.dart';
 
 class Deposit extends StatefulWidget {
   @override

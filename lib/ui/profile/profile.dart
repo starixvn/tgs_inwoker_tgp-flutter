@@ -1,30 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:shared_api/extension/format.dart';
 import 'package:tgp_flutter/custom/color_button.dart';
 import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
-import 'package:tgp_flutter/custom/custom_toast.dart';
-import 'package:tgp_flutter/entity/language.dart';
-import 'package:tgp_flutter/entity/user_profile.dart';
-import 'package:tgp_flutter/extension/format.dart';
-import 'package:tgp_flutter/localizations/language_provider.dart';
 import 'package:tgp_flutter/my_behavior.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
-import 'package:tgp_flutter/ui/card/main_card.dart';
-import 'package:tgp_flutter/ui/deposit/deposit.dart';
-import 'package:tgp_flutter/ui/frequent_question/frequent_question.dart';
-import 'package:tgp_flutter/ui/language/language_view.dart';
 import 'package:tgp_flutter/ui/login/login.dart';
-import 'package:tgp_flutter/ui/message/message_view.dart';
 import 'package:tgp_flutter/ui/profile/profile_bottom_item.dart';
 import 'package:tgp_flutter/ui/profile/profile_top_item.dart';
 import 'package:tgp_flutter/ui/profile/profile_view_model.dart';
-import 'package:tgp_flutter/extension/screen_apis.dart';
-import 'package:tgp_flutter/ui/profile_info/profile_info.dart';
-import 'package:tgp_flutter/ui/referFriend/refer_friend.dart';
-import 'package:tgp_flutter/ui/transaction/transaction.dart';
-import 'package:tgp_flutter/ui/transfer/wallet_transfer.dart';
-import 'package:tgp_flutter/ui/withdraw/withdraw.dart';
+import 'package:shared_api/extension/screen_apis.dart';
 
 class Profile extends StatefulWidget {
   @override

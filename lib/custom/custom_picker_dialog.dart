@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:tgp_flutter/entity/bank_card.dart';
-import 'package:tgp_flutter/entity/bank_type.dart';
-import 'package:tgp_flutter/entity/game_provider.dart';
-import 'package:tgp_flutter/entity/payment.dart';
-import 'package:tgp_flutter/entity/promotion.dart';
-import 'package:tgp_flutter/entity/status.dart';
-import 'package:tgp_flutter/entity/wallet.dart';
-import 'package:tgp_flutter/entity/withdrawal_info.dart';
-import 'package:tgp_flutter/extension/format.dart';
-import 'package:tgp_flutter/extension/screen_apis.dart';
+import 'package:shared_api/entity/bank_card.dart';
+import 'package:shared_api/entity/bank_type.dart';
+import 'package:shared_api/entity/game_provider.dart';
+import 'package:shared_api/entity/payment.dart';
+import 'package:shared_api/entity/promotion.dart';
+import 'package:shared_api/entity/status.dart';
+import 'package:shared_api/entity/wallet.dart';
+import 'package:shared_api/entity/withdrawal_info.dart';
+import 'package:shared_api/extension/format.dart';
+import 'package:shared_api/extension/screen_apis.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
 

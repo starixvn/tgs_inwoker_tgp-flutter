@@ -6,14 +6,14 @@ import 'package:tgp_flutter/custom/custom_text_form_field.dart';
 import 'package:tgp_flutter/custom/custom_toast.dart';
 import 'package:tgp_flutter/custom/otp_text_form_field.dart';
 import 'package:tgp_flutter/custom/outline_border_button.dart';
-import 'package:tgp_flutter/data/provider/input_validation_provider.dart';
-import 'package:tgp_flutter/entity/event_type.dart';
+import 'package:shared_api/data/provider/input_validation_provider.dart';
+import 'package:shared_api/entity/event_type.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
 import 'package:tgp_flutter/ui/profile_info/phone/phone_verification_view_model.dart';
-import 'package:tgp_flutter/extension/screen_apis.dart';
+import 'package:shared_api/extension/screen_apis.dart';
 import 'package:tgp_flutter/ui/profile_info/profile_info.dart';
 
 class PhoneVerification extends StatefulWidget {
