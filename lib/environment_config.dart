@@ -2,7 +2,7 @@ class EnvironmentConfig {
   static const String jwtKey =
       'I7nKiimrZQOqnJ6ryjUw74c0Hi64KC6Myunhob4cHh8VOUIuZh4p63czefxyyzbZ';
 
-  static const String url = 'https://operator.tgsstg.gq/';
+  static const String url = 'https://dev.operator.tgsdev.gq/';
 
   static const String currency = 'CNY';
 
@@ -20,5 +20,5 @@ class EnvironmentConfig {
 
   static const String imageLogo = 'pg_login_logo';
 
-  static const String environmentStage = 'staging';
+  static const String environmentStage = 'development';
 }

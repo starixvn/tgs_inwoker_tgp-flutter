@@ -74,8 +74,7 @@ class _EmailVerificationState extends BaseState<EmailVerification> {
         leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
-              Navigator.pop(context);
-              //Navigator.popUntil(context, ModalRoute.withName('/profile_info'));
+             Navigator.pop(context);
             }),
         title: Text(
           getTranslatedText("email"),

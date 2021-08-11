@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tgp_flutter/entity/account_transaction.dart';
 import 'package:tgp_flutter/entity/bank_card.dart';
 import 'package:tgp_flutter/entity/brand_communication.dart';
+import 'package:tgp_flutter/entity/live_chat.dart';
 import 'package:tgp_flutter/entity/transfer_transaction.dart';
 import 'package:tgp_flutter/entity/http_method.dart';
 import 'package:tgp_flutter/entity/response/check_username_response.dart';
@@ -314,6 +315,27 @@ class UserRepository extends BaseRepository {
           apiError = result;
         }),
         jwtRefresher: jwtAuth)
+        .execute();
+  }
+
+  Future<EventResult<LiveChat>> getLiveChatUrl() async {
+    return await ApiRequestBuilder<LiveChat>(
+        method: HttpMethod.GET,
+        endPoint: "api/brandlivechat",
+        converter: (json) => LiveChat.fromJson(json),
+        jwtRefresher: jwtAuth)
+        .execute();
+  }
+
+  Future<EventResult<bool>> getAutoTransferValue() async {
+    return await ApiRequestBuilder<bool>(
+        method: HttpMethod.GET, endPoint: "api/player/game/auto-transfer", jwtRefresher: jwtAuth)
+        .execute();
+  }
+
+  Future<EventResult<dynamic>> setAutoTransferValue() async {
+    return await ApiRequestBuilder<dynamic>(
+        method: HttpMethod.POST, endPoint: "api/player/game/auto-transfer", jwtRefresher: jwtAuth)
         .execute();
   }
 }

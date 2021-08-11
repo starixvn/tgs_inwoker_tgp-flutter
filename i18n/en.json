@@ -956,5 +956,9 @@
   "qr_cs": "QR Customer Service",
   "contact": "Contact",
   "cs_join": "Join",
-  "contact_now": "Contact Now"
+  "contact_now": "Contact Now",
+  "no_record": "No Record",
+  "favorite_game": "Favorite Game",
+  "copy_text": "Text is copied to clipboard.",
+  "email_dialog": "Please link your email."
 }

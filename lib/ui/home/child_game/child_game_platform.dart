@@ -8,6 +8,7 @@ import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/ui/home/child_game/child_game_platform_tab_bar_view.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
+import 'package:tgp_flutter/ui/home/game/game_view_model.dart';
 
 class ChildGamePlatform extends StatefulWidget {
   final List<GameProvider2> platformList;
@@ -15,9 +16,10 @@ class ChildGamePlatform extends StatefulWidget {
   final bool isSearching;
   final Function(String) onFilterPlatform;
   final String initialPlatformCode;
+  final GameViewModel vm;
 
   ChildGamePlatform(
-      {this.platformList, this.gameList, this.isSearching, this.onFilterPlatform, this.initialPlatformCode});
+      {this.platformList, this.gameList, this.isSearching, this.onFilterPlatform, this.initialPlatformCode, this.vm});
 
   @override
   _ChildGamePlatformState createState() => _ChildGamePlatformState();
@@ -54,6 +56,7 @@ class _ChildGamePlatformState extends BaseState<ChildGamePlatform> with SingleTi
           child: ChildGamePlatformTabBarView(
         gameList: widget.gameList,
         isDisabled: widget.isSearching,
+            vm: widget.vm,
       )),
     ]);
   }

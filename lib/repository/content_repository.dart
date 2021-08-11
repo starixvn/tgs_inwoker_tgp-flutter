@@ -32,10 +32,7 @@ class ContentRepository extends BaseRepository {
   getLanguage() async {
     SharedPreferences _prefs = await SharedPreferences.getInstance();
     var languageCode = _prefs.getString("LANGUAGE_CODE") ?? "en-US";
-    if (languageCode == "zh-TW")
-      return "zh-CN";
-    else
-      return languageCode;
+    return languageCode;
   }
 
   Future<EventResult<List<GameProvider>>> getGameProviderList() async {
@@ -148,6 +145,33 @@ class ContentRepository extends BaseRepository {
             },
             converter: (json) => ListResponse.fromJson(json, (res) => Promotion.fromJson(res)),
             jwtRefresher: jwtAuth)
+        .execute();
+  }
+
+  Future<EventResult<List<int>>> getFavoriteGame(GameType gameType) async {
+    return await ApiRequestBuilder<List<int>>(
+        method: HttpMethod.GET,
+        endPoint: "api/game/favorite/${gameType.getJsonValue}",
+        converter: (json) => json.cast<int>(),
+        jwtRefresher: jwtAuth)
+        .execute();
+  }
+
+  Future<EventResult<dynamic>> setFavoriteGame(int gameId) async {
+    return await ApiRequestBuilder<dynamic>(
+        method: HttpMethod.PUT,
+        endPoint: "api/game/favorite/$gameId",
+        //converter: (json) => ListResponse.fromJson(json, (res) => Promotion.fromJson(res)),
+        jwtRefresher: jwtAuth)
+        .execute();
+  }
+
+  Future<EventResult<dynamic>> deleteFavoriteGame(int gameId) async {
+    return await ApiRequestBuilder<dynamic>(
+        method: HttpMethod.DELETE,
+        endPoint: "api/game/favorite/$gameId",
+        //converter: (json) => ListResponse.fromJson(json, (res) => Promotion.fromJson(res)),
+        jwtRefresher: jwtAuth)
         .execute();
   }
 }

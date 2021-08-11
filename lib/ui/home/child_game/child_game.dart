@@ -33,6 +33,7 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
     "all_game",
     "new_game",
     "hot_game",
+    "favorite_game"
     /*"收藏游戏",
     "捕鱼游戏",
     "历史游戏"*/
@@ -97,19 +98,19 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
     if (_vm.filteredGameList == null || _vm.gameProviderList == null)
       return buildProgressDialog();
     else {
-        return Stack(
-          children: [
-            _buildChildGame(),
-            _buildOverlay(),
-            Visibility(
-              visible: _vm.recommendGameList.isNotEmpty&& _vm.recommendGameList != null,
-              child: ChildGameSuggestion(
-                isVisible: isVisibleSuggestionList,
-                recommendList: _vm.recommendGameList,
-              ),
-            )
-          ],
-        );
+      return Stack(
+        children: [
+          _buildChildGame(),
+          _buildOverlay(),
+          Visibility(
+            visible: _vm.recommendGameList.isNotEmpty && _vm.recommendGameList != null,
+            child: ChildGameSuggestion(
+              isVisible: isVisibleSuggestionList,
+              recommendList: _vm.recommendGameList,
+            ),
+          )
+        ],
+      );
     }
   }
 
@@ -146,13 +147,15 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
           ),
           Expanded(
             child: ChildGamePlatform(
-                platformList: _vm.platformList,
-                gameList: _vm.filteredGameList,
-                isSearching: isSearching,
-                onFilterPlatform: (code) {
-                  _vm.filter(gamePlatformCode: code);
-                },
-                initialPlatformCode: widget.gamePlatformCode),
+              platformList: _vm.platformList,
+              gameList: _vm.filteredGameList,
+              isSearching: isSearching,
+              onFilterPlatform: (code) {
+                _vm.filter(gamePlatformCode: code);
+              },
+              initialPlatformCode: widget.gamePlatformCode,
+              vm: _vm,
+            ),
           ),
         ],
       );
@@ -282,5 +285,8 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
   _handleApiState() {
     handleApiState(_vm.getGameApiState, isAutoHideLoading: false, onSuccess: () {});
     handleApiState(_vm.getGameProviderListApiState, isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getFavouriteGameApiState, isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.setFavouriteGameApiState, isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.deleteFavouriteGameApiState, isAutoHideLoading: false, onSuccess: () {});
   }
 }

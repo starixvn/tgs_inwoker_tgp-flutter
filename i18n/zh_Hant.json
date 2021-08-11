@@ -123,7 +123,7 @@
   "enter_ic_no_hint": "請輸入您的身份證號碼",
   "otp": "驗證碼",
   "invalid_otp": "驗證碼错误",
-  "retry_otp": "重新发送",
+  "retry_otp": "重新發送",
   "old_password": "舊密碼",
   "enter_old_password_hint": "請輸入舊密碼",
   "new_password": "新密碼",
@@ -943,5 +943,9 @@
   "qr_cs": "二維碼客服",
   "contact": "聯繫",
   "cs_join": "加入",
-  "contact_now": "立即聯繫"
+  "contact_now": "立即聯繫",
+  "no_record":"查無資料",
+  "favorite_game": "收藏遊戲",
+  "copy_text": "文本已復制",
+  "email_dialog": "請綁定郵箱地址"
 }

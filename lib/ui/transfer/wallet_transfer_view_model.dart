@@ -19,7 +19,7 @@ class WalletTransferViewModel extends BaseViewModel {
         .where((element) => element.transferWallet == true)
         .map((e) => Wallet(e.code, e.name))
         .toList()
-          ..insert(0, Wallet("-1", "main_wallet", isMainWallet: true));
+      ..insert(0, Wallet("-1", "main_wallet", isMainWallet: true));
   }
 
   get userMainWalletBalance => walletList.singleWhere((element) => element.isMainWallet).balance;
@@ -28,8 +28,12 @@ class WalletTransferViewModel extends BaseViewModel {
 
   @override
   List<BaseRepository> get repoList => [contentRepo];
-  var transferAllToMainWalletApiState, transferWalletApiState, getWalletApiState;
-  bool isFetchingBalance;
+  var transferAllToMainWalletApiState,
+      transferWalletApiState,
+      getWalletApiState,
+      getAutoTransferApiState,
+      setAutoTransferApiState;
+  bool isFetchingBalance, autoTransferValue;
 
   /*get walletList => walletRepo.walletList;
 
@@ -95,5 +99,25 @@ class WalletTransferViewModel extends BaseViewModel {
     await Future.wait(task);
     isFetchingBalance = false;
     if (hasListeners) notifyListeners();
+  }
+
+  getAutoTransferValue() async {
+    setLoading();
+    getAutoTransferApiState = await userRepo.getAutoTransferValue();
+    if (getAutoTransferApiState.isSuccess) {
+      autoTransferValue = getAutoTransferApiState.result;
+    }
+    setLoading(false);
+    return getAutoTransferApiState;
+  }
+
+  setAutoTransferValue() async {
+    setLoading();
+    setAutoTransferApiState = await userRepo.setAutoTransferValue();
+    if (setAutoTransferApiState.isSuccess) {
+      autoTransferValue =!autoTransferValue;
+    }
+    setLoading(false);
+    return setAutoTransferApiState;
   }
 }

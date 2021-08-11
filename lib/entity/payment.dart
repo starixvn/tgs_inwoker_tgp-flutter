@@ -21,6 +21,8 @@ class Payment {
   String methodId;
   @JsonKey(name: "methodcode")
   String methodCode;
+  @JsonKey(name: "displayorder")
+  int order;
 
   factory Payment.fromJson(Map<String, dynamic> json) => _$PaymentFromJson(json);
   Map<String, dynamic> toJson() => _$PaymentToJson(this);

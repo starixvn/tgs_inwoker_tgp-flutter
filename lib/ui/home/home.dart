@@ -4,6 +4,7 @@ import 'package:tgp_flutter/custom/custom_dialog.dart';
 import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/entity/language.dart';
 import 'package:tgp_flutter/entity/user_profile.dart';
+import 'package:tgp_flutter/environment_config.dart';
 import 'package:tgp_flutter/localizations/language_provider.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
@@ -28,11 +29,12 @@ class Home extends StatefulWidget {
 
 class _HomeState extends BaseState<Home> {
   List<String> imgList = [
-    'banner_1',
-    'banner_2',
+    '1',
+    '2',
     //'images/banner_2.jpg'
   ];
-  String marquee = "《GD真人维护公告》GD真人将于 7 月 2 8 日 09:00 至 14:00 进行维护 维护期间不提供游戏相关服务。若有问题欢迎与在线客服联系 如有问题欢迎与在线客服联系，谢谢";
+
+  // String marquee = "《GD真人维护公告》GD真人将于 7 月 2 8 日 09:00 至 14:00 进行维护 维护期间不提供游戏相关服务。若有问题欢迎与在线客服联系 如有问题欢迎与在线客服联系，谢谢";
   ScrollController controller = ScrollController();
   var currentTabIndex = "0";
   UserProfile user;
@@ -44,9 +46,9 @@ class _HomeState extends BaseState<Home> {
   void initState() {
     _vm.getAnnouncement();
     _vm.getApiError();
-   // WidgetsBinding.instance.addPostFrameCallback((_) {
-      _vm.resumeIfNeed();
-   // });
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    _vm.resumeIfNeed();
+    // });
     super.initState();
   }
 
@@ -76,24 +78,17 @@ class _HomeState extends BaseState<Home> {
   }
 
   _buildImageSlider() {
-    var list = LanguageProvider().list;
-    Language deviceLanguage = list.singleWhere((e) => e.locale == Localizations.localeOf(context));
-    String imagePath;
+    String brand = EnvironmentConfig.appTitleName == "PG Gaming" ? "PGG" : EnvironmentConfig.appTitleName;
     return Container(
       height: context.screenHeight / 5,
       child: Swiper(
-        itemBuilder: (BuildContext context, int index) {
-          imagePath = deviceLanguage.code == "en"
-              ? "images/banner/${imgList[index]}_en.png"
-              : "images/banner/${imgList[index]}.png";
-          return AspectRatio(
-            aspectRatio: 360 / 200,
-            child: Image.asset(
-              imagePath,
-              fit: BoxFit.fill,
-            ),
-          );
-        },
+        itemBuilder: (BuildContext context, int index) => AspectRatio(
+          aspectRatio: 360 / 200,
+          child: Image.asset(
+            "images/banner/${getCurrentLanguage().apiCode}/$brand/${imgList[index]}.jpg",
+            fit: BoxFit.cover,
+          ),
+        ),
         autoplay: true,
         itemCount: imgList.length,
         pagination: new SwiperPagination(
@@ -132,7 +127,7 @@ class _HomeState extends BaseState<Home> {
       );
 
   _buildTextMarquee() {
-   // var announcement = parseHtmlString(_vm.announcement?.localization?.content ?? _vm.announcement?.content);
+    // var announcement = parseHtmlString(_vm.announcement?.localization?.content ?? _vm.announcement?.content);
     return Expanded(
       child: Container(
         decoration: BoxDecoration(color: CustomColor.theme_bar_gradient_1, borderRadius: BorderRadius.circular(10.0)),
@@ -153,9 +148,11 @@ class _HomeState extends BaseState<Home> {
     );
   }
 
-  _getAnnouncementText(){
-    if(_vm.announcement?.content !=null)return parseHtmlString(_vm.announcement?.localization?.content ?? _vm.announcement?.content);
-    else return marquee;
+  _getAnnouncementText() {
+    if (_vm.announcement?.content != null)
+      return parseHtmlString(_vm.announcement?.localization?.content ?? _vm.announcement?.content);
+    else
+      return " ";
   }
 
   navigateToLogin() {

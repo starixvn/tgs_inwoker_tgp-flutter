@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tgp_flutter/custom/custom_dialog.dart';
 import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/custom/custom_toast.dart';
+import 'package:tgp_flutter/entity/language.dart';
 import 'package:tgp_flutter/environment_config.dart';
 import 'package:tgp_flutter/localizations/language_provider.dart';
 import 'package:tgp_flutter/network/event_result.dart';
@@ -121,5 +122,11 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
     final String parsedString = parse(document.body.text).documentElement.text;
 
     return parsedString;
+  }
+
+  getCurrentLanguage(){
+    var list = LanguageProvider().list;
+    Language deviceLanguage = list.singleWhere((e) => e.locale == Localizations.localeOf(context));
+    return deviceLanguage;
   }
 }

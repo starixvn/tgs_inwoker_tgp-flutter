@@ -943,7 +943,11 @@
   "qr_cs": "二维码客服",
   "contact": "联系",
   "cs_join": "加入",
-  "contact_now": "立即联系"
+  "contact_now": "立即联系",
+  "no_record":"查无资料",
+  "favorite_game": "收藏游戏",
+  "copy_text": "文本已复制",
+  "email_dialog": "请绑定邮箱地址"
 }
 
 

@@ -16,7 +16,8 @@ Payment _$PaymentFromJson(Map<String, dynamic> json) {
     ..paymentId = json['paymentid'] as String
     ..paymentCode = json['paymentcode'] as String
     ..methodId = json['methodid'] as String
-    ..methodCode = json['methodcode'] as String;
+    ..methodCode = json['methodcode'] as String
+    ..order = json['displayorder'] as int;
 }
 
 Map<String, dynamic> _$PaymentToJson(Payment instance) => <String, dynamic>{
@@ -27,4 +28,5 @@ Map<String, dynamic> _$PaymentToJson(Payment instance) => <String, dynamic>{
       'paymentcode': instance.paymentCode,
       'methodid': instance.methodId,
       'methodcode': instance.methodCode,
+      'displayorder': instance.order,
     };

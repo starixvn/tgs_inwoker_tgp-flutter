@@ -35,6 +35,7 @@ class DepositViewModel extends BaseViewModel {
     getPaymentApiState = await depositRepo.getPayment();
     if (getPaymentApiState.isSuccess) {
       List<Payment> list = getPaymentApiState.result;
+      list.sort((a, b) => a.order.compareTo(b.order));
       paymentCodeList = groupBy(list, (obj) => obj.paymentCode)
           .map((key, value) => MapEntry(key, groupBy(value, (obj) => obj.methodCode)));
     }

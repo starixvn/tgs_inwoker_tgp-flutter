@@ -5,13 +5,15 @@ import 'package:tgp_flutter/entity/game.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/ui/home/child_game/child_game_item.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
+import 'package:tgp_flutter/ui/home/game/game_view_model.dart';
 
 class ChildGamePlatformTabBarView extends StatefulWidget {
   final List<Game> gameList;
   final Function onClick;
   final bool isDisabled;
+  final GameViewModel vm;
 
-  ChildGamePlatformTabBarView({@required this.gameList, this.onClick, this.isDisabled});
+  ChildGamePlatformTabBarView({@required this.gameList, this.onClick, this.isDisabled, this.vm});
 
   @override
   _ChildGamePlatformTabBarViewState createState() => _ChildGamePlatformTabBarViewState();
@@ -33,10 +35,10 @@ class _ChildGamePlatformTabBarViewState extends BaseState<ChildGamePlatformTabBa
               borderRadius: BorderRadius.circular(15.0),
             ),
             child: ChildGameItem(
-              str: widget.gameList.length.toString(),
               game: widget.gameList[index],
               isFavourite: true,
               isDisabled: widget.isDisabled,
+              vm: widget.vm,
             ));
       }),
     );
