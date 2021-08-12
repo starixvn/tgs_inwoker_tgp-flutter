@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:api_package/entity/promotion.dart';
-import 'package:api_package/extension/screen_apis.dart';
+import 'package:api/entity/promotion.dart';
+import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
 import 'package:tgp_flutter/ui/promotion/promotion_item_details.dart';

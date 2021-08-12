@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter/custom/color_button.dart';
-import 'package:api_package/entity/game_provider.dart';
-import 'package:api_package/extension/format.dart';
-import 'package:api_package/extension/screen_apis.dart';
+import 'package:api/entity/game_provider.dart';
+import 'package:api/extension/format.dart';
+import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
 

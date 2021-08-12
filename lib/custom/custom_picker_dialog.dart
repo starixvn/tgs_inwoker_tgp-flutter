@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:api_package/entity/bank_card.dart';
-import 'package:api_package/entity/bank_type.dart';
-import 'package:api_package/entity/game_provider.dart';
-import 'package:api_package/entity/payment.dart';
-import 'package:api_package/entity/promotion.dart';
-import 'package:api_package/entity/status.dart';
-import 'package:api_package/entity/wallet.dart';
-import 'package:api_package/entity/withdrawal_info.dart';
-import 'package:api_package/extension/format.dart';
-import 'package:api_package/extension/screen_apis.dart';
+import 'package:api/entity/bank_card.dart';
+import 'package:api/entity/bank_type.dart';
+import 'package:api/entity/game_provider.dart';
+import 'package:api/entity/payment.dart';
+import 'package:api/entity/promotion.dart';
+import 'package:api/entity/status.dart';
+import 'package:api/entity/wallet.dart';
+import 'package:api/entity/withdrawal_info.dart';
+import 'package:api/extension/format.dart';
+import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
 

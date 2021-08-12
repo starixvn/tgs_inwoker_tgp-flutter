@@ -64,8 +64,8 @@ dependencies:
   qr_flutter: ^4.0.0
   #package_info: ^0.4.0+16
 
-  api_package:
-    git: https://gitlab.com/yewtungcheong/api_package
+  api:
+    git: https://gitlab.com/yewtungcheong/api
 
 dev_dependencies:
   flutter_test:

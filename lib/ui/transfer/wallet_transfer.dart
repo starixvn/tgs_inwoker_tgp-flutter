@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:api_package/extension/format.dart';
+import 'package:api/extension/format.dart';
 import 'package:tgp_flutter/custom/color_button.dart';
 import 'package:tgp_flutter/custom/custom_dialog.dart';
 import 'package:tgp_flutter/custom/custom_picker.dart';
@@ -8,8 +8,8 @@ import 'package:tgp_flutter/custom/custom_picker_dialog.dart';
 import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/custom/custom_text_form_field.dart';
 import 'package:tgp_flutter/custom/custom_toast.dart';
-import 'package:api_package/entity/wallet.dart';
-import 'package:api_package/extension/screen_apis.dart';
+import 'package:api/entity/wallet.dart';
+import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';

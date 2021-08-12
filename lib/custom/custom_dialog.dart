@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:tgp_flutter/custom/color_button.dart';
 import 'package:tgp_flutter/custom/outline_border_button.dart';
 
-import 'package:api_package/extension/screen_apis.dart';
+import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
 

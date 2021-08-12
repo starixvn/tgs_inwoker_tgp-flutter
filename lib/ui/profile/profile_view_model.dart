@@ -1,9 +1,9 @@
 import 'package:tgp_flutter/base_viewmodel.dart';
-import 'package:api_package/entity/game.dart';
-import 'package:api_package/entity/game_provider.dart';
-import 'package:api_package/entity/wallet.dart';
-import 'package:api_package/network/event_result.dart';
- import 'package:api_package/api_package.dart';
+import 'package:api/entity/game.dart';
+import 'package:api/entity/game_provider.dart';
+import 'package:api/entity/wallet.dart';
+import 'package:api/network/event_result.dart';
+ import 'package:api/api.dart';
 
 class ProfileViewModel extends BaseViewModel {
   final userRepo = UserRepository.getSingleton();

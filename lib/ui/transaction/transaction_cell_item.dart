@@ -1,11 +1,11 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:api_package/entity/account_transaction.dart';
-import 'package:api_package/entity/bet_transaction.dart';
-import 'package:api_package/entity/daily_transaction.dart';
-import 'package:api_package/entity/bet_transaction.dart';
-import 'package:api_package/entity/transaction_cell_item_type.dart';
-import 'package:api_package/extension/screen_apis.dart';
+import 'package:api/entity/account_transaction.dart';
+import 'package:api/entity/bet_transaction.dart';
+import 'package:api/entity/daily_transaction.dart';
+import 'package:api/entity/bet_transaction.dart';
+import 'package:api/entity/transaction_cell_item_type.dart';
+import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
 

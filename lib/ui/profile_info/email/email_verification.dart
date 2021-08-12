@@ -6,15 +6,15 @@ import 'package:tgp_flutter/custom/custom_text_form_field.dart';
 import 'package:tgp_flutter/custom/custom_toast.dart';
 import 'package:tgp_flutter/custom/otp_text_form_field.dart';
 import 'package:tgp_flutter/custom/outline_border_button.dart';
-import 'package:api_package/data/provider/input_validation_provider.dart';
-import 'package:api_package/entity/event_type.dart';
+import 'package:api/data/provider/input_validation_provider.dart';
+import 'package:api/entity/event_type.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
 import 'package:tgp_flutter/ui/profile_info/email/email_verification_view_model.dart';
 import 'package:tgp_flutter/ui/profile_info/phone/phone_verification_view_model.dart';
-import 'package:api_package/extension/screen_apis.dart';
+import 'package:api/extension/screen_apis.dart';
 
 class EmailVerification extends StatefulWidget {
   final int popDirection;

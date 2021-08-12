@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter/base_viewmodel.dart';
- import 'package:api_package/api_package.dart';
-import 'package:api_package/init.dart';
+ import 'package:api/api.dart';
+import 'package:api/init.dart';
 import 'package:tgp_flutter/environment_config.dart';
 
 class SplashViewModel extends BaseViewModel{

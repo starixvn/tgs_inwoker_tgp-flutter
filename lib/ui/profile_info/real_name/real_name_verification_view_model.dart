@@ -1,5 +1,5 @@
 import 'package:tgp_flutter/base_viewmodel.dart';
- import 'package:api_package/api_package.dart';
+ import 'package:api/api.dart';
 
 
 class RealNameVerificationViewModel extends BaseViewModel{

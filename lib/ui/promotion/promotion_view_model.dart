@@ -1,6 +1,6 @@
-import 'package:api_package/entity/promotion.dart';
-import 'package:api_package/network/event_result.dart';
- import 'package:api_package/api_package.dart';
+import 'package:api/entity/promotion.dart';
+import 'package:api/network/event_result.dart';
+ import 'package:api/api.dart';
 import 'package:tgp_flutter/base_viewmodel.dart';
 
 class PromotionViewModel extends BaseViewModel {

@@ -1,8 +1,8 @@
-import 'package:api_package/api_package.dart';
+import 'package:api/api.dart';
 import 'package:tgp_flutter/base_viewmodel.dart';
-import 'package:api_package/entity/bank_type.dart';
-import 'package:api_package/entity/withdrawal_info.dart';
-import 'package:api_package/network/event_result.dart';
+import 'package:api/entity/bank_type.dart';
+import 'package:api/entity/withdrawal_info.dart';
+import 'package:api/network/event_result.dart';
 import 'package:collection/collection.dart';
 
 class CardViewModel extends BaseViewModel {

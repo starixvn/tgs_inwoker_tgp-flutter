@@ -1,7 +1,7 @@
 import 'package:tgp_flutter/base_viewmodel.dart';
-import 'package:api_package/entity/payment.dart';
-import 'package:api_package/entity/promotion.dart';
- import 'package:api_package/api_package.dart';
+import 'package:api/entity/payment.dart';
+import 'package:api/entity/promotion.dart';
+ import 'package:api/api.dart';
 
 class DepositMethodViewModel extends BaseViewModel {
   final depositRepo = BankRepository.getSingleton();

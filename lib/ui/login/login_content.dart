@@ -5,8 +5,8 @@ import 'package:tgp_flutter/custom/color_button.dart';
 import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/custom/custom_toast.dart';
 import 'package:tgp_flutter/custom/gradient_button.dart';
-import 'package:api_package/entity/language.dart';
-import 'package:api_package/localizations/language_provider.dart';
+import 'package:api/entity/language.dart';
+import 'package:api/localizations/language_provider.dart';
 import 'package:tgp_flutter/main.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/route_path.dart';
@@ -17,7 +17,7 @@ import 'package:tgp_flutter/ui/home/home.dart';
 import 'package:tgp_flutter/ui/login/login_password_text_form_field.dart';
 import 'package:tgp_flutter/ui/login/login_text_form_field.dart';
 import 'package:tgp_flutter/ui/login/login_view_model.dart';
-import 'package:api_package/extension/screen_apis.dart';
+import 'package:api/extension/screen_apis.dart';
 import 'dart:math' as math;
 
 class LoginContent extends StatefulWidget {

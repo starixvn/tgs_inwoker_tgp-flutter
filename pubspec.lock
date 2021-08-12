@@ -22,13 +22,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.0"
-  api_package:
+  api:
     dependency: "direct main"
     description:
       path: "."
       ref: HEAD
-      resolved-ref: abf96b3bf2ec4cd668614e1a520baf8863f01bce
-      url: "https://gitlab.com/yewtungcheong/api_package"
+      resolved-ref: f10eabcec9cc38da45ca051e307420c0d1736dc8
+      url: "https://gitlab.com/yewtungcheong/api"
     source: git
     version: "0.0.1"
   archive:

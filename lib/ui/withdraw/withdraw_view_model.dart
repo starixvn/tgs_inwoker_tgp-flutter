@@ -1,6 +1,6 @@
 import 'package:tgp_flutter/base_viewmodel.dart';
-import 'package:api_package/entity/withdrawal_info.dart';
- import 'package:api_package/api_package.dart';
+import 'package:api/entity/withdrawal_info.dart';
+ import 'package:api/api.dart';
 import 'package:collection/collection.dart';
 
 class WithdrawViewModel extends BaseViewModel {

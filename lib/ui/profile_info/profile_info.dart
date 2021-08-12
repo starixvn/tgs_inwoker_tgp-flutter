@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:api_package/entity/profile_info_item.dart';
-import 'package:api_package/entity/user_profile.dart';
-import 'package:api_package/extension/screen_apis.dart';
+import 'package:api/entity/profile_info_item.dart';
+import 'package:api/entity/user_profile.dart';
+import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter/my_behavior.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';

@@ -1,7 +1,7 @@
 import 'package:lottie/lottie.dart';
 import 'package:ndialog/ndialog.dart';
 import 'package:tgp_flutter/environment_config.dart';
-import 'package:api_package/extension/screen_apis.dart';
+import 'package:api/extension/screen_apis.dart';
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 //import 'package:progress_dialog/progress_dialog.dart';

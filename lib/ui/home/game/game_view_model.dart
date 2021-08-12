@@ -3,12 +3,12 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter/base_viewmodel.dart';
-import 'package:api_package/entity/game.dart';
-import 'package:api_package/entity/game_provider2.dart';
-import 'package:api_package/entity/game_type.dart';
-import 'package:api_package/localizations/language_provider.dart';
-import 'package:api_package/network/event_result.dart';
- import 'package:api_package/api_package.dart';
+import 'package:api/entity/game.dart';
+import 'package:api/entity/game_provider2.dart';
+import 'package:api/entity/game_type.dart';
+import 'package:api/localizations/language_provider.dart';
+import 'package:api/network/event_result.dart';
+ import 'package:api/api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class GameViewModel extends BaseViewModel {

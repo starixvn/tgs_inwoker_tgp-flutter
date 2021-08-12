@@ -1,8 +1,8 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:api_package/entity/language.dart';
-import 'package:api_package/extension/screen_apis.dart';
-import 'package:api_package/localizations/language_provider.dart';
+import 'package:api/entity/language.dart';
+import 'package:api/extension/screen_apis.dart';
+import 'package:api/localizations/language_provider.dart';
 import 'package:tgp_flutter/main.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/ui/base_state.dart';

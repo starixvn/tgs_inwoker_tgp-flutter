@@ -1,13 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:tgp_flutter/base_viewmodel.dart';
-import 'package:api_package/entity/account_transaction.dart';
-import 'package:api_package/entity/bet_transaction.dart';
-import 'package:api_package/entity/transfer_transaction.dart';
-import 'package:api_package/entity/game_provider.dart';
-import 'package:api_package/entity/status.dart';
-import 'package:api_package/extension/format.dart';
-import 'package:api_package/network/event_result.dart';
- import 'package:api_package/api_package.dart';
+import 'package:api/entity/account_transaction.dart';
+import 'package:api/entity/bet_transaction.dart';
+import 'package:api/entity/transfer_transaction.dart';
+import 'package:api/entity/game_provider.dart';
+import 'package:api/entity/status.dart';
+import 'package:api/extension/format.dart';
+import 'package:api/network/event_result.dart';
+ import 'package:api/api.dart';
 
 class TransactionViewModel extends BaseViewModel {
   final userRepo = UserRepository.getSingleton();

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:api_package/api_package.dart';
+import 'package:api/api.dart';
 
 abstract class BaseViewModel extends ChangeNotifier{
   List<BaseRepository> get repoList;

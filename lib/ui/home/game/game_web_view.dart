@@ -7,9 +7,9 @@ import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:tgp_flutter/custom/custom_dialog.dart';
 import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/custom/leave_game_dialog.dart';
-import 'package:api_package/entity/game.dart';
-import 'package:api_package/entity/game_type.dart';
-import 'package:api_package/extension/screen_apis.dart';
+import 'package:api/entity/game.dart';
+import 'package:api/entity/game_type.dart';
+import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 
