@@ -149,10 +149,16 @@ class _HomeState extends BaseState<Home> {
   }
 
   _getAnnouncementText() {
-    if (_vm.announcement?.content != null)
-      return parseHtmlString(_vm.announcement?.localization?.content ?? _vm.announcement?.content);
+    if (_vm.announcement?.content != null) {
+      var announcement = _vm.announcement?.localization?.content ?? _vm.announcement?.content;
+      return _removeMultiLine(parseHtmlString(announcement));
+    }
     else
       return " ";
+  }
+
+  _removeMultiLine(String text) {
+    return text.replaceAll("\n", " ");
   }
 
   navigateToLogin() {
