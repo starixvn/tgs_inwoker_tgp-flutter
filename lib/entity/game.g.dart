@@ -18,7 +18,8 @@ Game _$GameFromJson(Map<String, dynamic> json) {
     ..tag = json['tag'] == null
         ? null
         : GameTag.fromJson(json['tag'] as Map<String, dynamic>)
-    ..localizedName = json['localizedName'] as String;
+    ..localizedName = json['localizedName'] as String
+    ..isFavourite = json['isFavourite'] as bool;
 }
 
 Map<String, dynamic> _$GameToJson(Game instance) => <String, dynamic>{
@@ -31,6 +32,7 @@ Map<String, dynamic> _$GameToJson(Game instance) => <String, dynamic>{
       'type': _$GameTypeEnumMap[instance.type],
       'tag': instance.tag,
       'localizedName': instance.localizedName,
+      'isFavourite': instance.isFavourite,
     };
 
 T _$enumDecode<T>(

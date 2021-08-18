@@ -7,6 +7,7 @@ import 'package:tgp_flutter/entity/game_provider.dart';
 import 'package:tgp_flutter/entity/status.dart';
 import 'package:tgp_flutter/extension/format.dart';
 import 'package:tgp_flutter/network/event_result.dart';
+import 'package:tgp_flutter/repository/bank_repository.dart';
 import 'package:tgp_flutter/repository/base_repository.dart';
 import 'package:tgp_flutter/repository/content_repository.dart';
 import 'package:tgp_flutter/repository/user_repository.dart';
@@ -14,7 +15,8 @@ import 'package:tgp_flutter/repository/user_repository.dart';
 class TransactionViewModel extends BaseViewModel {
   final userRepo = UserRepository.getSingleton();
   final contentRepo = ContentRepository.getSingleton();
-  var getTransactionApiState, getGameProviderApiState, getAccountTransactionApiState, getWithdrawTransactionApiState, getTransferTransactionApiState;
+  final depositRepo = BankRepository.getSingleton();
+  var getTransactionApiState, getGameProviderApiState, getAccountTransactionApiState, getWithdrawTransactionApiState, getTransferTransactionApiState, getDepositOrderApiState;
   var page = 1, rows = 10;
   var pStartDate = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 0, 0, 0, 0, 0),
       pEndDate = DateTime.now();
@@ -24,6 +26,7 @@ class TransactionViewModel extends BaseViewModel {
   var endRecord = false;
   var statusList = Status.values;
   var pStatus = Status.All;
+  var paymentId;
 
   get gameProviderList => contentRepo.gameProviderList;
   get wallet => userRepo.wallet;
@@ -155,5 +158,15 @@ class TransactionViewModel extends BaseViewModel {
       else pEndDate = endDate;
     }
       notifyListeners();
+  }
+
+  getManualDepositOrder(String id) async {
+    setLoading();
+    getDepositOrderApiState = await depositRepo.getManualDepositOrder(id);
+    if (getDepositOrderApiState.isSuccess) {
+      paymentId =id;
+    }
+    setLoading(false);
+    return getDepositOrderApiState;
   }
 }

@@ -87,6 +87,7 @@ class WithdrawTransactionViewState extends BaseState<WithdrawTransactionView> {
             refreshController: _refreshController,
             list: _vm.withdrawTransactionList,
             displayItemList: _getList(),
+            isUploadButton: false,
           );
         });
   }
@@ -98,7 +99,7 @@ class WithdrawTransactionViewState extends BaseState<WithdrawTransactionView> {
             Format().dateTimeFormat(_vm.withdrawTransactionList[index].createdOn),
             _vm.withdrawTransactionList[index].status.getName(context),
             _vm.withdrawTransactionList[index].amount.toString(),
-          ], type: _getTransactionItemType(index), isEndRecord: _vm.endRecord),
+          ], type: _getTransactionItemType(index), isEndRecord: _vm.endRecord, isUploadButton: false),
         );
       }).toList();
 

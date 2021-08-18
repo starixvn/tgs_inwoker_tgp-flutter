@@ -22,6 +22,7 @@ import 'package:tgp_flutter/network/event_result.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
+import 'package:tgp_flutter/ui/deposit/deposit_order_view.dart';
 import 'package:tgp_flutter/ui/transaction/base_transaction.dart';
 import 'package:tgp_flutter/ui/transaction/transaction.dart';
 import 'package:tgp_flutter/ui/transaction/transaction_cell_item.dart';
@@ -68,7 +69,7 @@ class AccountTransactionViewState extends BaseState<AccountTransactionView> {
         builder: (ctx, vm, _) {
           _handleApiState();
           return BaseTransaction(
-            transactionHeaderList: ["time", "status", "amount"],
+            transactionHeaderList: ["time", "status", "amount",""],
             getPickerBox: _getPickerBox(),
             filterIndex: filterIndex,
             expandedHeight: 250,
@@ -85,6 +86,7 @@ class AccountTransactionViewState extends BaseState<AccountTransactionView> {
             refreshController: _refreshController,
             list: _vm.accountTransactionList,
             displayItemList: _getList(),
+            isUploadButton: true,
           );
         });
   }
@@ -96,7 +98,11 @@ class AccountTransactionViewState extends BaseState<AccountTransactionView> {
             Format().dateTimeFormat(_vm.accountTransactionList[index].createdOn),
             _vm.accountTransactionList[index].status.getName(context),
             _vm.accountTransactionList[index].amount.toString(),
-          ], type: _getTransactionItemType(index), isEndRecord: _vm.endRecord),
+            _vm.accountTransactionList[index].status == Status.WaitingPayment?true:false
+          ], type: _getTransactionItemType(index), isEndRecord: _vm.endRecord, isUploadButton: true,
+          getManualDepositId: (){
+            _vm.getManualDepositOrder(_vm.accountTransactionList[index].id);
+          },),
         );
       }).toList();
 
@@ -170,5 +176,17 @@ class AccountTransactionViewState extends BaseState<AccountTransactionView> {
 
   _handleApiState() {
     handleApiState(_vm.getAccountTransactionApiState, isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getDepositOrderApiState, onSuccess: () {
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        await Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => DepositOrderView(
+                  id: _vm.paymentId,
+                  manualDepositOrder: _vm.getDepositOrderApiState.result,
+                )));
+
+      });
+    });
   }
 }

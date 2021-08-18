@@ -26,6 +26,7 @@ class BaseTransaction extends StatefulWidget {
   final RefreshController refreshController;
   final List list;
   final List displayItemList;
+  final bool isUploadButton;
 
   BaseTransaction(
       {Key key,
@@ -39,7 +40,8 @@ class BaseTransaction extends StatefulWidget {
       this.scrollController,
       this.refreshController,
       this.list,
-      this.displayItemList})
+      this.displayItemList,
+      this.isUploadButton})
       : super(key: key);
 
   @override
@@ -86,6 +88,7 @@ class BaseTransactionState extends BaseState<BaseTransaction> {
                       child: Center(
                         child: TransactionHeaderItem(
                           headerList: widget.transactionHeaderList,
+                          isUploadButton: widget.isUploadButton,
                         ),
                       ),
                     ),

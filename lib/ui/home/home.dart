@@ -127,14 +127,13 @@ class _HomeState extends BaseState<Home> {
       );
 
   _buildTextMarquee() {
-    // var announcement = parseHtmlString(_vm.announcement?.localization?.content ?? _vm.announcement?.content);
     return Expanded(
       child: Container(
         decoration: BoxDecoration(color: CustomColor.theme_bar_gradient_1, borderRadius: BorderRadius.circular(10.0)),
         margin: EdgeInsets.only(left: 10.auto, right: 10.auto),
         height: 18.auto,
         child: Marquee(
-            text: _getAnnouncementText(),
+            text: _removeMultiLine(parseHtmlString(_getAnnouncementText())),
             style: TextStyle(
               color: Colors.white,
               fontSize: 10.auto,
@@ -149,10 +148,10 @@ class _HomeState extends BaseState<Home> {
   }
 
   _getAnnouncementText() {
-    if (_vm.announcement?.content != null) {
-      var announcement = _vm.announcement?.localization?.content ?? _vm.announcement?.content;
-      return _removeMultiLine(parseHtmlString(announcement));
-    }
+    if (_vm.announcement?.localization?.content?.isNotEmpty ?? false)
+      return _vm.announcement?.localization?.content;
+    else if (_vm.announcement?.content?.isNotEmpty ?? false)
+      return _vm.announcement?.content;
     else
       return " ";
   }

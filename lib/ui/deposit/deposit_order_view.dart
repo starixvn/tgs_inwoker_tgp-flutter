@@ -106,7 +106,6 @@ class _DepositOrderViewState extends BaseState<DepositOrderView> {
             child: Column(
               children: [
                 Container(
-                  //decoration: BoxDecoration(color: Colors.white),
                   alignment: Alignment.centerLeft,
                   child: Text(
                     getTranslatedText("amount"),
@@ -117,24 +116,22 @@ class _DepositOrderViewState extends BaseState<DepositOrderView> {
                 Container(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    //"10.00",
-                    widget.depositAmount,
+                    "¥ ${widget.manualDepositOrder.amount.toString()}",
                     style: TextStyle(
                         fontSize: (38.5).auto, color: CustomColor.theme_bar_gradient_2, fontWeight: FontWeight.w400),
-                    //"¥ $amount"
                   ),
                 ),
                 Divider(
                   thickness: (1.0).auto,
                   color: CustomColor.very_light_pink_four,
                 ),
-                _buildText("deposit_method", widget.method),
-                _buildText("deposit_channel", widget.manualDepositOrder.methodName),
+                //_buildText("deposit_channel", widget.manualDepositOrder.methodName),
                 _buildOrderText("order_no", widget.orderNo),
-                _buildText("pay_username", widget.payUsername),
-                _buildText("receiver_bank", widget.depositChannel),
-                _buildText("receiver_bank_account", widget.manualDepositOrder.bankAccountName),
-                _buildText("receiver_bank_number", widget.manualDepositOrder.bankAccount),
+                _buildText("deposit_method", widget.manualDepositOrder.methodName),
+                //_buildText("pay_username", widget.payUsername),
+                _buildText("deposit_channel", widget.manualDepositOrder.methodName),
+                _buildText("receiver_bank", widget.manualDepositOrder.bankAccountName),
+                _buildText("receiver_bank_account", widget.manualDepositOrder.bankAccount),
                 if (widget.promotionName != null) _buildText("promotion_picker", widget.promotionName ?? ""),
                 _buildUploadTextRow(),
                 uploadImage == null

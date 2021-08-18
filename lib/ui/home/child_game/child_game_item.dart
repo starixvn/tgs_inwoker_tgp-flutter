@@ -25,7 +25,7 @@ class ChildGameItem extends StatefulWidget {
   final bool isDisabled;
   final GameViewModel vm;
 
-  ChildGameItem({this.isFavourite, this.game, this.isDisabled,  this.vm});
+  ChildGameItem({this.isFavourite, this.game, this.isDisabled, this.vm});
 
   @override
   _ChildGameItemState createState() => _ChildGameItemState();
@@ -79,8 +79,7 @@ class _ChildGameItemState extends BaseState<ChildGameItem> {
     return AspectRatio(
       aspectRatio: 1,
       child: CachedNetworkImage(
-          placeholder: (context, url) =>
-              Container(
+          placeholder: (context, url) => Container(
                 color: CustomColor.very_light_pink_four,
               ),
           imageUrl: _getImageUrl(),
@@ -102,7 +101,7 @@ class _ChildGameItemState extends BaseState<ChildGameItem> {
     /*if (((getCurrentLanguage().apiCode == "zh-CN" || getCurrentLanguage().apiCode == "zh-TW") &&
         (widget.game.gamePlatformCode == "HABA" || widget.game.gamePlatformCode == "PP")) ||
         widget.game.gamePlatformCode == "SW"|| widget.game.type == GameType.Fishing )*/
-      return widget.game.code;
+    return widget.game.code;
     /*else
       return widget.game.code.replaceAll(RegExp("_"), "");*/
   }
@@ -111,53 +110,60 @@ class _ChildGameItemState extends BaseState<ChildGameItem> {
     return /*Expanded(
       flex: 1,
       child:*/
-      Container(
-        height: 32.auto,
-        decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [CustomColor.theme_bar_gradient_1, CustomColor.theme_bar_gradient_2],
-              begin: Alignment.bottomCenter,
-              end: Alignment.topCenter,
-            ),
-            borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(5),
-              bottomRight: Radius.circular(5),
-            )),
-        padding: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 7.auto),
-        child: Row(
-          children: [
-            Expanded(
-              flex:9,
-              child: Container(
-                child: AutoSizeText(
-                  widget.game.name,
-                  style: TextStyle(color: Colors.white),
-                  minFontSize: 3,
-                  stepGranularity: 1,
-                  maxLines: 1,
-                ),
+        Container(
+      height: 32.auto,
+      decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [CustomColor.theme_bar_gradient_1, CustomColor.theme_bar_gradient_2],
+            begin: Alignment.bottomCenter,
+            end: Alignment.topCenter,
+          ),
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(5),
+            bottomRight: Radius.circular(5),
+          )),
+      padding: EdgeInsets.only(left: 10.auto, right: 5.auto, top: 7.auto),
+      child: Row(
+        children: [
+          Expanded(
+            flex: 9,
+            child: Container(
+              margin: EdgeInsets.only(right: 3.auto),
+              child: AutoSizeText(
+                widget.game.name,
+                style: TextStyle(color: Colors.white),
+                minFontSize: 3,
+                stepGranularity: 1,
+                maxLines: 1,
               ),
             ),
-            Expanded(
-              flex: 1,
-              child: InkWell(
-                onTap: () {
-                  widget.game.isFavourite ? widget.vm.deleteFavoriteGame(widget.game):widget.vm.setFavoriteGame(widget.game);
-                },
-                child: Image.asset(
+          ),
+          Expanded(
+            flex: 1,
+            child: InkWell(
+              onTap: () {
+                ProgressDialog.show(context);
+                widget.game.isFavourite
+                    ? widget.vm.deleteFavoriteGame(widget.game)
+                    : widget.vm.setFavoriteGame(widget.game);
+              },
+              child: Icon(
+                Icons.favorite,
+                size: 15.auto,
+                color: widget.game.isFavourite ? Colors.red : Colors.white,
+              ), /*Image.asset(
                   widget.game.isFavourite ? "images/child_game/ic_like.png" : "images/child_game/ic_unlike.png",
                   width: 20.auto,
                   height: 20.auto,
-                ),
-              ),
-            )
-          ],
-        ),
+                ),*/
+            ),
+          )
+        ],
+      ),
     );
   }
 
-  _buildPlatformText() =>
-      Positioned(
+  _buildPlatformText() => Positioned(
         top: context.screenWidth / 2.45,
         child: Container(
           margin: EdgeInsets.only(left: 10.auto, top: 5.auto),
@@ -175,8 +181,7 @@ class _ChildGameItemState extends BaseState<ChildGameItem> {
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) =>
-                  GameWeb(
+              builder: (context) => GameWeb(
                     gamePlatformCode: game.gamePlatformCode,
                     gameId: game.id,
                   )));

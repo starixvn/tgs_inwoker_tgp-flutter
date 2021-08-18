@@ -11,6 +11,7 @@ class GradientButton extends StatelessWidget {
   final double height;
   final double fontSize;
   final double width;
+  final double padding;
 
   GradientButton(
       {Key key,
@@ -20,7 +21,8 @@ class GradientButton extends StatelessWidget {
       @required this.radius,
       @required this.height,
       this.fontSize,
-        this.width
+        this.width,
+        this.padding
       })
       : super(key: key);
 
@@ -30,7 +32,7 @@ class GradientButton extends StatelessWidget {
         ? TextButton(
             onPressed: () => this.onClick(),
             style: ButtonStyle(
-              padding: MaterialStateProperty.all(EdgeInsets.zero),
+              padding: MaterialStateProperty.all(EdgeInsets.all(0)),
             ),
             child: Container(
               alignment: Alignment.center,
@@ -47,6 +49,7 @@ class GradientButton extends StatelessWidget {
               child: Text(
                 title,
                 style: TextStyle(color: Colors.white, fontSize: fontSize ?? 16.auto),
+                textAlign: TextAlign.center,
               ),
             ),
           )

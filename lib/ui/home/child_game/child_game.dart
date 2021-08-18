@@ -41,7 +41,7 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
   var _vm = GameViewModel();
   var searchController = TextEditingController();
   var _focusNode = FocusNode();
-  var isSearching = false, isVisibleSuggestionList = false;
+  var isSearching = false, isVisibleSuggestionList = false, isInitLoading = true;
 
   @override
   void initState() {
@@ -285,8 +285,10 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
   _handleApiState() {
     handleApiState(_vm.getGameApiState, isAutoHideLoading: false, onSuccess: () {});
     handleApiState(_vm.getGameProviderListApiState, isAutoHideLoading: false, onSuccess: () {});
-    handleApiState(_vm.getFavouriteGameApiState, isAutoHideLoading: false, onSuccess: () {});
-    handleApiState(_vm.setFavouriteGameApiState, isAutoHideLoading: false, onSuccess: () {});
-    handleApiState(_vm.deleteFavouriteGameApiState, isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getFavouriteGameApiState, isAutoHideLoading: !isInitLoading, onSuccess: () {
+      if(isInitLoading) isInitLoading = !isInitLoading;
+    });
+    handleApiState(_vm.setFavouriteGameApiState, onSuccess: () {});
+    handleApiState(_vm.deleteFavouriteGameApiState,  onSuccess: () {});
   }
 }

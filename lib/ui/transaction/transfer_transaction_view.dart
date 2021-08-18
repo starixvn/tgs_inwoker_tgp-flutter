@@ -84,6 +84,7 @@ class TransferTransactionViewState extends BaseState<TransferTransactionView> {
             refreshController: _refreshController,
             list: _vm.transferTransactionList,
             displayItemList: _getList(),
+            isUploadButton: false,
           );
         });
   }
@@ -96,7 +97,7 @@ class TransferTransactionViewState extends BaseState<TransferTransactionView> {
         _vm.transferTransactionList[index].from,
         _vm.transferTransactionList[index].to,
         _vm.transferTransactionList[index].amount.toString(),
-      ], type: _getTransactionItemType(index), isEndRecord: _vm.endRecord),
+      ], type: _getTransactionItemType(index), isEndRecord: _vm.endRecord, isUploadButton: false,),
     );
   }).toList();
 
