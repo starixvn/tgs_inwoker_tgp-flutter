@@ -99,7 +99,7 @@ class AccountTransactionViewState extends BaseState<AccountTransactionView> {
             _vm.accountTransactionList[index].status.getName(context),
             _vm.accountTransactionList[index].amount.toString(),
             _vm.accountTransactionList[index].status == Status.WaitingPayment?true:false
-          ], type: _getTransactionItemType(index), isEndRecord: _vm.endRecord, isUploadButton: true,
+          ], type: _getTransactionItemType(index), isEndRecord: _vm.endRecord, isUploadButton: _vm.accountTransactionList[index].canUploadCerts,
           getManualDepositId: (){
             _vm.getManualDepositOrder(_vm.accountTransactionList[index].id);
           },),

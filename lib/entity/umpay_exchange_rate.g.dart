@@ -8,10 +8,10 @@ part of 'umpay_exchange_rate.dart';
 
 UmPayExchangeRate _$UmPayExchangeRateFromJson(Map<String, dynamic> json) {
   return UmPayExchangeRate()
-    ..rate = json['rate'] as double
-    ..fee = json['fee'] as double
-    ..inRate = json['in_rate'] as double
-    ..outRate = json['out_rate'] as double;
+    ..rate = (json['rate'] as num)?.toDouble()
+    ..fee = (json['fee'] as num)?.toDouble()
+    ..inRate = (json['in_rate'] as num)?.toDouble()
+    ..outRate = (json['out_rate'] as num)?.toDouble();
 }
 
 Map<String, dynamic> _$UmPayExchangeRateToJson(UmPayExchangeRate instance) =>

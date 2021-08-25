@@ -12,7 +12,8 @@ AccountTransaction _$AccountTransactionFromJson(Map<String, dynamic> json) {
     ..createdOn = json['createdon'] as String
     ..updatedOn = json['updatedOn'] as String
     ..status = _$enumDecodeNullable(_$StatusEnumMap, json['status'])
-    ..amount = (json['amount'] as num)?.toDouble();
+    ..amount = (json['amount'] as num)?.toDouble()
+    ..canUploadCerts = json['canuploadcerts'] as bool;
 }
 
 Map<String, dynamic> _$AccountTransactionToJson(AccountTransaction instance) =>
@@ -22,6 +23,7 @@ Map<String, dynamic> _$AccountTransactionToJson(AccountTransaction instance) =>
       'updatedOn': instance.updatedOn,
       'status': _$StatusEnumMap[instance.status],
       'amount': instance.amount,
+      'canuploadcerts': instance.canUploadCerts,
     };
 
 T _$enumDecode<T>(

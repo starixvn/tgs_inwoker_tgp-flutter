@@ -17,7 +17,8 @@ class TransactionCellItem extends StatefulWidget {
   final bool isUploadButton;
   final Function getManualDepositId;
 
-  TransactionCellItem({Key key, this.list, this.type, this.isEndRecord, this.isUploadButton, this.getManualDepositId}) : super(key: key);
+  TransactionCellItem({Key key, this.list, this.type, this.isEndRecord, this.isUploadButton, this.getManualDepositId})
+      : super(key: key);
 
   @override
   _TransactionCellItemState createState() => _TransactionCellItemState();
@@ -109,43 +110,45 @@ class _TransactionCellItemState extends BaseState<TransactionCellItem> {
                     ),
               Container(
                 margin: EdgeInsets.only(top: 5.auto),
-                child:  Row(
+                child: Row(
                     children: List.generate(widget.list.length, (index) {
-                      return (() {
-                        if (index == 0)
-                          return Container();
-                        else if (index == 4 && widget.isUploadButton)
-                          return Expanded(
-                            flex: 1,
-                            child: widget.list[4]? GradientButton(
-                              title: getTranslatedText("upload_prof"),
-                              onClick: ()=> widget.getManualDepositId(),
-                              isEnabled: true,
-                              radius: 4.8,
-                              height: 30,
-                              width: 45,
-                              fontSize: 8.auto,
-                              padding: 3,
-                            ):Container(),
-                          );
-                        else
-                          return  Expanded(
-                            //first header (time) flex number is 2, others will be 1
-                            flex: 2,
-                            child: Container(
-                              margin: EdgeInsets.symmetric(horizontal: 2.auto),
-                              child: AutoSizeText(
-                                widget.list[index] ?? "",
-                                style: TextStyle(color: Colors.grey[700]),
-                                textAlign: index == 1 ? TextAlign.start : TextAlign.center,
-                                minFontSize: 5,
-                                maxFontSize: 12,
-                                stepGranularity: 1,
-                              ),
-                            ),
-                          );
-                      })();
-                    }).toList()),
+                  return (() {
+                    if (index == 0)
+                      return Container();
+                    else if (index == 4)
+                      return Expanded(
+                        flex: 1,
+                        child: widget.isUploadButton
+                            ? GradientButton(
+                                title: getTranslatedText("upload_prof"),
+                                onClick: () => widget.getManualDepositId(),
+                                isEnabled: true,
+                                radius: 4.8,
+                                height: 30,
+                                width: 45,
+                                fontSize: 8.auto,
+                                padding: 3,
+                              )
+                            : Container(),
+                      );
+                    else
+                      return Expanded(
+                        //first header (time) flex number is 2, others will be 1
+                        flex: 2,
+                        child: Container(
+                          margin: EdgeInsets.symmetric(horizontal: 2.auto),
+                          child: AutoSizeText(
+                            widget.list[index] ?? "",
+                            style: TextStyle(color: Colors.grey[700]),
+                            textAlign: index == 1 ? TextAlign.start : TextAlign.center,
+                            minFontSize: 5,
+                            maxFontSize: 12,
+                            stepGranularity: 1,
+                          ),
+                        ),
+                      );
+                  })();
+                }).toList()),
               ),
             ],
           ),
