@@ -74,7 +74,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
                 if (_isApplePayDeposit())
                   _buildNameTextField("transfer_name", "enter_transfer_name", _transferNameController),
                 _buildAmountTextField(),
-                if (_isLeePayDeposit()) _buildExchangeRateText(),
+                if (_isLeePayDeposit() || (_isUmPayDeposit() && methodPickerText == "Crypto")) _buildExchangeRateText(),
                 _buildCard("promotion_picker", widget.promotionList),
                 _buildButton(),
               ],
@@ -271,6 +271,8 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
       _vm.applePayDepositOrder(_amountController.text, _payment.id, promotionId ?? null, _transferNameController.text);
     else if (widget.paymentCode == "PrimePay") {
       _vm.primePayDepositOrder(_amountController.text, _payment.id, promotionId ?? null);
+    }else if (_isUmPayDeposit()) {
+      _vm.umPayDepositOrder(_amountController.text, _payment.id, promotionId ?? null, methodPickerText == "Crypto");
     } else //currently is LeePay
       _vm.leePayDepositOrder(_amountController.text, _payment.id, promotionId ?? null);
   }
@@ -285,6 +287,10 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
 
   _isLeePayDeposit() {
     return widget.paymentCode == "LeePay";
+  }
+
+  _isUmPayDeposit() {
+    return widget.paymentCode == "UmPay";
   }
 
   onSelectedMethod(String method) async {
@@ -302,7 +308,8 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
       paymentMin = payment.transferLimit.from;
       paymentMax = payment.transferLimit.to;
     });
-    if (_isLeePayDeposit()) _vm.getExchangeRate(_payment.id);
+    if (_isLeePayDeposit()) _vm.getExchangeRate(_payment.id, false);
+    else if(_isUmPayDeposit() && methodPickerText == "Crypto")_vm.getExchangeRate(_payment.id, true);
   }
 
   onSelectedPromotion(Map<String, String> map) {
@@ -344,6 +351,29 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
         _clearTextField();
       });
     });
+    handleApiState(_vm.getUmPayDepositOrderApiState, isRequireResult: true, onSuccess: (result) {
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        await Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => methodPickerText == "Crypto"?DepositOrderView(
+                  method: _payment.methodCode,
+                  depositRedirect: _vm.getUmPayDepositOrderApiState.result,
+                  depositAmount: Format().currencySymbolWithDecimalFormat(double.parse(_amountController.text)),
+                  depositChannel: channelPickerText,
+                  promotionName: promotionId != "-1" ? promotionName : null,
+                  exchangeRate: _vm.exchangeRate,
+                  expectedAmount: _calculateExpectedAmount(),
+                ):DepositOrderView(
+                  method: _payment.methodCode,
+                  depositRedirect: _vm.getUmPayDepositOrderApiState.result,
+                  depositAmount: Format().currencySymbolWithDecimalFormat(double.parse(_amountController.text)),
+                  depositChannel: channelPickerText,
+                  promotionName: promotionId != "-1" ? promotionName : null,
+                )));
+        _clearTextField();
+      });
+    });
     handleApiState(_vm.primePayDepositOrderApiState, onSuccess: () {
       WidgetsBinding.instance.addPostFrameCallback((_) async {
         await Navigator.push(
@@ -372,7 +402,6 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
                       method: _payment.methodCode,
                       id: paymentChannelId,
                       manualDepositOrder: _vm.getDepositOrderApiState.result,
-                      payUsername: _bankNameController.text,
                       depositAmount: Format().currencySymbolWithDecimalFormat(double.parse(_amountController.text)),
                       depositChannel: channelPickerText,
                       orderNo: _vm.orderNo,

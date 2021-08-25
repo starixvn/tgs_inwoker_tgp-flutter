@@ -10,6 +10,7 @@ import 'package:tgp_flutter/entity/manual_deposit_order.dart';
 import 'package:tgp_flutter/entity/game_provider.dart';
 import 'package:tgp_flutter/entity/http_method.dart';
 import 'package:tgp_flutter/entity/payment.dart';
+import 'package:tgp_flutter/entity/umpay_exchange_rate.dart';
 import 'package:tgp_flutter/entity/user_profile.dart';
 import 'package:tgp_flutter/entity/withdrawal_info.dart';
 import 'package:tgp_flutter/network/api_request_builder.dart';
@@ -193,12 +194,54 @@ class BankRepository extends BaseRepository {
         .execute();
   }
 
-  Future<EventResult<ExchangeRate>> getExchangeRate(String paymentId) async {
+  Future<EventResult<ExchangeRate>> getLeePayExchangeRate(String paymentId) async {
     return await ApiRequestBuilder<ExchangeRate>(
         method: HttpMethod.GET,
         endPoint: "api/deposit/crypto/leepay/exchangerate",
         params: paymentId,
         converter: (json) => ExchangeRate.fromJson(json),
+        jwtRefresher: jwtAuth)
+        .execute();
+  }
+
+  Future<EventResult<DepositRedirect>> umPayBankDepositOrder(String amount, String paymentId, String promotionId) async {
+    return await ApiRequestBuilder<DepositRedirect>(
+        method: HttpMethod.POST,
+        endPoint: "api/deposit/bank/umpay",
+        params: promotionId!=null?{
+          "amount": amount,
+          "paymentid": paymentId,
+          "promotionid": promotionId,
+        }:{
+          "amount": amount,
+          "paymentid": paymentId,
+          "promotionId": null
+        },
+        converter: (json) => DepositRedirect.fromJson(json),
+        jwtRefresher: jwtAuth)
+        .execute();
+  }
+
+  Future<EventResult<DepositRedirect>> umPayCryptoDepositOrder(String amount, String paymentId, String promotionId) async {
+    return await ApiRequestBuilder<DepositRedirect>(
+        method: HttpMethod.POST,
+        endPoint:"api/deposit/crypto/umpay",
+        params: {
+          "amount": amount,
+          "paymentid": paymentId,
+          "promotionid": promotionId,
+        },
+        converter: (json) => DepositRedirect.fromJson(json),
+        jwtRefresher: jwtAuth)
+        .execute();
+  }
+
+  Future<EventResult<UmPayExchangeRate>> getUmPayExchangeRate(String paymentId) async {
+    return await ApiRequestBuilder<UmPayExchangeRate>(
+        method: HttpMethod.GET,
+        endPoint: "api/deposit/crypto/umpay/exchangerate",
+        params: paymentId,
+        converter: (json) => UmPayExchangeRate.fromJson(json["rate"]["USDT"]["HKD"]),
         jwtRefresher: jwtAuth)
         .execute();
   }

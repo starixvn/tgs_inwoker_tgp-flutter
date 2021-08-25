@@ -69,7 +69,7 @@ class _DepositState extends BaseState<Deposit> {
                             tabs: List.generate(_vm.paymentCodeList.keys.length, (index) {
                               return Tab(
                                 child: Text(
-                                  getTranslatedText(_vm.paymentCodeList.keys.toList()[index]),
+                                  getTranslatedText(_vm.paymentCodeList.keys.toList()[index]) ?? "",
                                   style: TextStyle(
                                     fontFamily: 'PingFang',
                                     fontSize: 14.auto,

@@ -122,7 +122,7 @@ class _ChildGameItemState extends BaseState<ChildGameItem> {
             bottomLeft: Radius.circular(5),
             bottomRight: Radius.circular(5),
           )),
-      padding: EdgeInsets.only(left: 10.auto, right: 5.auto, top: 7.auto),
+      padding: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 7.auto),
       child: Row(
         children: [
           Expanded(
@@ -147,15 +147,13 @@ class _ChildGameItemState extends BaseState<ChildGameItem> {
                     ? widget.vm.deleteFavoriteGame(widget.game)
                     : widget.vm.setFavoriteGame(widget.game);
               },
-              child: Icon(
-                Icons.favorite,
-                size: 15.auto,
-                color: widget.game.isFavourite ? Colors.red : Colors.white,
-              ), /*Image.asset(
-                  widget.game.isFavourite ? "images/child_game/ic_like.png" : "images/child_game/ic_unlike.png",
-                  width: 20.auto,
-                  height: 20.auto,
-                ),*/
+              child: Image.asset(
+                widget.game.isFavourite
+                    ? "images/child_game/ic_favorite_selected.png"
+                    : "images/child_game/ic_favorite.png",
+                width: 15.auto,
+                height: 15.auto,
+              ),
             ),
           )
         ],

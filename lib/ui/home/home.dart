@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tgp_flutter/custom/custom_dialog.dart';
@@ -46,6 +47,7 @@ class _HomeState extends BaseState<Home> {
   void initState() {
     _vm.getAnnouncement();
     _vm.getApiError();
+    _vm.getBanner();
     // WidgetsBinding.instance.addPostFrameCallback((_) {
     _vm.resumeIfNeed();
     // });
@@ -84,13 +86,19 @@ class _HomeState extends BaseState<Home> {
       child: Swiper(
         itemBuilder: (BuildContext context, int index) => AspectRatio(
           aspectRatio: 360 / 200,
-          child: Image.asset(
+          child: CachedNetworkImage(
+              placeholder: (context, url) => Container(
+                color: CustomColor.very_light_pink_four,
+              ),
+              imageUrl: _vm.bannerList[index].mobileUrl,
+              //handling error
+              fit: BoxFit.cover),/*Image.asset(
             "images/banner/${getCurrentLanguage().apiCode}/$brand/${imgList[index]}.jpg",
             fit: BoxFit.cover,
-          ),
+          ),*/
         ),
         autoplay: true,
-        itemCount: imgList.length,
+        itemCount: _vm.bannerList?.length ?? 0,
         pagination: new SwiperPagination(
             alignment: Alignment.bottomCenter,
             margin: new EdgeInsets.all(context.screenHeight / 90),
@@ -127,13 +135,14 @@ class _HomeState extends BaseState<Home> {
       );
 
   _buildTextMarquee() {
+    var announcement = _removeMultiLine(parseHtmlString(_getAnnouncementText()));
     return Expanded(
       child: Container(
         decoration: BoxDecoration(color: CustomColor.theme_bar_gradient_1, borderRadius: BorderRadius.circular(10.0)),
         margin: EdgeInsets.only(left: 10.auto, right: 10.auto),
         height: 18.auto,
-        child: Marquee(
-            text: _removeMultiLine(parseHtmlString(_getAnnouncementText())),
+        child: announcement.isEmpty?Container():Marquee(
+            text: announcement,
             style: TextStyle(
               color: Colors.white,
               fontSize: 10.auto,
@@ -153,7 +162,7 @@ class _HomeState extends BaseState<Home> {
     else if (_vm.announcement?.content?.isNotEmpty ?? false)
       return _vm.announcement?.content;
     else
-      return " ";
+      return "";
   }
 
   _removeMultiLine(String text) {

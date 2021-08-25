@@ -173,7 +173,7 @@ class _LoginContentState extends BaseState<LoginContent> {
       );
 
   _buildChangeLanguageText() {
-    var list = LanguageProvider().list;
+     var list = LanguageProvider().list;
     var deviceLanguage = list.singleWhere((e) => e.locale == Localizations.localeOf(context));
     return Container(
       margin: EdgeInsets.only(top: 10.auto),
@@ -192,8 +192,11 @@ class _LoginContentState extends BaseState<LoginContent> {
                     style: TextStyle(
                         color: deviceLanguage == list[index] ? CustomColor.theme_bar_gradient_2 : Colors.black),
                   )),
-              VerticalDivider(
-                color: Colors.black,
+              Visibility(
+                visible: index+1 != list.length,
+                child: VerticalDivider(
+                  color: Colors.black,
+                ),
               )
             ],
           );

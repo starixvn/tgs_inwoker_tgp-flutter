@@ -9,7 +9,7 @@ import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
 import 'package:tgp_flutter/ui/language/language_item.dart';
-import 'package:tgp_flutter/ui/language/login_view_model.dart';
+import 'package:tgp_flutter/ui/language/language_view_model.dart';
 
 class LanguageView extends StatefulWidget {
   @override

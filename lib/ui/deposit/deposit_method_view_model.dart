@@ -19,7 +19,8 @@ class DepositMethodViewModel extends BaseViewModel {
       getLeepayOrderApiState,
       primePayDepositOrderApiState,
       applePayDepositOrderApiState,
-  getExchangeRateApiState;
+      getUmPayDepositOrderApiState,
+      getExchangeRateApiState;
   List<Payment> paymentList;
   var depositOrder, orderNo, exchangeRate;
 
@@ -63,7 +64,6 @@ class DepositMethodViewModel extends BaseViewModel {
     return primePayDepositOrderApiState;
   }
 
-
   applePayDepositOrder(String amount, String paymentId, String promotionId, String transName) async {
     setLoading();
     applePayDepositOrderApiState = await depositRepo.applePayDepositOrder(amount, paymentId, promotionId, transName);
@@ -71,11 +71,27 @@ class DepositMethodViewModel extends BaseViewModel {
     return applePayDepositOrderApiState;
   }
 
-  getExchangeRate(String paymentId) async{
+  umPayDepositOrder(String amount, String paymentId, String promotionId, bool isCrypto) async {
     setLoading();
-    getExchangeRateApiState = await depositRepo.getExchangeRate(paymentId);
-    if(getExchangeRateApiState.isSuccess){
-      exchangeRate = getExchangeRateApiState.result.buyPrice;
+    if (isCrypto)
+      getUmPayDepositOrderApiState = await depositRepo.umPayCryptoDepositOrder(amount, paymentId, promotionId);
+    else
+      getUmPayDepositOrderApiState = await depositRepo.umPayBankDepositOrder(amount, paymentId, promotionId);
+    setLoading(false);
+    return getUmPayDepositOrderApiState;
+  }
+
+  getExchangeRate(String paymentId, bool isUmPay) async {
+    setLoading();
+    if (!isUmPay)
+      getExchangeRateApiState = await depositRepo.getLeePayExchangeRate(paymentId);
+    else
+      getExchangeRateApiState = await depositRepo.getUmPayExchangeRate(paymentId);
+    if (getExchangeRateApiState.isSuccess) {
+      if (!isUmPay)
+        exchangeRate = getExchangeRateApiState.result.buyPrice;
+      else
+        exchangeRate = getExchangeRateApiState.result.rate.toString();
     }
     setLoading(false);
     return getExchangeRateApiState;

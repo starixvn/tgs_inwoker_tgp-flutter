@@ -233,6 +233,7 @@
   "LeePay": "LeePay",
   "PrimePay": "PrimePay",
   "ApplePay": "ApplePay",
+  "UmPay": "UmPay",
   "enter_bank_acc_name": "Please enter bank account name",
   "player_not_found": "Player not found",
   "invalid_credentials": "Invalid Credentials",
@@ -960,5 +961,7 @@
   "no_record": "No Record",
   "favorite_game": "Favorite Game",
   "copy_text": "Text is copied to clipboard.",
-  "email_dialog": "Please link your email."
+  "email_dialog": "Please link your email.",
+  "payment_type": "Payment Type",
+  "payment_channel": "Payment Channel"
 }

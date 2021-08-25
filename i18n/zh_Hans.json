@@ -232,6 +232,7 @@
   "LeePay": "利付钱包",
   "PrimePay": "一等付",
   "ApplePay": "苹果支付",
+  "UmPay": "UmPay",
   "enter_bank_acc_name": "请输入银行账号名称",
   "player_not_found": "无法查找玩家",
   "invalid_credentials": "无效凭证",
@@ -947,7 +948,10 @@
   "no_record":"查无资料",
   "favorite_game": "收藏游戏",
   "copy_text": "文本已复制",
-  "email_dialog": "请绑定邮箱地址"
+  "email_dialog": "请绑定邮箱地址",
+
+  "payment_type": "支付方式",
+  "payment_channel": "支付渠道"
 }
 
 

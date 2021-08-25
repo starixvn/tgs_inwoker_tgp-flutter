@@ -3,6 +3,7 @@ import 'package:tgp_flutter/entity/announcement.dart';
 import 'package:tgp_flutter/entity/game.dart';
 import 'package:tgp_flutter/entity/game_provider.dart';
 import 'package:tgp_flutter/entity/game_type.dart';
+import 'package:tgp_flutter/entity/home_banner.dart';
 import 'package:tgp_flutter/network/event_result.dart';
 import 'package:tgp_flutter/repository/base_repository.dart';
 import 'package:tgp_flutter/repository/content_repository.dart';
@@ -22,9 +23,10 @@ class HomeViewModel extends BaseViewModel {
 
   get balance => userRepo.wallet.main;
   bool isNotLogin = false, isExpired = false;
-  var getWalletBalanceApiState, getBasicInfoApiState, getAnnouncementApiState, getApiErrorLocalizationApiState;
+  var getWalletBalanceApiState, getBasicInfoApiState, getAnnouncementApiState, getApiErrorLocalizationApiState, getBannerApiState;
   Announcement announcement;
   double gameBalance = 0.0, totalBalance;
+  List<HomeBanner> bannerList;
 
   resumeIfNeed() async {
     setLoading();
@@ -52,7 +54,8 @@ class HomeViewModel extends BaseViewModel {
     setLoading();
     getAnnouncementApiState = await contentRepo.getAnnouncement();
     if (getAnnouncementApiState.isSuccess) {
-      announcement = getAnnouncementApiState.result.first;
+      if(getAnnouncementApiState.result.isEmpty) announcement = getAnnouncementApiState.result;
+     else  announcement = getAnnouncementApiState.result?.first ;
     }
     setLoading(false);
     return getAnnouncementApiState;
@@ -80,5 +83,15 @@ class HomeViewModel extends BaseViewModel {
       gameBalance += state.result.balance;
     }
     notifyListeners();
+  }
+
+  getBanner() async{
+    setLoading();
+    getBannerApiState = await contentRepo.getBanner();
+    if (getBannerApiState.isSuccess) {
+      bannerList = getBannerApiState.result;
+    }
+    setLoading(false);
+    return getBannerApiState;
   }
 }

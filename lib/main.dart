@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:tgp_flutter/entity/language_option.dart';
 import 'package:tgp_flutter/environment_config.dart';
 import 'package:tgp_flutter/localizations/language_provider.dart';
 import 'package:tgp_flutter/localizations/my_localizations.dart';
+import 'package:tgp_flutter/main_view_model.dart';
 import 'package:tgp_flutter/my_behavior.dart';
 import 'package:tgp_flutter/route_path.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
@@ -73,7 +75,10 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends BaseState<MyApp> {
   final appTitle = EnvironmentConfig.appTitleName;
   Locale _locale;
-  var langList = LanguageProvider().list.map((e) => e.locale).toList();
+  var _vm = MainViewModel();
+  var firstInit = true;
+
+  //var langList = LanguageProvider().list.map((e) => e.locale).toList();
 
   setLocale(Locale locale) {
     setState(() {
@@ -82,15 +87,33 @@ class _MyAppState extends BaseState<MyApp> {
   }
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   void didChangeDependencies() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      LanguageProvider().getLocale().then((locale) {
-        setState(() {
-          this._locale = locale;
-        });
+    super.didChangeDependencies();
+  }
+
+  _getLocale(){
+    LanguageProvider().getLocale().then((locale) {
+      setState(() {
+        this._locale = locale;
       });
     });
-    super.didChangeDependencies();
+  }
+
+  Future<List<LanguageOption>> initData() async {
+    if(firstInit){
+      await _vm.getAuthToken();
+      await _vm.getLanguageOption();
+      setState(() {
+        firstInit = false;
+      });
+      _getLocale();
+      return _vm.getLanguageApiState.result;
+    }else return [];
   }
 
   @override
@@ -98,74 +121,87 @@ class _MyAppState extends BaseState<MyApp> {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
     ));
-    return GestureDetector(
-      onTap: () {
-        FocusScopeNode currentFocus = FocusScope.of(context);
-        if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) {
-          currentFocus.focusedChild.unfocus();
-        }
-      },
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: appTitle,
-        initialRoute: '/',
-        routes: {
-          RoutePath.empty: (context) => Splash(),
-          RoutePath.home: (context) => MyHomePage(),
-          RoutePath.login: (context) => Login(),
-          RoutePath.menu: (context) => Menu(),
-          RoutePath.profile: (context) => Profile(),
-          RoutePath.promotion: (context) => PromotionPage(),
-          RoutePath.childGame: (context) => ChildGame(),
-          RoutePath.deposit: (context) => Deposit(),
-          RoutePath.walletTransfer: (context) => WalletTransfer(),
-          RoutePath.withdraw: (context) => Withdraw(),
-          RoutePath.transaction: (context) => Transaction(),
-          RoutePath.mainCard: (context) => MainCard(),
-          RoutePath.message: (context) => MessageView(),
-          RoutePath.frequentQuestion: (context) => FrequentQuestion(),
-          RoutePath.referFriend: (context) => ReferFriend(),
-          RoutePath.profileInfo: (context) => ProfileInfo(),
-          RoutePath.realNameVerification: (context) => RealNameVerification(),
-          RoutePath.phoneVerification: (context) => PhoneVerification(),
-          RoutePath.emailVerification: (context) => EmailVerification(0),
-          RoutePath.qqAccount: (context) => QQAccount(),
-          RoutePath.wechat: (context) => Wechat(),
-          RoutePath.address: (context) => Address(),
-          RoutePath.editPassword: (context) => EditPassword(),
-          RoutePath.resetPayPassword: (context) => ResetPayPassword(),
-          RoutePath.payPassword: (context) => PayPassword(),
-          RoutePath.securityAnswer: (context) => SecurityAnswer(),
-          RoutePath.editSecurityAnswer: (context) => EditSecurityAnswer(),
-          RoutePath.editSecurityAnswerBySecurityAnswer: (context) => EditSecurityAnswerBySecurityAnswer(),
-          RoutePath.forgotPassword: (context) => ForgotPassword(),
-          RoutePath.language: (context) => LanguageView(),
-          RoutePath.addCard: (context) => AddCard(),
-          RoutePath.customerService: (context) => CustomerService(),
-          RoutePath.promotionItemDetails: (context) => PromotionItemDetails(),
-          RoutePath.csWebView: (context) => CustomerServiceWebView(),
-          RoutePath.csQrCode: (context) => CustomerServiceQrCode(),
-          RoutePath.maintenance: (context) => Maintenance(),
-        },
-        localizationsDelegates: [
-          MyLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate
-        ],
-        // MyHomePage(title: appTitle),
-        supportedLocales: langList,
-        locale: _locale,
-        localeResolutionCallback: (locale, supportedLocales) {
-          for (var supportedLocale in supportedLocales) {
-            if (supportedLocale.languageCode == locale.languageCode &&
-                supportedLocale.scriptCode == locale.scriptCode) {
-              return supportedLocale;
-            }
+    _handleApiState();
+    return FutureBuilder(
+        future: initData(),
+        builder: (BuildContext context, AsyncSnapshot<List<LanguageOption>> snapshot) {
+          if (!snapshot.hasData) {
+            return MaterialApp(home: Splash());
+          } else {
+            return GestureDetector(
+              onTap: () {
+                FocusScopeNode currentFocus = FocusScope.of(context);
+                if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) {
+                  currentFocus.focusedChild.unfocus();
+                }
+              },
+              child: MaterialApp(
+                debugShowCheckedModeBanner: false,
+                title: appTitle,
+                initialRoute: '/',
+                routes: {
+                  RoutePath.empty: (context) => MyHomePage(),
+                  RoutePath.home: (context) => MyHomePage(),
+                  RoutePath.login: (context) => Login(),
+                  RoutePath.menu: (context) => Menu(),
+                  RoutePath.profile: (context) => Profile(),
+                  RoutePath.promotion: (context) => PromotionPage(),
+                  RoutePath.childGame: (context) => ChildGame(),
+                  RoutePath.deposit: (context) => Deposit(),
+                  RoutePath.walletTransfer: (context) => WalletTransfer(),
+                  RoutePath.withdraw: (context) => Withdraw(),
+                  RoutePath.transaction: (context) => Transaction(),
+                  RoutePath.mainCard: (context) => MainCard(),
+                  RoutePath.message: (context) => MessageView(),
+                  RoutePath.frequentQuestion: (context) => FrequentQuestion(),
+                  RoutePath.referFriend: (context) => ReferFriend(),
+                  RoutePath.profileInfo: (context) => ProfileInfo(),
+                  RoutePath.realNameVerification: (context) => RealNameVerification(),
+                  RoutePath.phoneVerification: (context) => PhoneVerification(),
+                  RoutePath.emailVerification: (context) => EmailVerification(0),
+                  RoutePath.qqAccount: (context) => QQAccount(),
+                  RoutePath.wechat: (context) => Wechat(),
+                  RoutePath.address: (context) => Address(),
+                  RoutePath.editPassword: (context) => EditPassword(),
+                  RoutePath.resetPayPassword: (context) => ResetPayPassword(),
+                  RoutePath.payPassword: (context) => PayPassword(),
+                  RoutePath.securityAnswer: (context) => SecurityAnswer(),
+                  RoutePath.editSecurityAnswer: (context) => EditSecurityAnswer(),
+                  RoutePath.editSecurityAnswerBySecurityAnswer: (context) => EditSecurityAnswerBySecurityAnswer(),
+                  RoutePath.forgotPassword: (context) => ForgotPassword(),
+                  RoutePath.language: (context) => LanguageView(),
+                  RoutePath.addCard: (context) => AddCard(),
+                  RoutePath.customerService: (context) => CustomerService(),
+                  RoutePath.promotionItemDetails: (context) => PromotionItemDetails(),
+                  RoutePath.csWebView: (context) => CustomerServiceWebView(),
+                  RoutePath.csQrCode: (context) => CustomerServiceQrCode(),
+                  RoutePath.maintenance: (context) => Maintenance(),
+                },
+                localizationsDelegates: [
+                  MyLocalizations.delegate,
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalWidgetsLocalizations.delegate
+                ],
+                // MyHomePage(title: appTitle),
+                supportedLocales: LanguageProvider().list.map((e) => e.locale).toList(),
+                locale: _locale,
+                localeResolutionCallback: (locale, supportedLocales) {
+                  for (var supportedLocale in supportedLocales) {
+                    if (supportedLocale.languageCode == locale.languageCode &&
+                        supportedLocale.scriptCode == locale.scriptCode) {
+                      return supportedLocale;
+                    }
+                  }
+                  return supportedLocales.first;
+                },
+              ),
+            );
           }
-          return supportedLocales.first;
-        },
-      ),
-    );
+        });
+  }
+
+  _handleApiState() {
+    handleApiState(_vm.getLanguageApiState, isAutoHideLoading: false, onSuccess: () {});
   }
 }
 
@@ -239,67 +275,67 @@ class _MyHomePageState extends BaseState<MyHomePage> {
   }
 
   _buildBottomBarItem(int index, String imagePath, String title, {bool isNewMessage = false}) => Expanded(
-    child: Stack(
-      children: [
-        _buildNotification(isNewMessage),
-        SizedBox(
-          height: 58.auto,
-          width: context.screenWidth / 5,
-          child: Material(
-            type: MaterialType.transparency,
-            child: InkWell(
-              onTap: () {
-                if (index == 1) {
-                  Navigator.of(context).pushNamed("/promotion");
-                } else if (index == 3) {
-                  Navigator.of(context).pushNamed("/customer_service");
-                } else {
-                  setState(() {
-                    currentBottomIndex = index;
-                  });
-                }
-              },
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  index != 2 ? _buildImageIcon(imagePath, index, isNewMessage) : _buildMenuIcon(imagePath, index),
-                  Visibility(
-                    visible: index != 2,
-                    child: Container(
-                      margin: EdgeInsets.only(top: 3.auto),
-                      child: Text(
-                        getTranslatedText(title) ?? "",
-                        style: TextStyle(
-                          fontSize: 11.auto,
-                          color: currentBottomIndex == index ? Colors.yellow : Colors.white,
+        child: Stack(
+          children: [
+            _buildNotification(isNewMessage),
+            SizedBox(
+              height: 58.auto,
+              width: context.screenWidth / 5,
+              child: Material(
+                type: MaterialType.transparency,
+                child: InkWell(
+                  onTap: () {
+                    if (index == 1) {
+                      Navigator.of(context).pushNamed("/promotion");
+                    } else if (index == 3) {
+                      Navigator.of(context).pushNamed("/customer_service");
+                    } else {
+                      setState(() {
+                        currentBottomIndex = index;
+                      });
+                    }
+                  },
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      index != 2 ? _buildImageIcon(imagePath, index, isNewMessage) : _buildMenuIcon(imagePath, index),
+                      Visibility(
+                        visible: index != 2,
+                        child: Container(
+                          margin: EdgeInsets.only(top: 3.auto),
+                          child: Text(
+                            getTranslatedText(title) ?? "",
+                            style: TextStyle(
+                              fontSize: 11.auto,
+                              color: currentBottomIndex == index ? Colors.yellow : Colors.white,
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                  )
-                ],
+                      )
+                    ],
+                  ),
+                ),
               ),
             ),
-          ),
+          ],
         ),
-      ],
-    ),
-  );
+      );
 
   _buildImageIcon(String imagePath, int index, bool isNewMessage) => ImageIcon(
-    AssetImage("images/bottom_navigation_bar/$imagePath.png"),
-    size: 23.auto,
-    color: currentBottomIndex == index ? Colors.yellow : Colors.white,
-  );
+        AssetImage("images/bottom_navigation_bar/$imagePath.png"),
+        size: 23.auto,
+        color: currentBottomIndex == index ? Colors.yellow : Colors.white,
+      );
 
   _buildMenuIcon(String imagePath, int index) => CircleAvatar(
-    backgroundColor: CustomColor.theme_title_text_color,
-    child: ImageIcon(
-      AssetImage("images/bottom_navigation_bar/$imagePath.png"),
-      size: 41.auto,
-      color: currentBottomIndex == index ? Colors.yellow : Colors.white,
-    ),
-  );
+        backgroundColor: CustomColor.theme_title_text_color,
+        child: ImageIcon(
+          AssetImage("images/bottom_navigation_bar/$imagePath.png"),
+          size: 41.auto,
+          color: currentBottomIndex == index ? Colors.yellow : Colors.white,
+        ),
+      );
 
   _buildNotification(bool isNewMessage) => Visibility(
       visible: isNewMessage,

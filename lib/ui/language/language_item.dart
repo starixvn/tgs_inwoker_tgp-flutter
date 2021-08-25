@@ -5,12 +5,13 @@ import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
 
-class LanguageItem extends StatefulWidget{
+class LanguageItem extends StatefulWidget {
   final bool isSelected;
   final String imagePath;
   final String text;
 
-  LanguageItem({Key key,
+  LanguageItem({
+    Key key,
     this.isSelected,
     this.imagePath,
     this.text,
@@ -30,32 +31,35 @@ class _LanguageItemState extends BaseState<LanguageItem> {
     return Column(
       children: [
         Container(
-          margin: EdgeInsets.only(top: 10.auto,left: 10.auto, right: 15.auto),
+          margin: EdgeInsets.only(top: 10.auto, left: 10.auto, right: 15.auto),
           child: Row(
             children: [
-              Container(
-                margin:EdgeInsets.only(right: 10.auto),
-                child: Image.asset(
-                  widget.imagePath,
-                  height: 25.auto,
-                ),
-              ),
+              widget.imagePath != null
+                  ? Container(
+                      margin: EdgeInsets.only(right: 10.auto),
+                      child: Image.asset(
+                        widget.imagePath,
+                        height: 25.auto,
+                        width: 36.auto,
+                      ),
+                    )
+                  : Container(
+                      margin: EdgeInsets.only(right: 10.auto),
+                      height: 25.auto,
+                      width: 36.auto,
+                    ),
               Expanded(
                 child: Text(
-                 widget.text,
-                  style: TextStyle(
-                      fontSize: 14.auto,
-                      color: CustomColor.theme_title_text_color
-                  ),
+                  widget.text,
+                  style: TextStyle(fontSize: 14.auto, color: CustomColor.theme_title_text_color),
                 ),
               ),
               Visibility(
-                visible: widget.isSelected,
+                  visible: widget.isSelected,
                   child: Icon(
                     Icons.check,
                     size: 25.auto,
-                  )
-              )
+                  ))
             ],
           ),
         ),
@@ -66,5 +70,3 @@ class _LanguageItemState extends BaseState<LanguageItem> {
     );
   }
 }
-
-

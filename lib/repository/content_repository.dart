@@ -4,7 +4,9 @@ import 'package:tgp_flutter/entity/announcement.dart';
 import 'package:tgp_flutter/entity/game.dart';
 import 'package:tgp_flutter/entity/game_provider.dart';
 import 'package:tgp_flutter/entity/game_type.dart';
+import 'package:tgp_flutter/entity/home_banner.dart';
 import 'package:tgp_flutter/entity/http_method.dart';
+import 'package:tgp_flutter/entity/language_option.dart';
 import 'package:tgp_flutter/entity/payment.dart';
 import 'package:tgp_flutter/entity/promotion.dart';
 import 'package:tgp_flutter/entity/response/game_url_response.dart';
@@ -21,6 +23,7 @@ class ContentRepository extends BaseRepository {
   static ContentRepository _singleton;
   UserProfile userProfile;
   List<GameProvider> gameProviderList;
+  List<LanguageOption> languageOptionList;
 
   static ContentRepository getSingleton() {
     if (_singleton == null) {
@@ -150,28 +153,51 @@ class ContentRepository extends BaseRepository {
 
   Future<EventResult<List<int>>> getFavoriteGame(GameType gameType) async {
     return await ApiRequestBuilder<List<int>>(
-        method: HttpMethod.GET,
-        endPoint: "api/game/favorite/${gameType.getJsonValue}",
-        converter: (json) => json.cast<int>(),
-        jwtRefresher: jwtAuth)
+            method: HttpMethod.GET,
+            endPoint: "api/game/favorite/${gameType.getJsonValue}",
+            converter: (json) => json.cast<int>(),
+            jwtRefresher: jwtAuth)
         .execute();
   }
 
   Future<EventResult<dynamic>> setFavoriteGame(int gameId) async {
     return await ApiRequestBuilder<dynamic>(
-        method: HttpMethod.PUT,
-        endPoint: "api/game/favorite/$gameId",
-        //converter: (json) => ListResponse.fromJson(json, (res) => Promotion.fromJson(res)),
-        jwtRefresher: jwtAuth)
+            method: HttpMethod.PUT,
+            endPoint: "api/game/favorite/$gameId",
+            //converter: (json) => ListResponse.fromJson(json, (res) => Promotion.fromJson(res)),
+            jwtRefresher: jwtAuth)
         .execute();
   }
 
   Future<EventResult<dynamic>> deleteFavoriteGame(int gameId) async {
     return await ApiRequestBuilder<dynamic>(
-        method: HttpMethod.DELETE,
-        endPoint: "api/game/favorite/$gameId",
-        //converter: (json) => ListResponse.fromJson(json, (res) => Promotion.fromJson(res)),
-        jwtRefresher: jwtAuth)
+            method: HttpMethod.DELETE,
+            endPoint: "api/game/favorite/$gameId",
+            //converter: (json) => ListResponse.fromJson(json, (res) => Promotion.fromJson(res)),
+            jwtRefresher: jwtAuth)
         .execute();
+  }
+
+  Future<EventResult<List<LanguageOption>>> getLanguageOption() async {
+    return await ApiRequestBuilder<List<LanguageOption>>(
+            method: HttpMethod.GET,
+            endPoint: "api/brandlanguage",
+            converter: (json) => (json as List<dynamic>).map((e) => LanguageOption.fromJson(e)).toList(),
+            consumer: (result) => setRepoValues(() {
+                  languageOptionList = result;
+                }),
+            jwtRefresher: jwtAuth,
+            isAuthorization: false)
+        .execute();
+  }
+
+  Future<EventResult<List<HomeBanner>>> getBanner() async {
+    return await ApiRequestBuilder<List<HomeBanner>>(
+      method: HttpMethod.GET,
+      endPoint: "api/banner",
+      converter: (json) => (json as List<dynamic>).map((e) => HomeBanner.fromJson(e)).toList(),
+      jwtRefresher: jwtAuth,
+      isAuthorization: false,
+    ).execute();
   }
 }

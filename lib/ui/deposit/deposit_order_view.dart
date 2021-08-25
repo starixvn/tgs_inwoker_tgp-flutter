@@ -25,7 +25,6 @@ class DepositOrderView extends StatefulWidget {
   final String id;
   final ManualDepositOrder manualDepositOrder;
   final DepositRedirect depositRedirect;
-  final String payUsername;
   final String depositAmount;
   final String depositChannel;
   final String orderNo;
@@ -41,7 +40,6 @@ class DepositOrderView extends StatefulWidget {
       this.id,
       this.manualDepositOrder,
       this.depositRedirect,
-      this.payUsername,
       this.depositAmount,
       this.depositChannel,
       this.orderNo,
@@ -127,9 +125,8 @@ class _DepositOrderViewState extends BaseState<DepositOrderView> {
                 ),
                 //_buildText("deposit_channel", widget.manualDepositOrder.methodName),
                 _buildOrderText("order_no", widget.orderNo),
-                _buildText("deposit_method", widget.manualDepositOrder.methodName),
-                //_buildText("pay_username", widget.payUsername),
-                _buildText("deposit_channel", widget.manualDepositOrder.methodName),
+                _buildText("payment_type", widget.manualDepositOrder.methodName),
+                _buildText("payment_channel", widget.manualDepositOrder.methodName),
                 _buildText("receiver_bank", widget.manualDepositOrder.bankAccountName),
                 _buildText("receiver_bank_account", widget.manualDepositOrder.bankAccount),
                 if (widget.promotionName != null) _buildText("promotion_picker", widget.promotionName ?? ""),
@@ -226,8 +223,8 @@ class _DepositOrderViewState extends BaseState<DepositOrderView> {
                 widget.depositRedirect != null
                     ? _buildOrderText("order_no", widget.depositRedirect.formId)
                     : _buildOrderText("order_no", widget.depositRedirectApplePay.formId),
-                _buildText("deposit_method", widget.method),
-                _buildText("deposit_channel", widget.depositChannel),
+                _buildText("payment_type", widget.method),
+                _buildText("payment_channel", widget.depositChannel),
                 if (widget.exchangeRate != null) _buildText("exchange_rate", widget.exchangeRate),
                 if (widget.expectedAmount != null) _buildText("expected_amount", widget.expectedAmount),
                 if (widget.transName != null) _buildText("transfer_name", widget.transName ?? ""),
