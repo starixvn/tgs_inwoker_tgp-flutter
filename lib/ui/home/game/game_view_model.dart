@@ -183,7 +183,7 @@ class GameViewModel extends BaseViewModel {
       return gameList;
     } else {
       var list = gameList
-          .where((element) => element.localizedName.toLowerCase().contains(mSearchQuery.toLowerCase()))
+          .where((element) => element.name.toLowerCase().contains(mSearchQuery.toLowerCase()))
           .toList();
       return list;
     }
