@@ -388,7 +388,7 @@ class _WalletTransferState extends BaseState<WalletTransfer> with TickerProvider
     child: Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        Container(margin: EdgeInsets.only(right: 10.auto), child: Text("Auto-transfer")),
+        Container(margin: EdgeInsets.only(right: 10.auto), child: Text(getTranslatedText("auto_transfer"))),
         FlutterSwitch(
           value: _vm.autoTransferValue ?? false,
           width: 35,
