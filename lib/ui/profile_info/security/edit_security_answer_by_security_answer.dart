@@ -69,7 +69,7 @@ class _EditSecurityAnswerBySecurityAnswerState extends BaseState<EditSecurityAns
                       title: "安全问题",
                       displayText: "请选择安全问题",
                       list: list,
-                      isHintText: true,
+                      isHintText: false,
                       width: context.screenWidth,
                       onClick: list.isEmpty
                           ? null

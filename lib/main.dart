@@ -126,7 +126,7 @@ class _MyAppState extends BaseState<MyApp> {
         future: initData(),
         builder: (BuildContext context, AsyncSnapshot<List<LanguageOption>> snapshot) {
           if (!snapshot.hasData) {
-            return MaterialApp(home: Splash());
+            return MaterialApp(debugShowCheckedModeBanner: false,home: Splash());
           } else {
             return GestureDetector(
               onTap: () {

@@ -11,6 +11,8 @@ class LanguageProvider {
     "zh-CN": "简体中文",
     "zh-TW": "繁体中文",
     "th-TH": "Thai",
+    "id-ID":"Indonesia",
+    "vi-VN":"Tiếng Việt"
   };
   List<Language> list = [];
   final contentRepo = ContentRepository.getSingleton();
@@ -30,8 +32,12 @@ class LanguageProvider {
         list.add(
           Language("en", "English", Locale("en", ''), "en-US", "images/language/ic_lang_en.png"),
         );
-      } else
-        list.add(Language(splitCode[0], languageTextMap[code], Locale(splitCode[0], splitCode[1]), code,
+      /* }else if (code == "vi-VN") {
+        list.add(
+          Language("vi", languageTextMap[code], Locale(splitCode[0], ''), "code", " "),
+        );*/
+      }else
+        list.add(Language(splitCode[0], languageTextMap[code], Locale(splitCode[0],""), code,
             " "));
     });
   }

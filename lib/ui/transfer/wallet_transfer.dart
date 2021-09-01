@@ -261,7 +261,7 @@ class _WalletTransferState extends BaseState<WalletTransfer> with TickerProvider
             title: getTranslatedText("transfer_from"),
             displayText: textFromWallet ?? getTranslatedText("please_select"),
             list: [],
-            isHintText: textFromWallet == null ? false : true,
+            isHintText: textFromWallet == null|| textFromWallet == getTranslatedText("please_select"),
             width: (context.screenWidth / 2) - 75.auto,
             onClick: () {
               _buildPicker("transfer_from", _vm.walletList, true);
@@ -274,7 +274,7 @@ class _WalletTransferState extends BaseState<WalletTransfer> with TickerProvider
             title: getTranslatedText("transfer_to"),
             displayText: textToWallet ?? getTranslatedText("please_select"),
             list: [],
-            isHintText: textToWallet == null ? false : true,
+            isHintText: textToWallet == null || textToWallet == getTranslatedText("please_select"),
             width: (context.screenWidth / 2) - 75.auto,
             onClick: () {
               _buildPicker("transfer_to", _vm.walletList, false);

@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -173,35 +174,48 @@ class _LoginContentState extends BaseState<LoginContent> {
       );
 
   _buildChangeLanguageText() {
-     var list = LanguageProvider().list;
+     var list =  LanguageProvider().list;
+
     var deviceLanguage = list.singleWhere((e) => e.locale == Localizations.localeOf(context));
-    return Container(
-      margin: EdgeInsets.only(top: 10.auto),
-      child: IntrinsicHeight(
-          child: new Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: List.generate(list.length, (index) {
-          return Row(
-            children: [
-              InkWell(
-                  onTap: () {
-                    _changeLanguage(list[index]);
-                  },
-                  child: Text(
-                    list[index].name,
-                    style: TextStyle(
+    return FittedBox(
+      fit: BoxFit.fitWidth,
+      child: Container(
+          margin: EdgeInsets.only(top: 10.auto),
+          child:Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: List.generate(list.length, (index) {
+              return Row(
+                children: [
+                  InkWell(
+                      onTap: () {
+                        _changeLanguage(list[index]);
+                      },
+                      child: AutoSizeText(
+                        list[index].name,
+                         style: TextStyle(
                         color: deviceLanguage == list[index] ? CustomColor.theme_bar_gradient_2 : Colors.black),
-                  )),
-              Visibility(
-                visible: index+1 != list.length,
-                child: VerticalDivider(
-                  color: Colors.black,
-                ),
-              )
-            ],
-          );
-        }),
-      )),
+                        minFontSize: 5,
+                        maxLines: 1,
+                        stepGranularity: 1,
+                        textAlign: TextAlign.center,
+                      )
+                  ),
+                  Visibility(
+                    visible: index+1 != list.length,
+                    child: Container(
+                       height: 18.auto,
+                      child: VerticalDivider(
+                        color: Colors.black,
+                        width: 10.auto,
+                        thickness: 1,
+                      ),
+                    ),
+                  )
+                ],
+              );
+            }),
+          )
+      ),
     );
   }
 

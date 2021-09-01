@@ -82,13 +82,16 @@ class _HomeUserInfoViewState extends BaseState<HomeUserInfoView> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             widget.userProfile != null ? _buildWalletText() : _buildLoginRegisterButton(),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                _buildHomeIcon("ic_deposit", getTranslatedText("deposit"), "deposit"),
-                _buildHomeIcon("ic_transfer", getTranslatedText("transfer"), "wallet_transfer"),
-                _buildHomeIcon("ic_withdraw", getTranslatedText("withdrawal"), "withdraw")
-              ],
+            Expanded(
+              flex: 3,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  _buildHomeIcon("ic_deposit", getTranslatedText("deposit"), "deposit"),
+                  _buildHomeIcon("ic_transfer", getTranslatedText("transfer"), "wallet_transfer"),
+                  _buildHomeIcon("ic_withdraw", getTranslatedText("withdrawal"), "withdraw")
+                ],
+              ),
             ),
           ],
         ),
@@ -106,12 +109,13 @@ class _HomeUserInfoViewState extends BaseState<HomeUserInfoView> {
       );
 
   _buildWalletText() => Expanded(
+    flex:2,
           child: Container(
-            alignment: Alignment.centerLeft,
-            child: Column(
-        children: [
+        alignment: Alignment.centerLeft,
+        child: Column(
+          children: [
             AutoSizeText(
-            widget.wallet ==null?"-":"${Format().currencyWithDecimalFormat(widget.wallet) ?? 0.0}",
+              widget.wallet == null ? "-" : "${Format().currencyWithDecimalFormat(widget.wallet) ?? 0.0}",
               style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
               minFontSize: 10,
               stepGranularity: 1,
@@ -121,37 +125,47 @@ class _HomeUserInfoViewState extends BaseState<HomeUserInfoView> {
               style: TextStyle(color: Colors.white, fontSize: 10.auto),
               textAlign: TextAlign.center,
             ),
-        ],
-      ),
-          ));
+          ],
+        ),
+      ));
 
   _buildLoginRegisterButton() {
     var string = getTranslatedText("login_or_signup").split("/");
     var loginString = string[0];
     var registerString = "/" + string[1];
-    return Container(
-      padding: EdgeInsets.only(top: 10.auto, bottom: 10.auto),
-      child: ColorButton(
-        onClick: () => widget.onLoginTap(),
-        height: 20.auto,
-        text: RichText(
-          text: TextSpan(style: TextStyle(fontSize: 12.auto, fontWeight: FontWeight.bold), children: [
-            TextSpan(
-                text: loginString,
-                style: TextStyle(color: CustomColor.theme_label_text_highlight_color, fontSize: (11.8).auto)),
-            TextSpan(text: registerString, style: TextStyle(color: Colors.white, fontSize: (11.8).auto))
-          ]),
-        ),
-        border: BorderSide(color: Colors.white, width: 1.5),
-        radius: 15.7,
-        width: 82.auto,
-        color: CustomColor.theme_circle_button_bg,
-        isEnabled: true,
+    return Expanded(
+      flex:2,
+      child: Wrap(
+        children: [
+          Container(
+            padding: EdgeInsets.only(top: 10.auto, bottom: 10.auto),
+            child: ColorButton(
+              onClick: () => widget.onLoginTap(),
+              height: 20.auto,
+              text: RichText(
+                text: TextSpan(style: TextStyle(fontSize: 12.auto, fontWeight: FontWeight.bold), children: [
+                  TextSpan(
+                      text: loginString,
+                      style: TextStyle(color: CustomColor.theme_label_text_highlight_color, fontSize: (11.8).auto)),
+                  TextSpan(text: registerString, style: TextStyle(color: Colors.white, fontSize: (11.8).auto))
+                ]),
+              ),
+              border: BorderSide(color: Colors.white, width: 1.5),
+              radius: 15.7,
+              width: 87.auto,
+              color: CustomColor.theme_circle_button_bg,
+              isEnabled: true,
+            ),
+          ),
+          Spacer()
+        ],
       ),
     );
   }
 
-  _buildHomeIcon(String imagePath, String title, String routePath) => InkWell(
+  _buildHomeIcon(String imagePath, String title, String routePath) => Expanded(
+      flex: 1,
+      child: InkWell(
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
         onTap: () {
@@ -173,7 +187,7 @@ class _HomeUserInfoViewState extends BaseState<HomeUserInfoView> {
                 backgroundColor: CustomColor.theme_title_text_color,
                 child: Center(child: Image.asset("images/home/$imagePath.png")),
               ),
-              Text(
+              AutoSizeText(
                 title,
                 style: TextStyle(
                   color: Colors.white,
@@ -186,9 +200,12 @@ class _HomeUserInfoViewState extends BaseState<HomeUserInfoView> {
                     ),
                   ],
                 ),
+                minFontSize: 5,
+                  stepGranularity: 1,
+                maxLines: 1,
               )
             ],
           ),
         ),
-      );
+      ));
 }

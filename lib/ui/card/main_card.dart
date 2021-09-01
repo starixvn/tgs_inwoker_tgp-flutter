@@ -172,7 +172,7 @@ class _MainCardState extends BaseState<MainCard> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  bankCard.bankType.displayName,
+                  bankCard.bankType.getName(context),
                   style: TextStyle(fontSize: 11.auto),
                 ),
                 Container(

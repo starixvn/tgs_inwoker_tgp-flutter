@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter/base_viewmodel.dart';
+import 'package:tgp_flutter/entity/bank_type.dart';
 import 'package:tgp_flutter/entity/payment.dart';
 import 'package:tgp_flutter/entity/promotion.dart';
 import 'package:tgp_flutter/network/event_result.dart';
@@ -19,7 +20,7 @@ class DepositViewModel extends BaseViewModel {
   @override
   List<BaseRepository> get repoList => [];
   var getPaymentApiState, uploadDepositImageApiState, getPlayerPromotionListApiState;
-  Map<String, Map<String, List<Payment>>> paymentCodeList;
+  Map<String, Map<BankType, List<Payment>>> paymentCodeList;
   List<Payment> paymentList;
   var manualDepositOrder;
   List<Promotion> promotionList;
@@ -37,7 +38,7 @@ class DepositViewModel extends BaseViewModel {
       List<Payment> list = getPaymentApiState.result;
       list.sort((a, b) => a.order.compareTo(b.order));
       paymentCodeList = groupBy(list, (obj) => obj.paymentCode)
-          .map((key, value) => MapEntry(key, groupBy(value, (obj) => obj.methodCode)));
+          .map((key, value) => MapEntry(key, groupBy(value, (obj) => obj.bankType)));
     }
     setLoading(false);
     return getPaymentApiState;

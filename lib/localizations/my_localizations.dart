@@ -22,7 +22,7 @@ class MyLocalizations {
   }
 
   String translate(String key) {
-    return _localizedValues[key];
+    return _localizedValues[key] ?? key;
   }
 
 // static member to have simple access to the delegate from Material App
@@ -36,7 +36,7 @@ class _MyLocalizationsDelegate
 
   @override
   bool isSupported(Locale locale) {
-    return ['en', 'zh'].contains(locale.languageCode);
+    return ['en', 'zh','id', 'vi','th'].contains(locale.languageCode);
   }
 
   @override

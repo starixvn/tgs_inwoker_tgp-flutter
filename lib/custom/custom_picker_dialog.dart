@@ -72,7 +72,7 @@ class _CustomPickerDialogState extends BaseState<CustomPickerDialog> {
       return game.name;
     } else if (widget.list is List<BankType>) {
       BankType bankType = widget.list[index];
-      return bankType.displayName;
+      return bankType.getName(context);
     } else if (widget.list is List<Wallet>) {
       Wallet wallet = widget.list[index];
       return (wallet.isMainWallet) ? getTranslatedText(wallet.title) : wallet.title;
@@ -95,12 +95,7 @@ class _CustomPickerDialogState extends BaseState<CustomPickerDialog> {
       return getTranslatedText(promotionName) ?? promotionName;
     } else {
       //string
-      if (widget.list[index] == "BankTransfer")
-        return getTranslatedText("bank_transfer");
-      else if (widget.list[index] == "Crypto")
-        return getTranslatedText("crypto");
-      else
-        return widget.list[index];
+      return widget.list[index];
     }
   }
 
@@ -118,7 +113,7 @@ class _CustomPickerDialogState extends BaseState<CustomPickerDialog> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          bankType.displayName,
+          bankType.getName(context),
           style: TextStyle(fontSize: 13.auto),
           textAlign: TextAlign.center,
         ),

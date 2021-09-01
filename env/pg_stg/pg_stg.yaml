@@ -8,7 +8,7 @@ environment_config:
     jwtKey:
       default: "I7nKiimrZQOqnJ6ryjUw74c0Hi64KC6Myunhob4cHh8VOUIuZh4p63czefxyyzbZ"
     url:
-      default: "https://operator.tgsstg.gq/"
+      default: "http://op.tgsstg.tk/"
     currency:
       default: "CNY"
     imageUrl:

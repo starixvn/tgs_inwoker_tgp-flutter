@@ -89,7 +89,7 @@ class _SecurityAnswerState extends BaseState<SecurityAnswer> {
                           title: "安全问题",
                           displayText: "请选择安全问题",
                           list: list,
-                          isHintText: true,
+                          isHintText: false,
                           width: context.screenWidth,
                           onClick: list.isEmpty
                               ? null

@@ -118,7 +118,7 @@ class _AddCardState extends BaseState<AddCard> {
       title: "bank_type",
       displayText: bankTypePickerText == null ? getTranslatedText("select_bank_type") : bankTypePickerText,
       list: _vm.bankTypeList.keys.toList(),
-      isHintText: true,
+      isHintText: false,
       width: context.screenWidth,
       onClick: () {
         _buildBottomSheet("bank_type", _vm.bankTypeList.keys.toList());
@@ -128,7 +128,7 @@ class _AddCardState extends BaseState<AddCard> {
       title: "channel",
       displayText: channelPickerText == null ? getTranslatedText("select_channel") : channelPickerText,
       list: _vm.withdrawalInfoList,
-      isHintText: true,
+      isHintText: false,
       width: context.screenWidth,
       onClick: () {
         _buildBottomSheet("channel", _vm.withdrawalInfoList);
@@ -246,7 +246,7 @@ class _AddCardState extends BaseState<AddCard> {
     onSelectedWithdrawalInfo();
     setState(() {
       isCrypto = bankType == BankType.CRYPTO;
-      bankTypePickerText = bankType.displayName;
+      bankTypePickerText = bankType.getName(context);
     });
   }
 

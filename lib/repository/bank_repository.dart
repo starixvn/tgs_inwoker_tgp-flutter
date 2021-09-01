@@ -105,12 +105,12 @@ class BankRepository extends BaseRepository {
             params: address != null
                 ? {
                     "paymentchannelid": paymentChannelId,
-                    "banktype": bankType.displayName,
+                    "banktype": bankType.getJson,
                     "detail": {"address": address},
                   }
                 : {
                     "paymentchannelid": paymentChannelId,
-                    "banktype": bankType.displayName,
+                    "banktype": bankType.getJson,
                     "detail": {
                       "bankAccount": bankAccount,
                       "bankName": bankName,
