@@ -44,30 +44,30 @@ class _PayPasswordState extends BaseState<PayPassword> {
               body: _vm.userProfile == null
                   ? buildProgressDialog()
                   : Container(
-                  padding: EdgeInsets.only(top: 10.auto, left: 10.auto, right: 10.auto),
-                  child: _buildSetPayPassword()));
+                      padding: EdgeInsets.only(top: 10.auto, left: 10.auto, right: 10.auto),
+                      child: _buildSetPayPassword()));
         });
   }
 
   _buildAppBar() => AppBar(
-    automaticallyImplyLeading: false,
-    flexibleSpace: Container(
-      decoration: gradientDecoration,
-    ),
-    centerTitle: true,
-    leading: IconButton(
-      icon: Icon(Icons.arrow_back),
-      onPressed: () {
-        Navigator.pop(context);
-      },
-    ),
-    title: Text(
-      _vm.userProfile.isSetPayPassword
-          ? getTranslatedText("edit_pay_password")
-          : getTranslatedText("add_pay_password"),
-      style: TextStyle(fontSize: 16.auto),
-    ),
-  );
+        automaticallyImplyLeading: false,
+        flexibleSpace: Container(
+          decoration: gradientDecoration,
+        ),
+        centerTitle: true,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        title: Text(
+          _vm.userProfile.isSetPayPassword
+              ? getTranslatedText("edit_pay_password")
+              : getTranslatedText("add_pay_password"),
+          style: TextStyle(fontSize: 16.auto),
+        ),
+      );
 
   _buildSetPayPassword() {
     return Column(
@@ -80,19 +80,19 @@ class _PayPasswordState extends BaseState<PayPassword> {
   }
 
   _buildTextFormField(String title, String hint, TextEditingController controller, bool isLast) => Container(
-    margin: EdgeInsets.only(top: 15.auto),
-    child: CustomTextFormField(
-      title: getTranslatedText(title),
-      hintText: getTranslatedText(hint),
-      onChanged: (value) => _onTextChange(),
-      onFieldSubmitted: (value) {},
-      controller: controller,
-      focusNode: null,
-      width: context.screenWidth - 70.auto,
-      textInputType: TextInputType.visiblePassword,
-      textInputAction: isLast ? TextInputAction.done : TextInputAction.next,
-    ),
-  );
+        margin: EdgeInsets.only(top: 15.auto),
+        child: CustomTextFormField(
+          title: getTranslatedText(title),
+          hintText: getTranslatedText(hint),
+          onChanged: (value) => _onTextChange(),
+          onFieldSubmitted: (value) {},
+          controller: controller,
+          focusNode: null,
+          width: context.screenWidth - 70.auto,
+          textInputType: TextInputType.visiblePassword,
+          textInputAction: isLast ? TextInputAction.done : TextInputAction.next,
+        ),
+      );
 
   _buildButton() => Container(
       width: context.screenWidth,
@@ -126,11 +126,11 @@ class _PayPasswordState extends BaseState<PayPassword> {
             ),
           );
         });
-      } else {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          Navigator.of(context).pushNamed("/reset_pay_password");
-        });
       }
+    } else {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.of(context).pushNamed("/reset_pay_password");
+      });
     }
   }
 
@@ -141,8 +141,7 @@ class _PayPasswordState extends BaseState<PayPassword> {
           isButtonEnabled = true;
         }
       } else if (_vm.userProfile.isSetPayPassword) {
-        if (_newPasswordController.text.isNotEmpty &&
-            _confirmPasswordController.text.isNotEmpty) {
+        if (_newPasswordController.text.isNotEmpty && _confirmPasswordController.text.isNotEmpty) {
           isButtonEnabled = true;
         }
       } else {

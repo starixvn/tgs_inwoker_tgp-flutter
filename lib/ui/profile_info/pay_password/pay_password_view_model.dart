@@ -1,10 +1,9 @@
 import 'package:tgp_flutter/base_viewmodel.dart';
-import 'package:tgp_flutter/entity/event_type.dart';
 import 'package:tgp_flutter/repository/auth_repository.dart';
 import 'package:tgp_flutter/repository/base_repository.dart';
 import 'package:tgp_flutter/repository/user_repository.dart';
 
-class PayPasswordViewModel extends BaseViewModel{
+class PayPasswordViewModel extends BaseViewModel {
   //final authRepo = AuthenticationRepository.getSingleton();
   final userRepo = UserRepository.getSingleton();
   final authRepo = AuthenticationRepository.getSingleton();
@@ -12,29 +11,32 @@ class PayPasswordViewModel extends BaseViewModel{
   var securityKey;
 
   @override
-  List<BaseRepository> get repoList => [userRepo,authRepo];
+  List<BaseRepository> get repoList => [userRepo, authRepo];
+
   get userProfile => userRepo.userProfile;
 
-  addPayPassword(String password)async{
+  addPayPassword(String password) async {
     setLoading();
     var status = await authRepo.addPayPassword(password);
-    if(status.isSuccess) addPayPasswordApiState = await userRepo.getBasicInfo();
-    else addPayPasswordApiState = status;
+    if (status.isSuccess)
+      addPayPasswordApiState = await userRepo.getBasicInfo();
+    else
+      addPayPasswordApiState = status;
     setLoading(false);
     return addPayPasswordApiState;
   }
 
-  getPayPasswordCode() async{
+  getPayPasswordCode() async {
     setLoading();
     getPayPasswordCodeApiState = await authRepo.getPayPasswordCode();
-    if(getPayPasswordCodeApiState.isSuccess){
+    if (getPayPasswordCodeApiState.isSuccess) {
       securityKey = getPayPasswordCodeApiState.result;
     }
     setLoading(false);
     return getPayPasswordCodeApiState;
   }
 
-  payPasswordVerify(String password, String code) async{
+  payPasswordVerify(String password, String code) async {
     setLoading();
     payPasswordVerifyApiState = await authRepo.payPasswordVerify(password, code, securityKey);
     setLoading(false);

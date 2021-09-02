@@ -1,5 +1,4 @@
 import 'package:tgp_flutter/entity/bank_type.dart';
-import 'package:tgp_flutter/entity/payment_bank.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:tgp_flutter/entity/transfer_limit.dart';
 part 'payment.g.dart';

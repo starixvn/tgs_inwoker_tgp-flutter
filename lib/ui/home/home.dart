@@ -90,12 +90,13 @@ class _HomeState extends BaseState<Home> {
               placeholder: (context, url) => Container(
                 color: CustomColor.very_light_pink_four,
               ),
-              imageUrl: _vm.bannerList[index].mobileUrl,
+              imageUrl: _vm.bannerList[index].mobileUrl ?? "",
               //handling error
-              fit: BoxFit.cover),/*Image.asset(
-            "images/banner/${getCurrentLanguage().apiCode}/$brand/${imgList[index]}.jpg",
-            fit: BoxFit.cover,
-          ),*/
+              fit: BoxFit.cover,
+            errorWidget: (context, url, error) =>Container(
+              color: CustomColor.very_light_pink_four,
+            ),
+          ),
         ),
         autoplay: true,
         itemCount: _vm.bannerList?.length ?? 0,

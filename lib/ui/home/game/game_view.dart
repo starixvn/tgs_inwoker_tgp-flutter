@@ -92,15 +92,17 @@ class _GameViewState extends BaseState<GameView> {
         _onTabClick(tabIndex);
       },
       child: Container(
-        width: (62.5).auto,//context.screenWidth/7,
-        height: (33.5).auto,//context.screenHeight/23,
+        width: (62.5).auto,
+        //context.screenWidth/7,
+        height: (33.5).auto,
+        //context.screenHeight/23,
         decoration: tabIndex == currentTabIndex ? gameTabGradientDecoration : gameTabColorDecoration,
         padding: EdgeInsets.all(3.auto),
         child: Center(
             child: AutoSizeText(
-          title ??"",
+          title,
           style: TextStyle(
-            fontSize: 17,
+              fontSize: 17,
               shadows: [
                 tabIndex == currentTabIndex
                     ? Shadow(
@@ -113,6 +115,7 @@ class _GameViewState extends BaseState<GameView> {
               color: tabIndex == currentTabIndex ? CustomColor.theme_label_text_highlight_color : Colors.black),
           minFontSize: 10,
           stepGranularity: 1,
+          textAlign: TextAlign.center,
         )),
       ),
     );

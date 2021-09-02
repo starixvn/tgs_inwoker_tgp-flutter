@@ -1,4 +1,3 @@
-import 'package:tgp_flutter/entity/deposit_response.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'manual_deposit_order.g.dart';
 

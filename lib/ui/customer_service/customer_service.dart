@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:tgp_flutter/custom/custom_picker_dialog.dart';
 import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
@@ -71,9 +72,10 @@ class _CustomerServiceState extends BaseState<CustomerService> {
                           padding: EdgeInsets.only(top: 230.auto, left: 20.auto, right: 20.auto),
                           decoration: BoxDecoration(
                             image: DecorationImage(
+                              alignment: Alignment.topCenter,
                                 image: AssetImage(
-                                    "images/support/cs_bg/${getCurrentLanguage().apiCode}/customer_service.png"),
-                                fit: BoxFit.fill),
+                                    getBgImage()),
+                                fit: BoxFit.cover),
                           ),
                           child: Column(children: [
                             buildLiveChatRow(),
@@ -81,7 +83,7 @@ class _CustomerServiceState extends BaseState<CustomerService> {
                               children: List.generate(_vm.communicationList.length, (index) {
                                 return Container(
                                   child: _buildCSRow(_vm.communicationList[index].type, "cs_join", "cs_qr_code",
-                                      "support_" + _vm.communicationList[index].type.toLowerCase(),
+                                      "support-" + _vm.communicationList[index].type.toLowerCase(),
                                       qrCode: _vm.communicationList[index]),
                                 );
                               }),
@@ -91,6 +93,12 @@ class _CustomerServiceState extends BaseState<CustomerService> {
                       ],
                     ));
         });
+  }
+
+  getBgImage() {
+    String code = getCurrentLanguage().apiCode;
+    if(code == "zh-CN"|| code =="zh-TW") return "images/support/cs_bg/${getCurrentLanguage().apiCode}/customer_service.png";
+    else return "images/support/cs_bg/en-US/customer_service.png";
   }
 
   buildLiveChatRow() => Visibility(
@@ -113,9 +121,14 @@ class _CustomerServiceState extends BaseState<CustomerService> {
               children: [
                 Expanded(
                   flex: 1,
-                  child: ImageIcon(
+                  child: /*ImageIcon(
                     AssetImage("images/support/support_call.png"),
                     size: 23.auto,
+                    color: CustomColor.theme_bar_gradient_1,
+                  ),*/
+                  SvgPicture.asset(
+                    "images/support/support-call.svg",
+                    height: 23.auto,
                     color: CustomColor.theme_bar_gradient_1,
                   ),
                 ),
@@ -156,9 +169,14 @@ class _CustomerServiceState extends BaseState<CustomerService> {
             children: [
               Expanded(
                 flex: 1,
-                child: ImageIcon(
+                child: /*ImageIcon(
                   AssetImage("images/support/$imagePath.png"),
                   size: 23.auto,
+                  color: CustomColor.theme_bar_gradient_1,
+                ),*/
+                SvgPicture.asset(
+                  "images/support/$imagePath.svg",
+                  height: 23.auto,
                   color: CustomColor.theme_bar_gradient_1,
                 ),
               ),

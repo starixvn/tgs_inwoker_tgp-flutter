@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:tgp_flutter/entity/language_option.dart';
@@ -96,7 +97,7 @@ class _MyAppState extends BaseState<MyApp> {
     super.didChangeDependencies();
   }
 
-  _getLocale(){
+  _getLocale() {
     LanguageProvider().getLocale().then((locale) {
       setState(() {
         this._locale = locale;
@@ -105,7 +106,7 @@ class _MyAppState extends BaseState<MyApp> {
   }
 
   Future<List<LanguageOption>> initData() async {
-    if(firstInit){
+    if (firstInit) {
       await _vm.getAuthToken();
       await _vm.getLanguageOption();
       setState(() {
@@ -113,7 +114,8 @@ class _MyAppState extends BaseState<MyApp> {
       });
       _getLocale();
       return _vm.getLanguageApiState.result;
-    }else return [];
+    } else
+      return [];
   }
 
   @override
@@ -126,7 +128,7 @@ class _MyAppState extends BaseState<MyApp> {
         future: initData(),
         builder: (BuildContext context, AsyncSnapshot<List<LanguageOption>> snapshot) {
           if (!snapshot.hasData) {
-            return MaterialApp(debugShowCheckedModeBanner: false,home: Splash());
+            return MaterialApp(debugShowCheckedModeBanner: false, home: Splash());
           } else {
             return GestureDetector(
               onTap: () {
@@ -304,12 +306,16 @@ class _MyHomePageState extends BaseState<MyHomePage> {
                         visible: index != 2,
                         child: Container(
                           margin: EdgeInsets.only(top: 3.auto),
-                          child: Text(
-                            getTranslatedText(title) ?? "",
+                          child: AutoSizeText(
+                            getTranslatedText(title),
                             style: TextStyle(
                               fontSize: 11.auto,
                               color: currentBottomIndex == index ? Colors.yellow : Colors.white,
                             ),
+                            minFontSize: 5,
+                            stepGranularity: 1,
+                            textAlign: TextAlign.center,
+                            maxLines: 1,
                           ),
                         ),
                       )

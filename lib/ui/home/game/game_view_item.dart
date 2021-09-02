@@ -91,13 +91,17 @@ double get itemHeight => _itemWidth*(1/_imageRatio)+_itemPaddingTop+_itemPadding
         child: Container(
           width: 74.auto,
           alignment: Alignment.center,
-          padding: EdgeInsets.only(top: 5.auto, bottom: 5.auto),
+          padding: EdgeInsets.symmetric(vertical:5, horizontal: 10),
           decoration: BoxDecoration(image: DecorationImage(image: AssetImage("images/game/btn_start_game.png"))),
-          child: Text(
-            getTranslatedText("start_game"),
-            style: TextStyle(
-              fontSize: 10.auto,
-              fontWeight: FontWeight.bold,
+          child: FittedBox(
+            fit: BoxFit.cover,
+            child: AutoSizeText(
+              getTranslatedText("start_game"),
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+              minFontSize: 5,
+              stepGranularity: 1,
             ),
           ),
         ),

@@ -109,8 +109,8 @@ class _HomeUserInfoViewState extends BaseState<HomeUserInfoView> {
       );
 
   _buildWalletText() => Expanded(
-    flex:2,
-          child: Container(
+      flex: 2,
+      child: Container(
         alignment: Alignment.centerLeft,
         child: Column(
           children: [
@@ -134,22 +134,34 @@ class _HomeUserInfoViewState extends BaseState<HomeUserInfoView> {
     var loginString = string[0];
     var registerString = "/" + string[1];
     return Expanded(
-      flex:2,
-      child: Wrap(
+      flex: 2,
+      child: Row(
         children: [
           Container(
             padding: EdgeInsets.only(top: 10.auto, bottom: 10.auto),
             child: ColorButton(
               onClick: () => widget.onLoginTap(),
               height: 20.auto,
-              text: RichText(
+              text: AutoSizeText.rich(
+                TextSpan(style: TextStyle(fontSize: 12.auto, fontWeight: FontWeight.bold), children: [
+                  TextSpan(
+                      text: loginString,
+                      style: TextStyle(color: CustomColor.theme_label_text_highlight_color)),
+                  TextSpan(text: registerString, style: TextStyle(color: Colors.white ))
+                ]),
+                minFontSize: 8,
+                maxFontSize: 12,
+                maxLines: 1,
+                stepGranularity: 1,
+              ),
+              /*RichText(
                 text: TextSpan(style: TextStyle(fontSize: 12.auto, fontWeight: FontWeight.bold), children: [
                   TextSpan(
                       text: loginString,
                       style: TextStyle(color: CustomColor.theme_label_text_highlight_color, fontSize: (11.8).auto)),
                   TextSpan(text: registerString, style: TextStyle(color: Colors.white, fontSize: (11.8).auto))
                 ]),
-              ),
+              ),*/
               border: BorderSide(color: Colors.white, width: 1.5),
               radius: 15.7,
               width: 87.auto,
@@ -201,7 +213,7 @@ class _HomeUserInfoViewState extends BaseState<HomeUserInfoView> {
                   ],
                 ),
                 minFontSize: 5,
-                  stepGranularity: 1,
+                stepGranularity: 1,
                 maxLines: 1,
               )
             ],

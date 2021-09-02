@@ -1,5 +1,4 @@
 import 'package:tgp_flutter/entity/bank_extended_info.dart';
-import 'package:tgp_flutter/entity/bonus_limit.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:tgp_flutter/entity/transfer_limit.dart';
 

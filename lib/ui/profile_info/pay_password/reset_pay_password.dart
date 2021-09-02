@@ -7,18 +7,12 @@ import 'package:tgp_flutter/custom/custom_tab_bar.dart';
 import 'package:tgp_flutter/custom/custom_text_form_field.dart';
 import 'package:tgp_flutter/custom/custom_toast.dart';
 import 'package:tgp_flutter/custom/otp_text_form_field.dart';
-import 'package:tgp_flutter/custom/outline_border_button.dart';
 import 'package:tgp_flutter/data/provider/input_validation_provider.dart';
-import 'package:tgp_flutter/entity/event_type.dart';
-import 'package:tgp_flutter/entity/user_profile.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
-import 'package:tgp_flutter/ui/profile_info/email/email_verification_view_model.dart';
 import 'package:tgp_flutter/ui/profile_info/pay_password/pay_password_view_model.dart';
-import 'package:tgp_flutter/ui/profile_info/phone/phone_verification.dart';
-import 'package:tgp_flutter/ui/profile_info/phone/phone_verification_view_model.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 
 class ResetPayPassword extends StatefulWidget {
@@ -209,7 +203,7 @@ class _ResetPayPasswordState extends BaseState<ResetPayPassword> {
         ),
         onClick: () {
           setState(() {
-            currIndex =0;
+            currIndex = 0;
           });
         },
         isEnabled: true,
@@ -227,7 +221,6 @@ class _ResetPayPasswordState extends BaseState<ResetPayPassword> {
       setState(() {
         isNextButtonEnabled = true;
       });
-
     } else {
       setState(() {
         isNextButtonEnabled = false;
@@ -235,7 +228,7 @@ class _ResetPayPasswordState extends BaseState<ResetPayPassword> {
     }
   }
 
-  onPayPasswordTextChanged(){
+  onPayPasswordTextChanged() {
     if (_payPasswordController.text.isNotEmpty && _confirmPayPasswordController.text.isNotEmpty) {
       setState(() {
         isSubmitButtonEnabled = true;
@@ -252,15 +245,15 @@ class _ResetPayPasswordState extends BaseState<ResetPayPassword> {
       setState(() {
         currIndex = 1;
       });
-    }else if(!validate.validateUsernamePassword(_payPasswordController.text)) {
+    } else if (!validate.validateUsernamePassword(_payPasswordController.text)) {
       setState(() {
         CustomToast.show(getTranslatedText("enter_pay_password_error_msg"));
       });
-    }else if (!validate.validatePasswordLength(_payPasswordController.text)) {
+    } else if (!validate.validatePasswordLength(_payPasswordController.text)) {
       setState(() {
         CustomToast.show(getTranslatedText("pay_password_length_error_msg"));
       });
-    }else if (_payPasswordController.text != _confirmPayPasswordController.text) {
+    } else if (_payPasswordController.text != _confirmPayPasswordController.text) {
       setState(() {
         CustomToast.show(getTranslatedText("confirm_pay_password_error_msg"));
       });

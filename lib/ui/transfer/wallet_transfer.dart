@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:lottie/lottie.dart';
@@ -353,9 +354,17 @@ class _WalletTransferState extends BaseState<WalletTransfer> with TickerProvider
             color: CustomColor.theme_bar_gradient_2,
             width: 40.auto,
             height: 25.auto,
-            text: Text(
-              getTranslatedText("max_amount"),
-              style: TextStyle(fontSize: 10.5, color: Colors.white),
+            text: Container(
+              width: 56.auto,
+              child: AutoSizeText(
+                getTranslatedText("max_amount"),
+                style: TextStyle(color: Colors.white),
+                minFontSize: 5,
+                maxFontSize: 12,
+                stepGranularity: 1,
+                maxLines: 1,
+                textAlign: TextAlign.center,
+              ),
             ),
           ),
         ),
