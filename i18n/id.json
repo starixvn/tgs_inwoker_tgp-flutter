@@ -949,5 +949,6 @@
   "email_dialog": "Silakan ikat alamat email",
   "payment_type": "Metode Pembayaran",
   "payment_channel": "Saluran Pembayaran",
-  "auto_transfer": "Transfer otomatis"
+  "auto_transfer": "Transfer otomatis",
+  "balance": "Keseimbangan"
 }

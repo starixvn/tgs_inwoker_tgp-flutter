@@ -26,7 +26,8 @@ class AuthenticationRepository extends BaseRepository {
             params: {
               "email": email,
             },
-            jwtRefresher: jwtAuth)
+            jwtRefresher: jwtAuth,
+            timeout: 10)
         .execute();
   }
 

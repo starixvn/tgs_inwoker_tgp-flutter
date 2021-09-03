@@ -951,5 +951,6 @@
   "email_dialog": "請綁定郵箱地址",
   "payment_type": "支付方式",
   "payment_channel": "支付渠道",
-  "auto_transfer": "自動轉賬"
+  "auto_transfer": "自動轉賬",
+  "balance": "總資金"
 }

@@ -9,21 +9,22 @@ import 'package:tgp_flutter/entity/http_method.dart';
 import 'package:tgp_flutter/environment_config.dart';
 
 http.Client client;
-const timeoutDuration = Duration(seconds: 3);
+//const timeoutDuration = Duration(seconds: 5);
 
 Future<http.Response> api(HttpMethod method, final endPoint,
-    {final content, isAuthorization = true, imageContent}) async {
+    {final content, isAuthorization = true, imageContent, timeout = 3}) async {
   if (client == null) {
     client = http.Client();
   }
 
   var header = await _getHeader(isAuthorization);
   var url = EnvironmentConfig.url + endPoint;
+  var timeoutDuration = Duration(seconds: timeout);
 
   var onTimeout = () {
     // CustomToast.show("Debug:Timeout -> $url");
     print("Debug:Timeout -> $url");
-    return api(method, endPoint, content: content, isAuthorization: isAuthorization);
+    return api(method, endPoint, content: content, isAuthorization: isAuthorization, timeout: timeout);
   };
   print("Api->${method.getName}:$url");
   print(content);
@@ -112,13 +113,16 @@ Future<http.Response> api(HttpMethod method, final endPoint,
 }
 
 _getHeader(bool isAuthorization) async {
-  Map<String, String> _header = {"Content-Type": "application/json; charset=utf-8", "Accept-Language": await getLanguage()};
+  Map<String, String> _header = {
+    "Content-Type": "application/json; charset=utf-8",
+    "Accept-Language": await getLanguage()
+  };
   await _getAuthorizationToken(_header);
   if (isAuthorization) await _getToken(_header);
   return _header;
 }
 
- getLanguage() async {
+getLanguage() async {
   SharedPreferences _prefs = await SharedPreferences.getInstance();
   var languageCode = _prefs.getString("LANGUAGE_CODE") ?? "en-US";
   return languageCode;

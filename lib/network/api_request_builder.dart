@@ -24,6 +24,7 @@ class ApiRequestBuilder<T> extends ChangeNotifier {
   JwtRefresher jwtRefresher;
   ResultConsumer consumer;
   dynamic imageContent;
+  int timeout;
 
   ApiRequestBuilder(
       {this.isAuthorization = true,
@@ -34,10 +35,12 @@ class ApiRequestBuilder<T> extends ChangeNotifier {
       this.converter,
       this.jwtRefresher,
       this.consumer,
-      this.imageContent});
+      this.imageContent,
+      this.timeout = 3});
 
   Future<EventResult<T>> execute() async {
-    var response = await api(method, endPoint, content:params, isAuthorization: isAuthorization, imageContent: imageContent);
+    var response = await api(method, endPoint,
+        content: params, isAuthorization: isAuthorization, imageContent: imageContent, timeout: timeout);
     var result = resolveBaseResponse(response, converter, consumer);
     if (result.errorCode == 101 && retryCounter < 2 && !isJWTAuthRequest) {
       retryCounter++;

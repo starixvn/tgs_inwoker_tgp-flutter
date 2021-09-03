@@ -961,5 +961,6 @@
   "email_dialog": "Please link your email.",
   "payment_type": "Payment Type",
   "payment_channel": "Payment Channel",
-  "auto_transfer": "Auto-Transfer"
+  "auto_transfer": "Auto-Transfer",
+  "balance": "Balance"
 }

@@ -952,7 +952,8 @@
 
   "payment_type": "วิธีการชำระเงิน",
   "payment_channel": "ช่องทางการชำระเงิน",
-  "auto_transfer": "โอนอัตโนมัติ"
+  "auto_transfer": "โอนอัตโนมัติ",
+  "balance": "บาลานซ์"
 }
 
 

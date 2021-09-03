@@ -121,7 +121,7 @@ class _HomeUserInfoViewState extends BaseState<HomeUserInfoView> {
               stepGranularity: 1,
             ),
             Text(
-              getTranslatedText("main_wallet"),
+              getTranslatedText("balance"),
               style: TextStyle(color: Colors.white, fontSize: 10.auto),
               textAlign: TextAlign.center,
             ),
