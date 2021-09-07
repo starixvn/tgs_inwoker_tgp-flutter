@@ -101,6 +101,7 @@ double get itemHeight => _itemWidth*(1/_imageRatio)+_itemPaddingTop+_itemPadding
                 fontWeight: FontWeight.bold,
               ),
               minFontSize: 5,
+              maxFontSize: 11,
               stepGranularity: 1,
             ),
           ),
