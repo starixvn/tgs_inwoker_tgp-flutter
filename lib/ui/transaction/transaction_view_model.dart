@@ -30,6 +30,7 @@ class TransactionViewModel extends BaseViewModel {
 
   get gameProviderList => contentRepo.gameProviderList;
   get wallet => userRepo.wallet;
+  get brandLogoUrl => contentRepo.brandLogo?.mobileUrl;
 
   @override
   List<BaseRepository> get repoList => [userRepo, contentRepo];

@@ -50,6 +50,8 @@ class GameViewModel extends BaseViewModel {
 
   get recommendGameList => _getRecommendGameList();
 
+  get brandLogoUrl => contentRepo.brandLogo?.mobileUrl;
+
   getGameProviderList() async {
     if (contentRepo.gameProviderList == null) {
       setLoading();

@@ -56,7 +56,7 @@ class _ProfileState extends BaseState<Profile> {
           return Scaffold(
               resizeToAvoidBottomInset: false,
               backgroundColor: Colors.white,
-              body: _vm.userProfile == null || _vm.balance == null ? buildProgressDialog() : _buildUserInfoContainer());
+              body: _vm.userProfile == null || _vm.balance == null ? buildProgressDialog(_vm.brandLogoUrl) : _buildUserInfoContainer());
         });
   }
 
@@ -201,7 +201,7 @@ class _ProfileState extends BaseState<Profile> {
       ));
 
   _logout() {
-    ProgressDialog.show(context);
+    ProgressDialog.show(context, _vm.brandLogoUrl);
     _vm.logout();
   }
 

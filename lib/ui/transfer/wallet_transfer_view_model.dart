@@ -19,12 +19,14 @@ class WalletTransferViewModel extends BaseViewModel {
         .where((element) => element.transferWallet == true)
         .map((e) => Wallet(e.code, e.name))
         .toList()
-      ..insert(0, Wallet("-1", "main_wallet", isMainWallet: true));
+          ..insert(0, Wallet("-1", "main_wallet", isMainWallet: true));
   }
 
   get userMainWalletBalance => walletList.singleWhere((element) => element.isMainWallet).balance;
 
   get gameWalletList => walletList.where((element) => !element.isMainWallet).toList();
+
+  get brandLogoUrl => contentRepo.brandLogo?.mobileUrl;
 
   @override
   List<BaseRepository> get repoList => [contentRepo];
@@ -115,7 +117,7 @@ class WalletTransferViewModel extends BaseViewModel {
     setLoading();
     setAutoTransferApiState = await userRepo.setAutoTransferValue();
     if (setAutoTransferApiState.isSuccess) {
-      autoTransferValue =!autoTransferValue;
+      autoTransferValue = !autoTransferValue;
     }
     setLoading(false);
     return setAutoTransferApiState;

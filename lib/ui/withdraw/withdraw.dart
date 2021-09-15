@@ -49,7 +49,7 @@ class _WithdrawState extends BaseState<Withdraw> {
             resizeToAvoidBottomInset: false,
             appBar: _buildAppBar(),
             body: _vm.bankCardList == null
-                ? buildProgressDialog()
+                ? buildProgressDialog(_vm.brandLogoUrl)
                 : Container(
                     padding: EdgeInsets.only(
                         left: 10.auto, right: 10.auto, bottom: MediaQuery.of(context).viewInsets.bottom),
@@ -277,7 +277,7 @@ class _WithdrawState extends BaseState<Withdraw> {
   }
 
   onNextButtonClick() {
-    ProgressDialog.show(context);
+    ProgressDialog.show(context, _vm.brandLogoUrl);
     _vm.withdraw( amount,selectedBankCard.id, _payPasswordController.text);
   }
 

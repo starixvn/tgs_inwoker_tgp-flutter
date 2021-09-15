@@ -67,6 +67,7 @@ class AccountTransactionViewState extends BaseState<AccountTransactionView> {
             list: _vm.accountTransactionList,
             displayItemList: _getList(),
             isUploadButton: true,
+            url: _vm.brandLogoUrl,
           );
         });
   }
@@ -135,7 +136,7 @@ class AccountTransactionViewState extends BaseState<AccountTransactionView> {
                     _getTransaction(status: value);
                   }
                   Navigator.pop(context);
-                  // ProgressDialog.show(context);
+                  // ProgressDialog.show(context, _vm.brandLogoUrl);
                 });
               });
         });

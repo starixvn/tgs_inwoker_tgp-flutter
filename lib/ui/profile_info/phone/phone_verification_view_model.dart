@@ -1,16 +1,19 @@
 import 'package:tgp_flutter/base_viewmodel.dart';
 import 'package:tgp_flutter/repository/auth_repository.dart';
 import 'package:tgp_flutter/repository/base_repository.dart';
+import 'package:tgp_flutter/repository/content_repository.dart';
 import 'package:tgp_flutter/repository/user_repository.dart';
 
 class PhoneVerificationViewModel extends BaseViewModel{
   final authRepo = AuthenticationRepository.getSingleton();
   final userRepo = UserRepository.getSingleton();
+  final contentRepo = ContentRepository.getSingleton();
   var phoneVerifyApiState, getSmsCodeApiState;
 
   @override
   List<BaseRepository> get repoList => [];
   get userProfile => userRepo.userProfile;
+  get brandLogoUrl => contentRepo.brandLogo?.mobileUrl;
 
   var securityKey;
 

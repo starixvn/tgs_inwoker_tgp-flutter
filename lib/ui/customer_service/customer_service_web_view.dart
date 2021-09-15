@@ -22,10 +22,12 @@ import 'package:tgp_flutter/ui/home/game/game_view_model.dart';
 
 class CustomerServiceWebView extends StatefulWidget {
   final String url;
+  final String brandLogoUrl;
 
   CustomerServiceWebView({
     Key key,
     this.url,
+    this.brandLogoUrl
   }) : super(key: key);
 
   @override
@@ -64,7 +66,7 @@ class _CustomerServiceWebViewState extends BaseState<CustomerServiceWebView> {
         ),
       ),
       body: widget.url == null
-          ? buildProgressDialog()
+          ? buildProgressDialog(widget.brandLogoUrl)
           : InAppWebView(
         initialUrl: widget.url,
         initialOptions: InAppWebViewGroupOptions(
@@ -81,7 +83,7 @@ class _CustomerServiceWebViewState extends BaseState<CustomerServiceWebView> {
           _webViewController.loadUrl(url: widget.url);
         },
         onLoadStart: (InAppWebViewController controller, String url) {
-          ProgressDialog.show(context);
+          ProgressDialog.show(context, widget.brandLogoUrl);
         },
         onLoadStop: (InAppWebViewController controller, String url) async {
           ProgressDialog.hide();

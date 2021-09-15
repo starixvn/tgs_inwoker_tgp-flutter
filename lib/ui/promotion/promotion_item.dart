@@ -31,33 +31,31 @@ class _PromotionItemState extends BaseState<PromotionItem> {
       child: widget.promotion.localization?.mobileBanner == null && widget.promotion.mobileBanner == null
           ? Container()
           : Container(
-              margin: EdgeInsets.only(left: 11.auto, right: 11.auto, top: 10.auto),
-              child: /*Stack(
-                children: [*/
-                  ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: CachedNetworkImage(
-                          placeholder: (context, url) => Container(
-                                width: 375,
-                                height: 183,
-                                color: CustomColor.very_light_pink_four,
-                              ),
-                          imageUrl:
-                              (widget.promotion.localization?.mobileBanner) ?? widget.promotion.mobileBanner,
-                          //handling error
-                          fit: BoxFit.fill)),
-              /*Container(
-                    margin: EdgeInsets.only(left: 15.auto, right: 15.auto, top: 15.auto, bottom: 15.auto),
-                    width: 150.auto,
-                    child: Text(
-                      _getPromotionTitleName(),
-                      style: TextStyle(color: Colors.white, fontSize: 19.auto),
-                    ),
-                  )
-                ],
-              ),*/
-            ),
+              margin: EdgeInsets.only(left: 11.auto, right: 11.auto, top: 10.auto), child: _buildPromotionImage()),
     );
+  }
+
+  _buildPromotionImage() {
+    var imageUrl = (widget.promotion.localization?.mobileBanner) ?? widget.promotion.mobileBanner;
+    return imageUrl == null || imageUrl.isEmpty
+        ? Container()
+        : Container(
+            margin: EdgeInsets.only(left: 11.auto, right: 11.auto, top: 10.auto),
+            child: ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: CachedNetworkImage(
+                    placeholder: (context, url) => Container(
+                          width: 375,
+                          height: 183,
+                          color: CustomColor.very_light_pink_four,
+                        ),
+                    imageUrl: imageUrl ?? "",
+                    errorWidget: (context, url, error) => Container(
+                          color: CustomColor.very_light_pink_four,
+                        ),
+                    //handling error
+                    fit: BoxFit.fill)),
+          );
   }
 
   _getPromotionTitleName() {

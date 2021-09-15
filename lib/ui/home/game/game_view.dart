@@ -49,7 +49,7 @@ class _GameViewState extends BaseState<GameView> {
         builder: (ctx, vm, _) {
           _handleApiState();
           return _vm.gameProviderList == null
-              ? buildProgressDialog()
+              ? buildProgressDialog(_vm.brandLogoUrl)
               : Expanded(
                   child: Container(
                     margin: EdgeInsets.only(left: 10.auto, right: 10.auto, bottom: 5.auto),
@@ -193,7 +193,7 @@ class _GameViewState extends BaseState<GameView> {
       });
     } else {
       //navigate to game web
-      /*ProgressDialog.show(context);
+      /*ProgressDialog.show(context, _vm.brandLogoUrl);
       await _vm.getGameList(gamePlatformCode, gameType);
       ProgressDialog.hide();*/
       WidgetsBinding.instance.addPostFrameCallback((_) {

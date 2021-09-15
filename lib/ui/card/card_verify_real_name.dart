@@ -200,7 +200,7 @@ class _CardVerifyRealNameState extends BaseState<CardVerifyRealName> {
   }
 
   _editSurname() {
-    /* ProgressDialog.show(context);
+    /* ProgressDialog.show(context, _vm.brandLogoUrl);
     _vm.editSurname(_controller.text);
     if(_vm.editSurnameApiState.isSuccess){
        ProgressDialog.hide();

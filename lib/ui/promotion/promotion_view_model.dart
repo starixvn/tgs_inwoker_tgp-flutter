@@ -14,6 +14,7 @@ class PromotionViewModel extends BaseViewModel {
   List<BaseRepository> get repoList => [userRepo, contentRepo];
 
   get userProfile => userRepo.userProfile;
+  get brandLogoUrl => contentRepo.brandLogo?.mobileUrl;
   var getPromotionListApiState, joinPromotionApiState;
   var promotionList;
   int page, rows = 10;

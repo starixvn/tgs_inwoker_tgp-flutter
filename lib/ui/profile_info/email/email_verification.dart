@@ -176,13 +176,13 @@ class _EmailVerificationState extends BaseState<EmailVerification> {
         CustomToast.show(getTranslatedText("email_format_error_msg"));
       });
     } else {
-      ProgressDialog.show(context);
+      ProgressDialog.show(context, _vm.brandLogoUrl);
       _vm.getEmailCode(_emailController.text);
     }
   }
 
   _onClick() async {
-    ProgressDialog.show(context);
+    ProgressDialog.show(context, _vm.brandLogoUrl);
     _vm.emailVerify(_otpController.text);
   }
 
@@ -200,6 +200,10 @@ class _EmailVerificationState extends BaseState<EmailVerification> {
         _getUserProfile();
         if (widget.popDirection == 1) Navigator.of(context).pop(true);
       });
+    }, onError: (_){
+      if(_vm.emailVerifyApiState.errorCode == 409){
+        CustomToast.show(getTranslatedText("email_duplicate"));
+      }
     });
   }
 }

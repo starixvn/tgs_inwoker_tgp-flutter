@@ -62,9 +62,9 @@ class _CustomerServiceState extends BaseState<CustomerService> {
                   },
                 ),
               ),
-              body: _vm.communicationList == null
-                  ? buildProgressDialog()
-                  : Stack(
+              body:/* _vm.communicationList == null
+                  ? */buildProgressDialog(_vm.brandLogoUrl)
+                  /*: Stack(
                       children: [
                         Container(
                           width: context.screenWidth,
@@ -91,7 +91,7 @@ class _CustomerServiceState extends BaseState<CustomerService> {
                           ]),
                         ),
                       ],
-                    ));
+                    )*/);
         });
   }
 
@@ -105,9 +105,9 @@ class _CustomerServiceState extends BaseState<CustomerService> {
         visible: _vm.liveChatUrl == null ? false : true,
         child: InkWell(
           onTap: () {
-            //ProgressDialog.show(context);
+            //ProgressDialog.show(context, _vm.brandLogoUrl);
             Navigator.push(
-                context, MaterialPageRoute(builder: (context) => CustomerServiceWebView(url: _vm.liveChatUrl)));
+                context, MaterialPageRoute(builder: (context) => CustomerServiceWebView(url: _vm.liveChatUrl, brandLogoUrl: _vm.brandLogoUrl,)));
           },
           child: Container(
             padding: EdgeInsets.only(left: 20.auto, right: 20.auto),

@@ -3,11 +3,13 @@ import 'package:tgp_flutter/base_viewmodel.dart';
 import 'package:tgp_flutter/entity/language.dart';
 import 'package:tgp_flutter/network/event_result.dart';
 import 'package:tgp_flutter/repository/base_repository.dart';
+import 'package:tgp_flutter/repository/content_repository.dart';
 import 'package:tgp_flutter/repository/user_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginViewModel extends BaseViewModel {
   final userRepo = UserRepository.getSingleton();
+  final contentRepo = ContentRepository.getSingleton();
   var logoutApiState, getAllWalletState;
 
   @override
@@ -16,6 +18,8 @@ class LoginViewModel extends BaseViewModel {
   String token;
   EventResult loginApiState, registerApiState, checkUsernameApiState;
   bool isUsernameExist = false;
+
+  get brandLogoUrl => contentRepo.brandLogo?.mobileUrl;
 
   login(String username, String password, bool rememberMe) async {
     setLoading();

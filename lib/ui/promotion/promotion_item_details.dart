@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:simple_html_css/simple_html_css.dart';
 import 'package:tgp_flutter/custom/color_button.dart';
 import 'package:tgp_flutter/custom/custom_dialog.dart';
 import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
@@ -33,27 +34,7 @@ class _PromotionItemDetailsState extends BaseState<PromotionItemDetails> {
       appBar: _buildAppBar(),
       body: ListView(
         children: [
-          /*Stack(
-            children: [*/
-          widget.promotion.localization?.mobileBanner == null && widget.promotion.mobileBanner == null
-              ? Container()
-              : CachedNetworkImage(
-                  placeholder: (context, url) => Container(
-                        color: CustomColor.very_light_pink_four,
-                      ),
-                  imageUrl: widget.promotion.localization.mobileBanner,
-                  //handling error
-                  fit: BoxFit.fill),
-          /*Container(
-                margin: EdgeInsets.only(left: 15.auto, right: 15.auto, top: 15.auto, bottom: 15.auto),
-                width: 150.auto,
-                child: Text(
-                  _getPromotionTitleName(),
-                  style: TextStyle(color: Colors.white, fontSize: 19.auto),
-                ),
-              )
-            ],
-          ),*/
+          _buildPromotionImage(),
           Container(
               margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 15.auto),
               child: Text(
@@ -67,11 +48,16 @@ class _PromotionItemDetailsState extends BaseState<PromotionItemDetails> {
               Format().dateTimeFormat(widget.promotion.from) +
               " - " +
               Format().dateTimeFormat(widget.promotion.to)),
-          _buildPromotionText(parseHtmlString(widget.promotion.localization.content)),
+          _buildPromotionContentText(parseHtmlString(widget.promotion.content ?? widget.promotion.localization.content)),
+          _buildPromotionTermsText(widget.promotion.terms),
           _buildJoinButton()
         ],
       ),
     );
+  }
+  
+  _replace(String text){
+    return  text.replaceAll("\n", "").replaceAll("\\", "") ;
   }
 
   _buildAppBar() => AppBar(
@@ -80,7 +66,7 @@ class _PromotionItemDetailsState extends BaseState<PromotionItemDetails> {
         flexibleSpace: Container(
           decoration: gradientDecoration,
         ),
-        title: Text(
+          title: Text(
           getTranslatedText("promotion_center"),
           style: TextStyle(fontSize: 20.auto),
         ),
@@ -109,6 +95,22 @@ class _PromotionItemDetailsState extends BaseState<PromotionItemDetails> {
         ),
       );
 
+  _buildPromotionImage() {
+    var imageUrl = (widget.promotion.localization?.mobileBanner) ?? widget.promotion.mobileBanner;
+    return imageUrl == null || imageUrl.isEmpty
+        ? Container()
+        : CachedNetworkImage(
+            placeholder: (context, url) => Container(
+                  color: CustomColor.very_light_pink_four,
+                ),
+            imageUrl: imageUrl,
+            //handling error
+            errorWidget: (context, url, error) => Container(
+                  color: CustomColor.very_light_pink_four,
+                ),
+            fit: BoxFit.fill);
+  }
+
   _onClick() {
     if (widget.vm.userProfile == null) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -116,13 +118,35 @@ class _PromotionItemDetailsState extends BaseState<PromotionItemDetails> {
       });
       return;
     }
-    ProgressDialog.show(context);
+    ProgressDialog.show(context, widget.vm.brandLogoUrl);
     widget.vm.joinPromotion(widget.promotion.id);
   }
 
   _buildPromotionText(String displayText) => Container(
         margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 15.auto),
         child: Text(displayText),
+      );
+
+  _buildPromotionContentText(String displayText) => Container(
+    margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 15.auto),
+    child: Text(displayText,
+    style: TextStyle(
+      color: CustomColor.theme_bar_gradient_1
+    ),),
+  );
+
+  _buildPromotionTermsText(String displayText) => Container(
+        margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 15.auto),
+        child: RichText(
+            text: HTML.toTextSpan(
+          context,
+          displayText,
+              defaultTextStyle: TextStyle(fontSize: 12.auto),
+          overrideStyle: <String, TextStyle>{
+            'p': TextStyle(fontSize: 15.auto),
+            'span': TextStyle(fontSize: 15.auto),
+          },
+        )),
       );
 
   _getPromotionTitleName() {

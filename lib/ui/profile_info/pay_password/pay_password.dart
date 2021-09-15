@@ -42,7 +42,7 @@ class _PayPasswordState extends BaseState<PayPassword> {
               resizeToAvoidBottomInset: false,
               appBar: _buildAppBar(),
               body: _vm.userProfile == null
-                  ? buildProgressDialog()
+                  ? buildProgressDialog(_vm.brandLogoUrl)
                   : Container(
                       padding: EdgeInsets.only(top: 10.auto, left: 10.auto, right: 10.auto),
                       child: _buildSetPayPassword()));
@@ -164,7 +164,7 @@ class _PayPasswordState extends BaseState<PayPassword> {
         CustomToast.show(getTranslatedText("confirm_pay_password_error_msg"));
       });
     } else {
-      ProgressDialog.show(context);
+      ProgressDialog.show(context, _vm.brandLogoUrl);
       _vm.addPayPassword(_newPasswordController.text);
     }
   }

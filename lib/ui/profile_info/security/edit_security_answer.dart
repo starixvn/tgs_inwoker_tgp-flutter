@@ -164,7 +164,7 @@ class _EditSecurityAnswerState extends BaseState<EditSecurityAnswer> {
   }
 
   _onClick() async {
-    /* ProgressDialog.show(context);
+    /* ProgressDialog.show(context, _vm.brandLogoUrl);
     _vm.updateSecurityQuestion(securityQuestion.securityQuestionID, securityQuestion.answer, isReset);
     if(_vm.updateSecurityQuestionApiState.isSuccess){
       await _vm.getBasicInfo();

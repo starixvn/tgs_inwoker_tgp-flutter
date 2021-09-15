@@ -196,7 +196,7 @@ class _CardVerifyWithdrawPasswordState extends BaseState<CardVerifyWithdrawPassw
   }
 
   _updateWithdrawPassword() {
-    /* ProgressDialog.show(context);
+    /* ProgressDialog.show(context, _vm.brandLogoUrl);
     _vm.updateWithdrawPassword(_passwordController.text);
     if(_vm.updateWithdrawPasswordApiState.isSuccess){
        ProgressDialog.hide();

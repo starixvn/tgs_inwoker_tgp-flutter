@@ -949,5 +949,6 @@
   "payment_type": "วิธีการชำระเงิน",
   "payment_channel": "ช่องทางการชำระเงิน",
   "auto_transfer": "โอนอัตโนมัติ",
-  "balance": "บาลานซ์"
+  "balance": "บาลานซ์",
+  "email_duplicate": "ที่อยู่อีเมลซ้ำกัน"
 }

@@ -48,7 +48,7 @@ class _MainCardState extends BaseState<MainCard> {
               backgroundColor: Colors.white,
               appBar: _buildAppBar(),
               body: _vm.bankCardList == null || _vm.bankCardList.length == 0
-                  ? buildProgressDialog()
+                  ? buildProgressDialog(_vm.brandLogoUrl)
                   : Padding(
                       padding: EdgeInsets.symmetric(horizontal: 15.auto),
                       child: ListView(
@@ -265,7 +265,7 @@ class _MainCardState extends BaseState<MainCard> {
 
   _delete(BankCard card, int index) async {
     if (_vm.bankCardList.length > 1) //only show when existing list more than 1, else overlapped
-      ProgressDialog.show(context);
+      ProgressDialog.show(context, _vm.brandLogoUrl);
     setState(() {
       _vm.bankCardList.removeAt(index);
     });

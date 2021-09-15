@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tgp_flutter/entity/announcement.dart';
+import 'package:tgp_flutter/entity/brand_logo.dart';
 import 'package:tgp_flutter/entity/game.dart';
 import 'package:tgp_flutter/entity/game_provider.dart';
 import 'package:tgp_flutter/entity/game_type.dart';
@@ -21,9 +22,9 @@ import 'base_repository.dart';
 
 class ContentRepository extends BaseRepository {
   static ContentRepository _singleton;
-  UserProfile userProfile;
   List<GameProvider> gameProviderList;
   List<LanguageOption> languageOptionList;
+  BrandLogo brandLogo;
 
   static ContentRepository getSingleton() {
     if (_singleton == null) {
@@ -198,6 +199,19 @@ class ContentRepository extends BaseRepository {
       converter: (json) => (json as List<dynamic>).map((e) => HomeBanner.fromJson(e)).toList(),
       jwtRefresher: jwtAuth,
       isAuthorization: false,
+    ).execute();
+  }
+
+  Future<EventResult<BrandLogo>> getBrandLogo() async {
+    return await ApiRequestBuilder<BrandLogo>(
+      method: HttpMethod.GET,
+      endPoint: "api/brand",
+      converter: (json) => BrandLogo.fromJson(json),
+      jwtRefresher: jwtAuth,
+      isAuthorization: false,
+      consumer: (result) => setRepoValues(() {
+        brandLogo = result;
+      }),
     ).execute();
   }
 }

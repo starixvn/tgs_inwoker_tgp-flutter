@@ -3,10 +3,12 @@ import 'package:tgp_flutter/entity/message.dart';
 import 'package:tgp_flutter/entity/promotion.dart';
 import 'package:tgp_flutter/network/event_result.dart';
 import 'package:tgp_flutter/repository/base_repository.dart';
+import 'package:tgp_flutter/repository/content_repository.dart';
 import 'package:tgp_flutter/repository/message_repository.dart';
 
 class MessageViewModel extends BaseViewModel {
   final messageRepo = MessageRepository.getSingleton();
+  final contentRepo = ContentRepository.getSingleton();
   EventResult getMessageListApiState, readMessageApiState;
   List<Message> messageList;
   var page = 1, rows = 10;
@@ -15,6 +17,8 @@ class MessageViewModel extends BaseViewModel {
 
   @override
   List<BaseRepository> get repoList => [messageRepo];
+
+  get brandLogoUrl => contentRepo.brandLogo?.mobileUrl;
 
   getMessageList({isLoadMore = false}) async {
     setLoading();

@@ -147,7 +147,7 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
   }
 
   _onClick() async {
-    ProgressDialog.show(context);
+    ProgressDialog.show(context, _vm.brandLogoUrl);
     _vm.idVerify(_realNameController.text, _icNoController.text);
   }
 

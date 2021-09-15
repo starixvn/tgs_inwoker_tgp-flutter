@@ -27,6 +27,7 @@ class BaseTransaction extends StatefulWidget {
   final List list;
   final List displayItemList;
   final bool isUploadButton;
+  final String url;
 
   BaseTransaction(
       {Key key,
@@ -41,7 +42,8 @@ class BaseTransaction extends StatefulWidget {
       this.refreshController,
       this.list,
       this.displayItemList,
-      this.isUploadButton})
+      this.isUploadButton,
+      this.url})
       : super(key: key);
 
   @override
@@ -62,7 +64,7 @@ class BaseTransactionState extends BaseState<BaseTransaction> {
                 widget.refreshController.refreshCompleted();
               },
               child: widget.list == null
-                  ? buildProgressDialog()
+                  ? buildProgressDialog(widget.url)
                   : CustomScrollView(
                 controller: widget.scrollController,
                 slivers: [

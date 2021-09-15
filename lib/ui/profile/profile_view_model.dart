@@ -23,6 +23,7 @@ class ProfileViewModel extends BaseViewModel {
   get userProfile => userRepo.userProfile;
 
   get balance => userRepo.wallet.main;
+  get brandLogoUrl => contentRepo.brandLogo?.mobileUrl;
 
   logout() async {
     setLoading();

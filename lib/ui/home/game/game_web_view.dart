@@ -70,7 +70,7 @@ class _GameWebState extends BaseState<GameWeb> {
               resizeToAvoidBottomInset: false,
               backgroundColor: Colors.white,
               appBar: _buildAppBar(),
-              body: isLoading || url == null ? buildProgressDialog() : _buildWebView(),
+              body: isLoading || url == null ? buildProgressDialog(_vm.brandLogoUrl) : _buildWebView(),
             );
           }),
     );
@@ -133,7 +133,7 @@ class _GameWebState extends BaseState<GameWeb> {
               );
             },
             onLoadStart: (InAppWebViewController controller, String url) {
-              //ProgressDialog.show(context);
+              //ProgressDialog.show(context, _vm.brandLogoUrl);
             },
             onLoadStop: (InAppWebViewController controller, String url) async {
               // ProgressDialog.hide();

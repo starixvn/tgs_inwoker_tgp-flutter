@@ -962,5 +962,6 @@
   "payment_type": "Payment Type",
   "payment_channel": "Payment Channel",
   "auto_transfer": "Auto-Transfer",
-  "balance": "Balance"
+  "balance": "Balance",
+  "email_duplicate": "Email is duplicated"
 }

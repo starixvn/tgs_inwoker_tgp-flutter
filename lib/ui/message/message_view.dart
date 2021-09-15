@@ -26,7 +26,7 @@ class _MessageViewState extends BaseState<MessageView> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      ProgressDialog.show(context);
+      ProgressDialog.show(context, _vm.brandLogoUrl);
       _vm.getMessageList();
     });
     _controller.addListener(_scrollListener);
@@ -99,7 +99,7 @@ class _MessageViewState extends BaseState<MessageView> {
               children: [
                 InkWell(
                   onTap: () {
-                    ProgressDialog.show(context);
+                    ProgressDialog.show(context, _vm.brandLogoUrl);
                     _vm.readMessage(selectedMessageList);
                     setState(() {
                       selectedMessageList = [];

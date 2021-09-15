@@ -64,7 +64,7 @@ class _PromotionState extends BaseState<PromotionPage> {
 
   _buildPromotion() {
     if (_vm.promotionList == null)
-      return buildProgressDialog();
+      return buildProgressDialog(_vm.brandLogoUrl);
     else if (_vm.promotionList.isEmpty) {
       return Container(
         margin: EdgeInsets.only(left: 11.auto, right: 11.auto, top: 10.auto),

@@ -162,13 +162,13 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
         CustomToast.show("手机号码格式不正确");
       });
     } else {
-      ProgressDialog.show(context);
+      ProgressDialog.show(context, _vm.brandLogoUrl);
       _vm.getSmsCode(_phoneController.text);
     }
   }
 
   _onClick() async {
-    ProgressDialog.show(context);
+    ProgressDialog.show(context, _vm.brandLogoUrl);
     _vm.phoneVerify(_otpController.text);
   }
 

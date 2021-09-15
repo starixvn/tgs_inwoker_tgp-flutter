@@ -165,7 +165,7 @@ class _AddressState extends BaseState<Address> {
   }
 
   _onClick() async {
-    ProgressDialog.show(context);
+    ProgressDialog.show(context, _vm.brandLogoUrl);
     if (!validate.validateChinaPhoneNumber(_contactController.text)) {
       setState(() {
         CustomToast.show("手机号码格式不正确");

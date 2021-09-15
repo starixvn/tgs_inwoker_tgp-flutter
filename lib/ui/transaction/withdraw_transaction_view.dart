@@ -67,6 +67,7 @@ class WithdrawTransactionViewState extends BaseState<WithdrawTransactionView> {
             list: _vm.withdrawTransactionList,
             displayItemList: _getList(),
             isUploadButton: false,
+            url: _vm.brandLogoUrl,
           );
         });
   }
@@ -117,7 +118,7 @@ class WithdrawTransactionViewState extends BaseState<WithdrawTransactionView> {
                     _getTransaction(status: value);
                   }
                   Navigator.pop(context);
-                  // ProgressDialog.show(context);
+                  // ProgressDialog.show(context, _vm.brandLogoUrl);
                 });
               });
         });

@@ -7,10 +7,12 @@ import 'package:tgp_flutter/repository/user_repository.dart';
 class MainViewModel extends BaseViewModel{
   final contentRepo = ContentRepository.getSingleton();
   final userRepo = UserRepository.getSingleton();
-  var authApiState, getLanguageApiState;
+  var authApiState, getLanguageApiState, getBrandLogoApiState;
 
   @override
   List<BaseRepository> get repoList => [];
+
+  get brandLogoUrl => contentRepo.brandLogo?.mobileUrl;
 
   getAuthToken()async{
     setLoading();
@@ -26,5 +28,12 @@ class MainViewModel extends BaseViewModel{
     }
     setLoading(false);
     return getLanguageApiState;
+  }
+
+  getBrandLogo() async{
+    setLoading();
+    getBrandLogoApiState = await contentRepo.getBrandLogo();
+    setLoading(false);
+    return getBrandLogoApiState;
   }
 }

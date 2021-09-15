@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info/package_info.dart';
 import 'package:tgp_flutter/environment_config.dart';
@@ -27,54 +28,62 @@ class _LoginState extends BaseState<Login> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: version ==null?buildProgressDialog():Container(
-        height: context.screenHeight,
-        width: context.screenWidth,
-        decoration: BoxDecoration(
-          image: DecorationImage(image: AssetImage("images/login_bg.png"), fit: BoxFit.fill),
-        ),
-        child: Column(
-          children: [
-            _buildLogoImage(),
-            Expanded(
-                child: Container(
-              margin: EdgeInsets.symmetric(horizontal: 27.auto),
-              child: LoginTab(),
-            )),
-            _buildVersionText(),
-          ],
-        ),
-      ),
+      body: version == null
+          ? buildProgressDialog(_vm.brandLogoUrl)
+          : Container(
+              height: context.screenHeight,
+              width: context.screenWidth,
+              decoration: BoxDecoration(
+                image: DecorationImage(image: AssetImage("images/login_bg.png"), fit: BoxFit.fill),
+              ),
+              child: Column(
+                children: [
+                  _buildLogoImage(),
+                  Expanded(
+                      child: Container(
+                    margin: EdgeInsets.symmetric(horizontal: 27.auto),
+                    child: LoginTab(),
+                  )),
+                  _buildVersionText(),
+                ],
+              ),
+            ),
     );
   }
 
   _buildVersionText() {
     return Column(
-    children: [
-      VerticalDivider(
-        color: CustomColor.grey_five,
-        width: 0.5,
-      ),
-      Container(
-        margin: EdgeInsets.only(right: 2.auto, bottom: 2.auto),
-        alignment: Alignment.centerRight,
-        child: Text("Version $version (${EnvironmentConfig.environmentStage})",
-        style: TextStyle(
-          fontSize: 8.auto
-        ),),
-      )
-    ],
-  );}
+      children: [
+        VerticalDivider(
+          color: CustomColor.grey_five,
+          width: 0.5,
+        ),
+        Container(
+          margin: EdgeInsets.only(right: 2.auto, bottom: 2.auto),
+          alignment: Alignment.centerRight,
+          child: Text(
+            "Version $version (${EnvironmentConfig.environmentStage})",
+            style: TextStyle(fontSize: 8.auto),
+          ),
+        )
+      ],
+    );
+  }
 
   _buildLogoImage() => Container(
-      margin: EdgeInsets.only(top: ScreenUtil.getInstance().statusBarHeight),
-      child: Image.asset(
+      margin: EdgeInsets.only(top: ScreenUtil.getInstance().statusBarHeight, left: 27.auto, right: 27.auto),
+      child: CachedNetworkImage(
+        placeholder: (context, url) => Container(),
+        imageUrl: _vm.brandLogoUrl,
+        //handling error
+        errorWidget: (context, url, error) => Container(),
+      ),/*Image.asset(
         "images/login/${EnvironmentConfig.imageLogo}.png",
         height: 100.auto,
         fit: BoxFit.contain,
-      ));
+      )*/);
 
-  _getPackageInfo() async{
+  _getPackageInfo() async {
     packageInfo = await PackageInfo.fromPlatform();
     setState(() {
       version = packageInfo.version;

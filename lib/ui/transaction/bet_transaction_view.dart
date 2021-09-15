@@ -59,6 +59,7 @@ class BetTransactionViewState extends BaseState<BetTransactionView> {
             list: _vm.betTransactionList,
             displayItemList: _getList(),
             isUploadButton: false,
+            url: _vm.brandLogoUrl,
           );
         });
   }

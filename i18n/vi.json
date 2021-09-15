@@ -949,5 +949,6 @@
   "payment_type": "Phương thức Thanh toán",
   "payment_channel": "Kênh thanh toán",
   "auto_transfer": "Tự động chuyển",
-  "balance": "Số dư"
+  "balance": "Số dư",
+  "email_duplicate": "Địa chỉ email trùng lặp"
 }

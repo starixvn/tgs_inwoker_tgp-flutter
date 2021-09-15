@@ -60,6 +60,7 @@ class TransferTransactionViewState extends BaseState<TransferTransactionView> {
             list: _vm.transferTransactionList,
             displayItemList: _getList(),
             isUploadButton: false,
+            url: _vm.brandLogoUrl,
           );
         });
   }

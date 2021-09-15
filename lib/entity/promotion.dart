@@ -1,10 +1,9 @@
-
 import 'package:json_annotation/json_annotation.dart';
 import 'package:tgp_flutter/entity/localization.dart';
+
 part 'promotion.g.dart';
 
 @JsonSerializable()
-
 class Promotion {
   Promotion();
 
@@ -29,7 +28,10 @@ class Promotion {
   String updatedByUsername;
   Localization localization;
   String mobileBanner;
+  String content;
+  String terms;
 
   factory Promotion.fromJson(Map<String, dynamic> json) => _$PromotionFromJson(json);
+
   Map<String, dynamic> toJson() => _$PromotionToJson(this);
 }
