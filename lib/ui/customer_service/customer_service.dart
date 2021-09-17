@@ -62,9 +62,9 @@ class _CustomerServiceState extends BaseState<CustomerService> {
                   },
                 ),
               ),
-              body:/* _vm.communicationList == null
-                  ? */buildProgressDialog(_vm.brandLogoUrl)
-                  /*: Stack(
+              body: _vm.communicationList == null
+                  ? buildProgressDialog(_vm.brandLogoUrl)
+                  : Stack(
                       children: [
                         Container(
                           width: context.screenWidth,
@@ -91,7 +91,7 @@ class _CustomerServiceState extends BaseState<CustomerService> {
                           ]),
                         ),
                       ],
-                    )*/);
+                    ));
         });
   }
 
