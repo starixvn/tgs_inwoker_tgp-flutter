@@ -231,4 +231,18 @@ class BankRepository extends BaseRepository {
             jwtRefresher: jwtAuth)
         .execute();
   }
+
+  Future<EventResult<DepositRedirect>> maticPayDepositOrder(String amount, String paymentId, String promotionId) async {
+    return await ApiRequestBuilder<DepositRedirect>(
+        method: HttpMethod.POST,
+        endPoint: "api/deposit/bank/maticpay",
+        params: {
+          "amount": amount,
+          "paymentid": paymentId,
+          "promotionid": promotionId,
+        },
+        converter: (json) => DepositRedirect.fromJson(json),
+        jwtRefresher: jwtAuth)
+        .execute();
+  }
 }

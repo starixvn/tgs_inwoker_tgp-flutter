@@ -273,7 +273,9 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
       _vm.primePayDepositOrder(_amountController.text, _payment.id, promotionId ?? null);
     } else if (_isUmPayDeposit()) {
       _vm.umPayDepositOrder(_amountController.text, _payment.id, promotionId ?? null, methodPickerText == "Crypto");
-    } else //currently is LeePay
+    }else if (widget.paymentCode == "MaticPay") {
+      _vm.maticPayDepositOrder(_amountController.text, _payment.id, promotionId ?? null);
+    }  else //currently is LeePay
       _vm.leePayDepositOrder(_amountController.text, _payment.id, promotionId ?? null);
   }
 
@@ -432,6 +434,22 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
         });
       } else
         CustomToast.show(_vm.applePayDepositOrderApiState.result.errorMsg);
+    });
+
+    handleApiState(_vm.maticPayDepositOrderApiState, onSuccess: () {
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        await Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => DepositOrderView(
+                  method: _payment.methodCode,
+                  depositRedirect: _vm.maticPayDepositOrderApiState.result,
+                  depositAmount: Format().currencySymbolWithDecimalFormat(double.parse(_amountController.text)),
+                  depositChannel: channelPickerText,
+                  promotionName: promotionId != "-1" ? promotionName : null,
+                )));
+        _clearTextField();
+      });
     });
   }
 }

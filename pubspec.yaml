@@ -63,6 +63,7 @@ dependencies:
   easy_gradient_text: ^1.0.0
   qr_flutter: ^4.0.0
   flutter_switch: ^0.3.2
+  flutter_image_slideshow: ^0.1.1
   simple_html_css: ^2.0.2
   #package_info: ^0.4.0+16
 

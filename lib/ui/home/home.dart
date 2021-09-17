@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tgp_flutter/custom/custom_dialog.dart';
 import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
@@ -62,7 +63,7 @@ class _HomeState extends BaseState<Home> {
           return Scaffold(
             resizeToAvoidBottomInset: false,
             backgroundColor: Colors.white,
-            body: Column(
+            body: _vm.bannerList ==null?buildProgressDialog(_vm.brandLogoUrl): Column(
               children: [
                 Stack(children: [_buildImageSlider(), _buildBorderCorner()]),
                 _buildMarqueeRow(),
@@ -83,10 +84,11 @@ class _HomeState extends BaseState<Home> {
     String brand = EnvironmentConfig.appTitleName == "PG Gaming" ? "PGG" : EnvironmentConfig.appTitleName;
     return Container(
       height: context.screenHeight / 5,
-      child: Swiper(
+      child:
+          /*Swiper(
         itemBuilder: (BuildContext context, int index) => AspectRatio(
           aspectRatio: 360 / 200,
-          child: CachedNetworkImage(
+          child: */ /*CachedNetworkImage(
               placeholder: (context, url) => Container(
                 color: CustomColor.very_light_pink_four,
               ),
@@ -96,15 +98,35 @@ class _HomeState extends BaseState<Home> {
             errorWidget: (context, url, error) =>Container(
               color: CustomColor.very_light_pink_four,
             ),
-          ),
-        ),
+          ),*/ /*Image.asset(
+            "images/banner/${getCurrentLanguage().apiCode}/$brand/${imgList[index]}.jpg",
+            fit: BoxFit.cover,
+        ),),
         autoplay: true,
         itemCount: _vm.bannerList?.length ?? 0,
         pagination: new SwiperPagination(
             alignment: Alignment.bottomCenter,
             margin: new EdgeInsets.all(context.screenHeight / 90),
             builder: new DotSwiperPaginationBuilder(color: Colors.grey, activeColor: Colors.red)),
-      ),
+      ),*/ImageSlideshow(
+              initialPage: 0,
+              indicatorColor: CustomColor.theme_bar_gradient_2,
+              indicatorBackgroundColor: Colors.grey,
+              children: List.generate(
+                  _vm.bannerList?.length ?? 0,
+                  (index) => CachedNetworkImage(
+                        placeholder: (context, url) => Container(
+                          color: CustomColor.very_light_pink_four,
+                        ),
+                        imageUrl: _vm.bannerList[index].mobileUrl ?? "",
+                        //handling error
+                        fit: BoxFit.cover,
+                        errorWidget: (context, url, error) => Container(
+                          color: CustomColor.very_light_pink_four,
+                        ),
+                      )),
+              isLoop: true,
+              autoPlayInterval: 3000),
     );
   }
 
@@ -142,17 +164,19 @@ class _HomeState extends BaseState<Home> {
         decoration: BoxDecoration(color: CustomColor.theme_bar_gradient_1, borderRadius: BorderRadius.circular(10.0)),
         margin: EdgeInsets.only(left: 10.auto, right: 10.auto),
         height: 18.auto,
-        child: announcement.isEmpty?Container():Marquee(
-            text: announcement,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 10.auto,
-            ),
-            scrollAxis: Axis.horizontal,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            blankSpace: 5.auto,
-            pauseAfterRound: Duration(seconds: 1),
-            showFadingOnlyWhenScrolling: false),
+        child: announcement.isEmpty
+            ? Container()
+            : Marquee(
+                text: announcement,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 10.auto,
+                ),
+                scrollAxis: Axis.horizontal,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                blankSpace: 5.auto,
+                pauseAfterRound: Duration(seconds: 1),
+                showFadingOnlyWhenScrolling: false),
       ),
     );
   }

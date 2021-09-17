@@ -21,7 +21,8 @@ class DepositMethodViewModel extends BaseViewModel {
       primePayDepositOrderApiState,
       applePayDepositOrderApiState,
       getUmPayDepositOrderApiState,
-      getExchangeRateApiState;
+      getExchangeRateApiState,
+      maticPayDepositOrderApiState;
   List<Payment> paymentList;
   var depositOrder, orderNo, exchangeRate;
 
@@ -98,5 +99,12 @@ class DepositMethodViewModel extends BaseViewModel {
     }
     setLoading(false);
     return getExchangeRateApiState;
+  }
+
+  maticPayDepositOrder(String amount, String paymentId, String promotionId) async {
+    setLoading();
+    maticPayDepositOrderApiState = await depositRepo.maticPayDepositOrder(amount, paymentId, promotionId);
+    setLoading(false);
+    return maticPayDepositOrderApiState;
   }
 }
