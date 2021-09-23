@@ -951,5 +951,6 @@
   "auto_transfer": "Tự động chuyển",
   "balance": "Số dư",
   "email_duplicate": "Địa chỉ email trùng lặp",
-  "maintenance": "Đang bảo trì"
+  "maintenance": "Đang bảo trì",
+  "play_pay_hint_text": "Hệ thống sẽ thêm một số thập phân ngẫu nhiên sau số tiền bạn nhập để xác định đơn hàng"
 }

@@ -964,5 +964,6 @@
   "auto_transfer": "Auto-Transfer",
   "balance": "Balance",
   "email_duplicate": "Email is duplicated",
-  "maintenance": "Maintenance"
+  "maintenance": "Maintenance",
+  "play_pay_hint_text": "Remarks: TWO random decimal places will be added to the total amount (it is required for the order verification purpose)"
 }

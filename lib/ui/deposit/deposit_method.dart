@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter/custom/color_button.dart';
 import 'package:tgp_flutter/custom/custom_picker.dart';
@@ -77,7 +78,8 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
                 if (_isApplePayDeposit())
                   _buildNameTextField("transfer_name", "enter_transfer_name", _transferNameController),
                 _buildAmountTextField(),
-                if (_isLeePayDeposit() || (_isUmPayDeposit() && methodPickerText == "Crypto")) _buildExchangeRateText(),
+                if (_isLeePayDeposit() || (_isUmPayDeposit() && methodPickerText == getTranslatedText("crypto"))) _buildExchangeRateText(),
+                if(_isUmPayDeposit()) _buildHintText(),
                 _buildCard("promotion_picker", widget.promotionList),
                 _buildButton(),
               ],
@@ -230,6 +232,22 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
         ),
       );
 
+  _buildHintText() => Container(
+    margin: EdgeInsets.only(
+      left: 10.auto,
+      right: 10.auto,
+      top: 13.auto,
+    ),
+    child: AutoSizeText(
+      getTranslatedText("play_pay_hint_text"),
+      style: TextStyle(color: CustomColor.grey, fontSize: 15),
+      minFontSize: 10,
+      maxFontSize: 13,
+      stepGranularity: 1,
+      maxLines: 2,
+    ),
+  );
+
   _calculateExpectedAmount() {
     if (_vm.exchangeRate != null) {
       var expectedAmount = (amount ?? 0) * (1 / double.parse(_vm.exchangeRate)) ?? 0.00;
@@ -272,7 +290,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
     else if (widget.paymentCode == "PrimePay") {
       _vm.primePayDepositOrder(_amountController.text, _payment.id, promotionId ?? null);
     } else if (_isUmPayDeposit()) {
-      _vm.umPayDepositOrder(_amountController.text, _payment.id, promotionId ?? null, methodPickerText == "Crypto");
+      _vm.umPayDepositOrder(_amountController.text, _payment.id, promotionId ?? null, methodPickerText == getTranslatedText("crypto"));
     }else if (widget.paymentCode == "MaticPay") {
       _vm.maticPayDepositOrder(_amountController.text, _payment.id, promotionId ?? null);
     }  else //currently is LeePay
@@ -312,7 +330,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
     });
     if (_isLeePayDeposit())
       _vm.getExchangeRate(_payment.id, false);
-    else if (_isUmPayDeposit() && methodPickerText == "Crypto") _vm.getExchangeRate(_payment.id, true);
+    else if (_isUmPayDeposit() && methodPickerText == getTranslatedText("crypto")) _vm.getExchangeRate(_payment.id, true);
   }
 
   onSelectedPromotion(Map<String, String> map) {
@@ -359,7 +377,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
         await Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => methodPickerText == "Crypto"
+                builder: (context) => methodPickerText == getTranslatedText("crypto")
                     ? DepositOrderView(
                         method: _payment.methodCode,
                         depositRedirect: _vm.getUmPayDepositOrderApiState.result,

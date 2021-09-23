@@ -952,5 +952,6 @@
   "auto_transfer": "Transfer otomatis",
   "balance": "Keseimbangan",
   "email_duplicate": "Alamat email duplikat",
-  "maintenance": "Pemeliharaan"
+  "maintenance": "Pemeliharaan",
+  "play_pay_hint_text": "Sistem akan menambahkan desimal acak setelah jumlah yang Anda masukkan untuk mengidentifikasi pesanan"
 }

@@ -952,5 +952,6 @@
   "auto_transfer": "自動轉賬",
   "balance": "總資金",
   "email_duplicate": "郵箱地址重複",
-  "maintenance": "維護中"
+  "maintenance": "維護中",
+  "play_pay_hint_text": "系統稍後會在您輸入的金額後方隨機的小數，以便識別訂單"
 }
