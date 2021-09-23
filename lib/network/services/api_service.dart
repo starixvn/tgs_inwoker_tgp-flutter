@@ -1,9 +1,11 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/custom/custom_toast.dart';
 import 'package:tgp_flutter/entity/http_method.dart';
 import 'package:tgp_flutter/environment_config.dart';
@@ -26,6 +28,13 @@ Future<http.Response> api(HttpMethod method, final endPoint,
     print("Debug:Timeout -> $url");
     return api(method, endPoint, content: content, isAuthorization: isAuthorization, timeout: timeout);
   };
+
+  _handleError(var exception) {
+    ProgressDialog.hide();
+    CustomToast.show(exception.message);
+    return null;
+  }
+
   print("Api->${method.getName}:$url");
   print(content);
   http.Response response;
@@ -37,7 +46,8 @@ Future<http.Response> api(HttpMethod method, final endPoint,
             headers: header,
             body: jsonEncode(content),
           )
-          .timeout(timeoutDuration, onTimeout: onTimeout);
+          .timeout(timeoutDuration, onTimeout: onTimeout)
+          .catchError((e) => _handleError(e));
       break;
     case HttpMethod.GET:
       {
@@ -54,8 +64,8 @@ Future<http.Response> api(HttpMethod method, final endPoint,
               url + queryParams,
               headers: header,
             )
-            .timeout(timeoutDuration, onTimeout: onTimeout);
-        ;
+            .timeout(timeoutDuration, onTimeout: onTimeout)
+            .catchError((e) => _handleError(e));
         print("Api->End ${method.getName}:$url");
       }
       break;
@@ -65,8 +75,8 @@ Future<http.Response> api(HttpMethod method, final endPoint,
             url,
             headers: header,
           )
-          .timeout(timeoutDuration, onTimeout: onTimeout);
-      ;
+          .timeout(timeoutDuration, onTimeout: onTimeout)
+          .catchError((e) => _handleError(e));
       break;
     case HttpMethod.PATCH:
       response = await client
@@ -75,7 +85,8 @@ Future<http.Response> api(HttpMethod method, final endPoint,
             headers: header,
             body: jsonEncode(content),
           )
-          .timeout(timeoutDuration, onTimeout: onTimeout);
+          .timeout(timeoutDuration, onTimeout: onTimeout)
+          .catchError((e) => _handleError(e));
       break;
     case HttpMethod.PUT:
       response = await client
@@ -84,7 +95,8 @@ Future<http.Response> api(HttpMethod method, final endPoint,
             headers: header,
             body: jsonEncode(content),
           )
-          .timeout(timeoutDuration, onTimeout: onTimeout);
+          .timeout(timeoutDuration, onTimeout: onTimeout)
+          .catchError((e) => _handleError(e));
       break;
 
     case HttpMethod.MULTIPART:
@@ -94,8 +106,9 @@ Future<http.Response> api(HttpMethod method, final endPoint,
       });
       request.files.add(await http.MultipartFile.fromPath('file', imageContent));
       var imageRes = await request.send();
-      response = await http.Response.fromStream(imageRes).timeout(timeoutDuration, onTimeout: onTimeout);
-      ;
+      response = await http.Response.fromStream(imageRes)
+          .timeout(timeoutDuration, onTimeout: onTimeout)
+          .catchError((e) => _handleError(e));
       break;
     default:
       response = await client
@@ -104,18 +117,19 @@ Future<http.Response> api(HttpMethod method, final endPoint,
             headers: header,
             body: jsonEncode(content),
           )
-          .timeout(timeoutDuration, onTimeout: onTimeout);
+          .timeout(timeoutDuration, onTimeout: onTimeout)
+          .catchError((e) => _handleError(e));
       break;
   }
 
-  log("Api<-Done:${response.statusCode} \n ${response.body}");
+  log("Api<-Done:${response?.statusCode} \n ${response?.body}");
   return response;
 }
 
 _getHeader(bool isAuthorization) async {
   Map<String, String> _header = {
     "Content-Type": "application/json; charset=utf-8",
-    "Accept-Language": await getLanguage()
+    "Accept-Language": await getLanguage(),
   };
   await _getAuthorizationToken(_header);
   if (isAuthorization) await _getToken(_header);

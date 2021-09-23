@@ -951,5 +951,6 @@
   "payment_channel": "支付渠道",
   "auto_transfer": "自動轉賬",
   "balance": "總資金",
-  "email_duplicate": "郵箱地址重複"
+  "email_duplicate": "郵箱地址重複",
+  "maintenance": "維護中"
 }

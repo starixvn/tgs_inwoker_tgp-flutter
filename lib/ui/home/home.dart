@@ -63,72 +63,49 @@ class _HomeState extends BaseState<Home> {
           return Scaffold(
             resizeToAvoidBottomInset: false,
             backgroundColor: Colors.white,
-            body: _vm.bannerList ==null?buildProgressDialog(_vm.brandLogoUrl): Column(
-              children: [
-                Stack(children: [_buildImageSlider(), _buildBorderCorner()]),
-                _buildMarqueeRow(),
-                HomeUserInfoView(
-                    userProfile: _vm.userProfile,
-                    wallet: _vm.totalBalance,
-                    onLoginTap: () {
-                      navigateToLogin();
-                    }),
-                GameView()
-              ],
-            ),
+            body: _vm.bannerList == null
+                ? buildProgressDialog(_vm.brandLogoUrl)
+                : Column(
+                    children: [
+                      Stack(children: [_buildImageSlider(), _buildBorderCorner()]),
+                      _buildMarqueeRow(),
+                      HomeUserInfoView(
+                          userProfile: _vm.userProfile,
+                          wallet: _vm.totalBalance,
+                          onLoginTap: () {
+                            navigateToLogin();
+                          }),
+                      GameView()
+                    ],
+                  ),
           );
         });
   }
 
-  _buildImageSlider() {
-    String brand = EnvironmentConfig.appTitleName == "PG Gaming" ? "PGG" : EnvironmentConfig.appTitleName;
-    return Container(
-      height: context.screenHeight / 5,
-      child:
-          /*Swiper(
-        itemBuilder: (BuildContext context, int index) => AspectRatio(
-          aspectRatio: 360 / 200,
-          child: */ /*CachedNetworkImage(
-              placeholder: (context, url) => Container(
-                color: CustomColor.very_light_pink_four,
-              ),
-              imageUrl: _vm.bannerList[index].mobileUrl ?? "",
-              //handling error
-              fit: BoxFit.cover,
-            errorWidget: (context, url, error) =>Container(
-              color: CustomColor.very_light_pink_four,
-            ),
-          ),*/ /*Image.asset(
-            "images/banner/${getCurrentLanguage().apiCode}/$brand/${imgList[index]}.jpg",
-            fit: BoxFit.cover,
-        ),),
-        autoplay: true,
-        itemCount: _vm.bannerList?.length ?? 0,
-        pagination: new SwiperPagination(
-            alignment: Alignment.bottomCenter,
-            margin: new EdgeInsets.all(context.screenHeight / 90),
-            builder: new DotSwiperPaginationBuilder(color: Colors.grey, activeColor: Colors.red)),
-      ),*/ImageSlideshow(
-              initialPage: 0,
-              indicatorColor: CustomColor.theme_bar_gradient_2,
-              indicatorBackgroundColor: Colors.grey,
-              children: List.generate(
-                  _vm.bannerList?.length ?? 0,
-                  (index) => CachedNetworkImage(
-                        placeholder: (context, url) => Container(
-                          color: CustomColor.very_light_pink_four,
-                        ),
-                        imageUrl: _vm.bannerList[index].mobileUrl ?? "",
-                        //handling error
-                        fit: BoxFit.cover,
-                        errorWidget: (context, url, error) => Container(
-                          color: CustomColor.very_light_pink_four,
-                        ),
-                      )),
-              isLoop: true,
-              autoPlayInterval: 3000),
-    );
-  }
+  _buildImageSlider() => Container(
+        height: context.screenHeight / 5,
+        child: _vm.bannerList == null || _vm.bannerList.isEmpty
+            ? _buildEmptyContainer()
+            : ImageSlideshow(
+                initialPage: 0,
+                indicatorColor: CustomColor.theme_bar_gradient_2,
+                indicatorBackgroundColor: Colors.grey,
+                children: List.generate(
+                    _vm.bannerList?.length,
+                    (index) => CachedNetworkImage(
+                          placeholder: (context, url) => _buildEmptyContainer(),
+                          imageUrl: _vm.bannerList[index].mobileUrl ?? "",
+                          //handling error
+                          fit: BoxFit.cover,
+                          errorWidget: (context, url, error) => _buildEmptyContainer(),
+                        )),
+                isLoop: true,
+                autoPlayInterval: 3000),
+      );
+
+  _buildEmptyContainer() => Container(
+        color: CustomColor.very_light_pink_four,
+      );
 
   _buildBorderCorner() => Positioned(
         top: context.screenHeight / 5.3,
@@ -232,5 +209,8 @@ class _HomeState extends BaseState<Home> {
         });
       }
     }
+    handleApiState(_vm.getBasicInfoApiState, isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getAnnouncementApiState, isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getBannerApiState, isAutoHideLoading: false, onSuccess: () {});
   }
 }

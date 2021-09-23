@@ -67,7 +67,7 @@ class GameViewItemState extends BaseState<GameViewItem> {
                             right: _itemPaddingRight,
                             top: _itemPaddingTop,
                             bottom: _itemPaddingBottom),
-                        child: GestureDetector(onTap: () => widget.onGameClick(item), child: _buildImageLayout(item))))
+                        child: _buildImageLayout(item)))
                     .toList()),
           )),
     );
@@ -80,55 +80,62 @@ class GameViewItemState extends BaseState<GameViewItem> {
     return imagePath;
   }
 
-  _buildImageLayout(GameProvider2 gameProvider) => Stack(
-        children: [
-          AspectRatio(
-            aspectRatio: _imageRatio,
-            child: gameProvider.status != 0
-                ? ColorFiltered(
-                    colorFilter: ColorFilter.mode(
-                      Colors.grey,
-                      BlendMode.saturation,
-                    ),
-                    child: _buildImage(gameProvider))
-                : _buildImage(gameProvider),
-          ),
-          Positioned(
-            bottom: context.screenWidth / 30,
-            left: context.screenWidth / 12,
-            child: Container(
-              width: 74.auto,
-              alignment: Alignment.center,
-              padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-              decoration: BoxDecoration(image: DecorationImage(image: AssetImage("images/game/btn_start_game.png"))),
-              child: FittedBox(
-                fit: BoxFit.cover,
-                child: AutoSizeText(
-                  getTranslatedText("start_game"),
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
-                  minFontSize: 5,
-                  maxFontSize: 11,
-                  stepGranularity: 1,
-                ),
-              ),
-            ),
-          ),
-          Visibility(
-            visible: gameProvider.status != 0,
-            child: AspectRatio(
+  _buildImageLayout(GameProvider2 gameProvider) => GestureDetector(
+        onTap: () {
+          if (gameProvider.status != 0) {
+          } else
+            widget.onGameClick(gameProvider);
+        },
+        child: Stack(
+          children: [
+            AspectRatio(
               aspectRatio: _imageRatio,
+              child: gameProvider.status != 0
+                  ? ColorFiltered(
+                      colorFilter: ColorFilter.mode(
+                        Colors.black,
+                        BlendMode.saturation,
+                      ),
+                      child: _buildImage(gameProvider))
+                  : _buildImage(gameProvider),
+            ),
+            Positioned(
+              bottom: context.screenWidth / 30,
+              left: context.screenWidth / 12,
               child: Container(
-                decoration: BoxDecoration(color: Colors.black54.withOpacity(0.65)),
-                child: Center(
-                  child: Text('维护中',
-                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20.auto)),
+                width: 74.auto,
+                alignment: Alignment.center,
+                padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                decoration: BoxDecoration(image: DecorationImage(image: AssetImage("images/game/btn_start_game.png"))),
+                child: FittedBox(
+                  fit: BoxFit.cover,
+                  child: AutoSizeText(
+                    getTranslatedText("start_game"),
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                    minFontSize: 5,
+                    maxFontSize: 11,
+                    stepGranularity: 1,
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+            Visibility(
+              visible: gameProvider.status != 0,
+              child: AspectRatio(
+                aspectRatio: _imageRatio,
+                child: Container(
+                  decoration: BoxDecoration(color: Colors.black.withOpacity(0.4)),
+                  child: Center(
+                    child: Text(getTranslatedText("maintenance"),
+                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18.auto)),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       );
 
   _buildImage(GameProvider2 gameProvider) => Container(

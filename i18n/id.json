@@ -951,5 +951,6 @@
   "payment_channel": "Saluran Pembayaran",
   "auto_transfer": "Transfer otomatis",
   "balance": "Keseimbangan",
-  "email_duplicate": "Alamat email duplikat"
+  "email_duplicate": "Alamat email duplikat",
+  "maintenance": "Pemeliharaan"
 }

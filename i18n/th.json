@@ -950,5 +950,6 @@
   "payment_channel": "ช่องทางการชำระเงิน",
   "auto_transfer": "โอนอัตโนมัติ",
   "balance": "บาลานซ์",
-  "email_duplicate": "ที่อยู่อีเมลซ้ำกัน"
+  "email_duplicate": "ที่อยู่อีเมลซ้ำกัน",
+  "maintenance": "การบำรุงรักษา"
 }

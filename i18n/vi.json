@@ -950,5 +950,6 @@
   "payment_channel": "Kênh thanh toán",
   "auto_transfer": "Tự động chuyển",
   "balance": "Số dư",
-  "email_duplicate": "Địa chỉ email trùng lặp"
+  "email_duplicate": "Địa chỉ email trùng lặp",
+  "maintenance": "Đang bảo trì"
 }

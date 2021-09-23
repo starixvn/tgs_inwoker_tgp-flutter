@@ -11,6 +11,7 @@ import 'package:tgp_flutter/route_path.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
+import 'package:tgp_flutter/ui/blacklisted_user/blacklisted_user.dart';
 import 'package:tgp_flutter/ui/card/add_card.dart';
 import 'package:tgp_flutter/ui/card/main_card.dart';
 import 'package:tgp_flutter/ui/customer_service/customer_service.dart';
@@ -179,6 +180,7 @@ class _MyAppState extends BaseState<MyApp> {
                   RoutePath.csWebView: (context) => CustomerServiceWebView(),
                   RoutePath.csQrCode: (context) => CustomerServiceQrCode(),
                   RoutePath.maintenance: (context) => Maintenance(),
+                  RoutePath.blacklistedUser: (context) => BlacklistedUser(),
                 },
                 localizationsDelegates: [
                   MyLocalizations.delegate,

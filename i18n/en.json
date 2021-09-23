@@ -963,5 +963,6 @@
   "payment_channel": "Payment Channel",
   "auto_transfer": "Auto-Transfer",
   "balance": "Balance",
-  "email_duplicate": "Email is duplicated"
+  "email_duplicate": "Email is duplicated",
+  "maintenance": "Maintenance"
 }

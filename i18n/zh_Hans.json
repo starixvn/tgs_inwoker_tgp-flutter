@@ -950,5 +950,6 @@
   "payment_channel": "支付渠道",
   "auto_transfer": "自动转账",
   "balance": "总资金",
-  "email_duplicate": "邮箱地址重复"
+  "email_duplicate": "邮箱地址重复",
+  "maintenance": "维护中"
 }

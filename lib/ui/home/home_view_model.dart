@@ -25,7 +25,11 @@ class HomeViewModel extends BaseViewModel {
 
   get balance => userRepo.wallet.main;
   bool isNotLogin = false, isExpired = false;
-  var getWalletBalanceApiState, getBasicInfoApiState, getAnnouncementApiState, getApiErrorLocalizationApiState, getBannerApiState;
+  var getWalletBalanceApiState,
+      getBasicInfoApiState,
+      getAnnouncementApiState,
+      getApiErrorLocalizationApiState,
+      getBannerApiState;
   Announcement announcement;
   double gameBalance = 0.0, totalBalance;
   List<HomeBanner> bannerList;
@@ -36,7 +40,7 @@ class HomeViewModel extends BaseViewModel {
     var token = prefs.getString("token");
     if (token != null) {
       print(token);
-      await userRepo.getBasicInfo();
+      await getUserInfo();
       await userRepo.getWalletBalance();
       await _computeTotalBalance();
       if (userProfile == null) isExpired = true;
@@ -56,8 +60,10 @@ class HomeViewModel extends BaseViewModel {
     setLoading();
     getAnnouncementApiState = await contentRepo.getAnnouncement();
     if (getAnnouncementApiState.isSuccess) {
-      if(getAnnouncementApiState.result.isEmpty) announcement = getAnnouncementApiState.result;
-     else  announcement = getAnnouncementApiState.result?.first ;
+      if (getAnnouncementApiState.result.isEmpty)
+        announcement = getAnnouncementApiState.result;
+      else
+        announcement = getAnnouncementApiState.result?.first;
     }
     setLoading(false);
     return getAnnouncementApiState;
@@ -75,7 +81,7 @@ class HomeViewModel extends BaseViewModel {
       task.add(_getGameWalletBalance(game));
     });
     await Future.wait(task);
-    totalBalance = balance+gameBalance;
+    totalBalance = balance + gameBalance;
     notifyListeners();
   }
 
@@ -87,7 +93,7 @@ class HomeViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  getBanner() async{
+  getBanner() async {
     setLoading();
     getBannerApiState = await contentRepo.getBanner();
     if (getBannerApiState.isSuccess) {
@@ -95,5 +101,12 @@ class HomeViewModel extends BaseViewModel {
     }
     setLoading(false);
     return getBannerApiState;
+  }
+
+  getUserInfo() async {
+    setLoading();
+    getBasicInfoApiState = await userRepo.getBasicInfo();
+    setLoading(false);
+    return getBasicInfoApiState;
   }
 }
