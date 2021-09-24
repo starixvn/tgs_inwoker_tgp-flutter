@@ -196,7 +196,7 @@ class _RegisterContentState extends BaseState<RegisterContent> {
       } else {
         WidgetsBinding.instance.addPostFrameCallback((_) {
            ProgressDialog.show(context, _vm.brandLogoUrl);
-           _vm.register(username.text, password.text, confirmPassword.text, "CNY", invitationCode.text);
+           _vm.register(username.text, password.text, confirmPassword.text, invitationCode.text);
         });
       }
     });

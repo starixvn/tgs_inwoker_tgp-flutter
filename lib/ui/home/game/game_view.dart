@@ -51,37 +51,37 @@ class _GameViewState extends BaseState<GameView> {
           return _vm.gameProviderList == null
               ? buildProgressDialog(_vm.brandLogoUrl)
               : Expanded(
-                  child: Container(
-                    margin: EdgeInsets.only(left: 10.auto, right: 10.auto, bottom: 5.auto),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        FittedBox(
-                          fit: BoxFit.fitHeight,
-                          child: Container(
-                            margin: EdgeInsets.only(right: 10.auto, bottom: 5.auto),
-                            child: Column(
-                              children: List.generate(_vm.gameTypeList.length, (index) {
-                                return Container(
-                                  margin: EdgeInsets.only(top: 8.auto),
-                                  child: _buildGameTab(index, _vm.gameTypeList[index].getName(context)),
-                                );
-                              }),
-                            ),
-                          ),
-                        ),
-                        Container(
-                          child: GameViewItem(
-                            gameViewItem,
-                            controller: _controller,
-                            gameProviderList: _vm.gameProviderList,
-                            onGameClick: (game) => _onGameClick(game),
-                          ),
-                        )
-                      ],
+            child: Container(
+              margin: EdgeInsets.only(left: 10.auto, right: 10.auto, bottom: 5.auto),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  FittedBox(
+                    fit: BoxFit.fitHeight,
+                    child: Container(
+                      margin: EdgeInsets.only(right: 10.auto, bottom: 5.auto),
+                      child: Column(
+                        children: List.generate(_vm.gameTypeList.length, (index) {
+                          return Container(
+                            margin: EdgeInsets.only(top: 8.auto),
+                            child: _buildGameTab(index, _vm.gameTypeList[index].getName(context)),
+                          );
+                        }),
+                      ),
                     ),
                   ),
-                );
+                  Container(
+                    child: GameViewItem(
+                      gameViewItem,
+                      controller: _controller,
+                      gameProviderList: _vm.gameProviderList,
+                      onGameClick: (game) => _onGameClick(game),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          );
         });
   }
 
@@ -100,23 +100,23 @@ class _GameViewState extends BaseState<GameView> {
         padding: EdgeInsets.all(3.auto),
         child: Center(
             child: AutoSizeText(
-          title,
-          style: TextStyle(
-              fontSize: 17,
-              shadows: [
-                tabIndex == currentTabIndex
-                    ? Shadow(
-                        blurRadius: 1.5,
-                        color: Colors.black,
-                        offset: Offset(0, 2.0),
-                      )
-                    : Shadow(),
-              ],
-              color: tabIndex == currentTabIndex ? CustomColor.theme_label_text_highlight_color : Colors.black),
-          minFontSize: 10,
-          stepGranularity: 1,
-          textAlign: TextAlign.center,
-        )),
+              title,
+              style: TextStyle(
+                  fontSize: 17,
+                  shadows: [
+                    tabIndex == currentTabIndex
+                        ? Shadow(
+                      blurRadius: 1.5,
+                      color: Colors.black,
+                      offset: Offset(0, 2.0),
+                    )
+                        : Shadow(),
+                  ],
+                  color: tabIndex == currentTabIndex ? CustomColor.theme_label_text_highlight_color : Colors.black),
+              minFontSize: 10,
+              stepGranularity: 1,
+              textAlign: TextAlign.center,
+            )),
       ),
     );
   }
@@ -158,16 +158,17 @@ class _GameViewState extends BaseState<GameView> {
     if (_vm.userProfile == null) {
       showDialog(
         context: context,
-        builder: (BuildContext context) => CustomDialog(
-          title: getTranslatedText("login_hint"),
-          description: getTranslatedText("login_dialog_des"),
-          buttonText1: getTranslatedText("login_or_signup"),
-          buttonText2: getTranslatedText("got_it"),
-          onClick: this.navigateToLogin,
-          onClick2: () {
-            Navigator.pop(context);
-          },
-        ),
+        builder: (BuildContext context) =>
+            CustomDialog(
+              title: getTranslatedText("login_hint"),
+              description: getTranslatedText("login_dialog_des"),
+              buttonText1: getTranslatedText("login_or_signup"),
+              buttonText2: getTranslatedText("got_it"),
+              onClick: this.navigateToLogin,
+              onClick2: () {
+                Navigator.pop(context);
+              },
+            ),
       );
     } else
       _navigate(gameProvider.code, gameProvider.gameType);
@@ -180,31 +181,38 @@ class _GameViewState extends BaseState<GameView> {
   }
 
   _navigate(String gamePlatformCode, GameType gameType) async {
+    var id;
     if (gameType == GameType.Slot || gameType == GameType.EGame || gameType == GameType.Fishing) {
       //navigate to child game
       WidgetsBinding.instance.addPostFrameCallback((_) {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => ChildGame(
+                builder: (context) =>
+                    ChildGame(
                       gamePlatformCode: gamePlatformCode,
                       gameType: gameType,
                     )));
       });
-    } else {
-      //navigate to game web
-      /*ProgressDialog.show(context, _vm.brandLogoUrl);
+    } else if (gameType == GameType.Lottery || gameType == GameType.LotteryLobby) {
+      //only tcg will need to get gamelist
       await _vm.getGameList(gamePlatformCode, gameType);
-      ProgressDialog.hide();*/
       WidgetsBinding.instance.addPostFrameCallback((_) {
         Navigator.push(context,
-            MaterialPageRoute(builder: (context) => GameWeb(gamePlatformCode: gamePlatformCode, gameType: gameType)));
+            MaterialPageRoute(
+                builder: (context) => GameWeb(gamePlatformCode: gamePlatformCode, gameType: gameType, gameId: _vm.gameListMap[gamePlatformCode].first.id, )));
+      });
+    } else {
+      //navigate to game web
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => GameWeb(gamePlatformCode: gamePlatformCode, gameType: gameType,)));
       });
     }
   }
 
-  _handleApiState() {
-    handleApiState(_vm.getGameProviderListApiState, isAutoHideLoading: false, onSuccess: () {});
-    handleApiState(_vm.getGameApiState, onSuccess: () {});
+    _handleApiState() {
+      handleApiState(_vm.getGameProviderListApiState, isAutoHideLoading: false, onSuccess: () {});
+      handleApiState(_vm.getGameApiState, onSuccess: () {});
+    }
   }
-}

@@ -44,7 +44,7 @@ class _GameWebState extends BaseState<GameWeb> {
     lobbyUrl =
         "http://gci.aggdemo.com:81/forwardGame.do?params=4DJlwdGL1cWclbwxZFKgtr6rJmU8Mqe0y4VXswlHs8uWLV/LAwtfY9/SYLWTh/MBrOQNAdd/nZiuIaXx1/ZDX71ziYHXpHj9WeekhidF60CbLBd9VFlD9EYcWQOX7ALM/w3Ww5Yy86wEsd/IgnUTGwU7vX+3btJezXPCNriz+iYgg9d9jU6yEAXdEN0H7L/tkDdt8IWJGjAqQ2334aF5vlPc2f7DCzM7&key=8dc57f4377fc86da1d0d9e47495993e0";
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (widget.gameType == null)
+      if (widget.gameType == null|| widget.gameId == 1800001 || widget.gameId == 1800002 || widget.gameId == 1800003)
         _vm.getGameUrl(widget.gamePlatformCode, widget.gameId, lobbyUrl);
       else
         _vm.getLobbyGameUrl(widget.gamePlatformCode, widget.gameType, lobbyUrl);
@@ -172,7 +172,7 @@ class _GameWebState extends BaseState<GameWeb> {
 
   _loadWebView() {
     isLoading = true;
-    if (widget.gameType == null)
+    if (widget.gameType == null || widget.gameId == 1800001 || widget.gameId == 1800002 || widget.gameId == 1800003 )
       _vm.getGameUrl(widget.gamePlatformCode, widget.gameId, lobbyUrl);
     else
       _vm.getLobbyGameUrl(widget.gamePlatformCode, widget.gameType, lobbyUrl);

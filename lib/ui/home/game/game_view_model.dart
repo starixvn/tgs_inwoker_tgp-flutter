@@ -81,11 +81,8 @@ class GameViewModel extends BaseViewModel {
     setLoading();
     var getGameApiState = await contentRepo.getGameList(gamePlatformCode, gameType);
     if (getGameApiState.isSuccess) {
-      gameListMap[gamePlatformCode] = getGameApiState.result.map((e) {
-        e.localizedName = LanguageProvider().getTranslated(_context, e.code);
-        return e;
-      }).toList();
-      await _getFavoriteGame(gameType);
+      gameListMap[gamePlatformCode] = getGameApiState.result;
+      if(gameType == GameType.Slot || gameType == GameType.EGame || gameType == GameType.Fishing)await _getFavoriteGame(gameType);
     } //else getGameApiState = _apiState;
     setLoading(false);
     return getGameApiState;

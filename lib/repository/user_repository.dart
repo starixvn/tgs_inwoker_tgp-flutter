@@ -17,6 +17,7 @@ import 'package:tgp_flutter/entity/status.dart';
 import 'package:tgp_flutter/entity/user_profile.dart';
 import 'package:tgp_flutter/entity/main_wallet.dart';
 import 'package:tgp_flutter/entity/withdrawal_info.dart';
+import 'package:tgp_flutter/environment_config.dart';
 import 'package:tgp_flutter/network/api_request_builder.dart';
 import 'package:tgp_flutter/network/event_result.dart';
 import 'package:tgp_flutter/network/services/api_service.dart';
@@ -51,13 +52,13 @@ class UserRepository extends BaseRepository {
   }
 
   Future<EventResult<RegisterResponse>> register(
-      String username, String password, String rpassword, String currency, String invitationCode) async {
+      String username, String password, String rpassword, String invitationCode) async {
     return await ApiRequestBuilder<RegisterResponse>(
             isAuthorization: false,
             endPoint: "api/Player/create",
             params: {
               "username": username,
-              "currency": currency,
+              "currency": EnvironmentConfig.currency,
               "pwd": password,
               "confirmpwd": rpassword,
               "invitationcode": invitationCode,

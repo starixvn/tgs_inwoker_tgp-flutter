@@ -94,7 +94,7 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            CachedNetworkImage(
+            url ==null?Container():CachedNetworkImage(
               placeholder: (context, url) => Container(),
               imageUrl: url,
               //handling error

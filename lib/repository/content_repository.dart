@@ -13,6 +13,7 @@ import 'package:tgp_flutter/entity/promotion.dart';
 import 'package:tgp_flutter/entity/response/game_url_response.dart';
 import 'package:tgp_flutter/entity/response/list_response.dart';
 import 'package:tgp_flutter/entity/user_profile.dart';
+import 'package:tgp_flutter/environment_config.dart';
 import 'package:tgp_flutter/localizations/language_provider.dart';
 import 'package:tgp_flutter/network/api_request_builder.dart';
 import 'package:tgp_flutter/network/event_result.dart';
@@ -47,7 +48,7 @@ class ContentRepository extends BaseRepository {
             params: {
               "platformtype": "1",
               "language": await getLanguage(),
-              "currency": "CNY",
+              "currency": EnvironmentConfig.currency,
             },
             converter: (json) => (json as List<dynamic>).map((e) => GameProvider.fromJson(e)).toList(),
             consumer: (result) => setRepoValues(() {
@@ -67,7 +68,7 @@ class ContentRepository extends BaseRepository {
               "gametypes": gameType.getJsonValue.toString(),
               "platformtype": "1",
               "language": await getLanguage(),
-              "currency": "CNY"
+              "currency": EnvironmentConfig.currency
             },
             converter: (json) => (json as List<dynamic>).map((e) => Game.fromJson(e)).toList(),
             jwtRefresher: jwtAuth)
