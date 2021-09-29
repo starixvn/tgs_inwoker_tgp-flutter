@@ -953,5 +953,9 @@
   "balance": "Keseimbangan",
   "email_duplicate": "Alamat email duplikat",
   "maintenance": "Pemeliharaan",
-  "play_pay_hint_text": "Sistem akan menambahkan desimal acak setelah jumlah yang Anda masukkan untuk mengidentifikasi pesanan"
+  "play_pay_hint_text": "Sistem akan menambahkan desimal acak setelah jumlah yang Anda masukkan untuk mengidentifikasi pesanan",
+  "phone_re-verify": "Verifikasi ulang SMS",
+  "username": "nama pengguna",
+  "password": "kata sandi",
+  "area_code": "Kode area"
 }

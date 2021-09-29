@@ -67,7 +67,7 @@ class _WithdrawState extends BaseState<Withdraw> {
                           _buildEditBankItem(),
                           _buildBankPicker(),
                           _buildTextField("amount", "enter_withdraw_amount", _amountController, true),
-                          _buildTextField("pay_password", "enter_pay_password", _payPasswordController, false),
+                          //_buildTextField("pay_password", "enter_pay_password", _payPasswordController, false),
                           _buildHintText(),
                           _buildButton(),
                           //_buildCustomerServiceText()

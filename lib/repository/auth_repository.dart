@@ -57,7 +57,8 @@ class AuthenticationRepository extends BaseRepository {
             params: {
               "email": phone,
             },
-            jwtRefresher: jwtAuth)
+            jwtRefresher: jwtAuth,
+            timeout: 10)
         .execute();
   }
 
@@ -90,4 +91,23 @@ class AuthenticationRepository extends BaseRepository {
             jwtRefresher: jwtAuth)
         .execute();
   }
+
+
+  Future<EventResult<dynamic>> getReVerifyCode(String username, String password, String areaCode, String phone) async {
+    return await ApiRequestBuilder<dynamic>(
+        endPoint: "api/player/init-phone",
+        params: {"username": username, "pwd": password, "areacode": areaCode, "phone": phone},
+        jwtRefresher: jwtAuth)
+        .execute();
+  }
+
+  Future<EventResult<dynamic>> phoneReVerify(String securityKey, validateCode) async {
+    return await ApiRequestBuilder<dynamic>(
+        method: HttpMethod.PUT,
+        endPoint: "api/player/init-phone",
+        params: {"securitykey": securityKey, "validatecode": validateCode},
+        jwtRefresher: jwtAuth)
+        .execute();
+  }
+
 }

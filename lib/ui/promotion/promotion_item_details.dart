@@ -8,6 +8,7 @@ import 'package:tgp_flutter/entity/promotion.dart';
 import 'package:tgp_flutter/extension/format.dart';
 import 'package:tgp_flutter/localizations/language_provider.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
+import 'package:tgp_flutter/route_path.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
@@ -48,16 +49,17 @@ class _PromotionItemDetailsState extends BaseState<PromotionItemDetails> {
               Format().dateTimeFormat(widget.promotion.from) +
               " - " +
               Format().dateTimeFormat(widget.promotion.to)),
-          _buildPromotionContentText(parseHtmlString(widget.promotion.content ?? widget.promotion.localization.content)),
+          _buildPromotionContentText(
+              parseHtmlString(widget.promotion.content ?? widget.promotion.localization.content)),
           _buildPromotionTermsText(widget.promotion.terms),
           _buildJoinButton()
         ],
       ),
     );
   }
-  
-  _replace(String text){
-    return  text.replaceAll("\n", "").replaceAll("\\", "") ;
+
+  _replace(String text) {
+    return text.replaceAll("\n", "").replaceAll("\\", "");
   }
 
   _buildAppBar() => AppBar(
@@ -66,7 +68,7 @@ class _PromotionItemDetailsState extends BaseState<PromotionItemDetails> {
         flexibleSpace: Container(
           decoration: gradientDecoration,
         ),
-          title: Text(
+        title: Text(
           getTranslatedText("promotion_center"),
           style: TextStyle(fontSize: 20.auto),
         ),
@@ -79,7 +81,7 @@ class _PromotionItemDetailsState extends BaseState<PromotionItemDetails> {
       );
 
   _buildJoinButton() => Container(
-        margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 15.auto),
+        margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 15.auto, bottom: 20.auto),
         child: ColorButton(
           text: Text(
             getTranslatedText("join"),
@@ -100,6 +102,7 @@ class _PromotionItemDetailsState extends BaseState<PromotionItemDetails> {
     return imageUrl == null || imageUrl.isEmpty
         ? Container()
         : CachedNetworkImage(
+            height: 150.auto,
             placeholder: (context, url) => Container(
                   color: CustomColor.very_light_pink_four,
                 ),
@@ -117,9 +120,11 @@ class _PromotionItemDetailsState extends BaseState<PromotionItemDetails> {
         Navigator.of(context).pushNamed("/login");
       });
       return;
+    }else{
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.of(context).pushNamed(RoutePath.deposit);
+      });
     }
-    ProgressDialog.show(context, widget.vm.brandLogoUrl);
-    widget.vm.joinPromotion(widget.promotion.id);
   }
 
   _buildPromotionText(String displayText) => Container(
@@ -128,20 +133,20 @@ class _PromotionItemDetailsState extends BaseState<PromotionItemDetails> {
       );
 
   _buildPromotionContentText(String displayText) => Container(
-    margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 15.auto),
-    child: Text(displayText,
-    style: TextStyle(
-      color: CustomColor.theme_bar_gradient_1
-    ),),
-  );
+        margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 15.auto),
+        child: Text(
+          displayText,
+          style: TextStyle(color: CustomColor.theme_bar_gradient_1),
+        ),
+      );
 
   _buildPromotionTermsText(String displayText) => Container(
         margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 15.auto),
         child: RichText(
             text: HTML.toTextSpan(
           context,
-          displayText,
-              defaultTextStyle: TextStyle(fontSize: 12.auto),
+          displayText ?? "",
+          defaultTextStyle: TextStyle(fontSize: 12.auto),
           overrideStyle: <String, TextStyle>{
             'p': TextStyle(fontSize: 15.auto),
             'span': TextStyle(fontSize: 15.auto),

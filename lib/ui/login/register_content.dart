@@ -6,14 +6,17 @@ import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/custom/custom_toast.dart';
 import 'package:tgp_flutter/custom/gradient_button.dart';
 import 'package:tgp_flutter/data/provider/input_validation_provider.dart';
+import 'package:tgp_flutter/environment_config.dart';
 import 'package:tgp_flutter/localizations/language_provider.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
+import 'package:tgp_flutter/route_path.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
 import 'package:tgp_flutter/ui/home/home.dart';
 import 'package:tgp_flutter/ui/login/login_password_text_form_field.dart';
 import 'package:tgp_flutter/ui/login/login_text_form_field.dart';
 import 'package:tgp_flutter/ui/login/login_view_model.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
+import 'package:tgp_flutter/ui/login/phone_re_verification/phone_re_verification.dart';
 import 'dart:math' as math;
 
 import '../../src/custom_color.dart';
@@ -25,12 +28,13 @@ class RegisterContent extends StatefulWidget {
 
 class _RegisterContentState extends BaseState<RegisterContent> {
   bool _obscurePassword = true, _obscureConfirmPassword = true;
-  var username = TextEditingController();
-  var password = TextEditingController();
-  var confirmPassword = TextEditingController();
-  var pay = TextEditingController();
-  var confirmPay = TextEditingController();
-  var invitationCode = TextEditingController();
+  var username = TextEditingController(),
+      password = TextEditingController(),
+      confirmPassword = TextEditingController(),
+      pay = TextEditingController(),
+      confirmPay = TextEditingController(),
+      invitationCode = TextEditingController(),
+      phone = TextEditingController();
   InputValidationProvider validate = new InputValidationProvider();
   LoginViewModel _vm = LoginViewModel();
 
@@ -47,8 +51,10 @@ class _RegisterContentState extends BaseState<RegisterContent> {
               _buildPasswordTextFormField(),
               _buildConfirmPasswordTextFormField(),
               //_buildPayPasswordTextFormField(),
+              //_buildPhoneTextFormField(),
               _buildPromotionCodeTextFormField(),
-              _buildRegisterButton()
+              _buildRegisterButton(),
+              _buildPhoneReVerifyButton()
             ],
           ),
         );
@@ -129,6 +135,24 @@ class _RegisterContentState extends BaseState<RegisterContent> {
         ),
       );
 
+  _buildPhoneTextFormField() => Container(
+        margin: EdgeInsets.only(top: 10.auto),
+        child: LoginTextFormField(
+          icon: Image.asset(
+            "images/profile_info/ic_profile_info_phone.png",
+            height: 20.auto,
+            color: CustomColor.black,
+          ),
+          hintText: getTranslatedText("phone_number"),
+          onChanged: (value) => null,
+          onFieldSubmitted: (value) => null,
+          controller: pay,
+          width: context.screenWidth,
+          textInputType: TextInputType.text,
+          textInputAction: TextInputAction.next,
+        ),
+      );
+
   _buildPromotionCodeTextFormField() => Container(
         margin: EdgeInsets.only(top: 10.auto),
         child: LoginTextFormField(
@@ -147,7 +171,7 @@ class _RegisterContentState extends BaseState<RegisterContent> {
       );
 
   _buildRegisterButton() => Container(
-        margin: EdgeInsets.only(top: 70.auto, bottom: 10.auto),
+        margin: EdgeInsets.only(top: 50.auto, bottom: 10.auto),
         child: GradientButton(
           title: getTranslatedText("register"),
           onClick: () {
@@ -159,12 +183,32 @@ class _RegisterContentState extends BaseState<RegisterContent> {
         ),
       );
 
+  _buildPhoneReVerifyButton() => Visibility(
+        visible: EnvironmentConfig.appTitleName == "HKJP",
+        child: Container(
+          margin: EdgeInsets.only(bottom: 10.auto),
+          child: ColorButton(
+            text: Text(
+              getTranslatedText("phone_re-verify"),
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.white, fontSize: 16.auto),
+            ),
+            onClick: () => _navigateToPhoneReVerification(),
+            isEnabled: true,
+            radius: 2.9,
+            height: 44.5,
+            color: CustomColor.theme_button_disable_bg,
+            padding: MaterialStateProperty.all(EdgeInsets.zero),
+          ),
+        ),
+      );
+
   _register() {
-    if (!validate.validateUsernameLength(username.text)||!validate.validateUsernamePassword(username.text)) {
+    if (!validate.validateUsernameLength(username.text) || !validate.validateUsernamePassword(username.text)) {
       setState(() {
         CustomToast.show(getTranslatedText("enter_username_error_message"));
       });
-    } else if (!validate.validatePasswordLength(password.text)|| !validate.validateUsernamePassword(password.text)) {
+    } else if (!validate.validatePasswordLength(password.text) || !validate.validateUsernamePassword(password.text)) {
       setState(() {
         CustomToast.show(getTranslatedText("enter_password_error_msg"));
       });
@@ -176,7 +220,7 @@ class _RegisterContentState extends BaseState<RegisterContent> {
       setState(() {
         CustomToast.show(getTranslatedText("confirm_pay_error_msg"));
       });
-    }else {
+    } else {
       ProgressDialog.show(context, _vm.brandLogoUrl);
       _checkUsername();
     }
@@ -188,15 +232,18 @@ class _RegisterContentState extends BaseState<RegisterContent> {
 
   _handleApiState() {
     handleApiState(_vm.registerApiState, onSuccess: () {
-      _navigateToHome();
+      if (EnvironmentConfig.appTitleName == "HKJP")
+        _navigateToPhoneReVerification(username: username.text, password: password.text);
+      else
+        _navigateToHome();
     });
     handleApiState(_vm.checkUsernameApiState, isRequireResult: true, onSuccess: (result) {
       if (result.isExist) {
-          CustomToast.show(getTranslatedText("username_exist"));
+        CustomToast.show(getTranslatedText("username_exist"));
       } else {
         WidgetsBinding.instance.addPostFrameCallback((_) {
-           ProgressDialog.show(context, _vm.brandLogoUrl);
-           _vm.register(username.text, password.text, confirmPassword.text, invitationCode.text);
+          ProgressDialog.show(context, _vm.brandLogoUrl);
+          _vm.register(username.text, password.text, confirmPassword.text, invitationCode.text);
         });
       }
     });
@@ -204,7 +251,19 @@ class _RegisterContentState extends BaseState<RegisterContent> {
 
   _navigateToHome() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Navigator.of(context).pushNamed("/home");
+      Navigator.of(context).pushNamed(RoutePath.home);
+    });
+  }
+
+  _navigateToPhoneReVerification({String username = "", String password = ""}) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => PhoneReVerification(
+                    username: username,
+                    password: password,
+                  )));
     });
   }
 }

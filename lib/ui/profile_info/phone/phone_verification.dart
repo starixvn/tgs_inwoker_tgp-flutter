@@ -20,7 +20,7 @@ class PhoneVerification extends StatefulWidget {
 class _PhoneVerificationState extends BaseState<PhoneVerification> {
   var _vm = PhoneVerificationViewModel();
   TextEditingController _phoneController = TextEditingController(), _otpController = TextEditingController();
-  var isButtonEnabled = false, isOtpEnabled = false, isTextFieldEnabled = false;
+  var isButtonEnabled = false, isOtpEnabled = false, isTextFieldEnabled = false, isOtpCountdown = false;
   var buttonText;
   InputValidationProvider validate = new InputValidationProvider();
 
@@ -95,14 +95,20 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
           child: Container(
             margin: EdgeInsets.only(top: 15.auto),
             child: OtpTextFormField(
-              hintText: getTranslatedText("enter_email_otp_hint"),
-              onChanged: (value) => _onTextChange(),
-              controller: _otpController,
-              textInputAction: TextInputAction.done,
-              getOtpCode: () {
-                _getSmsCode();
-              },
-            ),
+                hintText: getTranslatedText("enter_email_otp_hint"),
+                onChanged: (value) => _onTextChange(),
+                controller: _otpController,
+                textInputAction: TextInputAction.done,
+                getOtpCode: () {
+                  _getSmsCode();
+                },
+                isCountdown: isOtpCountdown,
+                isEnabled: isOtpEnabled,
+                onCountDownEnd: () => {
+                      setState(() {
+                        isOtpCountdown = false;
+                      })
+                    }),
           ),
         ),
       );
@@ -130,6 +136,7 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
         isButtonEnabled = true;
       } else if (_phoneController.text.isNotEmpty) {
         isOtpEnabled = true;
+        isButtonEnabled = false;
       } else {
         isOtpEnabled = false;
         isButtonEnabled = false;

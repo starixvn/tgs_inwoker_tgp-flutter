@@ -24,6 +24,7 @@ import 'package:tgp_flutter/ui/home/home.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/ui/language/language_view.dart';
 import 'package:tgp_flutter/ui/login/login.dart';
+import 'package:tgp_flutter/ui/login/phone_re_verification/phone_re_verification.dart';
 import 'package:tgp_flutter/ui/maintenance/maintenance.dart';
 import 'package:tgp_flutter/ui/menu/menu.dart';
 import 'package:flutter/services.dart';
@@ -181,6 +182,7 @@ class _MyAppState extends BaseState<MyApp> {
                   RoutePath.csQrCode: (context) => CustomerServiceQrCode(),
                   RoutePath.maintenance: (context) => Maintenance(),
                   RoutePath.blacklistedUser: (context) => BlacklistedUser(),
+                  RoutePath.phoneReVerification: (context) => PhoneReVerification(),
                 },
                 localizationsDelegates: [
                   MyLocalizations.delegate,

@@ -27,6 +27,20 @@ class InputValidationProvider{
     ).hasMatch(phone);
   }
 
+  validateMalaysiaPhoneNumber(String phone){
+    return RegExp("^(\\+?6?01)[02-46-9]-*[0-9]{7}\$|^(\\+?6?01)[1]-*[0-9]{8}\$",
+        caseSensitive: true,
+        multiLine: false
+    ).hasMatch(phone);
+  }
+
+  validateThaiPhoneNumber(String phone){
+    return RegExp("^(\\+?66)(\\d{1,2}\-?\\d{3,4}\-?\\d{3,4})\$",
+        caseSensitive: true,
+        multiLine: false
+    ).hasMatch(phone);
+  }
+
   validateEmail(String email){
     return RegExp(r"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$",
         caseSensitive: true,

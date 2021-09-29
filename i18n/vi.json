@@ -952,5 +952,9 @@
   "balance": "Số dư",
   "email_duplicate": "Địa chỉ email trùng lặp",
   "maintenance": "Đang bảo trì",
-  "play_pay_hint_text": "Hệ thống sẽ thêm một số thập phân ngẫu nhiên sau số tiền bạn nhập để xác định đơn hàng"
+  "play_pay_hint_text": "Hệ thống sẽ thêm một số thập phân ngẫu nhiên sau số tiền bạn nhập để xác định đơn hàng",
+  "phone_re-verify": "Xác minh lại qua SMS",
+  "username": "tên tài khoản",
+  "password": "mật khẩu mở khóa",
+  "area_code": "mã vùng"
 }

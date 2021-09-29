@@ -25,6 +25,7 @@ class ContentRepository extends BaseRepository {
   static ContentRepository _singleton;
   List<GameProvider> gameProviderList;
   List<LanguageOption> languageOptionList;
+  List<Promotion> promotionList;
   BrandLogo brandLogo;
 
   static ContentRepository getSingleton() {
@@ -116,10 +117,13 @@ class ContentRepository extends BaseRepository {
         .execute();
   }
 
-  Future<EventResult<ListResponse<Promotion>>> getPromotionList(int page, int rows, bool desc, bool all) async {
+  Future<EventResult<ListResponse<Promotion>>> getPromotionList(
+      int page, int rows, bool desc, bool all, bool isUserProfileNotNull) async {
     return await ApiRequestBuilder<ListResponse<Promotion>>(
             method: HttpMethod.GET,
-            endPoint: "api/promotion/${await getLanguage()}",
+            endPoint: isUserProfileNotNull
+                ? "api/promotion/${await getLanguage()}"
+                : "api/playerpromotion/${await getLanguage()}",
             params: {
               "page": page.toString(),
               "rows": rows.toString(),
@@ -128,6 +132,7 @@ class ContentRepository extends BaseRepository {
               "all": all.toString(),
             },
             converter: (json) => ListResponse.fromJson(json, (res) => Promotion.fromJson(res)),
+
             jwtRefresher: jwtAuth)
         .execute();
   }
@@ -138,7 +143,7 @@ class ContentRepository extends BaseRepository {
         .execute();
   }
 
-  Future<EventResult<ListResponse<Promotion>>> getPlayerPromotionList(int page, int rows, bool desc, bool all) async {
+  /*Future<EventResult<ListResponse<Promotion>>> getPlayerPromotionList(int page, int rows, bool desc, bool all) async {
     return await ApiRequestBuilder<ListResponse<Promotion>>(
             method: HttpMethod.GET,
             endPoint: "api/playerpromotion/${await getLanguage()}",
@@ -151,7 +156,7 @@ class ContentRepository extends BaseRepository {
             converter: (json) => ListResponse.fromJson(json, (res) => Promotion.fromJson(res)),
             jwtRefresher: jwtAuth)
         .execute();
-  }
+  }*/
 
   Future<EventResult<List<int>>> getFavoriteGame(GameType gameType) async {
     return await ApiRequestBuilder<List<int>>(
