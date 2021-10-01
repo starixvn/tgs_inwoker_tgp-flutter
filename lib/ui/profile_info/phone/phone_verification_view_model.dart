@@ -4,36 +4,39 @@ import 'package:tgp_flutter/repository/base_repository.dart';
 import 'package:tgp_flutter/repository/content_repository.dart';
 import 'package:tgp_flutter/repository/user_repository.dart';
 
-class PhoneVerificationViewModel extends BaseViewModel{
+class PhoneVerificationViewModel extends BaseViewModel {
   final authRepo = AuthenticationRepository.getSingleton();
   final userRepo = UserRepository.getSingleton();
   final contentRepo = ContentRepository.getSingleton();
-  var phoneVerifyApiState, getSmsCodeApiState;
+  var submitVerifyCodeApiState, getPhoneVerifyCodeApiState;
 
   @override
   List<BaseRepository> get repoList => [];
+
   get userProfile => userRepo.userProfile;
+
   get brandLogoUrl => contentRepo.brandLogo?.mobileUrl;
 
   var securityKey;
 
-  getSmsCode(String phone) async{
+  getPhoneVerifyCode(String area, String phone) async {
     setLoading();
-    getSmsCodeApiState = await authRepo.phoneVerify(phone);
-    if(getSmsCodeApiState.isSuccess){
-      securityKey = getSmsCodeApiState.result;
+    getPhoneVerifyCodeApiState = await authRepo.getPhoneVerifyCode(area, phone);
+    if (getPhoneVerifyCodeApiState.isSuccess) {
+      securityKey = getPhoneVerifyCodeApiState.result;
     }
     setLoading(false);
-    return getSmsCodeApiState;
+    return getPhoneVerifyCodeApiState;
   }
 
-  phoneVerify(String verificationCode) async{
+  submitVerifyCode(int index, String verificationCode) async {
     setLoading();
-    var _status = await authRepo.verifyCode(securityKey, verificationCode, isPhone: true);
-    if(_status.isSuccess){
-      phoneVerifyApiState = await userRepo.getBasicInfo();
-    }else phoneVerifyApiState = _status;
+    var _status = await authRepo.submitVerifyCode(securityKey, verificationCode, isPhone: true);
+    if (_status.isSuccess && index == 1) {
+      submitVerifyCodeApiState = await userRepo.getBasicInfo();
+    } else
+      submitVerifyCodeApiState = _status;
     setLoading(false);
-    return phoneVerifyApiState;
+    return submitVerifyCodeApiState;
   }
 }

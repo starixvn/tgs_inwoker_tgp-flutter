@@ -12,14 +12,11 @@ class LoginViewModel extends BaseViewModel {
   final userRepo = UserRepository.getSingleton();
   final contentRepo = ContentRepository.getSingleton();
   final authRepo = AuthenticationRepository.getSingleton();
-  var logoutApiState,
-      getAllWalletState,
-      phoneReVerifyApiState,
+  var phoneReVerifyApiState,
       getReVerifyCodeApiState,
       loginApiState,
       registerApiState,
       checkUsernameApiState;
-
 
   @override
   List<BaseRepository> get repoList => [userRepo];

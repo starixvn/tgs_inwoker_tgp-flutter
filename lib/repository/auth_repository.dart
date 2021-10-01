@@ -31,7 +31,7 @@ class AuthenticationRepository extends BaseRepository {
         .execute();
   }
 
-  Future<EventResult<dynamic>> verifyCode(String securityKey, String validateCode, {bool isPhone = false}) async {
+  Future<EventResult<dynamic>> submitVerifyCode(String securityKey, String validateCode, {bool isPhone = false}) async {
     return await ApiRequestBuilder<dynamic>(
             method: HttpMethod.PUT,
             endPoint: isPhone ? "api/player/phone" : "api/player/email",
@@ -40,10 +40,11 @@ class AuthenticationRepository extends BaseRepository {
         .execute();
   }
 
-  Future<EventResult<dynamic>> phoneVerify(String phone) async {
+  Future<EventResult<dynamic>> getPhoneVerifyCode(String area, String phone) async {
     return await ApiRequestBuilder<dynamic>(
             endPoint: "api/player/phone",
             params: {
+              "area":area,
               "phone": phone,
             },
             jwtRefresher: jwtAuth)

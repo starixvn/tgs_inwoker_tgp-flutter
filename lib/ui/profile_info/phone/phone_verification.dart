@@ -6,6 +6,7 @@ import 'package:tgp_flutter/custom/custom_toast.dart';
 import 'package:tgp_flutter/custom/otp_text_form_field.dart';
 import 'package:tgp_flutter/data/provider/input_validation_provider.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
+import 'package:tgp_flutter/route_path.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
@@ -36,7 +37,6 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
     return ProviderWidget<PhoneVerificationViewModel>(
         model: _vm,
         builder: (ctx, vm, _) {
-          _handleApiState();
           return Scaffold(
               resizeToAvoidBottomInset: false,
               appBar: _buildAppBar(),
@@ -49,8 +49,8 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
                   children: [
                     //CustomTabBar(index:1),
                     _buildTextFormField(),
-                    _buildOtpTextFormField(),
-                    _buildButton()
+                    _buildButton(),
+                    _buildEditPhoneText()
                   ],
                 ),
               )));
@@ -88,31 +88,6 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
         ),
       );
 
-  _buildOtpTextFormField() => Visibility(
-        visible: _vm.userProfile.phone == null,
-        child: Opacity(
-          opacity: isOtpEnabled ? 1 : 0.4,
-          child: Container(
-            margin: EdgeInsets.only(top: 15.auto),
-            child: OtpTextFormField(
-                hintText: getTranslatedText("enter_email_otp_hint"),
-                onChanged: (value) => _onTextChange(),
-                controller: _otpController,
-                textInputAction: TextInputAction.done,
-                getOtpCode: () {
-                  _getSmsCode();
-                },
-                isCountdown: isOtpCountdown,
-                isEnabled: isOtpEnabled,
-                onCountDownEnd: () => {
-                      setState(() {
-                        isOtpCountdown = false;
-                      })
-                    }),
-          ),
-        ),
-      );
-
   _buildButton() => Container(
       width: context.screenWidth,
       margin: EdgeInsets.only(top: 30.auto, bottom: 20.auto),
@@ -123,12 +98,33 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
           style: TextStyle(color: Colors.white, fontSize: 16.auto),
         ),
         onClick: () {
-          _onClick();
+          //_onClick();
         },
         isEnabled: isButtonEnabled ?? false,
         color: CustomColor.theme_bar_gradient_2,
         radius: 9.6,
       ));
+
+  _buildEditPhoneText() => Wrap(
+        children: [
+          Text(
+            getTranslatedText("edit_phone_cs"),
+          ),
+          InkWell(
+            onTap: () {
+              Navigator.of(context)
+                  .pushNamed(RoutePath.editPhone)
+                  .then((value) => WidgetsBinding.instance.addPostFrameCallback((_) {
+                        _getUserProfile();
+                      }));
+            },
+            child: Text(
+              getTranslatedText("here"),
+              style: TextStyle(decoration: TextDecoration.underline, color: CustomColor.theme_bar_gradient_1),
+            ),
+          ),
+        ],
+      );
 
   _onTextChange() {
     setState(() {
@@ -145,46 +141,19 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
   }
 
   _getUserProfile() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    setState(() {
       var phone = _vm.userProfile.phone;
-      setState(() {
-        if (phone != null) {
-          if (phone.isNotEmpty) {
-            _phoneController.text = phone;
-            buttonText = getTranslatedText("verified");
-            isButtonEnabled = false;
-            isTextFieldEnabled = false;
-          }
-        } else {
-          buttonText = getTranslatedText("done");
-          isTextFieldEnabled = true;
+      if (phone != null) {
+        if (phone.isNotEmpty) {
+          _phoneController.text = phone;
+          buttonText = getTranslatedText("verified");
+          isButtonEnabled = false;
+          isTextFieldEnabled = false;
         }
-      });
-    });
-  }
-
-  _getSmsCode() {
-    if (!validate.validateChinaPhoneNumber(_phoneController.text)) {
-      setState(() {
-        CustomToast.show("手机号码格式不正确");
-      });
-    } else {
-      ProgressDialog.show(context, _vm.brandLogoUrl);
-      _vm.getSmsCode(_phoneController.text);
-    }
-  }
-
-  _onClick() async {
-    ProgressDialog.show(context, _vm.brandLogoUrl);
-    _vm.phoneVerify(_otpController.text);
-  }
-
-  _handleApiState() {
-    handleApiState(_vm.getSmsCodeApiState, onSuccess: () {});
-
-    handleApiState(_vm.phoneVerifyApiState, onSuccess: () {
-      CustomToast.show(getTranslatedText("success"));
-      _getUserProfile();
+      } else {
+        buttonText = getTranslatedText("done");
+        isTextFieldEnabled = true;
+      }
     });
   }
 }

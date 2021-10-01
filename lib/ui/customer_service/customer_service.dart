@@ -72,10 +72,7 @@ class _CustomerServiceState extends BaseState<CustomerService> {
                           padding: EdgeInsets.only(top: 230.auto, left: 20.auto, right: 20.auto),
                           decoration: BoxDecoration(
                             image: DecorationImage(
-                              alignment: Alignment.topCenter,
-                                image: AssetImage(
-                                    getBgImage()),
-                                fit: BoxFit.cover),
+                                alignment: Alignment.topCenter, image: AssetImage(getBgImage()), fit: BoxFit.cover),
                           ),
                           child: Column(children: [
                             buildLiveChatRow(),
@@ -97,8 +94,10 @@ class _CustomerServiceState extends BaseState<CustomerService> {
 
   getBgImage() {
     String code = getCurrentLanguage().apiCode;
-    if(code == "zh-CN"|| code =="zh-TW") return "images/support/cs_bg/${getCurrentLanguage().apiCode}/customer_service.png";
-    else return "images/support/cs_bg/en-US/customer_service.png";
+    if (code == "zh-CN" || code == "zh-TW")
+      return "images/support/cs_bg/${getCurrentLanguage().apiCode}/customer_service.png";
+    else
+      return "images/support/cs_bg/en-US/customer_service.png";
   }
 
   buildLiveChatRow() => Visibility(
@@ -107,7 +106,12 @@ class _CustomerServiceState extends BaseState<CustomerService> {
           onTap: () {
             //ProgressDialog.show(context, _vm.brandLogoUrl);
             Navigator.push(
-                context, MaterialPageRoute(builder: (context) => CustomerServiceWebView(url: _vm.liveChatUrl, brandLogoUrl: _vm.brandLogoUrl,)));
+                context,
+                MaterialPageRoute(
+                    builder: (context) => CustomerServiceWebView(
+                          url: _vm.liveChatUrl,
+                          brandLogoUrl: _vm.brandLogoUrl,
+                        )));
           },
           child: Container(
             padding: EdgeInsets.only(left: 20.auto, right: 20.auto),
@@ -121,12 +125,13 @@ class _CustomerServiceState extends BaseState<CustomerService> {
               children: [
                 Expanded(
                   flex: 1,
-                  child: /*ImageIcon(
+                  child:
+                      /*ImageIcon(
                     AssetImage("images/support/support_call.png"),
                     size: 23.auto,
                     color: CustomColor.theme_bar_gradient_1,
                   ),*/
-                  SvgPicture.asset(
+                      SvgPicture.asset(
                     "images/support/support-call.svg",
                     height: 23.auto,
                     color: CustomColor.theme_bar_gradient_1,
@@ -169,12 +174,13 @@ class _CustomerServiceState extends BaseState<CustomerService> {
             children: [
               Expanded(
                 flex: 1,
-                child: /*ImageIcon(
+                child:
+                    /*ImageIcon(
                   AssetImage("images/support/$imagePath.png"),
                   size: 23.auto,
                   color: CustomColor.theme_bar_gradient_1,
                 ),*/
-                SvgPicture.asset(
+                    SvgPicture.asset(
                   "images/support/$imagePath.svg",
                   height: 23.auto,
                   color: CustomColor.theme_bar_gradient_1,
@@ -246,6 +252,7 @@ class _CustomerServiceState extends BaseState<CustomerService> {
   }
 
   _handleApiState() {
-    handleApiState(_vm.getBrandCommunicationApiState, onSuccess: () {});
+    handleApiState(_vm.getBrandCommunicationApiState, isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getLiveChatUrlApiState, isAutoHideLoading: false, onSuccess: () {});
   }
 }

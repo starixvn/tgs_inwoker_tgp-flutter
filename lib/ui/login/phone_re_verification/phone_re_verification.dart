@@ -37,7 +37,6 @@ class _PhoneReVerificationState extends BaseState<PhoneReVerification> {
   InputValidationProvider validate = new InputValidationProvider();
   bool _obscurePassword = true;
   String display;
-  List areaCodeList = ["+85", "+86", "+60", "+66"];
 
   @override
   void initState() {
@@ -242,34 +241,13 @@ class _PhoneReVerificationState extends BaseState<PhoneReVerification> {
   }
 
   _getSmsCode() {
-    if (!_checkPhoneValidation()) {
+    if (!validate.validateAreaCodeAndPhone(display, _phoneController.text)) {
       setState(() {
         CustomToast.show(getTranslatedText("phone_format_error_msg"));
       });
     } else {
       //ProgressDialog.show(context, _vm.brandLogoUrl);
       _vm.getReVerifyCode(_usernameController.text, _passwordController.text, display, _phoneController.text);
-    }
-  }
-
-  _checkPhoneValidation() {
-    var phone = display + _phoneController.text;
-    switch (display) {
-      case "+85":
-        return true;
-        break;
-      case "+86":
-        return validate.validateChinaPhoneNumber(phone);
-        break;
-      case "+60":
-        return validate.validateMalaysiaPhoneNumber(phone);
-        break;
-      case "+66":
-        return validate.validateThaiPhoneNumber(phone);
-        break;
-      default:
-        return true;
-        break;
     }
   }
 

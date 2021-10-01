@@ -60,7 +60,11 @@ class _ResetPayPasswordState extends BaseState<ResetPayPassword> {
                   padding: EdgeInsets.only(top: 10.auto, left: 10.auto, right: 10.auto),
                   child: Column(
                     children: [
-                      CustomTabBar(index: currIndex),
+                      CustomTabBar(
+                        index: currIndex,
+                        step1Text: "verify_current_email",
+                        step2Text: "set_new_pay_password",
+                      ),
                       currIndex == 0 ? _buildVerifyEmail() : _buildResetPayPassword()
                     ],
                   )));

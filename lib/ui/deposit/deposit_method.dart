@@ -469,5 +469,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
         _clearTextField();
       });
     });
+
+    handleApiState(_vm.getExchangeRateApiState, onSuccess: (){});
   }
 }

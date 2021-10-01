@@ -132,5 +132,6 @@ class _DepositState extends BaseState<Deposit> {
         CustomToast.show(getTranslatedText("deposit_not_available"));
       }
     });
+    handleApiState(_vm.getPlayerPromotionListApiState, onSuccess: (){});
   }
 }

@@ -37,37 +37,6 @@ class WalletTransferViewModel extends BaseViewModel {
       setAutoTransferApiState;
   bool isFetchingBalance, autoTransferValue;
 
-  /*get walletList => walletRepo.walletList;
-
-
-
-  transferAllToMainWallet() async{
-    setLoading();
-    notifyListeners();
-    transferAllToMainWalletApiState = await walletRepo.transferAllToMainWallet();
-    setLoading(false);
-    notifyListeners();
-    return transferAllToMainWalletApiState ;
-  }
-
-
-
-  getTransferableWalletList(){
-    return walletList.where((e) => e.purseType != 1).toList();
-  }
-
-  getNoneMainWalletList(){
-    return walletList.where((e) => e.purseType == 2).toList();
-  }
-
-  getSingleWalletList(){
-    return walletList.where((e) => e.purseType == 1).toList();
-  }
-
-  getMainWallet(){
-    return getTransferableWalletList().singleWhere((e) => e.id == 10000);
-  }
-*/
   transferWallet(String gpCode, int transferAmount, bool isFundOut) async {
     setLoading();
     transferWalletApiState = await walletRepo.fundTransfer(gpCode, transferAmount, isFundOut);

@@ -79,7 +79,7 @@ class GameViewModel extends BaseViewModel {
 
   getGameList(String gamePlatformCode, GameType gameType) async {
     setLoading();
-    var getGameApiState = await contentRepo.getGameList(gamePlatformCode, gameType);
+    getGameApiState = await contentRepo.getGameList(gamePlatformCode, gameType);
     if (getGameApiState.isSuccess) {
       gameListMap[gamePlatformCode] = getGameApiState.result;
       if(gameType == GameType.Slot || gameType == GameType.EGame || gameType == GameType.Fishing)await _getFavoriteGame(gameType);

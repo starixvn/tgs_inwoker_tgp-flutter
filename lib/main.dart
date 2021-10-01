@@ -36,6 +36,7 @@ import 'package:tgp_flutter/ui/profile_info/email/email_verification.dart';
 import 'package:tgp_flutter/ui/profile_info/password/edit_password.dart';
 import 'package:tgp_flutter/ui/profile_info/pay_password/pay_password.dart';
 import 'package:tgp_flutter/ui/profile_info/pay_password/reset_pay_password.dart';
+import 'package:tgp_flutter/ui/profile_info/phone/edit_phone.dart';
 import 'package:tgp_flutter/ui/profile_info/phone/phone_verification.dart';
 import 'package:tgp_flutter/ui/profile_info/profile_info.dart';
 import 'package:tgp_flutter/ui/profile_info/qq_account/qq_account.dart';
@@ -163,6 +164,7 @@ class _MyAppState extends BaseState<MyApp> {
                   RoutePath.profileInfo: (context) => ProfileInfo(),
                   RoutePath.realNameVerification: (context) => RealNameVerification(),
                   RoutePath.phoneVerification: (context) => PhoneVerification(),
+                  RoutePath.editPhone: (context) => EditPhone(),
                   RoutePath.emailVerification: (context) => EmailVerification(0),
                   RoutePath.qqAccount: (context) => QQAccount(),
                   RoutePath.wechat: (context) => Wechat(),
@@ -209,6 +211,8 @@ class _MyAppState extends BaseState<MyApp> {
 
   _handleApiState() {
     handleApiState(_vm.getLanguageApiState, isAutoHideLoading: false, onSuccess: () {});
+    //handleApiState(_vm.getBrandLogoApiState, isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.authApiState, isAutoHideLoading: false, onSuccess: () {});
   }
 }
 

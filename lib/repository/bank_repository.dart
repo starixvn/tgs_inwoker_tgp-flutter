@@ -245,4 +245,12 @@ class BankRepository extends BaseRepository {
         jwtRefresher: jwtAuth)
         .execute();
   }
+
+  Future<EventResult<double>> getTurnoverAmount() async {
+    return await ApiRequestBuilder<double>(
+        method: HttpMethod.GET,
+        endPoint: "api/withdraw/player/amount",
+        jwtRefresher: jwtAuth)
+        .execute();
+  }
 }

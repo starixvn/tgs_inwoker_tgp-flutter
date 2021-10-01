@@ -25,8 +25,7 @@ class HomeViewModel extends BaseViewModel {
 
   get balance => userRepo.wallet.main;
   bool isNotLogin = false, isExpired = false;
-  var getWalletBalanceApiState,
-      getBasicInfoApiState,
+  var getBasicInfoApiState,
       getAnnouncementApiState,
       getApiErrorLocalizationApiState,
       getBannerApiState;

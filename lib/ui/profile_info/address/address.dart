@@ -13,9 +13,6 @@ import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
 import 'package:tgp_flutter/ui/profile_info/address/address_view_model.dart';
-import 'package:tgp_flutter/ui/profile_info/email/email_verification.dart';
-import 'package:tgp_flutter/ui/profile_info/email/email_verification_view_model.dart';
-import 'package:tgp_flutter/ui/profile_info/phone/phone_verification_view_model.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 
 class Address extends StatefulWidget {
