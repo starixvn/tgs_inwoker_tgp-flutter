@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:tgp_flutter/custom/color_button.dart';
 import 'package:tgp_flutter/custom/custom_password_text_form_field.dart';
 import 'package:tgp_flutter/custom/custom_picker.dart';
@@ -7,12 +8,17 @@ import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/custom/custom_text_form_field.dart';
 import 'package:tgp_flutter/custom/custom_toast.dart';
 import 'package:tgp_flutter/custom/otp_text_form_field.dart';
+import 'package:tgp_flutter/custom/phone_text_form_field.dart';
 import 'package:tgp_flutter/data/provider/input_validation_provider.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/route_path.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
+import 'package:tgp_flutter/ui/login/login_password_text_form_field.dart';
+import 'package:tgp_flutter/ui/login/phone_re_verification/login_otp_text_form_field.dart';
+import 'package:tgp_flutter/ui/login/phone_re_verification/login_phone_text_form_field.dart';
+import 'package:tgp_flutter/ui/login/login_text_form_field.dart';
 import 'package:tgp_flutter/ui/login/login_view_model.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 
@@ -40,7 +46,9 @@ class _PhoneReVerificationState extends BaseState<PhoneReVerification> {
 
   @override
   void initState() {
-    display = areaCodeList.first;
+    display = "+852";
+    _usernameController.text = widget.username ?? "";
+    _passwordController.text = widget.password ?? "";
     super.initState();
   }
 
@@ -49,133 +57,75 @@ class _PhoneReVerificationState extends BaseState<PhoneReVerification> {
         model: _vm,
         builder: (ctx, vm, _) {
           _handleApiState();
-          return Scaffold(
-              resizeToAvoidBottomInset: false,
-              appBar: _buildAppBar(),
-              body: Container(
-                  child: /*userProfile == null?
-                  Center(child: CircularProgressIndicator(),):*/
-                      Container(
-                margin: EdgeInsets.only(
-                    left: 10.auto, right: 10.auto, top: 10.auto, bottom: MediaQuery.of(context).viewInsets.bottom),
-                child: ListView(
-                  children: [
-                    //CustomTabBar(index:1),
-                    _buildUsernameTextFormField(),
-                    _buildPasswordTextFormField(),
-                    _buildPhoneTextFormField(),
-                    _buildOtpTextFormField(),
-                    _buildButton()
-                  ],
-                ),
-              )));
+          return Container(
+            child: Column(
+              children: [
+                //CustomTabBar(index:1),
+                _buildUsernameTextFormField(),
+                _buildPasswordTextFormField(),
+                _buildPhoneTextFormField(),
+                _buildOtpTextFormField(),
+                _buildButton()
+              ],
+            ),
+          );
         });
   }
 
-  _buildAppBar() => AppBar(
-        automaticallyImplyLeading: false,
-        flexibleSpace: Container(
-          decoration: gradientDecoration,
+  _buildUsernameTextFormField() => LoginTextFormField(
+        icon: SvgPicture.asset(
+          "images/login/ic_login_username.svg",
+          height: 20.auto,
         ),
-        centerTitle: true,
-        leading: IconButton(icon: Icon(Icons.arrow_back), onPressed: () => Navigator.pop(context)),
-        title: Text(
-          getTranslatedText("phone_re-verify"),
-          style: TextStyle(fontSize: 16.auto),
-        ),
+        hintText: getTranslatedText("signup_username_hint"),
+        onChanged: (value) => _onTextChange(),
+        onFieldSubmitted: (value) => null,
+        controller: _usernameController,
+        width: context.screenWidth,
+        textInputType: TextInputType.text,
+        textInputAction: TextInputAction.next,
       );
 
-  _buildUsernameTextFormField() => Visibility(
-        visible: widget.username.isEmpty && widget.password.isEmpty,
-        child: Container(
-          margin: EdgeInsets.only(top: 15.auto),
-          child: CustomTextFormField(
-            title: getTranslatedText("username"),
-            hintText: getTranslatedText("username"),
-            onChanged: (value) => _onTextChange(),
-            onFieldSubmitted: (value) {},
-            controller: _usernameController,
-            focusNode: null,
-            width: context.screenWidth - 70.auto,
-            textInputType: TextInputType.text,
-            textInputAction: TextInputAction.next,
-            enabled: true,
+  _buildPasswordTextFormField() => Container(
+        margin: EdgeInsets.only(top: 10.auto),
+        child: LoginPasswordTextFormField(
+          icon: SvgPicture.asset(
+            "images/login/unlock_alt.svg",
+            height: 20.auto,
           ),
-        ),
-      );
-
-  _buildPasswordTextFormField() => Visibility(
-        visible: widget.username.isEmpty && widget.password.isEmpty,
-        child: Container(
-          margin: EdgeInsets.only(top: 15.auto),
-          child: CustomPasswordTextFormField(
-            title: getTranslatedText("password"),
-            hintText: getTranslatedText("password"),
-            onChanged: (value) => _onTextChange(),
-            onFieldSubmitted: (value) {},
-            controller: _passwordController,
-            width: context.screenWidth - 70.auto,
-            obscurePassword: _obscurePassword,
-            onShowPassword: () {
-              setState(() => this._obscurePassword = !this._obscurePassword);
-            },
-          ),
-        ),
-      );
-
-  _buildPhoneTextFormField() => Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          _buildCard(),
-          Container(
-            margin: EdgeInsets.only(top: 15.auto),
-            child: CustomTextFormField(
-              title: getTranslatedText("phone_number"),
-              hintText: getTranslatedText("enter_phone_hint"),
-              onChanged: (value) => _onTextChange(),
-              onFieldSubmitted: (value) {},
-              controller: _phoneController,
-              focusNode: null,
-              width: context.screenWidth * 2 / 5 + 20.auto,
-              textInputType: TextInputType.number,
-              textInputAction: TextInputAction.next,
-              enabled: true,
-            ),
-          ),
-        ],
-      );
-
-  _buildCard() => Container(
-      margin: EdgeInsets.only(top: 15.auto),
-      child: Opacity(
-        opacity: 1,
-        child: CustomPicker(
-          title: getTranslatedText("area_code"),
-          displayText: display ?? "",
-          //isDeposit? depositText??"请选择红利": pickerText?? "",
-          list: areaCodeList,
-          isHintText: false,
-          width: context.screenWidth / 5,
-          onClick: () {
-            _buildBottomSheet();
+          hintText: getTranslatedText("signup_password_hint"),
+          onChanged: (value) => _onTextChange(),
+          onFieldSubmitted: (value) => null,
+          controller: _passwordController,
+          width: context.screenWidth,
+          textInputType: TextInputType.visiblePassword,
+          textInputAction: TextInputAction.next,
+          onShowPassword: () {
+            setState(() => this._obscurePassword = !this._obscurePassword);
           },
+          obscurePassword: _obscurePassword,
         ),
-      ));
+      );
 
-  _buildBottomSheet() {
-    showModalBottomSheet(
-        context: context,
-        builder: (BuildContext bc) {
-          return CustomPickerDialog(
-              title: getTranslatedText("area_code"),
-              list: areaCodeList,
-              onChanged: (value) {
-                setState(() {
-                  display = value;
-                  Navigator.pop(context);
-                });
-              });
-        });
+  _buildPhoneTextFormField() => Container(
+        margin: EdgeInsets.only(top: 15.auto),
+        child: LoginPhoneTextFormField(
+          onChanged: (value) => _onTextChange(),
+          onFieldSubmitted: (value) {},
+          controller: _phoneController,
+          width: context.screenWidth - 70.auto,
+          textInputAction: TextInputAction.next,
+          enabled: isTextFieldEnabled,
+          onAreaCodeClicked: (value) => _onAreaCodeClicked(value),
+          displayedAreaCode: display,
+        ),
+      );
+
+  _onAreaCodeClicked(String area) {
+    setState(() {
+      display = area;
+      Navigator.of(context).pop();
+    });
   }
 
   _buildOtpTextFormField() => Visibility(
@@ -184,7 +134,7 @@ class _PhoneReVerificationState extends BaseState<PhoneReVerification> {
           opacity: isOtpEnabled ? 1 : 0.4,
           child: Container(
             margin: EdgeInsets.only(top: 15.auto),
-            child: OtpTextFormField(
+            child: LoginOtpTextFormField(
                 hintText: getTranslatedText("enter_email_otp_hint"),
                 onChanged: (value) => _onTextChange(),
                 controller: _otpController,
@@ -222,17 +172,16 @@ class _PhoneReVerificationState extends BaseState<PhoneReVerification> {
 
   _onTextChange() {
     setState(() {
-      if ((widget.username.isNotEmpty && widget.password.isNotEmpty) ||
-          (_usernameController.text.isNotEmpty && _passwordController.text.isNotEmpty)) {
-        if (_phoneController.text.isNotEmpty && _otpController.text.isNotEmpty) {
-          isButtonEnabled = true;
-        } else if (_phoneController.text.isNotEmpty) {
-          isOtpEnabled = true;
-          isButtonEnabled = false;
-        } else {
-          isOtpEnabled = false;
-          isButtonEnabled = false;
-        }
+      if (_usernameController.text.isNotEmpty &&
+          _passwordController.text.isNotEmpty &&
+          _phoneController.text.isNotEmpty &&
+          _otpController.text.isNotEmpty) {
+        isButtonEnabled = true;
+      } else if (_usernameController.text.isNotEmpty &&
+          _passwordController.text.isNotEmpty &&
+          _phoneController.text.isNotEmpty) {
+        isOtpEnabled = true;
+        isButtonEnabled = false;
       } else {
         isOtpEnabled = false;
         isButtonEnabled = false;

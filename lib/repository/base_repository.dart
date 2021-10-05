@@ -21,7 +21,7 @@ class BaseRepository extends ChangeNotifier {
         params: {"client": EnvironmentConfig.jwtKey, "currency": EnvironmentConfig.currency},
         converter: (json) => LoginResponse.fromJson(json)).execute();
 
-    if (apiState.isSuccess) {
+    if (apiState.isSuccess || apiState.isMaintenance) {
       var authToken = apiState.result.token;
       _savePreferences(authToken);
       print("Authorization:" + authToken);

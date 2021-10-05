@@ -55,22 +55,25 @@ class ApiRequestBuilder<T> extends ChangeNotifier {
     var value = json.decode(response.body);
     print(value);
     var baseResponse = BaseResponse.fromJson(value);
-    if (baseResponse.error == null ||
+    if ((baseResponse.error == null ||
             (baseResponse.error == 0 && baseResponse.errorMsgId == null && (baseResponse.msg.isEmpty ?? "")) ||
             (baseResponse.success == null &&
                 baseResponse.error == 0 &&
                 baseResponse.errorMsgId == null &&
                 (baseResponse?.msg?.isEmpty ?? "")) ||
-            (baseResponse?.success ?? false)
+            (baseResponse?.success ?? false))
         /*(baseResponse.success == null && baseResponse.error == 0) ||
         (baseResponse.success != null && baseResponse.success)) {*/
         ) {
       var dataToConvert = baseResponse.data ?? value;
       var result = converter == null ? dataToConvert as T : converter(dataToConvert);
       if (onSuccess != null) onSuccess(result);
-      return EventResult.success(result);
+      if (response.statusCode == 503)
+        return EventResult.maintenance(result);
+      else
+        return EventResult.success(result);
     } else {
-      return EventResult.failure(baseResponse.error, baseResponse.msg, baseResponse.errorMsgId);
+      return EventResult.failure(baseResponse.error, baseResponse.msg, baseResponse.errorMsgId, response.statusCode);
     }
   }
 }

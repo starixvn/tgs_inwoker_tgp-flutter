@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
@@ -38,6 +39,7 @@ class GradientButton extends StatelessWidget {
               alignment: Alignment.center,
               height: height.auto,
               width: width??context.screenWidth,
+              padding: EdgeInsets.all(padding??0),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [CustomColor.theme_bar_gradient_1, CustomColor.theme_bar_gradient_2],
@@ -46,10 +48,12 @@ class GradientButton extends StatelessWidget {
                 ),
                 borderRadius: BorderRadius.circular((radius).auto),
               ),
-              child: Text(
+              child: AutoSizeText(
                 title,
-                style: TextStyle(color: Colors.white, fontSize: fontSize ?? 16.auto),
+                style: TextStyle(color: Colors.white),
                 textAlign: TextAlign.center,
+                minFontSize: fontSize ?? 16.auto,
+                stepGranularity: 1,
               ),
             ),
           )

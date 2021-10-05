@@ -51,12 +51,14 @@ class AuthenticationRepository extends BaseRepository {
         .execute();
   }
 
-  Future<EventResult<dynamic>> getForgotPasswordCode(String phone) async {
+  Future<EventResult<dynamic>> getForgotPasswordCode(String email, String phone, String areaCode) async {
     return await ApiRequestBuilder<dynamic>(
             isAuthorization: false,
             endPoint: "api/player/password/forgot",
             params: {
-              "email": phone,
+              "email": email,
+              "phone": phone,
+              "areaCode": areaCode,
             },
             jwtRefresher: jwtAuth,
             timeout: 10)

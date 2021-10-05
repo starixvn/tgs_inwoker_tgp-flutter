@@ -175,7 +175,7 @@ class _EditPhoneState extends BaseState<EditPhone> {
   _getSmsCode() {
     if (!validate.validateAreaCodeAndPhone(display, _phoneController.text)) {
       setState(() {
-        CustomToast.show("手机号码格式不正确");
+        CustomToast.show(getTranslatedText("phone_format_error_msg"));
       });
     } else {
       ProgressDialog.show(context, _vm.brandLogoUrl);

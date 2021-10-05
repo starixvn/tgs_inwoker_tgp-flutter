@@ -15,6 +15,7 @@ import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/ui/login/login.dart';
 import 'package:html/parser.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
+import 'package:tgp_flutter/ui/maintenance/maintenance.dart';
 
 abstract class BaseState<T extends StatefulWidget> extends State<T> {
   final userRepo = UserRepository.getSingleton();
@@ -25,10 +26,10 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
 
   handleApiState(EventResult eventResult,
       {Function onSuccess,
-        Function onError,
-        bool isAutoHideLoading = true,
-        bool isRequireResult = false,
-        bool isCheckSessionExpired = true}) async {
+      Function onError,
+      bool isAutoHideLoading = true,
+      bool isRequireResult = false,
+      bool isCheckSessionExpired = true}) async {
     if (eventResult == null) return;
     if (!eventResult.isHandled) {
       if (eventResult.isError) {
@@ -45,8 +46,7 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
             showDialog(
                 barrierDismissible: false,
                 context: context,
-                builder: (BuildContext context) =>
-                    WillPopScope(
+                builder: (BuildContext context) => WillPopScope(
                       onWillPop: () async => false,
                       child: CustomDialog(
                         title: "登录已超时",
@@ -78,7 +78,18 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
         } else {
           _showErrorMessage(eventResult);
         }
-      } else if (eventResult.isSuccess) {
+      }
+      else if(eventResult.isMaintenance){
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                  builder: (context) => Maintenance(
+                    isShowCS: true,
+                  )),
+                  (Route<dynamic> route) => false);
+        });
+      }
+      else if (eventResult.isSuccess) {
         if (isAutoHideLoading) ProgressDialog.hide();
         if (isRequireResult) {
           onSuccess(eventResult.result);
@@ -89,19 +100,20 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
     eventResult.isHandled = true;
   }
 
-  buildProgressDialog(String url) =>
-      Center(
+  buildProgressDialog(String url) => Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            url ==null?Container():CachedNetworkImage(
-              placeholder: (context, url) => Container(),
-              imageUrl: url,
-              //handling error
-              width: 200.auto,
-              fit: BoxFit.cover,
-              errorWidget: (context, url, error) => Container(),
-            ),
+            url == null
+                ? Container()
+                : CachedNetworkImage(
+                    placeholder: (context, url) => Container(),
+                    imageUrl: url,
+                    //handling error
+                    width: 200.auto,
+                    fit: BoxFit.cover,
+                    errorWidget: (context, url, error) => Container(),
+                  ),
             //: Container(),
             //Container(width: 100, height: 100, child: Image.asset("images/login/${EnvironmentConfig.imageLogo}.png")),
             //CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(CustomColor.theme_bar_gradient_2))

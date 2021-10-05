@@ -22,6 +22,13 @@ import 'dart:math' as math;
 import '../../src/custom_color.dart';
 
 class RegisterContent extends StatefulWidget {
+  final ValueChanged<dynamic> onSubmitUsernameAndPasswors;
+
+  RegisterContent({
+    Key key,
+    this.onSubmitUsernameAndPasswors,
+  }) : super(key: key);
+
   @override
   _RegisterContentState createState() => _RegisterContentState();
 }
@@ -54,7 +61,7 @@ class _RegisterContentState extends BaseState<RegisterContent> {
               //_buildPhoneTextFormField(),
               _buildPromotionCodeTextFormField(),
               _buildRegisterButton(),
-              _buildPhoneReVerifyButton()
+              //_buildPhoneReVerifyButton()
             ],
           ),
         );
@@ -184,7 +191,7 @@ class _RegisterContentState extends BaseState<RegisterContent> {
       );
 
   _buildPhoneReVerifyButton() => Visibility(
-        visible: EnvironmentConfig.appTitleName == "HKJP",
+        visible: true, //EnvironmentConfig.appTitleName == "HKJP",
         child: Container(
           margin: EdgeInsets.only(bottom: 10.auto),
           child: ColorButton(
@@ -233,7 +240,9 @@ class _RegisterContentState extends BaseState<RegisterContent> {
   _handleApiState() {
     handleApiState(_vm.registerApiState, onSuccess: () {
       if (EnvironmentConfig.appTitleName == "HKJP")
-        _navigateToPhoneReVerification(username: username.text, password: password.text);
+        widget.onSubmitUsernameAndPasswors([username.text, password.text]);
+
+      //_navigateToPhoneReVerification(username: username.text, password: password.text);
       else
         _navigateToHome();
     });
