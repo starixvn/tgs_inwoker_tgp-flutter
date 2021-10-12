@@ -60,7 +60,7 @@ class ApiRequestBuilder<T> extends ChangeNotifier {
             (baseResponse.success == null &&
                 baseResponse.error == 0 &&
                 baseResponse.errorMsgId == null &&
-                (baseResponse?.msg?.isEmpty ?? "")) ||
+                (baseResponse?.msg?.isEmpty ?? true)) ||
             (baseResponse?.success ?? false))
         /*(baseResponse.success == null && baseResponse.error == 0) ||
         (baseResponse.success != null && baseResponse.success)) {*/

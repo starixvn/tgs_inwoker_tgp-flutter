@@ -33,14 +33,12 @@ class OtpTextFormField extends StatefulWidget {
   _OtpTextFormFieldState createState() => _OtpTextFormFieldState();
 }
 
-
 class _OtpTextFormFieldState extends BaseState<OtpTextFormField> {
   Timer _timer;
   int _start = 0;
   static const int _duration = 5;
 
   Widget build(BuildContext context) {
-
     return Card(
         semanticContainer: true,
         clipBehavior: Clip.antiAliasWithSaveLayer,
@@ -77,16 +75,17 @@ class _OtpTextFormFieldState extends BaseState<OtpTextFormField> {
                       isDense: true,
                       border: InputBorder.none,
                       hintText: widget.hintText,
-                      hintStyle:
-                          TextStyle(color: CustomColor.very_light_pink_two, fontSize: 13.auto),
+                      hintStyle: TextStyle(color: CustomColor.very_light_pink_two, fontSize: 13.auto),
                     ),
                     enabled: widget.isEnabled,
                   ),
                 ),
               ]),
               OutlineBorderButton(
-                  title: widget.isCountdown ? "${getTranslatedText("retry_otp")} (${_start}s)" : getTranslatedText("request_otp"),
-                  onClick: () => widget.isEnabled && !widget.isCountdown ? widget.getOtpCode():null,
+                  title: widget.isCountdown
+                      ? "${getTranslatedText("retry_otp")} (${_start}s)"
+                      : getTranslatedText("request_otp"),
+                  onClick: () => widget.isEnabled && !widget.isCountdown ? widget.getOtpCode() : null,
                   width: 86.auto,
                   height: 29.auto,
                   color: CustomColor.theme_bar_gradient_2,
@@ -100,12 +99,11 @@ class _OtpTextFormFieldState extends BaseState<OtpTextFormField> {
 
   @override
   void didUpdateWidget(covariant OtpTextFormField oldWidget) {
-    if(oldWidget.isCountdown != widget.isCountdown) {
+    if (oldWidget.isCountdown != widget.isCountdown) {
       if (widget.isCountdown && (_timer == null || !_timer.isActive)) {
         startTimer();
       } else {
-        if (_timer != null)
-          _timer.cancel();
+        if (_timer != null) _timer.cancel();
       }
     }
     super.didUpdateWidget(oldWidget);
@@ -137,5 +135,4 @@ class _OtpTextFormFieldState extends BaseState<OtpTextFormField> {
     _timer.cancel();
     super.dispose();
   }
-
 }

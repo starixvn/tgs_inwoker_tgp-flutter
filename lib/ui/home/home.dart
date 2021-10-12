@@ -96,7 +96,7 @@ class _HomeState extends BaseState<Home> {
                           placeholder: (context, url) => _buildEmptyContainer(),
                           imageUrl: _vm.bannerList[index].mobileUrl ?? "",
                           //handling error
-                          fit: BoxFit.cover,
+                          fit: BoxFit.fill,
                           errorWidget: (context, url, error) => _buildEmptyContainer(),
                         )),
                 isLoop: true,
@@ -108,7 +108,7 @@ class _HomeState extends BaseState<Home> {
       );
 
   _buildBorderCorner() => Positioned(
-        top: context.screenHeight / 5.3,
+        top: context.screenHeight / 5.2,
         child: Container(
           width: context.screenWidth,
           height: context.screenHeight,

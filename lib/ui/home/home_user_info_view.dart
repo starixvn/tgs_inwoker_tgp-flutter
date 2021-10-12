@@ -66,6 +66,14 @@ class _HomeUserInfoViewState extends BaseState<HomeUserInfoView> {
                       style: TextStyle(color: CustomColor.theme_label_text_highlight_color, fontSize: 10.auto),
                       textAlign: TextAlign.center,
                     ),
+                    Container(
+                      margin: EdgeInsets.only(left: 3.auto),
+                      child: Text(
+                        widget.userProfile?.vipLevel != null ? "(VIP ${widget.userProfile?.vipLevel}) " : "",
+                        style: TextStyle(color: Colors.white, fontSize: 10.auto),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
                   ],
                 )),
             Spacer(),
@@ -144,10 +152,8 @@ class _HomeUserInfoViewState extends BaseState<HomeUserInfoView> {
               height: 20.auto,
               text: AutoSizeText.rich(
                 TextSpan(style: TextStyle(fontSize: 12.auto, fontWeight: FontWeight.bold), children: [
-                  TextSpan(
-                      text: loginString,
-                      style: TextStyle(color: CustomColor.theme_label_text_highlight_color)),
-                  TextSpan(text: registerString, style: TextStyle(color: Colors.white ))
+                  TextSpan(text: loginString, style: TextStyle(color: CustomColor.theme_label_text_highlight_color)),
+                  TextSpan(text: registerString, style: TextStyle(color: Colors.white))
                 ]),
                 minFontSize: 8,
                 maxFontSize: 12,

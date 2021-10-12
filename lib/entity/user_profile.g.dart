@@ -15,7 +15,8 @@ UserProfile _$UserProfileFromJson(Map<String, dynamic> json) {
     ..qq = json['qq'] as String
     ..wechat = json['wechat'] as String
     ..isSetPayPassword = json['issetpaypassword'] as bool
-    ..identityAuthentication = json['identityauthentication'] as bool;
+    ..identityAuthentication = json['identityauthentication'] as bool
+    ..vipLevel = json['viplevel'] as int;
 }
 
 Map<String, dynamic> _$UserProfileToJson(UserProfile instance) =>
@@ -28,4 +29,5 @@ Map<String, dynamic> _$UserProfileToJson(UserProfile instance) =>
       'wechat': instance.wechat,
       'issetpaypassword': instance.isSetPayPassword,
       'identityauthentication': instance.identityAuthentication,
+      'viplevel': instance.vipLevel,
     };

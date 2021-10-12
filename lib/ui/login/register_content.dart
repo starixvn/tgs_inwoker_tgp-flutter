@@ -22,11 +22,11 @@ import 'dart:math' as math;
 import '../../src/custom_color.dart';
 
 class RegisterContent extends StatefulWidget {
-  final ValueChanged<dynamic> onSubmitUsernameAndPasswors;
+  final ValueChanged<dynamic> onSubmitUsernameAndPassword;
 
   RegisterContent({
     Key key,
-    this.onSubmitUsernameAndPasswors,
+    this.onSubmitUsernameAndPassword,
   }) : super(key: key);
 
   @override
@@ -240,7 +240,7 @@ class _RegisterContentState extends BaseState<RegisterContent> {
   _handleApiState() {
     handleApiState(_vm.registerApiState, onSuccess: () {
       if (EnvironmentConfig.appTitleName == "HKJP")
-        widget.onSubmitUsernameAndPasswors([username.text, password.text]);
+        widget.onSubmitUsernameAndPassword([username.text, password.text]);
 
       //_navigateToPhoneReVerification(username: username.text, password: password.text);
       else

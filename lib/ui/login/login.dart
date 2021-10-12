@@ -72,7 +72,7 @@ class _LoginState extends BaseState<Login> {
 
   _buildLogoImage() => Container(
         margin: EdgeInsets.only(top: ScreenUtil.getInstance().statusBarHeight, left: 27.auto, right: 27.auto),
-        child: (_vm?.brandLogoUrl?.isEmpty ?? "")
+        child: (_vm?.brandLogoUrl?.isEmpty ?? true)
             ? Container(
                 height: 100.auto,
               )
