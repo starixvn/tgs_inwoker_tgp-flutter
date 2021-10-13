@@ -24,12 +24,15 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
 
   getTranslatedText(String key) => LanguageProvider().getTranslated(context, key);
 
-  handleApiState(EventResult eventResult,
-      {Function onSuccess,
-      Function onError,
-      bool isAutoHideLoading = true,
-      bool isRequireResult = false,
-      bool isCheckSessionExpired = true}) async {
+  handleApiState(
+    EventResult eventResult, {
+    Function onSuccess,
+    Function onError,
+    bool isAutoHideLoading = true,
+    bool isRequireResult = false,
+    bool isCheckSessionExpired = true,
+    bool isSplashScreen = false,
+  }) async {
     if (eventResult == null) return;
     if (!eventResult.isHandled) {
       if (eventResult.isError) {
@@ -40,7 +43,7 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
             Navigator.of(context).pushNamedAndRemoveUntil(RoutePath.empty, (Route<dynamic> route) => false);
             Navigator.of(context).pushNamed(RoutePath.blacklistedUser);
           });
-        } else if ((eventResult.errorCode == 102 || eventResult.errorCode == 101) && isCheckSessionExpired) {
+        } else if ((eventResult.errorCode == 102 || eventResult.errorCode == 101) && isCheckSessionExpired && !isSplashScreen) {
           UserRepository.getSingleton().clearSession();
           WidgetsBinding.instance.addPostFrameCallback((_) {
             showDialog(
@@ -78,18 +81,16 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
         } else {
           _showErrorMessage(eventResult);
         }
-      }
-      else if(eventResult.isMaintenance){
+      } else if (eventResult.isMaintenance) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
                   builder: (context) => Maintenance(
-                    isShowCS: true,
-                  )),
-                  (Route<dynamic> route) => false);
+                        isShowCS: true,
+                      )),
+              (Route<dynamic> route) => false);
         });
-      }
-      else if (eventResult.isSuccess) {
+      } else if (eventResult.isSuccess) {
         if (isAutoHideLoading) ProgressDialog.hide();
         if (isRequireResult) {
           onSuccess(eventResult.result);

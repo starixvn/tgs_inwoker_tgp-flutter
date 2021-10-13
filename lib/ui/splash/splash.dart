@@ -30,6 +30,7 @@ class _SplashState extends BaseState<Splash> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _vm.getAuthToken();
+      _vm.getApiError();
       _vm.getBrandLogo();
       _vm.getLanguageOption();
     });
@@ -39,47 +40,45 @@ class _SplashState extends BaseState<Splash> {
   Widget build(BuildContext context) {
     return ProviderWidget<SplashViewModel>(
         model: _vm,
-        builder: (ctx, vm, _)
-    {
-      _handleApiState();
-      return Container(
-        width: context.screenWidth,
-        height: context.screenHeight,
-        color: Colors.black,
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              //Container(width: context.screenWidth / 1.5, child: Image.asset("images/login/${EnvironmentConfig.imageLogo}.png")),
-              widget.logoUrl?.isEmpty ?? true
-                  ? Container()
-                  : CachedNetworkImage(
-                placeholder: (context, url) => Container(),
-                imageUrl: widget.logoUrl,
-                //handling error
-                fit: BoxFit.cover,
-                errorWidget: (context, url, error) => Container(),
+        builder: (ctx, vm, _) {
+          _handleApiState();
+          return Container(
+            width: context.screenWidth,
+            height: context.screenHeight,
+            color: Colors.black,
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  //Container(width: context.screenWidth / 1.5, child: Image.asset("images/login/${EnvironmentConfig.imageLogo}.png")),
+                  widget.logoUrl?.isEmpty ?? true
+                      ? Container()
+                      : CachedNetworkImage(
+                          placeholder: (context, url) => Container(),
+                          imageUrl: widget.logoUrl,
+                          //handling error
+                          fit: BoxFit.cover,
+                          errorWidget: (context, url, error) => Container(),
+                        ),
+                  Container(
+                    width: context.screenWidth / 2.5,
+                    alignment: Alignment.bottomCenter,
+                    child: Lottie.asset("loading/loading.json"),
+                  ),
+                ],
               ),
-              Container(
-                width: context.screenWidth / 2.5,
-                alignment: Alignment.bottomCenter,
-                child: Lottie.asset("loading/loading.json"),
-              ),
-            ],
-          ),
-        ),
-      );
-    });
+            ),
+          );
+        });
   }
 
-   _handleApiState() {
-    handleApiState(_vm.getLanguageApiState, isAutoHideLoading: false, onSuccess: () {
+  _handleApiState() {
+    handleApiState(_vm.getLanguageApiState, isAutoHideLoading: false, isSplashScreen: true, onSuccess: () {
       _navigateToHome();
     });
-    handleApiState(_vm.getBrandLogoApiState, isAutoHideLoading: false, onSuccess: () {});
-    handleApiState(_vm.authApiState, isAutoHideLoading: false, onSuccess: () {
-    });
+    handleApiState(_vm.getBrandLogoApiState, isAutoHideLoading: false, isSplashScreen: true, onSuccess: () {});
+    handleApiState(_vm.authApiState, isAutoHideLoading: false, isSplashScreen: true, onSuccess: () {});
   }
 
   _navigateToHome() {

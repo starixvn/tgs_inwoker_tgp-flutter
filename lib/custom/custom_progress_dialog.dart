@@ -26,14 +26,16 @@ class ProgressDialog {
     _progressDialog.setLoadingWidget(Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        CachedNetworkImage(
-          placeholder: (context, url) => Container(),
-          imageUrl: url,
-          width: 200.auto,
-          //handling error
-          fit: BoxFit.cover,
-          errorWidget: (context, url, error) => Container(),
-        ),
+        url == null
+            ? CachedNetworkImage(
+                placeholder: (context, url) => Container(),
+                imageUrl: url,
+                width: 200.auto,
+                //handling error
+                fit: BoxFit.cover,
+                errorWidget: (context, url, error) => Container(),
+              )
+            : Container(),
         //Container(width: 100, height: 100, child: Image.asset("images/login/${EnvironmentConfig.imageLogo}.png")),
         //CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(CustomColor.theme_bar_gradient_2))
         Lottie.asset(

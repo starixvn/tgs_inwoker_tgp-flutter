@@ -47,7 +47,6 @@ class _HomeState extends BaseState<Home> {
   @override
   void initState() {
     _vm.getAnnouncement();
-    _vm.getApiError();
     _vm.getBanner();
     // WidgetsBinding.instance.addPostFrameCallback((_) {
     _vm.resumeIfNeed();
@@ -135,7 +134,7 @@ class _HomeState extends BaseState<Home> {
       );
 
   _buildTextMarquee() {
-    var announcement = _removeMultiLine(parseHtmlString(_getAnnouncementText()));
+    var announcement = _removeMultiLine(parseHtmlString(_vm.announcement));
     return Expanded(
       child: Container(
         decoration: BoxDecoration(color: CustomColor.theme_bar_gradient_1, borderRadius: BorderRadius.circular(10.0)),
@@ -156,15 +155,6 @@ class _HomeState extends BaseState<Home> {
                 showFadingOnlyWhenScrolling: false),
       ),
     );
-  }
-
-  _getAnnouncementText() {
-    if (_vm.announcement?.localization?.content?.isNotEmpty ?? false)
-      return _vm.announcement?.localization?.content;
-    else if (_vm.announcement?.content?.isNotEmpty ?? false)
-      return _vm.announcement?.content;
-    else
-      return "";
   }
 
   _removeMultiLine(String text) {

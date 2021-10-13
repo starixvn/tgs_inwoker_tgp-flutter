@@ -25,11 +25,8 @@ class HomeViewModel extends BaseViewModel {
 
   get balance => userRepo.wallet.main;
   bool isNotLogin = false, isExpired = false;
-  var getBasicInfoApiState,
-      getAnnouncementApiState,
-      getApiErrorLocalizationApiState,
-      getBannerApiState;
-  Announcement announcement;
+  var getBasicInfoApiState, getAnnouncementApiState, getApiErrorLocalizationApiState, getBannerApiState;
+  String announcement;
   double gameBalance = 0.0, totalBalance;
   List<HomeBanner> bannerList;
 
@@ -59,17 +56,29 @@ class HomeViewModel extends BaseViewModel {
     setLoading();
     getAnnouncementApiState = await contentRepo.getAnnouncement();
     if (getAnnouncementApiState.isSuccess) {
-      if (getAnnouncementApiState.result.isEmpty)
-        announcement = getAnnouncementApiState.result;
-      else
-        announcement = getAnnouncementApiState.result?.first;
+      List<Announcement> _list = getAnnouncementApiState.result;
+      if (_list?.isEmpty ?? true)
+        announcement = "";
+      else {
+        announcement = _getAnnouncementContent(_list.first);
+        if (_list.length != 1) {
+          for (var i = 1; i < _list.length; i++) {
+            announcement = announcement + " " + _getAnnouncementContent(_list[i]);
+          }
+        }
+      }
     }
     setLoading(false);
     return getAnnouncementApiState;
   }
 
-  getApiError() async {
-    await userRepo.getApiErrorLocalization();
+  _getAnnouncementContent(Announcement text) {
+    if (text?.localization?.content?.isNotEmpty ?? true)
+      return text?.localization?.content;
+    else if (text?.content?.isNotEmpty ?? true)
+      return text?.content;
+    else
+      return "";
   }
 
   _computeTotalBalance() async {
