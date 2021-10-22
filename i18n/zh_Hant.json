@@ -958,5 +958,6 @@
   "username": "用戶名",
   "password": "密碼",
   "area_code": "區域代碼",
-  "instant_messaging": "即時通訊"
+  "instant_messaging": "即時通訊",
+  "login_time_out": "登錄已超時"
 }

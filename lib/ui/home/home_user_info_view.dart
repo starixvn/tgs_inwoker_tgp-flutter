@@ -69,7 +69,7 @@ class _HomeUserInfoViewState extends BaseState<HomeUserInfoView> {
                     Container(
                       margin: EdgeInsets.only(left: 3.auto),
                       child: Text(
-                        widget.userProfile?.vipLevel != null ? "(VIP ${widget.userProfile?.vipLevel}) " : "",
+                        "(VIP ${widget.userProfile?.vipLevel ?? 0}) ",
                         style: TextStyle(color: Colors.white, fontSize: 10.auto),
                         textAlign: TextAlign.center,
                       ),

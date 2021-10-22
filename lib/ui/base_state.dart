@@ -52,10 +52,10 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
                 builder: (BuildContext context) => WillPopScope(
                       onWillPop: () async => false,
                       child: CustomDialog(
-                        title: "登录已超时",
-                        description: "请再登录",
-                        buttonText1: "登录",
-                        buttonText2: "不了",
+                        title: getTranslatedText("login_time_out"),
+                        description: getTranslatedText("login_again"),
+                        buttonText1: getTranslatedText("login"),
+                        buttonText2: getTranslatedText("cancel"),
                         onClick: () {
                           Navigator.of(context).pushReplacementNamed("/home");
                           Navigator.of(context).pushNamed("/login");
@@ -75,7 +75,7 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
           } else if (onError != null) {
             onError(eventResult.error);
           } else {
-            String error = userRepo.apiError[eventResult.errorMsgId];
+            String error = userRepo.apiError[eventResult.errorMsgId] ?? "";
             CustomToast.show(error);
           }
         } else {

@@ -14,7 +14,7 @@ class LanguageProvider {
     "id-ID": "Indonesia",
     "vi-VN": "Tiếng Việt"
   };*/
-  List<Language> list = [];
+  List<Language>  list = [];
   final contentRepo = ContentRepository.getSingleton();
 
   Map<String, Language> languageList = {

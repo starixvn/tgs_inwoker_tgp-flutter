@@ -970,5 +970,6 @@
   "username": "Username",
   "password": "Password",
   "area_code": "Area Code",
-  "instant_messaging": "Instant Messaging"
+  "instant_messaging": "Instant Messaging",
+  "login_time_out": "Login has timed out"
 }

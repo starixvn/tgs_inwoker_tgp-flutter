@@ -958,5 +958,6 @@
   "username": "nama pengguna",
   "password": "kata sandi",
   "area_code": "Kode area",
-  "instant_messaging": "Pesan singkat"
+  "instant_messaging": "Pesan singkat",
+  "login_time_out": "Waktu masuk telah habis"
 }

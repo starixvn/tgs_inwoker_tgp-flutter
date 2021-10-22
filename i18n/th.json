@@ -957,5 +957,6 @@
   "username": "ชื่อผู้ใช้",
   "password": "รหัสผ่าน",
   "area_code": "รหัสพื้นที่",
-  "instant_messaging": "ข้อความโต้ตอบแบบทันที"
+  "instant_messaging": "ข้อความโต้ตอบแบบทันที",
+  "login_time_out": "การเข้าสู่ระบบหมดเวลา"
 }
