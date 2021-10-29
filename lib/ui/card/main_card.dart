@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:fdottedline/fdottedline.dart';
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter/custom/custom_picker_dialog.dart';
@@ -230,33 +231,44 @@ class _MainCardState extends BaseState<MainCard> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Container(
-                      margin: EdgeInsets.symmetric(vertical: 20.auto, horizontal: 20.auto),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            getTranslatedText("add_card"),
-                            style: TextStyle(fontSize: 11.auto, color: Colors.black),
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(top: 5.auto),
-                            child: Text(
-                              getTranslatedText("max_card_hint"),
-                              style: TextStyle(fontSize: 9.auto, color: CustomColor.theme_button_disable_bg),
+                    Expanded(
+                      flex:8,
+                      child: Container(
+                        margin: EdgeInsets.symmetric(vertical: 20.auto, horizontal: 20.auto),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            AutoSizeText(
+                              getTranslatedText("add_card"),
+                              style: TextStyle(color: Colors.black),
+                              minFontSize: 5,
+                              stepGranularity: 1,
                             ),
-                          )
-                        ],
+                            Container(
+                              margin: EdgeInsets.only(top: 5.auto),
+                              child: AutoSizeText(
+                                getTranslatedText("max_card_hint"),
+                                style: TextStyle(color: CustomColor.theme_button_disable_bg),
+                                minFontSize: 5,
+                                maxFontSize: 11,
+                                stepGranularity: 1,
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     ),
-                    Container(
-                        margin: EdgeInsets.symmetric(horizontal: 20.auto),
-                        child: ImageIcon(
-                            AssetImage(
-                              "images/card/ic_add_card.png",
-                            ),
-                            size: 23.auto,
-                            color: CustomColor.theme_button_disable_bg)),
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                          margin: EdgeInsets.symmetric(horizontal: 20.auto),
+                          child: ImageIcon(
+                              AssetImage(
+                                "images/card/ic_add_card.png",
+                              ),
+                              size: 23.auto,
+                              color: CustomColor.theme_button_disable_bg)),
+                    ),
                   ],
                 )),
           ),

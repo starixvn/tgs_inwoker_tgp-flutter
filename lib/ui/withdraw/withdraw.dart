@@ -7,6 +7,7 @@ import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/custom/custom_text_form_field.dart';
 import 'package:tgp_flutter/entity/bank_card.dart';
 import 'package:tgp_flutter/entity/bank_type.dart';
+import 'package:tgp_flutter/environment_config.dart';
 import 'package:tgp_flutter/extension/format.dart';
 import 'package:tgp_flutter/my_behavior.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
@@ -86,7 +87,7 @@ class _WithdrawState extends BaseState<Withdraw> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.pop(context, true);
           },
         ),
         flexibleSpace: Container(
@@ -236,9 +237,24 @@ class _WithdrawState extends BaseState<Withdraw> {
 
   _buildHintText() => Container(
         margin: EdgeInsets.symmetric(vertical: 10.auto, horizontal: 15.auto),
-        child: Text(
-          getTranslatedText("withdrawal_warning"),
-          style: TextStyle(color: Colors.red, fontSize: 11.auto),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              getTranslatedText("withdrawal_warning"),
+              style: TextStyle(color: Colors.red, fontSize: 11.auto),
+            ),
+            Visibility(
+              visible: EnvironmentConfig.appTitleName == "HKJP",
+              child: Container(
+                padding: EdgeInsets.only(top: 5.auto),
+                child: Text(
+                  getTranslatedText("withdrawal_amount_warning"),
+                  style: TextStyle(color: Colors.red, fontSize: 11.auto),
+                ),
+              ),
+            ),
+          ],
         ),
       );
 
@@ -270,11 +286,10 @@ class _WithdrawState extends BaseState<Withdraw> {
       amount = int.parse(_amountController.text);
     } else
       amount = 0;
-    if (amount == 0 || amount > _vm.wallet.main || _payPasswordController.text.isEmpty) {
+    if (amount == 0 || amount > _vm.wallet.main ) {
       setState(() {
         isNextButtonEnabled = false;
       });
-      return;
     } else {
       setState(() {
         isNextButtonEnabled = true;

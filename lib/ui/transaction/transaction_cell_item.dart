@@ -127,7 +127,7 @@ class _TransactionCellItemState extends BaseState<TransactionCellItem> {
                                 radius: 4.8,
                                 height: 30,
                                 width: 45,
-                                fontSize: 8.auto,
+                                fontSize: 8,
                                 padding: 3,
                               )
                             : Container(),

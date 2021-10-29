@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:tgp_flutter/custom/custom_toast.dart';
 import 'package:tgp_flutter/entity/game.dart';
 import 'package:tgp_flutter/entity/game_provider2.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
@@ -11,7 +12,7 @@ import 'package:tgp_flutter/ui/base_state.dart';
 import 'package:tgp_flutter/ui/home/game/game_view_model.dart';
 
 class ChildGamePlatform extends StatefulWidget {
-  final List<GameProvider2> platformList;
+  // final List<GameProvider2> platformList;
   final List<Game> gameList;
   final bool isSearching;
   final Function(String) onFilterPlatform;
@@ -19,34 +20,47 @@ class ChildGamePlatform extends StatefulWidget {
   final GameViewModel vm;
 
   ChildGamePlatform(
-      {this.platformList, this.gameList, this.isSearching, this.onFilterPlatform, this.initialPlatformCode, this.vm});
+      {/*this.platformList, */ this.gameList,
+      this.isSearching,
+      this.onFilterPlatform,
+      this.initialPlatformCode,
+      this.vm});
 
   @override
   _ChildGamePlatformState createState() => _ChildGamePlatformState();
 }
 
 class _ChildGamePlatformState extends BaseState<ChildGamePlatform> with SingleTickerProviderStateMixin {
-  var _platformTabController;
+  TabController _platformTabController;
   var platformTabIndex = 0;
   List<Map<String, String>> _platformTabList = [
     {"name": "all", "code": "ALL"}
   ];
+  var isFirst;
 
   @override
   void initState() {
-    initData();
-    _platformTabController =
-        TabController(length: widget.platformList.length + 1, vsync: this, initialIndex: platformTabIndex);
     super.initState();
   }
 
-  initData() {
-    widget.platformList.asMap().forEach((index, value) {
-      _platformTabList.add({"name": value.name, "code": value.code});
+  @override
+  void dispose() {
+    _platformTabController.dispose();
+    super.dispose();
+  }
+
+  getPlatformList() {
+    List<Map<String, String>> list = [
+      {"name": "all", "code": "ALL"}
+    ];
+    widget.vm.platformList.asMap().forEach((index, value) {
+      list.add({"name": value.name, "code": value.code});
       if (value.code == widget.initialPlatformCode) {
         platformTabIndex = index + 1;
       }
     });
+    _platformTabList = list;
+    _platformTabController = TabController(length: list.length, vsync: this, initialIndex: platformTabIndex);
   }
 
   Widget build(BuildContext context) {
@@ -56,38 +70,46 @@ class _ChildGamePlatformState extends BaseState<ChildGamePlatform> with SingleTi
           child: ChildGamePlatformTabBarView(
         gameList: widget.gameList,
         isDisabled: widget.isSearching,
-            vm: widget.vm,
+        vm: widget.vm,
       )),
     ]);
   }
 
-  _buildPlatformTabBar() => Container(
-        margin: EdgeInsets.symmetric(vertical: 8.auto, horizontal: 5.auto),
-        constraints: BoxConstraints(maxHeight: 30.auto),
-        width: context.screenWidth,
-        child: TabBar(
-          controller: _platformTabController,
-          isScrollable: true,
-          unselectedLabelColor: CustomColor.theme_button_disable_bg,
-          labelColor: CustomColor.theme_button_disable_bg,
-          indicatorWeight: 3,
-          onTap: (index) => widget.onFilterPlatform(_platformTabList[index]["code"]),
-          indicator: ShapeDecoration(
-            shape: RoundedRectangleBorder(
-              side: BorderSide(color: CustomColor.theme_button_disable_bg),
-              borderRadius: BorderRadius.circular(15.auto),
-            ),
+  _buildPlatformTabBar() {
+    getPlatformList();
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 8.auto, horizontal: 5.auto),
+      constraints: BoxConstraints(maxHeight: 30.auto),
+      width: context.screenWidth,
+      child: TabBar(
+        controller: _platformTabController,
+        isScrollable: true,
+        unselectedLabelColor: CustomColor.theme_button_disable_bg,
+        labelColor: CustomColor.theme_button_disable_bg,
+        indicatorWeight: 3,
+        onTap: (index) {
+          setState(() {
+            platformTabIndex = index;
+          });
+          widget.onFilterPlatform(_platformTabList[index]["code"]);
+        },
+        indicator: ShapeDecoration(
+          shape: RoundedRectangleBorder(
+            side: BorderSide(color: CustomColor.theme_button_disable_bg),
+            borderRadius: BorderRadius.circular(15.auto),
           ),
-          unselectedLabelStyle: TextStyle(color: CustomColor.theme_button_disable_bg),
-          tabs: _platformTabList.map((item) {
-            return Tab(
-              child: Text(item["code"] == "ALL" ? getTranslatedText(item["name"]) : item["name"],
-                  style: TextStyle(
-                    fontFamily: 'PingFang',
-                    fontSize: 14.auto,
-                  )),
-            );
-          }).toList(),
         ),
-      );
+        unselectedLabelStyle: TextStyle(color: CustomColor.theme_button_disable_bg),
+        tabs: _platformTabList.map<Widget>((item) {
+          return Tab(
+            child: Text(item["code"] == "ALL" ? getTranslatedText(item["name"]) : item["name"],
+                style: TextStyle(
+                  fontFamily: 'PingFang',
+                  fontSize: 14.auto,
+                )),
+          );
+        }).toList(),
+      ),
+    );
+  }
 }

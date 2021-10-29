@@ -5,6 +5,7 @@ import 'package:tgp_flutter/entity/user_profile.dart';
 import 'package:tgp_flutter/entity/main_wallet.dart';
 import 'package:tgp_flutter/extension/format.dart';
 import 'package:tgp_flutter/localizations/language_provider.dart';
+import 'package:tgp_flutter/route_path.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:gradient_text/gradient_text.dart';
@@ -20,8 +21,9 @@ class HomeUserInfoView extends StatefulWidget {
   final UserProfile userProfile;
   final double wallet;
   final void Function() onLoginTap;
+  final Function refreshHomePage;
 
-  HomeUserInfoView({@required this.userProfile, this.wallet, this.onLoginTap});
+  HomeUserInfoView({@required this.userProfile, this.wallet, this.onLoginTap, this.refreshHomePage});
 
   @override
   _HomeUserInfoViewState createState() => _HomeUserInfoViewState();
@@ -95,9 +97,9 @@ class _HomeUserInfoViewState extends BaseState<HomeUserInfoView> {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  _buildHomeIcon("ic_deposit", getTranslatedText("deposit"), "deposit"),
-                  _buildHomeIcon("ic_transfer", getTranslatedText("transfer"), "wallet_transfer"),
-                  _buildHomeIcon("ic_withdraw", getTranslatedText("withdrawal"), "withdraw")
+                  _buildHomeIcon("ic_deposit", getTranslatedText("deposit"), RoutePath.deposit),
+                  _buildHomeIcon("ic_transfer", getTranslatedText("transfer"), RoutePath.walletTransfer),
+                  _buildHomeIcon("ic_withdraw", getTranslatedText("withdrawal"), RoutePath.withdraw)
                 ],
               ),
             ),
@@ -160,14 +162,6 @@ class _HomeUserInfoViewState extends BaseState<HomeUserInfoView> {
                 maxLines: 1,
                 stepGranularity: 1,
               ),
-              /*RichText(
-                text: TextSpan(style: TextStyle(fontSize: 12.auto, fontWeight: FontWeight.bold), children: [
-                  TextSpan(
-                      text: loginString,
-                      style: TextStyle(color: CustomColor.theme_label_text_highlight_color, fontSize: (11.8).auto)),
-                  TextSpan(text: registerString, style: TextStyle(color: Colors.white, fontSize: (11.8).auto))
-                ]),
-              ),*/
               border: BorderSide(color: Colors.white, width: 1.5),
               radius: 15.7,
               width: 87.auto,
@@ -186,15 +180,13 @@ class _HomeUserInfoViewState extends BaseState<HomeUserInfoView> {
       child: InkWell(
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
-        onTap: () {
+        onTap: () async{
           if (widget.userProfile == null) {
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              Navigator.of(context).pushNamed("/login");
-            });
+              var res = await Navigator.of(context).pushNamed(RoutePath.login);
+              if(res) widget.refreshHomePage();
           } else {
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              Navigator.of(context).pushNamed("/$routePath");
-            });
+            var res = await Navigator.of(context).pushNamed(routePath);
+            if(res) widget.refreshHomePage();
           }
         },
         child: Container(

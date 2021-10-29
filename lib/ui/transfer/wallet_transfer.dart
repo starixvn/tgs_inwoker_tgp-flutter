@@ -114,7 +114,7 @@ class _WalletTransferState extends BaseState<WalletTransfer> with TickerProvider
     leading: IconButton(
       icon: Icon(Icons.arrow_back),
       onPressed: () {
-        Navigator.pop(context);
+        Navigator.pop(context, true);
       },
     ),
     actions: [

@@ -1,9 +1,10 @@
+import 'dart:async';
+import 'dart:math';
 import 'dart:ui';
 
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
-import 'package:tgp_flutter/entity/game.dart';
+import 'package:tgp_flutter/custom/custom_toast.dart';
+import 'package:tgp_flutter/entity/game_provider2.dart';
 import 'package:tgp_flutter/entity/game_type.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/my_behavior.dart';
@@ -12,7 +13,6 @@ import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
 import 'package:tgp_flutter/ui/home/child_game/child_game_platform.dart';
-import 'package:tgp_flutter/ui/home/child_game/child_game_platform_tab_bar_view.dart';
 import 'package:tgp_flutter/ui/home/child_game/child_game_suggestion.dart';
 import 'package:tgp_flutter/ui/home/game/game_view_model.dart';
 
@@ -42,19 +42,26 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
   var searchController = TextEditingController();
   var _focusNode = FocusNode();
   var isSearching = false, isVisibleSuggestionList = false, isInitLoading = true;
+  var currGamePlatformCode;
 
   @override
   void initState() {
     _groupTabController = TabController(length: _groupTabList.length, vsync: this, initialIndex: _groupTabIndex);
     _focusNode.addListener(_onFocusNodeListener);
+    currGamePlatformCode = widget.gamePlatformCode;
     _initData();
     super.initState();
   }
 
   _initData() async {
-    await _vm.getGameProviderList();
     _vm.getPlatformList(widget.gameType);
     _vm.filter(context: context, gamePlatformCode: widget.gamePlatformCode, gameType: widget.gameType);
+  }
+
+  Stream<List<GameProvider2>> get getGamePlatform async* {
+    yield* Stream.periodic(Duration(seconds: 10), (_) {
+      return _vm.getPlatformList(widget.gameType);
+    });
   }
 
   Widget build(BuildContext context) {
@@ -82,7 +89,7 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.pop(context, true);
           },
         ),
         title: isSearching
@@ -98,7 +105,11 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
     if (_vm.filteredGameList == null || _vm.gameProviderList == null)
       return buildProgressDialog(_vm.brandLogoUrl);
     else {
+      /* return StreamBuilder<List<GameProvider2>>(
+          stream: getGamePlatform,
+          builder: (BuildContext context, AsyncSnapshot<List<GameProvider2>> snapshot) {*/
       return Stack(
+        key: Key("${Random().nextDouble()}"),
         children: [
           _buildChildGame(),
           _buildOverlay(),
@@ -111,7 +122,8 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
           )
         ],
       );
-    }
+      // });
+   }
   }
 
   _buildChildGame() => Column(
@@ -147,13 +159,15 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
           ),
           Expanded(
             child: ChildGamePlatform(
-              platformList: _vm.platformList,
               gameList: _vm.filteredGameList,
               isSearching: isSearching,
               onFilterPlatform: (code) {
                 _vm.filter(gamePlatformCode: code);
+                setState(() {
+                  currGamePlatformCode = code;
+                });
               },
-              initialPlatformCode: widget.gamePlatformCode,
+              initialPlatformCode: currGamePlatformCode,
               vm: _vm,
             ),
           ),
@@ -283,12 +297,18 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
   }
 
   _handleApiState() {
-    handleApiState(_vm.getGameApiState, isAutoHideLoading: false, onSuccess: () {});
-    handleApiState(_vm.getGameProviderListApiState, isAutoHideLoading: false, onSuccess: () {});
-    handleApiState(_vm.getFavouriteGameApiState, isAutoHideLoading: !isInitLoading, onSuccess: () {
-      if(isInitLoading) isInitLoading = !isInitLoading;
+    handleApiState(_vm.getGameApiState, isAutoHideLoading: false, onSuccess: () {
+      print("111");
+      if (_vm.isGamePlatformInactive) {
+        currGamePlatformCode = "ALL";
+        _vm.filter(gamePlatformCode: currGamePlatformCode);
+        _vm.setGamePlatformActiveFalse();
+        CustomToast.show(getTranslatedText("game_platform_inactive"));
+      }
     });
-    handleApiState(_vm.setFavouriteGameApiState, onSuccess: () {});
-    handleApiState(_vm.deleteFavouriteGameApiState,  onSuccess: () {});
+    handleApiState(_vm.getGameProviderListApiState, isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getFavouriteGameApiState, isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.setFavouriteGameApiState, isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.deleteFavouriteGameApiState, isAutoHideLoading: false, onSuccess: () {});
   }
 }

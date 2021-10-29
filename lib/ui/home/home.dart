@@ -1,16 +1,21 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tgp_flutter/custom/custom_dialog.dart';
 import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
+import 'package:tgp_flutter/entity/game_provider2.dart';
 import 'package:tgp_flutter/entity/language.dart';
 import 'package:tgp_flutter/entity/user_profile.dart';
 import 'package:tgp_flutter/environment_config.dart';
 import 'package:tgp_flutter/localizations/language_provider.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
+import 'package:tgp_flutter/route_path.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
+import 'package:tgp_flutter/ui/home/game/game_view_model.dart';
 import 'package:tgp_flutter/ui/home/home_user_info_view.dart';
 import 'package:tgp_flutter/ui/home/home_view_model.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
@@ -43,15 +48,19 @@ class _HomeState extends BaseState<Home> {
 
   var itemHeightRatio = 335 / 90;
   var _vm = HomeViewModel();
+  var _gameViewModel = GameViewModel();
 
   @override
   void initState() {
+    _initData();
+    super.initState();
+  }
+
+  _initData() {
     _vm.getAnnouncement();
     _vm.getBanner();
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
     _vm.resumeIfNeed();
-    // });
-    super.initState();
+    _gameViewModel.getGameProviderList();
   }
 
   Widget build(BuildContext context) {
@@ -60,26 +69,28 @@ class _HomeState extends BaseState<Home> {
         builder: (ctx, vm, _) {
           _handleApiState();
           return Scaffold(
-            resizeToAvoidBottomInset: false,
-            backgroundColor: Colors.white,
-            body: _vm.bannerList == null
-                ? buildProgressDialog(_vm.brandLogoUrl)
-                : Column(
-                    children: [
-                      Stack(children: [_buildImageSlider(), _buildBorderCorner()]),
-                      _buildMarqueeRow(),
-                      HomeUserInfoView(
-                          userProfile: _vm.userProfile,
-                          wallet: _vm.totalBalance,
-                          onLoginTap: () {
-                            navigateToLogin();
-                          }),
-                      GameView()
-                    ],
-                  ),
-          );
+              resizeToAvoidBottomInset: false,
+              backgroundColor: Colors.white,
+              body: _vm.bannerList == null ? buildProgressDialog(_vm.brandLogoUrl) : _buildWidget());
         });
   }
+
+  _buildWidget() => Column(
+        children: [
+          Stack(children: [_buildImageSlider(), _buildBorderCorner()]),
+          _buildMarqueeRow(),
+          HomeUserInfoView(
+            userProfile: _vm.userProfile,
+            wallet: _vm.totalBalance,
+            onLoginTap: () => navigateToLogin(),
+            refreshHomePage: () => _initData(),
+          ),
+          GameView(
+            vm: _gameViewModel,
+            refreshHomePage: () => _initData(),
+          )
+        ],
+      );
 
   _buildImageSlider() => Container(
         height: context.screenHeight / 5,
@@ -123,10 +134,15 @@ class _HomeState extends BaseState<Home> {
   _buildMarqueeRow() => Row(
         children: [
           Container(
+            width: context.screenWidth / 7,
             padding: EdgeInsets.only(left: 10.auto),
-            child: Text(
+            child: AutoSizeText(
               getTranslatedText("notice"),
-              style: TextStyle(fontSize: (13.5).auto, fontWeight: FontWeight.w600),
+              style: TextStyle(fontWeight: FontWeight.w600),
+              maxFontSize: 13,
+              minFontSize: 5,
+              maxLines: 1,
+              stepGranularity: 1,
             ),
           ),
           _buildTextMarquee()
@@ -161,10 +177,9 @@ class _HomeState extends BaseState<Home> {
     return text.replaceAll("\n", " ");
   }
 
-  navigateToLogin() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      Navigator.of(context).pushNamed("/login");
-    });
+  navigateToLogin() async {
+    var result = await Navigator.of(context).pushNamed(RoutePath.login);
+    if (result) _initData();
   }
 
   _displayDialog() async {
@@ -191,7 +206,9 @@ class _HomeState extends BaseState<Home> {
   _handleApiState() {
     if (widget.isFirstRun != null && widget.isFirstRun) {
       if (_vm.isNotLogin) {
-        navigateToLogin();
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          navigateToLogin();
+        });
         _vm.markIsNotLogin();
       } else if (_vm.isExpired) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -202,5 +219,10 @@ class _HomeState extends BaseState<Home> {
     handleApiState(_vm.getBasicInfoApiState, isAutoHideLoading: false, onSuccess: () {});
     handleApiState(_vm.getAnnouncementApiState, isAutoHideLoading: false, onSuccess: () {});
     handleApiState(_vm.getBannerApiState, isAutoHideLoading: false, onSuccess: () {});
+  }
+
+  _handleGameApiState() {
+    handleApiState(_gameViewModel.getGameProviderListApiState, isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_gameViewModel.getGameApiState, onSuccess: () {});
   }
 }

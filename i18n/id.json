@@ -938,6 +938,8 @@
   "review": "peninjauan sedang berlangsung",
   "approved": "disetujui",
   "rejected": "Ditolak",
+  "waiting_paid": "Menunggu dibayar",
+  "dibayar": "Dibayar",
   "order_number": "Nomor pesanan: ",
   "qr_cs": "Layanan pelanggan kode QR",
   "contact": "Kontak",
@@ -959,5 +961,7 @@
   "password": "kata sandi",
   "area_code": "Kode area",
   "instant_messaging": "Pesan singkat",
-  "login_time_out": "Waktu masuk telah habis"
+  "login_time_out": "Waktu masuk telah habis",
+  "withdrawal_amount_warning": "Jumlah setoran harus dalam satuan seratus",
+  "game_platform_inactive": "Platform permainan ditutup"
 }

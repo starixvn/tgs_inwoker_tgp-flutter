@@ -937,6 +937,8 @@
   "review": "đang xem xét",
   "approved": "đã phê duyệt",
   "rejected": "Bị từ chối",
+  "waiting_paid": "chờ đợi trả tiền",
+  "paid": "trả",
   "order_number": "Số đơn hàng:",
   "qr_cs": "Dịch vụ khách hàng mã QR",
   "contact": "Liên hệ",
@@ -958,5 +960,7 @@
   "password": "mật khẩu mở khóa",
   "area_code": "mã vùng",
   "instant_messaging": "Tin khẩn",
-  "login_time_out": "Đăng nhập đã hết thời gian"
+  "login_time_out": "Đăng nhập đã hết thời gian",
+  "withdrawal_amount_warning": "Số tiền gửi phải tính bằng đơn vị trăm nhân dân tệ",
+  "game_platform_inactive": "Nền tảng trò chơi đã bị đóng"
 }

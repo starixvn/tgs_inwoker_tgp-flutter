@@ -7,6 +7,7 @@ import 'package:tgp_flutter/localizations/language_provider.dart';
 import 'package:tgp_flutter/localizations/my_localizations.dart';
 import 'package:tgp_flutter/main_view_model.dart';
 import 'package:tgp_flutter/my_behavior.dart';
+import 'package:tgp_flutter/network/event_result.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/route_path.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
@@ -83,7 +84,7 @@ class _MyAppState extends BaseState<MyApp> {
   var _vm = MainViewModel();
   var firstInit = true;
 
-  //var langList = LanguageProvider().list.map((e) => e.locale).toList();
+  var langList;
 
   setLocale(Locale locale) {
     setState(() {
@@ -96,19 +97,10 @@ class _MyAppState extends BaseState<MyApp> {
     super.initState();
   }
 
-  @override
+/*  @override
   void didChangeDependencies() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      LanguageProvider().getLocale().then((locale) {
-        setState(() {
-          this._locale = locale;
-        });
-      });
-    });
-    super.didChangeDependencies();
-  }
-
-  /*_getLocale(){
+    WidgetsBinding.instance.addPostFrameCallback((_) {*/
+  _getLocale() {
     LanguageProvider().getLocale().then((locale) {
       setState(() {
         this._locale = locale;
@@ -116,110 +108,40 @@ class _MyAppState extends BaseState<MyApp> {
     });
   }
 
-  Future<List<LanguageOption>> initData() async {
+  /*);
+    super.didChangeDependencies();
+  }*/
+
+  Future<EventResult<List<LanguageOption>>> initData() async {
     if (firstInit) {
       await _vm.getAuthToken();
-      await _vm.getBrandLogo();
       await _vm.getLanguageOption();
       setState(() {
         firstInit = false;
       });
       _getLocale();
-      return _vm.getLanguageApiState.result;
+      langList = LanguageProvider().list.map((e) => e.locale).toList();
+      return _vm.getLanguageApiState;
     } else
-      return [];
-  }*/
+      return EventResult.loading();
+  }
 
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
     ));
-
-    /*return ProviderWidget<MainViewModel>(
-        model: _vm,
-        builder: (ctx, vm, _) {
-          _handleApiState();
-          return
-        });*/
-    return GestureDetector(
-      onTap: () {
-        FocusScopeNode currentFocus = FocusScope.of(context);
-        if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) {
-          currentFocus.focusedChild.unfocus();
-        }
-      },
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: appTitle,
-        initialRoute: '/',
-        routes: {
-          RoutePath.empty: (context) => Splash(),
-          RoutePath.home: (context) => MyHomePage(),
-          RoutePath.login: (context) => Login(),
-          RoutePath.menu: (context) => Menu(),
-          RoutePath.profile: (context) => Profile(),
-          RoutePath.promotion: (context) => PromotionPage(),
-          RoutePath.childGame: (context) => ChildGame(),
-          RoutePath.deposit: (context) => Deposit(),
-          RoutePath.walletTransfer: (context) => WalletTransfer(),
-          RoutePath.withdraw: (context) => Withdraw(),
-          RoutePath.transaction: (context) => Transaction(),
-          RoutePath.mainCard: (context) => MainCard(),
-          RoutePath.message: (context) => MessageView(),
-          RoutePath.frequentQuestion: (context) => FrequentQuestion(),
-          RoutePath.referFriend: (context) => ReferFriend(),
-          RoutePath.profileInfo: (context) => ProfileInfo(),
-          RoutePath.realNameVerification: (context) => RealNameVerification(),
-          RoutePath.phoneVerification: (context) => PhoneVerification(),
-          RoutePath.editPhone: (context) => EditPhone(),
-          RoutePath.emailVerification: (context) => EmailVerification(0),
-          RoutePath.qqAccount: (context) => QQAccount(),
-          RoutePath.wechat: (context) => Wechat(),
-          RoutePath.address: (context) => Address(),
-          RoutePath.editPassword: (context) => EditPassword(),
-          RoutePath.resetPayPassword: (context) => ResetPayPassword(),
-          RoutePath.payPassword: (context) => PayPassword(),
-          RoutePath.securityAnswer: (context) => SecurityAnswer(),
-          RoutePath.editSecurityAnswer: (context) => EditSecurityAnswer(),
-          RoutePath.editSecurityAnswerBySecurityAnswer: (context) => EditSecurityAnswerBySecurityAnswer(),
-          RoutePath.forgotPassword: (context) => ForgotPassword(),
-          RoutePath.language: (context) => LanguageView(),
-          RoutePath.addCard: (context) => AddCard(),
-          RoutePath.customerService: (context) => CustomerService(),
-          RoutePath.promotionItemDetails: (context) => PromotionItemDetails(),
-          RoutePath.csWebView: (context) => CustomerServiceWebView(),
-          RoutePath.csQrCode: (context) => CustomerServiceQrCode(),
-          RoutePath.maintenance: (context) => Maintenance(),
-          RoutePath.blacklistedUser: (context) => BlacklistedUser(),
-          RoutePath.phoneReVerification: (context) => PhoneReVerification(),
-        },
-        localizationsDelegates: [
-          MyLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate
-        ],
-        // MyHomePage(title: appTitle),
-        supportedLocales: LanguageProvider().list.map((e) => e.locale).toList(),
-        locale: _locale,
-        localeResolutionCallback: (locale, supportedLocales) {
-          for (var supportedLocale in supportedLocales) {
-            if (supportedLocale.languageCode == locale.languageCode &&
-                supportedLocale.scriptCode == locale.scriptCode) {
-              return supportedLocale;
-            }
-          }
-          return supportedLocales.first;
-        },
-      ),
-    );
-
-    /*return FutureBuilder(
+    _handleApiState();
+    return FutureBuilder(
         future: initData(),
-        builder: (BuildContext context, AsyncSnapshot<List<LanguageOption>> snapshot) {
+        builder: (BuildContext context, AsyncSnapshot<EventResult<List<LanguageOption>>> snapshot) {
           if (!snapshot.hasData) {
-            return MaterialApp(debugShowCheckedModeBanner: false, home: Splash(logoUrl: _vm.brandLogoUrl ?? ""));
-          } else {
+            return MaterialApp(debugShowCheckedModeBanner: false, home: Splash());
+          }
+          else if (snapshot.data.isMaintenance) {
+            return MaterialApp(debugShowCheckedModeBanner: false, home: Maintenance(isShowCS: true));
+          }
+          else {
             return GestureDetector(
               onTap: () {
                 FocusScopeNode currentFocus = FocusScope.of(context);
@@ -278,7 +200,7 @@ class _MyAppState extends BaseState<MyApp> {
                   GlobalWidgetsLocalizations.delegate
                 ],
                 // MyHomePage(title: appTitle),
-                supportedLocales: LanguageProvider().list.map((e) => e.locale).toList(),
+                supportedLocales: langList,
                 locale: _locale,
                 localeResolutionCallback: (locale, supportedLocales) {
                   for (var supportedLocale in supportedLocales) {
@@ -292,14 +214,12 @@ class _MyAppState extends BaseState<MyApp> {
               ),
             );
           }
-        });*/
+        });
   }
 
-  /*_handleApiState() {
+  _handleApiState() {
     handleApiState(_vm.getLanguageApiState, isAutoHideLoading: false, onSuccess: () {});
-    //handleApiState(_vm.getBrandLogoApiState, isAutoHideLoading: false, onSuccess: () {});
-    handleApiState(_vm.authApiState, isAutoHideLoading: false, onSuccess: () {});
-  }*/
+  }
 }
 
 class MyHomePage extends StatefulWidget {

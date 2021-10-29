@@ -129,7 +129,7 @@ class _GameWebState extends BaseState<GameWeb> {
             },
             onExitFullscreen: (InAppWebViewController controller) {
               Navigator.pop(
-                context,
+                context,true
               );
             },
             onLoadStart: (InAppWebViewController controller, String url) {

@@ -937,6 +937,8 @@
   "review": "อยู่ระหว่างตรวจสอบ",
   "approved": "อนุมัติ",
   "rejected": "ถูกปฏิเสธ",
+  "waiting_paid": "รอจ่าย",
+  "paid": "จ่าย",
   "order_number": "หมายเลขคำสั่งซื้อ: ",
   "qr_cs": "ฝ่ายบริการลูกค้ารหัส QR",
   "contact": "ติดต่อ",
@@ -958,5 +960,7 @@
   "password": "รหัสผ่าน",
   "area_code": "รหัสพื้นที่",
   "instant_messaging": "ข้อความโต้ตอบแบบทันที",
-  "login_time_out": "การเข้าสู่ระบบหมดเวลา"
+  "login_time_out": "การเข้าสู่ระบบหมดเวลา",
+  "withdrawal_amount_warning": "จำนวนเงินฝากต้องเป็นหน่วยร้อยหยวน",
+  "game_platform_inactive": "แพลตฟอร์มเกมปิดอยู่"
 }

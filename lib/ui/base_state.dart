@@ -74,7 +74,7 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
             });
           } else if (onError != null) {
             onError(eventResult.error);
-          } else {
+          } else if(userRepo.apiError!=null){
             String error = userRepo.apiError[eventResult.errorMsgId] ?? "";
             CustomToast.show(error);
           }

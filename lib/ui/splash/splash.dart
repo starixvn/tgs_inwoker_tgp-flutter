@@ -28,20 +28,25 @@ class _SplashState extends BaseState<Splash> {
 
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _vm.getAuthToken();
-      _vm.getApiError();
-      _vm.getBrandLogo();
-      _vm.getLanguageOption();
-    });
+  /*  WidgetsBinding.instance.addPostFrameCallback((_) {
+      _initData();
+    });*/
     super.initState();
   }
 
+  _initData() async{
+    await _vm.getAuthToken();
+    await _vm.getLanguageOption();
+    _vm.getApiError();
+    _vm.getBrandLogo();
+
+  }
+
   Widget build(BuildContext context) {
-    return ProviderWidget<SplashViewModel>(
+    /*return ProviderWidget<SplashViewModel>(
         model: _vm,
         builder: (ctx, vm, _) {
-          _handleApiState();
+          _handleApiState();*/
           return Container(
             width: context.screenWidth,
             height: context.screenHeight,
@@ -70,7 +75,7 @@ class _SplashState extends BaseState<Splash> {
               ),
             ),
           );
-        });
+       // });
   }
 
   _handleApiState() {

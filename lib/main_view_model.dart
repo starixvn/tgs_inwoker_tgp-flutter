@@ -14,26 +14,29 @@ class MainViewModel extends BaseViewModel{
 
   get brandLogoUrl => contentRepo.brandLogo?.mobileUrl;
 
-  getAuthToken()async{
+  getAuthToken() async {
     setLoading();
     authApiState = await userRepo.auth();
     setLoading(false);
     return authApiState;
   }
 
-   getLanguageOption() async{
+  getLanguageOption() async {
     setLoading();
     getLanguageApiState = await contentRepo.getLanguageOption();
-    if (getLanguageApiState.isSuccess) {
-    }
+    if (getLanguageApiState.isSuccess) {}
     setLoading(false);
     return getLanguageApiState;
   }
 
-  getBrandLogo() async{
+  getBrandLogo() async {
     setLoading();
     getBrandLogoApiState = await contentRepo.getBrandLogo();
     setLoading(false);
     return getBrandLogoApiState;
+  }
+
+  getApiError() async {
+    await userRepo.getApiErrorLocalization();
   }
 }

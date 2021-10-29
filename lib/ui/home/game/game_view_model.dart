@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter/base_viewmodel.dart';
 import 'package:tgp_flutter/entity/game.dart';
+import 'package:tgp_flutter/entity/game_provider.dart';
 import 'package:tgp_flutter/entity/game_provider2.dart';
 import 'package:tgp_flutter/entity/game_type.dart';
 import 'package:tgp_flutter/localizations/language_provider.dart';
@@ -19,13 +20,13 @@ class GameViewModel extends BaseViewModel {
 
   @override
   List<BaseRepository> get repoList => [contentRepo];
-  EventResult<List<Game>> getGameApiState;
   EventResult getGameUrlApiState,
       getGameProviderListApiState,
       getLobbyGameUrlApiState,
       getFavouriteGameApiState,
       setFavouriteGameApiState,
-      deleteFavouriteGameApiState;
+      deleteFavouriteGameApiState,
+      getGameApiState;
   List<Game> _gameList, filteredGameList;
   Map<String, List<Game>> gameListMap = new Map<String, List<Game>>();
   int mCategory = 0;
@@ -45,6 +46,8 @@ class GameViewModel extends BaseViewModel {
     GameType.EGame,
   ];
   var _context;
+  bool isLoading = false;
+  bool isGamePlatformInactive = false;
 
   get userProfile => userRepo.userProfile;
 
@@ -52,38 +55,53 @@ class GameViewModel extends BaseViewModel {
 
   get brandLogoUrl => contentRepo.brandLogo?.mobileUrl;
 
-  getGameProviderList() async {
-    if (contentRepo.gameProviderList == null) {
+  getGameProviderList({bool isFromChildGame = false}) async {
+    List<GameProvider> _gameProviderList;
+    List<GameProvider2> filteredSportList = [];
+    if (contentRepo.gameProviderList == null || isFromChildGame) {
       setLoading();
       getGameProviderListApiState = await contentRepo.getGameProviderList();
+      _gameProviderList = getGameProviderListApiState.result;
+    } else {
+      _gameProviderList = contentRepo.gameProviderList;
     }
-    if (contentRepo.gameProviderList == null) return;
+    // if (contentRepo.gameProviderList == null|| isFromChildGame) return;
 
-    List<GameProvider2> list = [];
-    contentRepo.gameProviderList.forEach((e) {
+    _gameProviderList.forEach((e) {
       e.gameTypes.forEach((element) {
         if (!(element == GameType.VirtualSports || element == GameType.VirtualSportsLobby)) {
-          list.add(GameProvider2(element, e.code, e.name, e.description, e.status));
+          filteredSportList.add(GameProvider2(element, e.code, e.name, e.description, e.status));
         }
       });
     });
     gameProviderList = gameTypeList
         .map(
-          (type) => list.where((element) => element.gameType == type).toList(),
+          (type) => filteredSportList.where((element) => element.gameType == type).toList(),
         )
         .toList();
-    print(gameProviderList);
+
     setLoading(false);
     return getGameProviderListApiState;
   }
 
   getGameList(String gamePlatformCode, GameType gameType) async {
     setLoading();
-    getGameApiState = await contentRepo.getGameList(gamePlatformCode, gameType);
-    if (getGameApiState.isSuccess) {
-      gameListMap[gamePlatformCode] = getGameApiState.result;
-      if(gameType == GameType.Slot || gameType == GameType.EGame || gameType == GameType.Fishing)await _getFavoriteGame(gameType);
-    } //else getGameApiState = _apiState;
+    var apiState = await contentRepo.getGameList(gamePlatformCode, gameType);
+    if (apiState.isSuccess) {
+      if (apiState.result.isEmpty) {
+        getGameApiState = apiState;
+        await getPlatformList(gameType);
+        isGamePlatformInactive = true;
+        mPlatform = "ALL";
+        await filter(gamePlatformCode: mPlatform);
+
+      } else {
+        gameListMap[gamePlatformCode] = apiState.result;
+        if (gameType == GameType.Slot || gameType == GameType.EGame || gameType == GameType.Fishing)
+          getGameApiState = await _getFavoriteGame(gameType);
+      }
+    } else
+      getGameApiState = apiState;
     setLoading(false);
     return getGameApiState;
   }
@@ -126,8 +144,9 @@ class GameViewModel extends BaseViewModel {
     if (gamePlatformCode != null) mPlatform = gamePlatformCode;
     if (searchQuery != null) mSearchQuery = searchQuery;
 
-    var platformGameList = await _filterPlatform();
+    List<Game> platformGameList = await _filterPlatform();
     filteredGameList = _filterSearch(_filterCategory(platformGameList));
+    print("1111"+filteredGameList.toString());
     notifyListeners();
   }
 
@@ -145,7 +164,7 @@ class GameViewModel extends BaseViewModel {
         var list = gameList.where((element) => element.tag.isHot == true).toList();
         return list;
       case 3:
-      //favorite game list
+        //favorite game list
         var list = gameList.where((element) => element.isFavourite == true).toList();
         return list;
       default:
@@ -153,16 +172,20 @@ class GameViewModel extends BaseViewModel {
     }
   }
 
-  _filterPlatform() async {
+  Future<List<Game> >_filterPlatform() async {
     if (mPlatform == "ALL") {
       //get all game list
       List<Game> _list = await _addGameList(_gameList);
       return _list;
     } else {
-      if (gameListMap[mPlatform] == null) {
-        await getGameList(mPlatform, mGameType);
-      }
-      return gameListMap[mPlatform];
+      //if (gameListMap[mPlatform] == null) {
+      return await getGameList(mPlatform, mGameType).then((apiState){
+        if(apiState.result.isEmpty){
+          List<Game> list = [];
+          return list;
+        }
+        else return gameListMap[mPlatform];
+      });
     }
   }
 
@@ -181,17 +204,18 @@ class GameViewModel extends BaseViewModel {
     if (mSearchQuery == null || mSearchQuery.isEmpty) {
       return gameList;
     } else {
-      var list = gameList
-          .where((element) => element.name.toLowerCase().contains(mSearchQuery.toLowerCase()))
-          .toList();
+      var list = gameList.where((element) => element.name.toLowerCase().contains(mSearchQuery.toLowerCase())).toList();
       return list;
     }
   }
 
-  getPlatformList(GameType gameType) {
-    List<GameProvider2> list = gameProviderList.expand((e) => e).toList();
-    platformList = list.where((element) => element.gameType == gameType).toList();
+  getPlatformList(GameType gameType) async {
+    await getGameProviderList(isFromChildGame: true);
+    platformList =
+        (gameProviderList.expand((e) => e).toList()).where((element) => element.gameType == gameType).toList();
+    isLoading = false;
     notifyListeners();
+    return platformList;
   }
 
   _getFavoriteGame(GameType gameType) async {
@@ -230,5 +254,14 @@ class GameViewModel extends BaseViewModel {
       deleteFavouriteGameApiState = _apiState;
     setLoading(false);
     return deleteFavouriteGameApiState;
+  }
+
+  setLoadingTrue() {
+    isLoading = true;
+    notifyListeners();
+  }
+
+  setGamePlatformActiveFalse() {
+    isGamePlatformInactive = false;
   }
 }

@@ -26,7 +26,7 @@ class ProgressDialog {
     _progressDialog.setLoadingWidget(Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        url == null
+        (url?.isNotEmpty ?? false)
             ? CachedNetworkImage(
                 placeholder: (context, url) => Container(),
                 imageUrl: url,

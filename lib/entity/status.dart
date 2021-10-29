@@ -12,6 +12,10 @@ enum Status {
   Approved,
   @JsonValue(4)
   Rejected,
+  @JsonValue(5)
+  WaitingPaid,
+  @JsonValue(6)
+  Paid,
 }
 
 extension StatusExtension on Status {
@@ -25,6 +29,10 @@ extension StatusExtension on Status {
         return getTranslatedText(context, "approved");
       case Status.Rejected:
         return getTranslatedText(context, "rejected");
+      case Status.WaitingPaid:
+        return getTranslatedText(context, "waiting_paid");
+      case Status.Paid:
+        return getTranslatedText(context, "paid");
       case Status.All:
         return getTranslatedText(context, "all");
       default:
@@ -42,8 +50,11 @@ extension StatusExtension on Status {
         return 3;
       case Status.Rejected:
         return 4;
+      case Status.WaitingPaid:
+        return 5;
+      case Status.Paid:
+        return 6;
       case Status.All:
-        return 0;
       default:
         return 1;
     }

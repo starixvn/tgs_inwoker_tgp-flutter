@@ -67,7 +67,7 @@ class _LeaveGameDialogState extends BaseState<LeaveGameDialog> {
               context,
             );
             Navigator.pop(
-              context,
+              context,true
             );
           },
           child: Container(

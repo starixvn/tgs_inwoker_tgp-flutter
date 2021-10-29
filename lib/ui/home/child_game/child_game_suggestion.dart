@@ -25,7 +25,7 @@ class ChildGameSuggestion extends StatefulWidget {
 }
 
 class _ChildGameSuggestionState extends BaseState<ChildGameSuggestion> {
-  var _vm = GameViewModel();
+ // var _vm = GameViewModel();
 
   Widget build(BuildContext context) {
     return Visibility(

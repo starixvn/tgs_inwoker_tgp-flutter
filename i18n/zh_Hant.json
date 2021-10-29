@@ -938,6 +938,8 @@
   "review": "審核中",
   "approved": "已通過",
   "rejected": "已拒絕",
+  "waiting_paid": "支付中",
+  "paid": "已支付",
   "order_number": "單號 : ",
   "qr_cs": "二維碼客服",
   "contact": "聯繫",
@@ -959,5 +961,7 @@
   "password": "密碼",
   "area_code": "區域代碼",
   "instant_messaging": "即時通訊",
-  "login_time_out": "登錄已超時"
+  "login_time_out": "登錄已超時",
+  "withdrawal_amount_warning": "存款金額必須是以百元為單位",
+  "game_platform_inactive": "游戏平台已关闭"
 }

@@ -160,7 +160,6 @@ class BankRepository extends BaseRepository {
             params: {
               "amount": amount.toString(),
               "bankinfoid": bankInfoId,
-              "paypassword": payPassword,
             },
             jwtRefresher: jwtAuth)
         .execute();

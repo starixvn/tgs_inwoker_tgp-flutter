@@ -132,7 +132,6 @@ class ContentRepository extends BaseRepository {
               "all": all.toString(),
             },
             converter: (json) => ListResponse.fromJson(json, (res) => Promotion.fromJson(res)),
-
             jwtRefresher: jwtAuth)
         .execute();
   }
