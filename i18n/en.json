@@ -953,6 +953,7 @@
   "waiting_paid": "Waiting paid",
   "paid": "Paid",
   "order_number": "Order Number : ",
+  "gms_order_number": "GMS Order Number : ",
   "qr_cs": "QR Customer Service",
   "contact": "Contact",
   "cs_join": "Join",

@@ -940,6 +940,7 @@
   "waiting_paid": "chờ đợi trả tiền",
   "paid": "trả",
   "order_number": "Số đơn hàng:",
+  "gms_order_number": "GMS Số đơn hàng:",
   "qr_cs": "Dịch vụ khách hàng mã QR",
   "contact": "Liên hệ",
   "cs_join": "Tham gia",

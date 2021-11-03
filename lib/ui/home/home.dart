@@ -83,11 +83,11 @@ class _HomeState extends BaseState<Home> {
             userProfile: _vm.userProfile,
             wallet: _vm.totalBalance,
             onLoginTap: () => navigateToLogin(),
-            refreshHomePage: () => _initData(),
+            onRefreshHomePage: () => _initData(),
           ),
           GameView(
             vm: _gameViewModel,
-            refreshHomePage: () => _initData(),
+            onRefreshHomePage: () => _initData(),
           )
         ],
       );

@@ -58,12 +58,6 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
     _vm.filter(context: context, gamePlatformCode: widget.gamePlatformCode, gameType: widget.gameType);
   }
 
-  Stream<List<GameProvider2>> get getGamePlatform async* {
-    yield* Stream.periodic(Duration(seconds: 10), (_) {
-      return _vm.getPlatformList(widget.gameType);
-    });
-  }
-
   Widget build(BuildContext context) {
     return ScrollConfiguration(
       behavior: MyBehavior(),
@@ -302,7 +296,7 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
       if (_vm.isGamePlatformInactive) {
         currGamePlatformCode = "ALL";
         _vm.filter(gamePlatformCode: currGamePlatformCode);
-        _vm.setGamePlatformActiveFalse();
+        _vm.setGamePlatformInactiveFalse();
         CustomToast.show(getTranslatedText("game_platform_inactive"));
       }
     });

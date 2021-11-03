@@ -86,7 +86,8 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
                   builder: (context) => Maintenance(
-                        isShowCS: true,
+                    isShowCS: true,
+                    isShowsAppBar: false,
                       )),
               (Route<dynamic> route) => false);
         });

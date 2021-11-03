@@ -75,4 +75,6 @@ T _$enumDecodeNullable<T>(
 const _$BankTypeEnumMap = {
   BankType.BANK: 'Bank',
   BankType.CRYPTO: 'Crypto',
+  BankType.THIRD_PARTY: 'ThirdParty',
+  BankType.FPS: 'FPS',
 };

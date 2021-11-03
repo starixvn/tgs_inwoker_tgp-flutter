@@ -261,7 +261,7 @@ class GameViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  setGamePlatformActiveFalse() {
+  setGamePlatformInactiveFalse() {
     isGamePlatformInactive = false;
   }
 }

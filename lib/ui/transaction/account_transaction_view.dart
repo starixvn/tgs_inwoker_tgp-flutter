@@ -76,6 +76,7 @@ class AccountTransactionViewState extends BaseState<AccountTransactionView> {
         return Container(
           child: TransactionCellItem(list: [
             _vm.accountTransactionList[index].id,
+            _vm.accountTransactionList[index].orderNo,
             Format().dateTimeFormat(_vm.accountTransactionList[index].createdOn),
             _vm.accountTransactionList[index].status.getName(context),
             _vm.accountTransactionList[index].amount.toString(),

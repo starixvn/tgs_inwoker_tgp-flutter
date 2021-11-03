@@ -941,6 +941,7 @@
   "waiting_paid": "Menunggu dibayar",
   "dibayar": "Dibayar",
   "order_number": "Nomor pesanan: ",
+  "gms_order_number": "GMS Nomor pesanan: ",
   "qr_cs": "Layanan pelanggan kode QR",
   "contact": "Kontak",
   "cs_join": "Gabung",

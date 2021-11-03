@@ -94,21 +94,43 @@ class _TransactionCellItemState extends BaseState<TransactionCellItem> {
             children: [
               widget.list[0].isEmpty
                   ? Container()
-                  : Row(
-                      children: [
-                        Text(
-                          getTranslatedText("order_number"),
-                          style: TextStyle(fontSize: 12, color: Colors.grey[700]),
+                  : Column(
+                    children: [
+                      Row(
+                          children: [
+                            Text(
+                              getTranslatedText("order_number"),
+                              style: TextStyle(fontSize: 12, color: Colors.grey[700]),
+                            ),
+                            AutoSizeText(
+                              widget.list[0],
+                              style: TextStyle(color: Colors.grey[700]),
+                              minFontSize: 10,
+                              maxFontSize: 12,
+                              stepGranularity: 1,
+                            )
+                          ],
                         ),
-                        AutoSizeText(
-                          widget.list[0],
-                          style: TextStyle(color: Colors.grey[700]),
-                          minFontSize: 10,
-                          maxFontSize: 12,
-                          stepGranularity: 1,
-                        )
-                      ],
-                    ),
+                      Visibility(
+                        visible: widget.list is List<AccountTransaction>,
+                        child: Row(
+                          children: [
+                            Text(
+                              getTranslatedText("gms_order_number"),
+                              style: TextStyle(fontSize: 12, color: Colors.grey[700]),
+                            ),
+                            AutoSizeText(
+                              widget.list[0],
+                              style: TextStyle(color: Colors.grey[700]),
+                              minFontSize: 10,
+                              maxFontSize: 12,
+                              stepGranularity: 1,
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
               Container(
                 margin: EdgeInsets.only(top: 5.auto),
                 child: Row(

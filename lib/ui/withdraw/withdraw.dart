@@ -5,6 +5,8 @@ import 'package:tgp_flutter/custom/custom_picker.dart';
 import 'package:tgp_flutter/custom/custom_picker_dialog.dart';
 import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/custom/custom_text_form_field.dart';
+import 'package:tgp_flutter/custom/custom_toast.dart';
+import 'package:tgp_flutter/data/provider/input_validation_provider.dart';
 import 'package:tgp_flutter/entity/bank_card.dart';
 import 'package:tgp_flutter/entity/bank_type.dart';
 import 'package:tgp_flutter/environment_config.dart';
@@ -32,6 +34,7 @@ class _WithdrawState extends BaseState<Withdraw> {
   var selectedBankCard;
   TextEditingController _amountController = TextEditingController(), _payPasswordController = TextEditingController();
   var amount;
+  InputValidationProvider validate = new InputValidationProvider();
 
   @override
   void initState() {
@@ -237,24 +240,9 @@ class _WithdrawState extends BaseState<Withdraw> {
 
   _buildHintText() => Container(
         margin: EdgeInsets.symmetric(vertical: 10.auto, horizontal: 15.auto),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              getTranslatedText("withdrawal_warning"),
-              style: TextStyle(color: Colors.red, fontSize: 11.auto),
-            ),
-            Visibility(
-              visible: EnvironmentConfig.appTitleName == "HKJP",
-              child: Container(
-                padding: EdgeInsets.only(top: 5.auto),
-                child: Text(
-                  getTranslatedText("withdrawal_amount_warning"),
-                  style: TextStyle(color: Colors.red, fontSize: 11.auto),
-                ),
-              ),
-            ),
-          ],
+        child: Text(
+          getTranslatedText("withdrawal_warning"),
+          style: TextStyle(color: Colors.red, fontSize: 11.auto),
         ),
       );
 
@@ -298,8 +286,15 @@ class _WithdrawState extends BaseState<Withdraw> {
   }
 
   onNextButtonClick() {
-    ProgressDialog.show(context, _vm.brandLogoUrl);
-    _vm.withdraw(amount, selectedBankCard.id, _payPasswordController.text);
+    if(EnvironmentConfig.appTitleName =="HKJP" && !validate.validateIncremental100(_amountController.text)){
+      setState(() {
+        CustomToast.show(getTranslatedText("withdrawal_amount_warning"));
+      });
+    }
+    else{
+      ProgressDialog.show(context, _vm.brandLogoUrl);
+      _vm.withdraw(amount, selectedBankCard.id, _payPasswordController.text);
+    }
   }
 
   _checkUserProfile() async {

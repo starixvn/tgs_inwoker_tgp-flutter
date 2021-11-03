@@ -6,6 +6,7 @@ import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/custom/gradient_button.dart';
 import 'package:tgp_flutter/custom/outline_border_button.dart';
 import 'package:tgp_flutter/environment_config.dart';
+import 'package:tgp_flutter/main.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/route_path.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
@@ -13,13 +14,15 @@ import 'package:tgp_flutter/ui/base_state.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/ui/customer_service/customer_service_view_model.dart';
 import 'package:tgp_flutter/ui/customer_service/customer_service_web_view.dart';
+import 'package:tgp_flutter/ui/home/home.dart';
 import 'package:tgp_flutter/ui/maintenance/maintenance_dialog.dart';
 import 'package:tgp_flutter/ui/maintenance/maintenance_view_model.dart';
 
 class Maintenance extends StatefulWidget {
   final bool isShowCS;
+  final bool isShowsAppBar;
 
-  Maintenance({this.isShowCS = false});
+  Maintenance({this.isShowCS = false, this.isShowsAppBar = true});
 
   @override
   _MaintenanceState createState() => _MaintenanceState();
@@ -47,6 +50,13 @@ class _MaintenanceState extends BaseState<Maintenance> {
           return Scaffold(
             resizeToAvoidBottomInset: false,
             backgroundColor: Colors.grey[100],
+            appBar: widget.isShowsAppBar
+                ? _buildAppBar()
+                : PreferredSize(
+                    child: Container(
+                      color: Colors.black,
+                    ),
+                    preferredSize: Size.zero), //_buildAppBar(),
             body: Container(
               padding: EdgeInsets.only(top: 100.auto),
               width: context.screenWidth,
@@ -69,6 +79,25 @@ class _MaintenanceState extends BaseState<Maintenance> {
           );
         });
   }
+
+  _buildAppBar() => AppBar(
+        automaticallyImplyLeading: false,
+        centerTitle: true,
+        flexibleSpace: Container(
+          decoration: gradientDecoration,
+        ),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (context) => MyHomePage()), (route) => false);
+          },
+        ),
+        title: Text(
+          "Maintenance",
+          style: TextStyle(fontSize: 16.auto),
+        ),
+      );
 
   _buildText(String text, {bool isNeedMargin = true}) => Container(
         margin: EdgeInsets.only(bottom: isNeedMargin ? 20.auto : 0),

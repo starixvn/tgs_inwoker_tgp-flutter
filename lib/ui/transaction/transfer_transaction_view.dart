@@ -69,6 +69,7 @@ class TransferTransactionViewState extends BaseState<TransferTransactionView> {
     return Container(
       child: TransactionCellItem(list: [
         "",
+        "",
         Format().dateTimeFormat(_vm.transferTransactionList[index].balanceTime),
         _vm.transferTransactionList[index].from,
         _vm.transferTransactionList[index].to,

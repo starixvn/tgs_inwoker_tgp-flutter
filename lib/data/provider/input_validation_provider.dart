@@ -60,4 +60,8 @@ class InputValidationProvider {
           break;
       }
     }
+
+  validateIncremental100(String amount) {
+    return RegExp("^[1-9][0-9]{0,999}00\$", caseSensitive: true, multiLine: false).hasMatch(amount);
+  }
 }

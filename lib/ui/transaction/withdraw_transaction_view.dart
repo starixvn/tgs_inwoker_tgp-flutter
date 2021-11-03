@@ -76,6 +76,7 @@ class WithdrawTransactionViewState extends BaseState<WithdrawTransactionView> {
         return Container(
           child: TransactionCellItem(list: [
             _vm.withdrawTransactionList[index].id,
+            "",
             Format().dateTimeFormat(_vm.withdrawTransactionList[index].createdOn),
             _vm.withdrawTransactionList[index].status.getName(context),
             _vm.withdrawTransactionList[index].amount.toString(),

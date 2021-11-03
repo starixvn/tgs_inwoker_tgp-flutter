@@ -15,6 +15,8 @@ class AccountTransaction {
   double amount;
   @JsonKey(name: 'canuploadcerts')
   bool canUploadCerts;
+  @JsonKey(name: 'orderno')
+  String orderNo;
 
   factory AccountTransaction.fromJson(Map<String, dynamic> json) => _$AccountTransactionFromJson(json);
   Map<String, dynamic> toJson() => _$AccountTransactionToJson(this);

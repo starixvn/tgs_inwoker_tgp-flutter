@@ -21,9 +21,9 @@ class HomeUserInfoView extends StatefulWidget {
   final UserProfile userProfile;
   final double wallet;
   final void Function() onLoginTap;
-  final Function refreshHomePage;
+  final Function onRefreshHomePage;
 
-  HomeUserInfoView({@required this.userProfile, this.wallet, this.onLoginTap, this.refreshHomePage});
+  HomeUserInfoView({@required this.userProfile, this.wallet, this.onLoginTap, this.onRefreshHomePage});
 
   @override
   _HomeUserInfoViewState createState() => _HomeUserInfoViewState();
@@ -183,10 +183,10 @@ class _HomeUserInfoViewState extends BaseState<HomeUserInfoView> {
         onTap: () async{
           if (widget.userProfile == null) {
               var res = await Navigator.of(context).pushNamed(RoutePath.login);
-              if(res) widget.refreshHomePage();
+              if(res) widget.onRefreshHomePage();
           } else {
             var res = await Navigator.of(context).pushNamed(routePath);
-            if(res) widget.refreshHomePage();
+            if(res) widget.onRefreshHomePage();
           }
         },
         child: Container(

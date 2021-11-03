@@ -33,6 +33,7 @@ class WithdrawalInfo {
   BankExtendedInfo bankExtendedInfo;
 
 
+
   factory WithdrawalInfo.fromJson(Map<String, dynamic> json) => _$WithdrawalInfoFromJson(json);
   Map<String, dynamic> toJson() => _$WithdrawalInfoToJson(this);
 }

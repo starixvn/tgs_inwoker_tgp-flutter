@@ -15,9 +15,9 @@ import 'package:tgp_flutter/ui/home/game/game_web_view.dart';
 
 class GameView extends StatefulWidget {
   final GameViewModel vm;
-  final Function refreshHomePage;
+  final Function onRefreshHomePage;
 
-  GameView({this.vm, this.refreshHomePage});
+  GameView({this.vm, this.onRefreshHomePage});
 
   @override
   _GameViewState createState() => _GameViewState();
@@ -189,7 +189,7 @@ class _GameViewState extends BaseState<GameView> {
                       gamePlatformCode: gamePlatformCode,
                       gameType: gameType,
                     )));
-        if(result) widget.refreshHomePage();
+        if(result) widget.onRefreshHomePage();
     } else if (gameType == GameType.Lottery || gameType == GameType.LotteryLobby) {
       //only tcg will need to get gamelist
       await _vm.getGameList(gamePlatformCode, gameType);
@@ -201,7 +201,7 @@ class _GameViewState extends BaseState<GameView> {
                       gameType: gameType,
                       gameId: _vm.gameListMap[gamePlatformCode].first.id,
                     )));
-      if(result) widget.refreshHomePage();
+      if(result) widget.onRefreshHomePage();
     } else {
       //navigate to game web
      var result = await Navigator.push(
@@ -211,7 +211,7 @@ class _GameViewState extends BaseState<GameView> {
                       gamePlatformCode: gamePlatformCode,
                       gameType: gameType,
                     )));
-        if(result) widget.refreshHomePage();
+        if(result ?? false) widget.onRefreshHomePage();
     }
   }
 
