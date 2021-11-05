@@ -282,12 +282,14 @@ class UserRepository extends BaseRepository {
             method: HttpMethod.GET,
             endPoint: "api/game/balance/list",
             params: {
-              "begincreate": startDate.toString(),
-              "endcreate": endDate.toString(),
+              "beginrecord": startDate.toString(),
+              "endrecord": endDate.toString(),
               "Page": page.toString(),
               "Rows": rows.toString(),
               "OrderBy": "1",
-              "SortBy": "BalanceTime"
+              "SortBy": "BalanceTime",
+              "ShowAll":"false",
+              "IsDesc":"true"
             },
             converter: (json) => TransactionResponse.fromJson(json, (res) => TransferTransaction.fromJson(res)),
             jwtRefresher: jwtAuth)

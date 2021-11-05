@@ -9,6 +9,7 @@ import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
 import 'package:tgp_flutter/ui/deposit/deposit_order_view.dart';
+import 'package:tgp_flutter/ui/deposit/manual_deposit_order_view.dart';
 import 'package:tgp_flutter/ui/transaction/base_transaction.dart';
 import 'package:tgp_flutter/ui/transaction/transaction_cell_item.dart';
 import 'package:tgp_flutter/ui/transaction/transaction_view_model.dart';
@@ -164,7 +165,7 @@ class AccountTransactionViewState extends BaseState<AccountTransactionView> {
         await Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => DepositOrderView(
+                builder: (context) => ManualDepositOrderView(
                   id: _vm.paymentId,
                   manualDepositOrder: _vm.getDepositOrderApiState.result,
                 )));

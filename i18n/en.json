@@ -53,7 +53,7 @@
   "next": "Next",
   "slide_to_delete_card": "Slide to delete card",
   "add_card": "Add bank card",
-  "max_card_hint": "Can perform withdrawal after added card,max 3。",
+  "max_card_hint": "Can perform withdrawal after added card。",
   "bank": "Bank",
   "select_bank": "Please select bank",
   "bank_branch": "Branch",

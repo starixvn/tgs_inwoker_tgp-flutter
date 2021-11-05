@@ -212,68 +212,65 @@ class _MainCardState extends BaseState<MainCard> {
         ),
       );
 
-  _buildAddCardItem() => Visibility(
-        visible: _vm.bankCardList.length != 3,
-        child: InkWell(
-          onTap: () async {
-            await Navigator.of(context).pushNamed("/add_card");
-            _getBankCardList(); //reinitdata after pop from  add card
-          },
-          child: Container(
-            margin: EdgeInsets.only(top: 15.auto, left: 5.auto, right: 5.auto, bottom: 20.auto),
-            child: FDottedLine(
-                color: CustomColor.theme_button_disable_bg,
-                height: 70.0,
-                width: context.screenWidth,
-                space: 2.0,
-                corner: FDottedLineCorner.all(10.auto),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      flex:8,
-                      child: Container(
-                        margin: EdgeInsets.symmetric(vertical: 20.auto, horizontal: 20.auto),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            AutoSizeText(
-                              getTranslatedText("add_card"),
-                              style: TextStyle(color: Colors.black),
-                              minFontSize: 5,
-                              stepGranularity: 1,
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(top: 5.auto),
-                              child: AutoSizeText(
-                                getTranslatedText("max_card_hint"),
-                                style: TextStyle(color: CustomColor.theme_button_disable_bg),
-                                minFontSize: 5,
-                                maxFontSize: 11,
-                                stepGranularity: 1,
-                              ),
-                            )
-                          ],
-                        ),
+  _buildAddCardItem() => InkWell(
+    onTap: () async {
+      await Navigator.of(context).pushNamed("/add_card");
+      _getBankCardList(); //reinitdata after pop from  add card
+    },
+    child: Container(
+      margin: EdgeInsets.only(top: 15.auto, left: 5.auto, right: 5.auto, bottom: 20.auto),
+      child: FDottedLine(
+          color: CustomColor.theme_button_disable_bg,
+          height: 70.0,
+          width: context.screenWidth,
+          space: 2.0,
+          corner: FDottedLineCorner.all(10.auto),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                flex:8,
+                child: Container(
+                  margin: EdgeInsets.symmetric(vertical: 20.auto, horizontal: 20.auto),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      AutoSizeText(
+                        getTranslatedText("add_card"),
+                        style: TextStyle(color: Colors.black),
+                        minFontSize: 5,
+                        stepGranularity: 1,
                       ),
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: Container(
-                          margin: EdgeInsets.symmetric(horizontal: 20.auto),
-                          child: ImageIcon(
-                              AssetImage(
-                                "images/card/ic_add_card.png",
-                              ),
-                              size: 23.auto,
-                              color: CustomColor.theme_button_disable_bg)),
-                    ),
-                  ],
-                )),
-          ),
-        ),
-      );
+                      Container(
+                        margin: EdgeInsets.only(top: 5.auto),
+                        child: AutoSizeText(
+                          getTranslatedText("max_card_hint"),
+                          style: TextStyle(color: CustomColor.theme_button_disable_bg),
+                          minFontSize: 5,
+                          maxFontSize: 11,
+                          stepGranularity: 1,
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+              Expanded(
+                flex: 1,
+                child: Container(
+                    margin: EdgeInsets.symmetric(horizontal: 20.auto),
+                    child: ImageIcon(
+                        AssetImage(
+                          "images/card/ic_add_card.png",
+                        ),
+                        size: 23.auto,
+                        color: CustomColor.theme_button_disable_bg)),
+              ),
+            ],
+          )),
+    ),
+  );
 
   _delete(BankCard card, int index) async {
     if (_vm.bankCardList.length > 1) //only show when existing list more than 1, else overlapped

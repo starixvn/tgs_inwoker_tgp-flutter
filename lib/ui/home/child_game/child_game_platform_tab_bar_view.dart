@@ -36,8 +36,8 @@ class _ChildGamePlatformTabBarViewState extends BaseState<ChildGamePlatformTabBa
             ),
             child: ChildGameItem(
               game: widget.gameList[index],
-              isFavourite: true,
-              isDisabled: widget.isDisabled,
+              //isFavourite: true,
+              isDisabled: widget.isDisabled ?? false,
               vm: widget.vm,
             ));
       }),

@@ -16,8 +16,9 @@ class ManualDepositOrder {
   @JsonKey(name: "bankaccountname")
   String bankAccountName;
   @JsonKey(name: "bankaccount")
-
   String bankAccount;
+  @JsonKey(name: "qrcode")
+  String qrCode;
 
   factory ManualDepositOrder.fromJson(Map<String, dynamic> json) => _$ManualDepositOrderFromJson(json);
   Map<String, dynamic> toJson() => _$ManualDepositOrderToJson(this);

@@ -99,9 +99,6 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
     if (_vm.filteredGameList == null || _vm.gameProviderList == null)
       return buildProgressDialog(_vm.brandLogoUrl);
     else {
-      /* return StreamBuilder<List<GameProvider2>>(
-          stream: getGamePlatform,
-          builder: (BuildContext context, AsyncSnapshot<List<GameProvider2>> snapshot) {*/
       return Stack(
         key: Key("${Random().nextDouble()}"),
         children: [
@@ -301,8 +298,10 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
       }
     });
     handleApiState(_vm.getGameProviderListApiState, isAutoHideLoading: false, onSuccess: () {});
-    handleApiState(_vm.getFavouriteGameApiState, isAutoHideLoading: false, onSuccess: () {});
-    handleApiState(_vm.setFavouriteGameApiState, isAutoHideLoading: false, onSuccess: () {});
-    handleApiState(_vm.deleteFavouriteGameApiState, isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getFavouriteGameApiState, isAutoHideLoading: !isInitLoading, onSuccess: () {
+      if(isInitLoading) isInitLoading = !isInitLoading;
+    });
+    handleApiState(_vm.setFavouriteGameApiState,  onSuccess: () {});
+    handleApiState(_vm.deleteFavouriteGameApiState,  onSuccess: () {});
   }
 }

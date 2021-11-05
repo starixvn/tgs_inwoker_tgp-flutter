@@ -55,10 +55,10 @@ class GameViewModel extends BaseViewModel {
 
   get brandLogoUrl => contentRepo.brandLogo?.mobileUrl;
 
-  getGameProviderList({bool isFromChildGame = false}) async {
+  getGameProviderList({bool isRefresh = false}) async {
     List<GameProvider> _gameProviderList;
     List<GameProvider2> filteredSportList = [];
-    if (contentRepo.gameProviderList == null || isFromChildGame) {
+    if (contentRepo.gameProviderList == null || isRefresh) {
       setLoading();
       getGameProviderListApiState = await contentRepo.getGameProviderList();
       _gameProviderList = getGameProviderListApiState.result;
@@ -94,14 +94,18 @@ class GameViewModel extends BaseViewModel {
         isGamePlatformInactive = true;
         mPlatform = "ALL";
         await filter(gamePlatformCode: mPlatform);
-
       } else {
         gameListMap[gamePlatformCode] = apiState.result;
         if (gameType == GameType.Slot || gameType == GameType.EGame || gameType == GameType.Fishing)
-          getGameApiState = await _getFavoriteGame(gameType);
+          await _getFavoriteGame(gameType).then((_apiState) {
+            if (_apiState.result.isNotEmpty) {
+              getGameApiState = _apiState;
+            } else {
+              getGameApiState = apiState;
+            }
+          });
       }
-    } else
-      getGameApiState = apiState;
+    }
     setLoading(false);
     return getGameApiState;
   }
@@ -146,7 +150,6 @@ class GameViewModel extends BaseViewModel {
 
     List<Game> platformGameList = await _filterPlatform();
     filteredGameList = _filterSearch(_filterCategory(platformGameList));
-    print("1111"+filteredGameList.toString());
     notifyListeners();
   }
 
@@ -172,19 +175,19 @@ class GameViewModel extends BaseViewModel {
     }
   }
 
-  Future<List<Game> >_filterPlatform() async {
+  Future<List<Game>> _filterPlatform() async {
     if (mPlatform == "ALL") {
       //get all game list
       List<Game> _list = await _addGameList(_gameList);
       return _list;
     } else {
       //if (gameListMap[mPlatform] == null) {
-      return await getGameList(mPlatform, mGameType).then((apiState){
-        if(apiState.result.isEmpty){
+      return await getGameList(mPlatform, mGameType).then((apiState) {
+        if (apiState.result.isEmpty) {
           List<Game> list = [];
           return list;
-        }
-        else return gameListMap[mPlatform];
+        } else
+          return gameListMap[mPlatform];
       });
     }
   }
@@ -210,7 +213,7 @@ class GameViewModel extends BaseViewModel {
   }
 
   getPlatformList(GameType gameType) async {
-    await getGameProviderList(isFromChildGame: true);
+    await getGameProviderList(isRefresh: true);
     platformList =
         (gameProviderList.expand((e) => e).toList()).where((element) => element.gameType == gameType).toList();
     isLoading = false;

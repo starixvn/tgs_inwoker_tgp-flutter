@@ -75,7 +75,7 @@ class _TransactionDateItemState extends BaseState<TransactionDateItem> {
     final DateTime dateTime = await showDatePicker(
       context: context,
       initialDate: date,
-      firstDate: DateTime(currentDate.year, currentDate.month - 3, currentDate.day),
+      firstDate: DateTime(2020),
       lastDate: currentDate
     );
 

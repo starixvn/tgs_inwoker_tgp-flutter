@@ -1,4 +1,4 @@
-import 'package:auto_size_text/auto_size_text.dart';
+ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
@@ -60,7 +60,7 @@ class _HomeState extends BaseState<Home> {
     _vm.getAnnouncement();
     _vm.getBanner();
     _vm.resumeIfNeed();
-    _gameViewModel.getGameProviderList();
+    _gameViewModel.getGameProviderList(isRefresh: true);
   }
 
   Widget build(BuildContext context) {

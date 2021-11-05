@@ -13,7 +13,8 @@ ManualDepositOrder _$ManualDepositOrderFromJson(Map<String, dynamic> json) {
     ..amount = (json['amount'] as num)?.toDouble()
     ..bankName = json['bankname'] as String
     ..bankAccountName = json['bankaccountname'] as String
-    ..bankAccount = json['bankaccount'] as String;
+    ..bankAccount = json['bankaccount'] as String
+    ..qrCode = json['qrcode'] as String;
 }
 
 Map<String, dynamic> _$ManualDepositOrderToJson(ManualDepositOrder instance) =>
@@ -24,4 +25,5 @@ Map<String, dynamic> _$ManualDepositOrderToJson(ManualDepositOrder instance) =>
       'bankname': instance.bankName,
       'bankaccountname': instance.bankAccountName,
       'bankaccount': instance.bankAccount,
+      'qrcode': instance.qrCode,
     };

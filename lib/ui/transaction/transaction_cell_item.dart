@@ -11,14 +11,15 @@ import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
 
 class TransactionCellItem extends StatefulWidget {
-  final List list;
+  final List<dynamic> list;
   final TransactionCellItemType type;
   final bool isEndRecord;
   final bool isUploadButton;
   final bool isAccountTransaction;
+  final bool isWithdrawTransaction;
   final Function getManualDepositId;
 
-  TransactionCellItem({Key key, this.list, this.type, this.isEndRecord, this.isUploadButton = false, this.getManualDepositId, this.isAccountTransaction = false})
+  TransactionCellItem({Key key, this.list, this.type, this.isEndRecord, this.isUploadButton = false, this.getManualDepositId, this.isAccountTransaction = false, this.isWithdrawTransaction = false})
       : super(key: key);
 
   @override
@@ -66,12 +67,6 @@ class _TransactionCellItemState extends BaseState<TransactionCellItem> {
               ),
               child: _getTransactionCellItem(isLast: true)),
         ),
-        /*widget.isLoading?Container(
-            height: 50,
-            width: 50,
-            padding: EdgeInsets.only(bottom: 10.auto),
-            child: CircularProgressIndicator(),
-          ):Container(),*/
         widget.isEndRecord
             ? Container(
                 padding: EdgeInsets.only(bottom: 10.auto),
@@ -103,7 +98,7 @@ class _TransactionCellItemState extends BaseState<TransactionCellItem> {
                               style: TextStyle(fontSize: 12, color: Colors.grey[700]),
                             ),
                             AutoSizeText(
-                              widget.list[0],
+                              widget.list[0]??"",
                               style: TextStyle(color: Colors.grey[700]),
                               minFontSize: 10,
                               maxFontSize: 12,
@@ -112,7 +107,7 @@ class _TransactionCellItemState extends BaseState<TransactionCellItem> {
                           ],
                         ),
                       Visibility(
-                        visible: widget.list is List<AccountTransaction>,
+                        visible: widget.isAccountTransaction || widget.isWithdrawTransaction,
                         child: Row(
                           children: [
                             Text(
@@ -120,7 +115,7 @@ class _TransactionCellItemState extends BaseState<TransactionCellItem> {
                               style: TextStyle(fontSize: 12, color: Colors.grey[700]),
                             ),
                             AutoSizeText(
-                              widget.list[0],
+                              widget.list[1]?? "",
                               style: TextStyle(color: Colors.grey[700]),
                               minFontSize: 10,
                               maxFontSize: 12,
@@ -136,9 +131,9 @@ class _TransactionCellItemState extends BaseState<TransactionCellItem> {
                 child: Row(
                     children: List.generate(widget.list.length, (index) {
                   return (() {
-                    if (index == 0)
+                    if (index == 0 || index==1)
                       return Container();
-                    else if (index == 4 && widget.isAccountTransaction)
+                    else if (index == 5 && widget.isAccountTransaction)
                       return Expanded(
                         flex: 1,
                         child: widget.isUploadButton

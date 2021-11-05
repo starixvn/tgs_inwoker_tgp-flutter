@@ -52,7 +52,7 @@
   "next": "下一步",
   "slide_to_delete_card": "滑动以删除银行卡",
   "add_card": "添加银行卡",
-  "max_card_hint": "添加银行卡后即可进行转出提款,至多3张。",
+  "max_card_hint": "添加银行卡后即可进行转出提款。",
   "bank": "银行",
   "select_bank": "请选择银行",
   "bank_branch": "支行",

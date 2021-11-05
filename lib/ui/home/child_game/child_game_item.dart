@@ -20,12 +20,12 @@ import 'package:tgp_flutter/ui/home/game/game_web_view.dart';
 import 'package:tgp_flutter/ui/home/home_view_model.dart';
 
 class ChildGameItem extends StatefulWidget {
-  final bool isFavourite;
+  //final bool isFavourite;
   final Game game;
   final bool isDisabled;
   final GameViewModel vm;
 
-  ChildGameItem({this.isFavourite, this.game, this.isDisabled, this.vm});
+  ChildGameItem({/*this.isFavourite,*/ this.game, this.isDisabled, this.vm});
 
   @override
   _ChildGameItemState createState() => _ChildGameItemState();
@@ -46,7 +46,8 @@ class _ChildGameItemState extends BaseState<ChildGameItem> {
     setState(() {
       if (code == "zh-TW")
         languageCode = "zh-CN";
-      else if(code == "th-TH") languageCode = "en-US";
+      else if (code == "th-TH")
+        languageCode = "en-US";
       else
         languageCode = code;
     });
@@ -108,10 +109,7 @@ class _ChildGameItemState extends BaseState<ChildGameItem> {
   }
 
   _buildImageTitleAndFavouriteIcon() {
-    return /*Expanded(
-      flex: 1,
-      child:*/
-        Container(
+    return Container(
       height: 32.auto,
       decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -143,7 +141,6 @@ class _ChildGameItemState extends BaseState<ChildGameItem> {
             flex: 1,
             child: InkWell(
               onTap: () {
-                ProgressDialog.show(context, widget.vm.brandLogoUrl);
                 widget.game.isFavourite
                     ? widget.vm.deleteFavoriteGame(widget.game)
                     : widget.vm.setFavoriteGame(widget.game);

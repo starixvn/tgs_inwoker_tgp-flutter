@@ -41,11 +41,11 @@ class BankRepository extends BaseRepository {
         .execute();
   }
 
-  Future<EventResult<String>> getManualDepositId(
+  Future<EventResult<String>> getManualBankDepositId(
       String account, String amount, String paymentId, String promotionId) async {
     return await ApiRequestBuilder<String>(
             method: HttpMethod.PUT,
-            endPoint: "api/deposit/manual",
+            endPoint: "api/deposit/manual/bank",
             params: {
               "account": account,
               "amount": amount,
@@ -53,6 +53,21 @@ class BankRepository extends BaseRepository {
               "promotionid": promotionId,
             },
             jwtRefresher: jwtAuth)
+        .execute();
+  }
+
+  Future<EventResult<String>> getManualThirdPartyDepositId(
+      String account, String amount, String paymentId, String promotionId) async {
+    return await ApiRequestBuilder<String>(
+        method: HttpMethod.PUT,
+        endPoint: "api/deposit/manual/thirdparty",
+        params: {
+          "account": account,
+          "amount": amount,
+          "paymentid": paymentId,
+          "promotionid": promotionId,
+        },
+        jwtRefresher: jwtAuth)
         .execute();
   }
 

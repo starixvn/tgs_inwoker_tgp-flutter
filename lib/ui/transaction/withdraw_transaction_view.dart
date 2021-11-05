@@ -34,7 +34,6 @@ class WithdrawTransactionViewState extends BaseState<WithdrawTransactionView> {
   var filterIndex = 0;
   TransactionViewModel _vm = TransactionViewModel();
 
-
   void initState() {
     _scrollController.addListener(_scrollListener);
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -72,17 +71,25 @@ class WithdrawTransactionViewState extends BaseState<WithdrawTransactionView> {
         });
   }
 
-  _getList() => _vm.withdrawTransactionList ==null?[]:List.generate(_vm.withdrawTransactionList.length, (index) {
-        return Container(
-          child: TransactionCellItem(list: [
-            _vm.withdrawTransactionList[index].id,
-            "",
-            Format().dateTimeFormat(_vm.withdrawTransactionList[index].createdOn),
-            _vm.withdrawTransactionList[index].status.getName(context),
-            _vm.withdrawTransactionList[index].amount.toString(),
-          ], type: _getTransactionItemType(index), isEndRecord: _vm.endRecord, isUploadButton: false),
-        );
-      }).toList();
+  _getList() => _vm.withdrawTransactionList == null
+      ? []
+      : List.generate(_vm.withdrawTransactionList.length, (index) {
+          return Container(
+            child: TransactionCellItem(
+              list: [
+                _vm.withdrawTransactionList[index].id,
+                _vm.withdrawTransactionList[index].orderNo,
+                Format().dateTimeFormat(_vm.withdrawTransactionList[index].createdOn),
+                _vm.withdrawTransactionList[index].status.getName(context),
+                _vm.withdrawTransactionList[index].amount.toString(),
+              ],
+              type: _getTransactionItemType(index),
+              isEndRecord: _vm.endRecord,
+              isUploadButton: false,
+              isWithdrawTransaction: true,
+            ),
+          );
+        }).toList();
 
   _getPickerBox() {
     return Container(
