@@ -39,7 +39,6 @@ class _SplashState extends BaseState<Splash> {
     await _vm.getLanguageOption();
     _vm.getApiError();
     _vm.getBrandLogo();
-
   }
 
   Widget build(BuildContext context) {

@@ -116,6 +116,8 @@ class _MyAppState extends BaseState<MyApp> {
     if (firstInit) {
       await _vm.getAuthToken();
       await _vm.getLanguageOption();
+      _vm.getApiError();
+      _vm.getBrandLogo();
       setState(() {
         firstInit = false;
       });
@@ -125,6 +127,7 @@ class _MyAppState extends BaseState<MyApp> {
     } else
       return EventResult.loading();
   }
+
 
   @override
   Widget build(BuildContext context) {

@@ -186,12 +186,11 @@ class UserRepository extends BaseRepository {
             params: {
               "From": startDate.toString(),
               "To": endDate.toString(),
-              "Page": page.toString(),
-              "Rows": rows.toString(),
-              /*"OrderBy":orderBy.toString(),
-          "IsDesc":isDesc.toString(),
-          "SortBy":sortBy,
-          "ShowAll":showAll.toString(),*/
+              "page": page.toString(),
+              "rows": rows.toString(),
+              "desc": "true",
+              "sort": "CreatedOn",
+              "all": "false",
             },
             converter: (json) => ListResponse.fromJson(json, (res) => BetTransaction.fromJson(res)),
             jwtRefresher: jwtAuth)
@@ -220,49 +219,38 @@ class UserRepository extends BaseRepository {
     return await ApiRequestBuilder<TransactionResponse<AccountTransaction>>(
             method: HttpMethod.GET,
             endPoint: "api/deposit/player/list",
-            params: status == null || status == Status.All
-                ? {
-                    "begincreate": startDate.toString(),
-                    "endcreate": endDate.toString(),
-                    "Page": page.toString(),
-                    "Rows": rows.toString(),
-                  }
-                : {
-                    "begincreate": startDate.toString(),
-                    "endcreate": endDate.toString(),
-                    "Page": page.toString(),
-                    "Rows": rows.toString(),
-                    "status": status.getJson().toString()
-                  },
+            params: {
+              "begincreate": startDate.toString(),
+              "endcreate": endDate.toString(),
+              "Page": page.toString(),
+              "Rows": rows.toString(),
+              "status": (status == null || status == Status.All) ? null : status.getJson().toString(),
+              "IsDesc": "true",
+              "SortBy": "CreatedOn",
+              "ShowAll": "false",
+              "OrderBy": "1"
+            },
             converter: (json) => TransactionResponse.fromJson(json, (res) => AccountTransaction.fromJson(res)),
             jwtRefresher: jwtAuth)
         .execute();
   }
 
   Future<EventResult<TransactionResponse<AccountTransaction>>> getWithdrawTransaction(
-      DateTime startDate, DateTime endDate, int page, int rows, Status status
-      /*int orderBy,
-      bool isDesc,
-      String sortBy,
-      bool showAll*/
-      ) async {
+      DateTime startDate, DateTime endDate, int page, int rows, Status status) async {
     return await ApiRequestBuilder<TransactionResponse<AccountTransaction>>(
             method: HttpMethod.GET,
             endPoint: "api/withdraw/player/list",
-            params: status == null || status == Status.All
-                ? {
-                    "begincreate": startDate.toString(),
-                    "endcreate": endDate.toString(),
-                    "Page": page.toString(),
-                    "Rows": rows.toString(),
-                  }
-                : {
-                    "begincreate": startDate.toString(),
-                    "endcreate": endDate.toString(),
-                    "Page": page.toString(),
-                    "Rows": rows.toString(),
-                    "status": status.getJson().toString()
-                  },
+            params: {
+              "begincreate": startDate.toString(),
+              "endcreate": endDate.toString(),
+              "Page": page.toString(),
+              "Rows": rows.toString(),
+              "status": (status == null || status == Status.All) ? null : status.getJson().toString(),
+              "IsDesc": "true",
+              "SortBy": "CreatedOn",
+              "ShowAll": "false",
+              "OrderBy": "1"
+            },
             converter: (json) => TransactionResponse.fromJson(json, (res) => AccountTransaction.fromJson(res)),
             jwtRefresher: jwtAuth)
         .execute();
@@ -273,10 +261,6 @@ class UserRepository extends BaseRepository {
     DateTime endDate,
     int page,
     int rows,
-    /*int orderBy,
-      bool isDesc,
-      String sortBy,
-      bool showAll*/
   ) async {
     return await ApiRequestBuilder<TransactionResponse<TransferTransaction>>(
             method: HttpMethod.GET,
@@ -288,8 +272,8 @@ class UserRepository extends BaseRepository {
               "Rows": rows.toString(),
               "OrderBy": "1",
               "SortBy": "BalanceTime",
-              "ShowAll":"false",
-              "IsDesc":"true"
+              "ShowAll": "false",
+              "IsDesc": "true"
             },
             converter: (json) => TransactionResponse.fromJson(json, (res) => TransferTransaction.fromJson(res)),
             jwtRefresher: jwtAuth)

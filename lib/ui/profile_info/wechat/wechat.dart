@@ -22,6 +22,7 @@ class _WechatState extends BaseState<Wechat> {
   var isButtonEnabled = false, isTextFieldEnabled = false;
   var buttonText;
   InputValidationProvider validate = new InputValidationProvider();
+  var _focusNode = FocusNode();
 
   @override
   void initState() {
@@ -72,7 +73,7 @@ class _WechatState extends BaseState<Wechat> {
         onChanged: (value) => _onTextChange(),
         onFieldSubmitted: (value) {},
         controller: _wechatController,
-        focusNode: null,
+        focusNode: _focusNode,
         width: context.screenWidth - 70.auto,
         textInputType: TextInputType.text,
         textInputAction: TextInputAction.done,
@@ -96,24 +97,34 @@ class _WechatState extends BaseState<Wechat> {
         radius: 9.6,
       ));
 
-  _buildFooterText() => Container(
-    alignment: Alignment.center,
-    child: InkWell(
-      onTap: ()=> Navigator.of(context).pushNamed("/customer_service"),
-      child: Wrap(
+  _buildFooterText() => Visibility(
+        visible: _vm.userProfile.wechat != null,
+        child: Container(
+          alignment: Alignment.center,
+          child: Wrap(
             children: [
               Text(
                 getTranslatedText("edit_wechat_cs"),
                 style: TextStyle(fontSize: 12.auto, color: CustomColor.theme_title_text_color),
               ),
-              Text(
-                getTranslatedText("customer_service"),
-                style: TextStyle(fontSize: 12.auto, color: CustomColor.theme_bar_gradient_2),
+              InkWell(
+                onTap: () {
+                  setState(() {
+                    isTextFieldEnabled = true;
+                    isButtonEnabled = true;
+                    buttonText = getTranslatedText("edit");
+                    _focusNode.requestFocus();
+                  });
+                },
+                child: Text(
+                  getTranslatedText("here"),
+                  style: TextStyle(fontSize: 12.auto, color: CustomColor.theme_bar_gradient_2),
+                ),
               )
             ],
           ),
-    ),
-  );
+        ),
+      );
 
   _getUserProfile() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -151,7 +162,7 @@ class _WechatState extends BaseState<Wechat> {
       setState(() {
         CustomToast.show(getTranslatedText("enter_wechat_error_message"));
       });
-    } else{
+    } else {
       ProgressDialog.show(context, _vm.brandLogoUrl);
       _vm.setWechatAccount(_wechatController.text);
     }

@@ -3,6 +3,7 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/custom/custom_toast.dart';
 import 'package:tgp_flutter/entity/game_provider2.dart';
 import 'package:tgp_flutter/entity/game_type.dart';
@@ -131,10 +132,13 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
               indicatorColor: CustomColor.theme_label_text_highlight_color,
               indicatorWeight: 3,
               onTap: (index) {
-                setState(() {
+                ProgressDialog.show(context, _vm.brandLogoUrl);
+               // setState(() {
                   _groupTabIndex = index;
+         //       });
+                _vm.filter(category: index).then((_){
+                  ProgressDialog.hide();
                 });
-                _vm.filter(category: index);
               },
               unselectedLabelStyle: TextStyle(color: CustomColor.grey),
               tabs: _groupTabList.map((item) {
@@ -153,9 +157,12 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
               gameList: _vm.filteredGameList,
               isSearching: isSearching,
               onFilterPlatform: (code) {
-                _vm.filter(gamePlatformCode: code);
-                setState(() {
+                ProgressDialog.show(context, _vm.brandLogoUrl);
+               // setState(() {
                   currGamePlatformCode = code;
+               // });
+                _vm.filter(gamePlatformCode: code).then((_){
+                  ProgressDialog.hide();
                 });
               },
               initialPlatformCode: currGamePlatformCode,

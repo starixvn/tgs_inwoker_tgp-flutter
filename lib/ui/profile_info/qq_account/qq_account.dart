@@ -23,6 +23,7 @@ class _QQAccountState extends BaseState<QQAccount> {
   var isButtonEnabled = false, isTextFieldEnabled = false;
   var buttonText;
   InputValidationProvider validate = new InputValidationProvider();
+  var _focusNode = FocusNode();
 
   @override
   void initState() {
@@ -82,7 +83,7 @@ class _QQAccountState extends BaseState<QQAccount> {
         onChanged: (value) => _onTextChange(),
         onFieldSubmitted: (value) {},
         controller: _qqController,
-        focusNode: null,
+        focusNode: _focusNode,
         width: context.screenWidth - 70.auto,
         textInputType: TextInputType.number,
         textInputAction: TextInputAction.done,
@@ -106,24 +107,34 @@ class _QQAccountState extends BaseState<QQAccount> {
         radius: 9.6,
       ));
 
-  _buildFooterText() =>Container(
-    alignment: Alignment.center,
-    child: InkWell(
-      onTap: ()=> Navigator.of(context).pushNamed("/customer_service"),
-      child: Wrap(
-        children: [
-          Text(
-            getTranslatedText("edit_qq_cs"),
-            style: TextStyle(fontSize: 12.auto, color: CustomColor.theme_title_text_color),
+  _buildFooterText() => Visibility(
+        visible: _vm.userProfile.qq != null,
+        child: Container(
+          alignment: Alignment.center,
+          child: Wrap(
+            children: [
+              Text(
+                getTranslatedText("edit_qq_cs"),
+                style: TextStyle(fontSize: 12.auto, color: CustomColor.theme_title_text_color),
+              ),
+              InkWell(
+                onTap: () {
+                  setState(() {
+                    isTextFieldEnabled = true;
+                    isButtonEnabled = true;
+                    buttonText = getTranslatedText("edit");
+                    _focusNode.requestFocus();
+                  });
+                },
+                child: Text(
+                  getTranslatedText("here"),
+                  style: TextStyle(fontSize: 12.auto, color: CustomColor.theme_bar_gradient_2),
+                ),
+              )
+            ],
           ),
-          Text(
-            getTranslatedText("customer_service"),
-            style: TextStyle(fontSize: 12.auto, color: CustomColor.theme_bar_gradient_2),
-          )
-        ],
-      )
-    ),
-  );
+        ),
+      );
 
   _getUserProfile() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -161,7 +172,7 @@ class _QQAccountState extends BaseState<QQAccount> {
       setState(() {
         CustomToast.show(getTranslatedText("enter_qq_error_message"));
       });
-    } else{
+    } else {
       ProgressDialog.show(context, _vm.brandLogoUrl);
       _vm.setQQAccount(_qqController.text);
     }
