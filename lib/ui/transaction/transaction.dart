@@ -10,8 +10,8 @@ import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
+import 'package:tgp_flutter/ui/transaction/deposit_transaction_view.dart';
 import 'package:tgp_flutter/ui/transaction/account_transaction_view.dart';
-import 'package:tgp_flutter/ui/transaction/bet_transaction_view.dart';
 import 'package:tgp_flutter/ui/transaction/transfer_transaction_view.dart';
 import 'package:tgp_flutter/ui/transaction/transaction_view_model.dart';
 import 'package:tgp_flutter/ui/transaction/withdraw_transaction_view.dart';
@@ -39,7 +39,7 @@ class _TransactionState extends BaseState<Transaction> with SingleTickerProvider
 
   @override
   void initState() {
-    currentTabIndex = widget.tabIndex??0;
+    currentTabIndex = widget.tabIndex ?? 0;
     _tabController = TabController(length: tabList.length, vsync: this, initialIndex: currentTabIndex);
     super.initState();
   }
@@ -111,33 +111,10 @@ class _TransactionState extends BaseState<Transaction> with SingleTickerProvider
                   child: TabBarView(
                     controller: _tabController,
                     children: [
-                      BetTransactionView(
-                        vm: _vm,
-                      ),
-                      AccountTransactionView(
-                        vm: _vm,
-                      ),
-                      WithdrawTransactionView(
-                        vm: _vm,
-                      ),
-    TransferTransactionView(vm:_vm)
-    /*     BaseTransactionView<AccountTransaction>(
-                        isWithdraw: false,
-                      ),
-                      BaseTransactionView<BetTransaction>(
-                        isWithdraw: false,
-                      ),
-                      BaseTransactionView<AccountTransaction>(
-                        isWithdraw: true,
-                      ),
-
-                      AccountTransactionView(
-                          vm: _vm, transactionHeaderList: ["time", "trade_order_no", "status", "amount"]),
-                      AccountTransactionView(
-                          vm: _vm, transactionHeaderList: ["time", "trade_order_no", "status", "amount"]),
-                      AccountTransactionView(
-                          vm: _vm,
-                          transactionHeaderList: ["rebate_no", "rebate_cycle_date", "status", "rebate_detail"]),*/
+                      AccountTransactionView(vm: _vm),
+                      DepositTransactionView(vm: _vm),
+                      WithdrawTransactionView(vm: _vm),
+                      TransferTransactionView(vm: _vm)
                     ],
                   ),
                 ),

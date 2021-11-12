@@ -145,6 +145,7 @@
   "online_cs": "线上客服",
   "here": "这里",
   "edit_phone_cs": "如需修改手机号码，请点击",
+  "edit_email_cs": "如需修改郵箱地址，請點擊",
   "edit_ic_no_cs": "如需修改身份证，请联系",
   "downloading_installer": "下载更新包",
   "loading_hard": "努力加载中",
@@ -249,6 +250,7 @@
   "enter_pay_password_error_msg": "提款密码只能输入英文字母或者数字",
   "pay_password_length_error_msg": "提款密码需6-20个英文字母或者数字组成",
   "verify_current_email": "验证原邮箱地址",
+  "set_new_email": "设置新邮箱",
   "set_new_pay_password": "设定新提款密码",
   "enter_wechat_error_message": "微信码格式不正确",
   "enter_qq_error_message": "QQ码格式不正确",
@@ -963,5 +965,6 @@
   "instant_messaging": "即时通讯",
   "login_time_out": "登录已超时",
   "withdrawal_amount_warning": "存款金額必須是以百元為單位",
-  "game_platform_inactive": "游戏平台已关闭"
+  "game_platform_inactive": "游戏平台已关闭",
+  "edit_email": "修改邮箱地址"
 }

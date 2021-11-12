@@ -25,7 +25,7 @@ class InputValidationProvider {
   }
 
   validateHKPhoneNumber(String phone) {
-    return RegExp("^[2-9][0-9]{7}\$", caseSensitive: true, multiLine: false).hasMatch(phone);
+    return RegExp("^(?:\\+?852)?[2-9]{1}[0-9]{7}\$", caseSensitive: true, multiLine: false).hasMatch(phone);
   }
 
   validateEmail(String email) {

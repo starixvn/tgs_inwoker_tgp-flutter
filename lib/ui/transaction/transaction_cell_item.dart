@@ -15,11 +15,11 @@ class TransactionCellItem extends StatefulWidget {
   final TransactionCellItemType type;
   final bool isEndRecord;
   final bool isUploadButton;
-  final bool isAccountTransaction;
+  final bool isDepositTransaction;
   final bool isWithdrawTransaction;
   final Function getManualDepositId;
 
-  TransactionCellItem({Key key, this.list, this.type, this.isEndRecord, this.isUploadButton = false, this.getManualDepositId, this.isAccountTransaction = false, this.isWithdrawTransaction = false})
+  TransactionCellItem({Key key, this.list, this.type, this.isEndRecord, this.isUploadButton = false, this.getManualDepositId, this.isDepositTransaction = false, this.isWithdrawTransaction = false})
       : super(key: key);
 
   @override
@@ -107,7 +107,7 @@ class _TransactionCellItemState extends BaseState<TransactionCellItem> {
                           ],
                         ),
                       Visibility(
-                        visible: widget.isAccountTransaction || widget.isWithdrawTransaction,
+                        visible: widget.isDepositTransaction || widget.isWithdrawTransaction,
                         child: Row(
                           children: [
                             Text(
@@ -133,9 +133,9 @@ class _TransactionCellItemState extends BaseState<TransactionCellItem> {
                   return (() {
                     if (index == 0 || index==1)
                       return Container();
-                    else if (index == 5 && widget.isAccountTransaction)
+                    else if (index == 5 && widget.isDepositTransaction)
                       return Expanded(
-                        flex: 1,
+                        flex: 2,
                         child: widget.isUploadButton
                             ? GradientButton(
                                 title: getTranslatedText("upload_prof"),
@@ -143,8 +143,8 @@ class _TransactionCellItemState extends BaseState<TransactionCellItem> {
                                 isEnabled: true,
                                 radius: 4.8,
                                 height: 30,
-                                width: 45,
-                                fontSize: 8,
+                                width: 80,
+                                fontSize: 5,
                                 padding: 3,
                               )
                             : Container(),

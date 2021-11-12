@@ -22,7 +22,7 @@ class _TransactionHeaderItemState extends BaseState<TransactionHeaderItem> {
       child: Row(
           children: List.generate(widget.headerList.length, (index) {
         return Expanded(
-          flex: (index == 3 && widget.isUploadButton) ? 1 : 2,
+          flex: /*(index == 3 && widget.isUploadButton) ? 1 :*/ 2,
           child: index == 3 && widget.isUploadButton
               ? Container(width: 45.auto,)
               : AutoSizeText(

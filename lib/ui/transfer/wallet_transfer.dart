@@ -60,10 +60,10 @@ class _WalletTransferState extends BaseState<WalletTransfer> with TickerProvider
       parent: _controller,
       curve: Curves.linear,
     )..addStatusListener((status) {
-      if (status == AnimationStatus.completed) {
-        if (_vm.isFetchingBalance) _controller.forward(from: 0.0);
-      }
-    });
+        if (status == AnimationStatus.completed) {
+          if (_vm.isFetchingBalance) _controller.forward(from: 0.0);
+        }
+      });
     _vm.getAllWallet();
     _vm.getAutoTransferValue();
   }
@@ -79,9 +79,9 @@ class _WalletTransferState extends BaseState<WalletTransfer> with TickerProvider
             backgroundColor: Colors.grey[100],
             appBar: _buildAppBar(),
             body:
-            /*_vm.walletList ==null|| mainWalletBalance==null ||noneMainWalletList==null?
+                /*_vm.walletList ==null|| mainWalletBalance==null ||noneMainWalletList==null?
             Center(child: CircularProgressIndicator()):*/
-            ScrollConfiguration(
+                ScrollConfiguration(
               behavior: MyBehavior(),
               child: SingleChildScrollView(
                   reverse: true,
@@ -106,183 +106,182 @@ class _WalletTransferState extends BaseState<WalletTransfer> with TickerProvider
   }
 
   _buildAppBar() => AppBar(
-    automaticallyImplyLeading: false,
-    centerTitle: true,
-    flexibleSpace: Container(
-      decoration: gradientDecoration,
-    ),
-    leading: IconButton(
-      icon: Icon(Icons.arrow_back),
-      onPressed: () {
-        Navigator.pop(context, true);
-      },
-    ),
-    actions: [
-      Container(
-        margin: EdgeInsets.all(10.auto),
-        alignment: Alignment.center,
-        child: RotationTransition(
-          turns: _animation,
-          child: IconButton(
-            icon: Image.asset("images/ic_refresh.png"),
-            onPressed: () {
-              _vm.getAllWallet();
-            },
-          ),
+        automaticallyImplyLeading: false,
+        centerTitle: true,
+        flexibleSpace: Container(
+          decoration: gradientDecoration,
         ),
-      ),
-    ],
-    title: Text(
-      getTranslatedText("transfer"),
-      style: TextStyle(fontSize: 20.auto),
-    ),
-  );
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context, true);
+          },
+        ),
+        actions: [
+          Container(
+            margin: EdgeInsets.all(10.auto),
+            alignment: Alignment.center,
+            child: RotationTransition(
+              turns: _animation,
+              child: IconButton(
+                icon: Image.asset("images/ic_refresh.png"),
+                onPressed: () {
+                  _vm.getAllWallet();
+                },
+              ),
+            ),
+          ),
+        ],
+        title: Text(
+          getTranslatedText("transfer"),
+          style: TextStyle(fontSize: 20.auto),
+        ),
+      );
 
   _buildWalletDetails() => Card(
-    semanticContainer: true,
-    clipBehavior: Clip.antiAlias,
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(10.0),
-    ),
-    elevation: 5,
-    child: Container(
-      padding: EdgeInsets.only(left: (25.5).auto, top: 15.auto, right: 10.auto, bottom: 10.auto),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Column(
+        semanticContainer: true,
+        clipBehavior: Clip.antiAlias,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        elevation: 5,
+        child: Container(
+          padding: EdgeInsets.only(left: (25.5).auto, top: 15.auto, right: 10.auto, bottom: 10.auto),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              _buildWalletIcon(),
-              Row(
+              Column(
                 children: [
-                  Container(
-                    margin: EdgeInsets.only(top: 3.auto),
-                    child: Text(
-                      getTranslatedText("main_wallet"),
-                      style: TextStyle(fontSize: 8.auto),
-                    ),
-                  )
-                  /*Image.asset(
+                  _buildWalletIcon(),
+                  Row(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(top: 3.auto),
+                        child: Text(
+                          getTranslatedText("main_wallet"),
+                          style: TextStyle(fontSize: 8.auto),
+                        ),
+                      )
+                      /*Image.asset(
                         "images/transfer/ic_question.png",
                         width: 12.auto,
                         height: 12.auto,
                       ),*/
+                    ],
+                  ),
                 ],
               ),
+              Container(
+                margin: EdgeInsets.only(left: 15.auto),
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "¥ ${Format().amountFormat(_vm.userMainWalletBalance) ?? ""}",
+                  style: TextStyle(fontSize: 12.auto),
+                ),
+              ),
+              Spacer(),
             ],
           ),
-          Container(
-            margin: EdgeInsets.only(left: 15.auto),
-            alignment: Alignment.centerLeft,
-            child: Text(
-              "¥ ${Format().amountFormat(_vm.userMainWalletBalance) ?? ""}",
-              style: TextStyle(fontSize: 12.auto),
-            ),
-          ),
-          Spacer(),
-
-        ],
-      ),
-    ),
-  );
+        ),
+      );
 
   _buildWalletIcon() => CircleAvatar(
-    backgroundColor: CustomColor.theme_bar_gradient_2,
-    child: Center(child: Image.asset("images/home/ic_deposit.png")),
-  );
+        backgroundColor: CustomColor.theme_bar_gradient_2,
+        child: Center(child: Image.asset("images/home/ic_deposit.png")),
+      );
 
   _buildWalletGridView() => Container(
-    padding: EdgeInsets.only(top: 10.auto),
-    child: Card(
-      semanticContainer: true,
-      clipBehavior: Clip.antiAlias,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
-      ),
-      elevation: 5,
-      child: GridView.count(
-        //padding: EdgeInsets.only(bottom: 10.auto),
-        padding: EdgeInsets.zero,
-        crossAxisCount: 4,
-        shrinkWrap: true,
-        physics: NeverScrollableScrollPhysics(),
-        crossAxisSpacing: 0,
-        mainAxisSpacing: 0,
-        children: List.generate(_vm.gameWalletList.length, (index) {
-          return _buildWalletTransferItem(_vm.gameWalletList[index]);
-        }),
-      ),
-    ),
-  );
+        padding: EdgeInsets.only(top: 10.auto),
+        child: Card(
+          semanticContainer: true,
+          clipBehavior: Clip.antiAlias,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          elevation: 5,
+          child: GridView.count(
+            //padding: EdgeInsets.only(bottom: 10.auto),
+            padding: EdgeInsets.zero,
+            crossAxisCount: 4,
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            crossAxisSpacing: 0,
+            mainAxisSpacing: 0,
+            children: List.generate(_vm.gameWalletList.length, (index) {
+              return _buildWalletTransferItem(_vm.gameWalletList[index]);
+            }),
+          ),
+        ),
+      );
 
   _buildWalletTransferItem(Wallet wallet) => InkWell(
-    onTap: () {
-      setState(() {
-        /*setFromWallet(_vm.getMainWallet());
+        onTap: () {
+          setState(() {
+            /*setFromWallet(_vm.getMainWallet());
         setToWallet(wallet);
         amount.text = (Format().amountFormat(_vm.getMainWallet().balance)) ?? "";
         checkButtonState();*/
-      });
-    },
-    splashColor: Colors.transparent,
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text(
-          wallet.title,
-          style: TextStyle(fontSize: (12.5).auto, color: CustomColor.theme_title_text_color),
+          });
+        },
+        splashColor: Colors.transparent,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              wallet.title,
+              style: TextStyle(fontSize: (12.5).auto, color: CustomColor.theme_title_text_color),
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: 8.auto),
+              child: Text(
+                wallet.balance != null ? Format().amountFormat(wallet.balance) : "",
+                style: TextStyle(color: CustomColor.theme_bar_gradient_1),
+              ),
+            )
+          ],
         ),
-        Padding(
-          padding: EdgeInsets.only(top: 8.auto),
-          child: Text(
-            wallet.balance != null ? Format().amountFormat(wallet.balance) : "",
-            style: TextStyle(color: CustomColor.theme_bar_gradient_1),
-          ),
-        )
-      ],
-    ),
-  );
+      );
 
   _buildHintText() => Container(
-    alignment: Alignment.centerLeft,
-    padding: EdgeInsets.all(5.auto),
-    child: Text(
-      getTranslatedText("wallet_transfer_hint"),
-      style: TextStyle(fontSize: 9.auto),
-      textAlign: TextAlign.left,
-    ),
-  );
+        alignment: Alignment.centerLeft,
+        padding: EdgeInsets.all(5.auto),
+        child: Text(
+          getTranslatedText("wallet_transfer_hint"),
+          style: TextStyle(fontSize: 9.auto),
+          textAlign: TextAlign.left,
+        ),
+      );
 
   _buildTransferAccount() => Container(
-    padding: EdgeInsets.only(top: 5.auto),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        CustomPicker(
-            title: getTranslatedText("transfer_from"),
-            displayText: textFromWallet ?? getTranslatedText("please_select"),
-            list: [],
-            isHintText: textFromWallet == null|| textFromWallet == getTranslatedText("please_select"),
-            width: (context.screenWidth / 2) - 75.auto,
-            onClick: () {
-              _buildPicker("transfer_from", _vm.walletList, true);
-            }),
-        Image.asset(
-          "images/transfer/ic_transfer_to.png",
-          width: 21.auto,
+        padding: EdgeInsets.only(top: 5.auto),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            CustomPicker(
+                title: getTranslatedText("transfer_from"),
+                displayText: textFromWallet ?? getTranslatedText("please_select"),
+                list: [],
+                isHintText: textFromWallet == null || textFromWallet == getTranslatedText("please_select"),
+                width: (context.screenWidth / 2) - 75.auto,
+                onClick: () {
+                  _buildPicker("transfer_from", _vm.walletList, true);
+                }),
+            Image.asset(
+              "images/transfer/ic_transfer_to.png",
+              width: 21.auto,
+            ),
+            CustomPicker(
+                title: getTranslatedText("transfer_to"),
+                displayText: textToWallet ?? getTranslatedText("please_select"),
+                list: [],
+                isHintText: textToWallet == null || textToWallet == getTranslatedText("please_select"),
+                width: (context.screenWidth / 2) - 75.auto,
+                onClick: () {
+                  _buildPicker("transfer_to", _vm.walletList, false);
+                }),
+          ],
         ),
-        CustomPicker(
-            title: getTranslatedText("transfer_to"),
-            displayText: textToWallet ?? getTranslatedText("please_select"),
-            list: [],
-            isHintText: textToWallet == null || textToWallet == getTranslatedText("please_select"),
-            width: (context.screenWidth / 2) - 75.auto,
-            onClick: () {
-              _buildPicker("transfer_to", _vm.walletList, false);
-            }),
-      ],
-    ),
-  );
+      );
 
   _buildPicker(String title, List<Wallet> list, bool isFrom) {
     showModalBottomSheet(
@@ -311,8 +310,8 @@ class _WalletTransferState extends BaseState<WalletTransfer> with TickerProvider
                     else
                       setToWallet(fromWallet != null
                           ? fromWallet.isMainWallet
-                          ? null
-                          : fromWallet
+                              ? null
+                              : fromWallet
                           : null);
                     setFromWallet(value);
                   } else {
@@ -321,8 +320,8 @@ class _WalletTransferState extends BaseState<WalletTransfer> with TickerProvider
                     else
                       setFromWallet(toWallet != null
                           ? toWallet.isMainWallet
-                          ? null
-                          : toWallet
+                              ? null
+                              : toWallet
                           : null);
                     setToWallet(value);
                   }
@@ -373,45 +372,56 @@ class _WalletTransferState extends BaseState<WalletTransfer> with TickerProvider
       ));
 
   _buildButton() => Container(
-    padding: EdgeInsets.only(top: 20.auto, left: 5.auto, right: 5.auto),
-    width: context.screenWidth,
-    child: Opacity(
-      opacity: isEnabled ? 1 : 0.5,
-      child: ColorButton(
-        text: Text(
-          getTranslatedText("confirm"),
-          style: TextStyle(fontSize: (16.2).auto, color: Colors.white),
+        padding: EdgeInsets.only(top: 20.auto, left: 5.auto, right: 5.auto),
+        width: context.screenWidth,
+        child: Opacity(
+          opacity: isEnabled ? 1 : 0.5,
+          child: ColorButton(
+            text: Text(
+              getTranslatedText("confirm"),
+              style: TextStyle(fontSize: (16.2).auto, color: Colors.white),
+            ),
+            onClick: () {
+              onClick();
+            },
+            isEnabled: isEnabled,
+            radius: 9.6,
+            color: CustomColor.theme_bar_gradient_2,
+          ),
         ),
-        onClick: () {
-          onClick();
-        },
-        isEnabled: isEnabled,
-        radius: 9.6,
-        color: CustomColor.theme_bar_gradient_2,
-      ),
-    ),
-  );
+      );
 
   _getAutoTransferToggleButton() => Container(
-    margin: EdgeInsets.only(right: 10.auto, top: 5.auto, bottom: 2.auto),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        Container(margin: EdgeInsets.only(right: 10.auto), child: Text(getTranslatedText("auto_transfer"))),
-        FlutterSwitch(
-          value: _vm.autoTransferValue ?? false,
-          width: 35,
-          height: 17.5,
-          toggleSize: 17.5,
-          padding: 2,
-          activeColor: CustomColor.theme_bar_gradient_2,
-          onToggle: (val) {
-            _vm.setAutoTransferValue();
-          },
+        margin: EdgeInsets.only(right: 10.auto, top: 5.auto, bottom: 2.auto,left: 10.auto,),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Expanded(
+                flex: 9,
+                child: Container(
+                  child: AutoSizeText(
+                    getTranslatedText("auto_transfer"),
+                    minFontSize: 8,
+                    maxLines: 2,
+                  ),
+                )),
+            Expanded(
+              flex: 1,
+              child: FlutterSwitch(
+                value: _vm.autoTransferValue ?? false,
+                width: 30,
+                height: 17.5,
+                toggleSize: 17.5,
+                padding: 2,
+                activeColor: CustomColor.theme_bar_gradient_2,
+                onToggle: (val) {
+                  _vm.setAutoTransferValue();
+                },
+              ),
+            ),
+          ],
         ),
-      ],
-    ),
-  );
+      );
 
   getMaxAmount() {
     setState(() {

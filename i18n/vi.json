@@ -145,6 +145,7 @@
   "online_cs": "Dịch vụ Khách hàng Trực tuyến",
   "here": "ở đây",
   "edit_phone_cs": "Để sửa đổi số điện thoại, vui lòng nhấp vào",
+  "edit_email_cs": "Để sửa đổi địa chỉ email, vui lòng nhấp vào",
   "edit_ic_no_cs": "Nếu bạn cần sửa đổi ID của mình, vui lòng liên hệ",
   "Download_installer": "Tải xuống gói cập nhật",
   "loading_hard": "Đang tải khó",
@@ -249,6 +250,7 @@
   "enter_pay_password_error_msg": "Mật khẩu rút tiền chỉ có thể nhập chữ cái hoặc số bằng tiếng Anh",
   "pay_password_length_error_msg": "Mật khẩu rút tiền phải bao gồm 6-20 chữ cái hoặc số tiếng Anh",
   "verify_current_email": "Xác minh địa chỉ email ban đầu",
+  "set_new_email": "Đặt email mới",
   "set_new_pay_password": "Đặt mật khẩu rút tiền mới",
   "enter_wechat_error_message": "Định dạng mã wechat không chính xác",
   "enter_qq_error_message": "Định dạng mã QQ không chính xác",
@@ -963,5 +965,6 @@
   "instant_messaging": "Tin khẩn",
   "login_time_out": "Đăng nhập đã hết thời gian",
   "withdrawal_amount_warning": "Số tiền gửi phải tính bằng đơn vị trăm nhân dân tệ",
-  "game_platform_inactive": "Nền tảng trò chơi đã bị đóng"
+  "game_platform_inactive": "Nền tảng trò chơi đã bị đóng",
+  "edit_email": "Chỉnh sửa địa chỉ email"
 }

@@ -98,23 +98,26 @@ class _GameViewState extends BaseState<GameView> {
         decoration: tabIndex == currentTabIndex ? gameTabGradientDecoration : gameTabColorDecoration,
         padding: EdgeInsets.all(3.auto),
         child: Center(
-            child: AutoSizeText(
-          title,
-          style: TextStyle(
-              fontSize: 17,
-              shadows: [
-                tabIndex == currentTabIndex
-                    ? Shadow(
-                        blurRadius: 1.5,
-                        color: Colors.black,
-                        offset: Offset(0, 2.0),
-                      )
-                    : Shadow(),
-              ],
-              color: tabIndex == currentTabIndex ? CustomColor.theme_label_text_highlight_color : Colors.black),
-          minFontSize: 10,
-          stepGranularity: 1,
-          textAlign: TextAlign.center,
+            child: Container(
+          width: (62.5).auto,
+          child: AutoSizeText(
+            title,
+            style: TextStyle(
+                //fontSize: 17,
+                shadows: [
+                  tabIndex == currentTabIndex
+                      ? Shadow(
+                          blurRadius: 1.5,
+                          color: Colors.black,
+                          offset: Offset(0, 2.0),
+                        )
+                      : Shadow(),
+                ], color: tabIndex == currentTabIndex ? CustomColor.theme_label_text_highlight_color : Colors.black),
+            minFontSize: 5,
+            stepGranularity: 1,
+            textAlign: TextAlign.center,
+            maxLines: title.contains(" ")?2:1,
+          ),
         )),
       ),
     );
@@ -182,36 +185,36 @@ class _GameViewState extends BaseState<GameView> {
     var id;
     if (gameType == GameType.Slot || gameType == GameType.EGame || gameType == GameType.Fishing) {
       //navigate to child game
-        var result = await Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => ChildGame(
-                      gamePlatformCode: gamePlatformCode,
-                      gameType: gameType,
-                    )));
-        if(result) widget.onRefreshHomePage();
+      var result = await Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => ChildGame(
+                    gamePlatformCode: gamePlatformCode,
+                    gameType: gameType,
+                  )));
+      if (result) widget.onRefreshHomePage();
     } else if (gameType == GameType.Lottery || gameType == GameType.LotteryLobby) {
       //only tcg will need to get gamelist
       await _vm.getGameList(gamePlatformCode, gameType);
       var result = await Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => GameWeb(
-                      gamePlatformCode: gamePlatformCode,
-                      gameType: gameType,
-                      gameId: _vm.gameListMap[gamePlatformCode].first.id,
-                    )));
-      if(result) widget.onRefreshHomePage();
+          context,
+          MaterialPageRoute(
+              builder: (context) => GameWeb(
+                    gamePlatformCode: gamePlatformCode,
+                    gameType: gameType,
+                    gameId: _vm.gameListMap[gamePlatformCode].first.id,
+                  )));
+      if (result) widget.onRefreshHomePage();
     } else {
       //navigate to game web
-     var result = await Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => GameWeb(
-                      gamePlatformCode: gamePlatformCode,
-                      gameType: gameType,
-                    )));
-        if(result ?? false) widget.onRefreshHomePage();
+      var result = await Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => GameWeb(
+                    gamePlatformCode: gamePlatformCode,
+                    gameType: gameType,
+                  )));
+      if (result ?? false) widget.onRefreshHomePage();
     }
   }
 

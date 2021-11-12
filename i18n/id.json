@@ -146,6 +146,7 @@
   "online_cs": "Layanan Pelanggan Online",
   "here": "sini",
   "edit_phone_cs": "Untuk mengubah nomor telepon, silakan klik",
+  "edit_email_cs": "Untuk mengubah alamat email, silakan klik",
   "edit_ic_no_cs": "Jika Anda perlu mengubah ID Anda, silakan hubungi",
   "downloading_installer": "Unduh paket pembaruan",
   "loading_hard": "Memuat dengan susah payah",
@@ -250,6 +251,7 @@
   "enter_pay_password_error_msg": "Password penarikan hanya dapat memasukkan huruf atau angka bahasa Inggris",
   "pay_password_length_error_msg": "Kata sandi penarikan harus terdiri dari 6-20 huruf atau angka bahasa Inggris",
   "verify_current_email": "Verifikasi alamat email asli",
+  "set_new_email": "Setel kata sandi penarikan baru",
   "set_new_pay_password": "Setel kata sandi penarikan baru",
   "enter_wechat_error_message": "Format kode Wechat salah",
   "enter_qq_error_message": "Format kode QQ salah",
@@ -964,5 +966,6 @@
   "instant_messaging": "Pesan singkat",
   "login_time_out": "Waktu masuk telah habis",
   "withdrawal_amount_warning": "Jumlah setoran harus dalam satuan seratus",
-  "game_platform_inactive": "Platform permainan ditutup"
+  "game_platform_inactive": "Platform permainan ditutup",
+  "edit_email": "Edit alamat email"
 }

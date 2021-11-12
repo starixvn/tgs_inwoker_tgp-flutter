@@ -1,27 +1,19 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:tgp_flutter/custom/custom_picker.dart';
-import 'package:tgp_flutter/custom/custom_picker_dialog.dart';
-import 'package:tgp_flutter/entity/status.dart';
+import 'package:tgp_flutter/entity/game_provider.dart';
 import 'package:tgp_flutter/entity/transaction_cell_item_type.dart';
 import 'package:tgp_flutter/extension/format.dart';
-import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
-import 'package:tgp_flutter/ui/deposit/deposit_order_view.dart';
-import 'package:tgp_flutter/ui/deposit/manual_deposit_order_view.dart';
 import 'package:tgp_flutter/ui/transaction/base_transaction.dart';
 import 'package:tgp_flutter/ui/transaction/transaction_cell_item.dart';
 import 'package:tgp_flutter/ui/transaction/transaction_view_model.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class AccountTransactionView extends StatefulWidget {
+  final List<String> transactionHeaderList;
   final TransactionViewModel vm;
 
-  AccountTransactionView({
-    Key key,
-    this.vm,
-  }) : super(key: key);
+  AccountTransactionView({Key key, this.transactionHeaderList, this.vm}) : super(key: key);
 
   @override
   AccountTransactionViewState createState() => AccountTransactionViewState();
@@ -34,7 +26,6 @@ class AccountTransactionViewState extends BaseState<AccountTransactionView> {
   var pickerText1;
   var filterIndex = 0;
   TransactionViewModel _vm = TransactionViewModel();
-
 
   void initState() {
     _scrollController.addListener(_scrollListener);
@@ -50,13 +41,13 @@ class AccountTransactionViewState extends BaseState<AccountTransactionView> {
         builder: (ctx, vm, _) {
           _handleApiState();
           return BaseTransaction(
-            transactionHeaderList: ["time", "status", "amount",""],
-            getPickerBox: _getPickerBox(),
+            transactionHeaderList: ["bet_time", "bet_platform","game", "bet_amount", "win_loss"],
+            getPickerBox: Container(),
             filterIndex: filterIndex,
-            expandedHeight: 250,
+            expandedHeight: 170,
             vm: _vm,
             getTransaction: (mIsLoadMore, mStatus) {
-              _getTransaction(isLoadMore: mIsLoadMore, status: mStatus);
+              _getTransaction(isLoadMore: mIsLoadMore);
             },
             setIndex: (value) {
               setState(() {
@@ -65,38 +56,35 @@ class AccountTransactionViewState extends BaseState<AccountTransactionView> {
             },
             scrollController: _scrollController,
             refreshController: _refreshController,
-            list: _vm.accountTransactionList,
+            list: _vm.betTransactionList,
             displayItemList: _getList(),
-            isUploadButton: true,
+            isUploadButton: false,
             url: _vm.brandLogoUrl,
           );
         });
   }
 
-  _getList() => _vm.accountTransactionList ==null?[]:List.generate(_vm.accountTransactionList.length, (index) {
+  _getList() => _vm.betTransactionList ==null?[]:List.generate(_vm.betTransactionList.length, (index) {
         return Container(
           child: TransactionCellItem(list: [
-            _vm.accountTransactionList[index].id,
-            _vm.accountTransactionList[index].orderNo,
-            Format().dateTimeFormat(_vm.accountTransactionList[index].createdOn),
-            _vm.accountTransactionList[index].status.getName(context),
-            _vm.accountTransactionList[index].amount.toString(),
-            _vm.accountTransactionList[index].status == Status.WaitingPayment?true:false
-          ], type: _getTransactionItemType(index), isEndRecord: _vm.endRecord, isUploadButton: _vm.accountTransactionList[index].canUploadCerts,
-          getManualDepositId: (){
-            _vm.getManualDepositOrder(_vm.accountTransactionList[index].id);
-          },
-          isAccountTransaction: true,),
+            _vm.betTransactionList[index].id,
+              "",
+            Format().dateTimeFormat(_vm.betTransactionList[index].createdOn),
+            _vm.betTransactionList[index].gameProviderName,
+            _vm.betTransactionList[index].gameName,
+            _vm.betTransactionList[index].betAmount.toString(),
+            _vm.betTransactionList[index].winLoss.toString(),
+          ], type: _getTransactionItemType(index), isEndRecord: _vm.endRecord, ),
         );
       }).toList();
 
   _getTransactionItemType(int index) {
-    if (_vm.accountTransactionList.length == 1) {
+    if (_vm.betTransactionList.length == 1) {
       return TransactionCellItemType.SINGLE;
     } else {
       if (index == 0) {
         return TransactionCellItemType.TOP;
-      } else if (index == _vm.accountTransactionList.length - 1) {
+      } else if (index == _vm.betTransactionList.length - 1) {
         return TransactionCellItemType.BOTTOM;
       } else {
         return TransactionCellItemType.CENTER;
@@ -104,73 +92,20 @@ class AccountTransactionViewState extends BaseState<AccountTransactionView> {
     }
   }
 
-  _getPickerBox() {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10.auto),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          CustomPicker(
-              title: "status",
-              displayText: pickerText1 == null ? getTranslatedText("all") : pickerText1,
-              list: _vm.statusList,
-              isHintText: false,
-              width: context.screenWidth - 70.auto,
-              onClick: () {
-                _buildPickerDialog("status", _vm.statusList);
-              }),
-        ],
-      ),
-    );
-  }
-
-  _buildPickerDialog(String title, List<dynamic> list) {
-    showModalBottomSheet(
-        context: context,
-        isScrollControlled: true,
-        builder: (BuildContext bc) {
-          return CustomPickerDialog(
-              title: title,
-              list: list,
-              onChanged: (value) {
-                setState(() {
-                  if (value is Status) {
-                    pickerText1 = value.getName(context);
-                    _getTransaction(status: value);
-                  }
-                  Navigator.pop(context);
-                  // ProgressDialog.show(context, _vm.brandLogoUrl);
-                });
-              });
-        });
-  }
-
   _scrollListener() {
     if (_scrollController.offset >= _scrollController.position.maxScrollExtent) {
-      _getTransaction(isLoadMore: true);
       setState(() {
         isLoading = true;
       });
+      _getTransaction(isLoadMore: true);
     }
   }
 
-  _getTransaction({bool isLoadMore, Status status}) async {
-    await _vm.getAccountTransaction(isLoadMore: isLoadMore ?? false, status: status);
+  _getTransaction({DateTime startDate, DateTime endDate, GameProvider platform, bool isLoadMore}) async {
+    await _vm.getTransaction(isLoadMore: isLoadMore ?? false);
   }
 
   _handleApiState() {
-    handleApiState(_vm.getAccountTransactionApiState, isAutoHideLoading: false, onSuccess: () {});
-    handleApiState(_vm.getDepositOrderApiState, onSuccess: () {
-      WidgetsBinding.instance.addPostFrameCallback((_) async {
-        await Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => ManualDepositOrderView(
-                  id: _vm.paymentId,
-                  manualDepositOrder: _vm.getDepositOrderApiState.result,
-                )));
-
-      });
-    });
+    handleApiState(_vm.getTransactionApiState, isAutoHideLoading: false, onSuccess: () {});
   }
 }

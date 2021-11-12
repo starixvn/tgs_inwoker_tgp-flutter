@@ -70,7 +70,7 @@ class _MaintenanceState extends BaseState<Maintenance> {
                   _buildText("如您有任何问题，请联系客服。"),
                   _buildText("We are currently under maintenance,\n"
                       "please try again later."),
-                  _buildText("If you have any questions,", isNeedMargin: false),
+                  _buildText("If have any questions,", isNeedMargin: false),
                   _buildText("please contact our customer service,"),
                   Visibility(visible: widget.isShowCS, child: _buildButton())
                 ],
@@ -94,7 +94,7 @@ class _MaintenanceState extends BaseState<Maintenance> {
           },
         ),
         title: Text(
-          "Maintenance",
+          getTranslatedText("maintenance"),
           style: TextStyle(fontSize: 16.auto),
         ),
       );

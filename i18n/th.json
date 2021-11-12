@@ -145,6 +145,7 @@
   "online_cs": "บริการลูกค้าออนไลน์",
   "here": "ที่นี่",
   "edit_phone_cs": "หากต้องการแก้ไขหมายเลขโทรศัพท์ โปรดคลิก",
+  "edit_email_cs": "หากต้องการแก้ไขที่อยู่อีเมล โปรดคลิก",
   "edit_ic_no_cs": "ถ้าคุณต้องการแก้ไข ID ของคุณ โปรดติดต่อ",
   "downloading_installer": "ดาวน์โหลดแพ็คเกจอัพเดท",
   "loading_hard": "กำลังโหลดอย่างหนัก",
@@ -249,6 +250,7 @@
   "enter_pay_password_error_msg": "รหัสผ่านการถอนสามารถป้อนได้เฉพาะตัวอักษรหรือตัวเลขภาษาอังกฤษเท่านั้น",
   "pay_password_length_error_msg": "รหัสผ่านการถอนต้องประกอบด้วยตัวอักษรหรือตัวเลขภาษาอังกฤษ 6-20 ตัว",
   "verify_current_email": "ยืนยันที่อยู่อีเมลเดิม",
+  "set_new_email": "ตั้งอีเมลใหม่",
   "set_new_pay_password": "ตั้งรหัสผ่านการถอนใหม่",
   "enter_wechat_error_message": "รูปแบบโค้ด Wechat ไม่ถูกต้อง",
   "enter_qq_error_message": "รูปแบบโค้ด QQ ไม่ถูกต้อง",
@@ -963,5 +965,6 @@
   "instant_messaging": "ข้อความโต้ตอบแบบทันที",
   "login_time_out": "การเข้าสู่ระบบหมดเวลา",
   "withdrawal_amount_warning": "จำนวนเงินฝากต้องเป็นหน่วยร้อยหยวน",
-  "game_platform_inactive": "แพลตฟอร์มเกมปิดอยู่"
+  "game_platform_inactive": "แพลตฟอร์มเกมปิดอยู่",
+  "edit_email": "แก้ไขที่อยู่อีเมล"
 }

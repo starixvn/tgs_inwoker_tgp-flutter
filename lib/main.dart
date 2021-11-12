@@ -34,6 +34,7 @@ import 'package:tgp_flutter/ui/message/message_view.dart';
 import 'package:tgp_flutter/ui/profile/animated_dot.dart';
 import 'package:tgp_flutter/ui/profile/profile.dart';
 import 'package:tgp_flutter/ui/profile_info/address/address.dart';
+import 'package:tgp_flutter/ui/profile_info/email/edit_email.dart';
 import 'package:tgp_flutter/ui/profile_info/email/email_verification.dart';
 import 'package:tgp_flutter/ui/profile_info/password/edit_password.dart';
 import 'package:tgp_flutter/ui/profile_info/pay_password/pay_password.dart';
@@ -196,6 +197,7 @@ class _MyAppState extends BaseState<MyApp> {
                   RoutePath.maintenance: (context) => Maintenance(),
                   RoutePath.blacklistedUser: (context) => BlacklistedUser(),
                   RoutePath.phoneReVerification: (context) => PhoneReVerification(),
+                  RoutePath.editEmail: (context) => EditEmail(),
                 },
                 localizationsDelegates: [
                   MyLocalizations.delegate,

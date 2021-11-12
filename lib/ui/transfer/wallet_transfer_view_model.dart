@@ -55,7 +55,7 @@ class WalletTransferViewModel extends BaseViewModel {
       var state = await walletRepo.getGameWallet(wallet.gpCode);
       if (state.isSuccess) {
         wallet.balance = state.result.balance;
-      }
+      }else wallet.balance = 0.0;
     }
     notifyListeners();
   }

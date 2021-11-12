@@ -57,24 +57,31 @@ class _ProfileBottomItemState extends BaseState<ProfileBottomItem> {
     );
   }
 
-  _buildImageIcon() => ImageIcon(
-        widget.imagePath == "ic_customer_service"
-            ? AssetImage("images/bottom_navigation_bar/ic_customer_service.png")
-            : AssetImage("images/profile/${widget.imagePath}.png"),
-        size: 27.auto,
-      );
-
-  _buildProfileBottomItemText() => Container(
-        padding: EdgeInsets.only(top: 10.auto),
-        child: AutoSizeText(
-          widget.title,
-          style: TextStyle(fontSize: 10),
-          textAlign: TextAlign.center,
-          minFontSize: 5,
-          stepGranularity: 1,
-          maxLines: 1,
+  _buildImageIcon() => Expanded(
+    flex:9,
+    child: ImageIcon(
+          widget.imagePath == "ic_customer_service"
+              ? AssetImage("images/bottom_navigation_bar/ic_customer_service.png")
+              : AssetImage("images/profile/${widget.imagePath}.png"),
+          size: 27.auto,
         ),
-      );
+  );
+
+  _buildProfileBottomItemText() => Expanded(
+    flex:8,
+    child: Container(
+          padding: EdgeInsets.only(top: 10.auto),
+          child: AutoSizeText(
+            widget.title,
+           // style: TextStyle(fontSize: 10),
+            textAlign: TextAlign.center,
+            minFontSize: 5,
+            maxFontSize: 10,
+            stepGranularity: 1,
+            maxLines: 2,
+          ),
+        ),
+  );
 
   _navigate() => WidgetsBinding.instance.addPostFrameCallback((_) {
         if (widget.navigationID == 0) {

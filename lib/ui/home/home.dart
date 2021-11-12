@@ -49,6 +49,7 @@ class _HomeState extends BaseState<Home> {
   var itemHeightRatio = 335 / 90;
   var _vm = HomeViewModel();
   var _gameViewModel = GameViewModel();
+  var languageCode;
 
   @override
   void initState() {
@@ -61,6 +62,12 @@ class _HomeState extends BaseState<Home> {
     _vm.getBanner();
     _vm.resumeIfNeed();
     _gameViewModel.getGameProviderList(isRefresh: true);
+    getLanguage();
+  }
+
+   getLanguage() async {
+    SharedPreferences _prefs = await SharedPreferences.getInstance();
+    languageCode = _prefs.getString("LANGUAGE_CODE") ?? "en-US";
   }
 
   Widget build(BuildContext context) {
@@ -134,7 +141,7 @@ class _HomeState extends BaseState<Home> {
   _buildMarqueeRow() => Row(
         children: [
           Container(
-            width: context.screenWidth / 7,
+            width: languageCode.contains("zh")?context.screenWidth /10:context.screenWidth / 5,
             padding: EdgeInsets.only(left: 10.auto),
             child: AutoSizeText(
               getTranslatedText("notice"),

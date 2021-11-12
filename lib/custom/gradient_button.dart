@@ -54,6 +54,7 @@ class GradientButton extends StatelessWidget {
                 textAlign: TextAlign.center,
                 minFontSize: fontSize ?? 16,
                 stepGranularity: 1,
+                maxLines: title.contains(" ")?2:1,
               ),
             ),
           )

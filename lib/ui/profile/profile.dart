@@ -165,7 +165,7 @@ class _ProfileState extends BaseState<Profile> {
                   _buildProfileBottomItem("withdrawal_history", "ic_account_detail", "transaction", 2),
                   _buildProfileBottomItem("transfer_history", "ic_account_detail", "transaction", 3),
                   _buildProfileBottomItem("manage_card", "ic_card_detail", "main_card", 0),
-                  _buildProfileBottomItem("customer_service", "ic_customer_service", "customer_service", 0),
+                  //_buildProfileBottomItem("customer_service", "ic_customer_service", "customer_service", 0),
                   //_buildProfileBottomItem("frequent_question", "ic_profile_question", "frequent_question", 0),
                   _buildProfileBottomItem("language", "ic_lang", "language", 0),
                 ],
