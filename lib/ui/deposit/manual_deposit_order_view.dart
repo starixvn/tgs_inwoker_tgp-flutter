@@ -129,9 +129,11 @@ class _ManualDepositOrderViewState extends BaseState<ManualDepositOrderView> {
                           ),
                           Container(
                             alignment: Alignment.centerLeft,
-                            child: Text(
+                            child: AutoSizeText(
                               Format().currencyWithDecimalFormat(widget.manualDepositOrder.amount),
-                              style: TextStyle(fontSize: (38.5).auto, fontWeight: FontWeight.w400),
+                              style: TextStyle(fontSize: 38, fontWeight: FontWeight.w400),
+                              minFontSize: 10,
+                              maxLines: 1,
                             ),
                           ),
                         ],
