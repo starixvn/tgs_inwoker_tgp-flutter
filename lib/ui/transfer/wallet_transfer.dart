@@ -175,7 +175,7 @@ class _WalletTransferState extends BaseState<WalletTransfer> with TickerProvider
                 margin: EdgeInsets.only(left: 15.auto),
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  "¥ ${Format().amountFormat(_vm.userMainWalletBalance) ?? ""}",
+                  " ${Format().amountFormat(_vm.userMainWalletBalance) ?? ""}",
                   style: TextStyle(fontSize: 12.auto),
                 ),
               ),
@@ -392,7 +392,12 @@ class _WalletTransferState extends BaseState<WalletTransfer> with TickerProvider
       );
 
   _getAutoTransferToggleButton() => Container(
-        margin: EdgeInsets.only(right: 10.auto, top: 5.auto, bottom: 2.auto,left: 10.auto,),
+        margin: EdgeInsets.only(
+          right: 10.auto,
+          top: 5.auto,
+          bottom: 2.auto,
+          left: 10.auto,
+        ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [

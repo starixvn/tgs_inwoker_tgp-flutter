@@ -100,7 +100,7 @@ class _AddCardState extends BaseState<AddCard> {
               margin: EdgeInsets.symmetric(vertical: 20.auto),
               alignment: Alignment.center,
               child: Text(
-                _vm.wallet == null ? "-" : "¥ ${Format().currencyWithDecimalFormat(_vm.wallet.main)}",
+                _vm.wallet == null ? "-" : " ${Format().currencyWithDecimalFormat(_vm.wallet.main)}",
                 style: TextStyle(fontSize: 16.auto, color: Colors.white),
               )),
         ),
@@ -322,15 +322,15 @@ class _AddCardState extends BaseState<AddCard> {
         CustomToast.show(getTranslatedText("phone_format_error_msg"));
       });
     } else {*/
-      ProgressDialog.show(context, _vm.brandLogoUrl);
-      _vm.addBankCard(
-          address: _addressController.text,
-          bankName: _bankNameController.text,
-          bankAccount: _bankNumController.text,
-          bankBranch: _bankBranchController.text,
-          name: _nameController.text,
-          phone: _phoneController.text,
-          realName: _realNameController.text);
+    ProgressDialog.show(context, _vm.brandLogoUrl);
+    _vm.addBankCard(
+        address: _addressController.text,
+        bankName: _bankNameController.text,
+        bankAccount: _bankNumController.text,
+        bankBranch: _bankBranchController.text,
+        name: _nameController.text,
+        phone: _phoneController.text,
+        realName: _realNameController.text);
     //}
   }
 

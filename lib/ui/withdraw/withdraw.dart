@@ -101,7 +101,7 @@ class _WithdrawState extends BaseState<Withdraw> {
               margin: EdgeInsets.only(right: 15.auto),
               alignment: Alignment.center,
               child: Text(
-                "¥ ${Format().currencyWithDecimalFormat(_vm.wallet?.main ?? 0.0)}",
+                "${Format().currencyWithDecimalFormat(_vm.wallet?.main ?? 0.0)}",
                 style: TextStyle(color: CustomColor.theme_label_text_highlight_color),
               )),
         ],
@@ -153,7 +153,7 @@ class _WithdrawState extends BaseState<Withdraw> {
                 Container(
                   padding: EdgeInsets.only(top: 5.auto),
                   child: Text(
-                    "¥ $amount",
+                    " $amount",
                     style: TextStyle(color: CustomColor.theme_bar_gradient_2, fontSize: 12.auto),
                     textAlign: TextAlign.start,
                   ),
@@ -274,7 +274,7 @@ class _WithdrawState extends BaseState<Withdraw> {
       amount = int.parse(_amountController.text);
     } else
       amount = 0;
-    if (amount == 0 || amount > _vm.wallet.main ) {
+    if (amount == 0 || amount > _vm.wallet.main) {
       setState(() {
         isNextButtonEnabled = false;
       });
@@ -286,12 +286,11 @@ class _WithdrawState extends BaseState<Withdraw> {
   }
 
   onNextButtonClick() {
-    if(EnvironmentConfig.appTitleName =="HKJP" && !validate.validateIncremental100(_amountController.text)){
+    if (EnvironmentConfig.appTitleName == "HKJP" && !validate.validateIncremental100(_amountController.text)) {
       setState(() {
         CustomToast.show(getTranslatedText("withdrawal_amount_warning"));
       });
-    }
-    else{
+    } else {
       ProgressDialog.show(context, _vm.brandLogoUrl);
       _vm.withdraw(amount, selectedBankCard.id, _payPasswordController.text);
     }

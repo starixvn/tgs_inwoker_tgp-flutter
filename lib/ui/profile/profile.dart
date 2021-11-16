@@ -40,7 +40,7 @@ class _ProfileState extends BaseState<Profile> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (_vm.userProfile != null) {
-         _vm.computeTotalBalance();
+        _vm.computeTotalBalance();
       } else {
         Navigator.of(context).pushNamed("/login");
       }
@@ -56,7 +56,9 @@ class _ProfileState extends BaseState<Profile> {
           return Scaffold(
               resizeToAvoidBottomInset: false,
               backgroundColor: Colors.white,
-              body: _vm.userProfile == null || _vm.balance == null ? buildProgressDialog(_vm.brandLogoUrl) : _buildUserInfoContainer());
+              body: _vm.userProfile == null || _vm.balance == null
+                  ? buildProgressDialog(_vm.brandLogoUrl)
+                  : _buildUserInfoContainer());
         });
   }
 
@@ -107,14 +109,16 @@ class _ProfileState extends BaseState<Profile> {
             padding: EdgeInsets.only(top: 3.auto, bottom: 3.auto),
             //"¥ ${widget.userProfile?.balance}",
             child: Text(
-              getTranslatedText("main_wallet") + " :  ¥ ${Format().currencyWithDecimalFormat(_vm.balance)}",
+              getTranslatedText("main_wallet") + " :  ${Format().currencyWithDecimalFormat(_vm.balance)}",
               style: TextStyle(color: Colors.white, fontSize: (11.2).auto),
               textAlign: TextAlign.start,
             ),
           ),
           Text(
-            getTranslatedText("total_balance") + " :"+(_vm.totalBalance != null ? "¥ ${Format().currencyWithDecimalFormat(_vm.totalBalance ?? 0.0)}": "-"),
-            //"总资金  "+(_vm.totalBalance != null ? "¥ "+ Format().currencyWithDecimalFormat(_vm.totalBalance) : "-"),
+            getTranslatedText("total_balance") +
+                " :" +
+                (_vm.totalBalance != null ? " ${Format().currencyWithDecimalFormat(_vm.totalBalance ?? 0.0)}" : "-"),
+            //"总资金  "+(_vm.totalBalance != null ?  "+ Format().currencyWithDecimalFormat(_vm.totalBalance) : "-"),
             style: TextStyle(color: Colors.white, fontSize: (11.2).auto),
             textAlign: TextAlign.start,
           )

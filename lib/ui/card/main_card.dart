@@ -106,7 +106,7 @@ class _MainCardState extends BaseState<MainCard> {
               margin: EdgeInsets.symmetric(vertical: 20.auto),
               alignment: Alignment.center,
               child: Text(
-                _vm.wallet == null ? "-" : "¥ ${Format().currencyWithDecimalFormat(_vm.wallet.main)}",
+                _vm.wallet == null ? "-" : " ${Format().currencyWithDecimalFormat(_vm.wallet.main)}",
                 style: TextStyle(fontSize: 16.auto, color: Colors.white),
               )),
         ),

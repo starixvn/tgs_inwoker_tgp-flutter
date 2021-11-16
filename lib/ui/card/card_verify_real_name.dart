@@ -58,7 +58,7 @@ class _CardVerifyRealNameState extends BaseState<CardVerifyRealName> {
                         margin: EdgeInsets.symmetric(vertical: 20.auto),
                         alignment: Alignment.center,
                         child: Text(
-                          "¥ 0.00",
+                          " 0.00",
                           /*_vm.mainAccountBalance == null ? "-" : "¥ ${Format()
                               .currencyWithDecimalFormat(
                               _vm.mainAccountBalance)}",*/
@@ -192,7 +192,7 @@ class _CardVerifyRealNameState extends BaseState<CardVerifyRealName> {
         buttonText1: "确认",
         buttonText2: "取消",
         onClick: () => _editSurname(),
-        onClick2: (){
+        onClick2: () {
           Navigator.pop(context);
         },
       ),

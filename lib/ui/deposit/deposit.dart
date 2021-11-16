@@ -116,7 +116,7 @@ class _DepositState extends BaseState<Deposit> {
               margin: EdgeInsets.only(right: 15.auto),
               alignment: Alignment.center,
               child: Text(
-                "¥ ${Format().currencyWithDecimalFormat(_vm.wallet?.main ?? 0.0)}",
+                " ${Format().currencyWithDecimalFormat(_vm.wallet?.main ?? 0.0)}",
                 style: TextStyle(color: CustomColor.theme_label_text_highlight_color),
               )),
         ],
@@ -132,6 +132,6 @@ class _DepositState extends BaseState<Deposit> {
         CustomToast.show(getTranslatedText("deposit_not_available"));
       }
     });
-    handleApiState(_vm.getPlayerPromotionListApiState, onSuccess: (){});
+    handleApiState(_vm.getPlayerPromotionListApiState, onSuccess: () {});
   }
 }

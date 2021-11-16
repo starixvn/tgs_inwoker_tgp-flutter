@@ -398,7 +398,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
                 builder: (context) => ManualDepositOrderView(
                       id: paymentChannelId,
                       method: _payment.methodCode,
-                      depositAmount: Format().currencySymbolWithDecimalFormat(double.parse(_amountController.text)),
+                      depositAmount: Format().currencyWithDecimalFormat(double.parse(_amountController.text)),
                       depositChannel: channelPickerText,
                       promotionName: promotionId != "-1" ? promotionName : null,
                       orderNo: _vm.orderNo,
@@ -444,7 +444,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
                 builder: (context) => DepositOrderView(
                       method: _payment.methodCode,
                       depositRedirect: depositRedirect,
-                      depositAmount: Format().currencySymbolWithDecimalFormat(double.parse(_amountController.text)),
+                      depositAmount: Format().currencyWithDecimalFormat(double.parse(_amountController.text)),
                       depositChannel: channelPickerText,
                       promotionName: promotionId != "-1" ? promotionName : null,
                       exchangeRate: exchangeRate,

@@ -99,8 +99,24 @@ class _ManualDepositOrderViewState extends BaseState<ManualDepositOrderView> {
               children: [
                 Row(
                   children: [
+                    widget.paymentQrCode?.qrCodeFileUrl == null
+                        ? Container()
+                        : Expanded(
+                            flex: 2,
+                            child: Image.network(
+                              widget.paymentQrCode.qrCodeFileUrl,
+                              width: 150,
+                              height: 150,
+                            ),
+                          ),
+                    widget.paymentQrCode?.qrCodeFileUrl == null
+                        ? Container()
+                        : Expanded(
+                            flex: 1,
+                            child: Container(),
+                          ),
                     Expanded(
-                      flex: 1,
+                      flex: 2,
                       child: Column(
                         children: [
                           Container(
@@ -114,26 +130,13 @@ class _ManualDepositOrderViewState extends BaseState<ManualDepositOrderView> {
                           Container(
                             alignment: Alignment.centerLeft,
                             child: Text(
-                              "¥ ${widget.manualDepositOrder.amount.toString()}",
-                              style: TextStyle(
-                                  fontSize: (38.5).auto,
-                                  color: CustomColor.theme_bar_gradient_2,
-                                  fontWeight: FontWeight.w400),
+                              Format().currencyWithDecimalFormat(widget.manualDepositOrder.amount),
+                              style: TextStyle(fontSize: (38.5).auto, fontWeight: FontWeight.w400),
                             ),
                           ),
                         ],
                       ),
                     ),
-                    widget.paymentQrCode?.qrCodeFileUrl == null
-                        ? Container()
-                        : Expanded(
-                            flex: 1,
-                            child: Image.network(
-                              widget.paymentQrCode.qrCodeFileUrl,
-                              width: 150,
-                              height: 150,
-                            )),
-                    //: Container(),
                   ],
                 ),
                 Divider(

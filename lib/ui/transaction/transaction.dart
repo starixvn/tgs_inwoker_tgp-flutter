@@ -73,7 +73,7 @@ class _TransactionState extends BaseState<Transaction> with SingleTickerProvider
                     margin: EdgeInsets.symmetric(vertical: 20.auto),
                     alignment: Alignment.center,
                     child: Text(
-                      "¥ ${Format().currencyWithDecimalFormat(_vm.wallet?.main ?? 0.0)}",
+                      " ${Format().currencyWithDecimalFormat(_vm.wallet?.main ?? 0.0)}",
                       style: TextStyle(fontSize: 16.auto, color: Colors.white),
                     )),
               ),

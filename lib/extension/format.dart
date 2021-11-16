@@ -5,11 +5,13 @@ class Format {
   String doubleToString(double num) {
     if (num == 0.0)
       return "0.00";
-     else {
+    else {
       var doubleNum = ((num * 100).truncateToDouble() / 100);
       var f = new NumberFormat("#,###,###.00", "en_US");
-      if(num<1) return "0"+f.format(doubleNum);
-      else return f.format(doubleNum);
+      if (num < 1)
+        return "0" + f.format(doubleNum);
+      else
+        return f.format(doubleNum);
     }
   }
 
@@ -34,13 +36,13 @@ class Format {
     return f.format(amount);
   }
 
-  String currencySymbolFormat(int amount) {
+/*  String currencySymbolFormat(int amount) {
     return "¥" + currencyFormat(amount);
   }
 
   String currencySymbolWithDecimalFormat(double amount) {
     return "¥" + currencyWithDecimalFormat(amount);
-  }
+  }*/
 
   String percentageFormat(double percentage) {
     var f = new NumberFormat("##.##%", "en_US");
@@ -55,5 +57,4 @@ class Format {
     final date = DateTime.parse(dateString);
     return DateFormat("yyyy/MM/dd HH:mm:ss").format(date.toLocal());
   }
-
 }

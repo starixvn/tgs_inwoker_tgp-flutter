@@ -63,7 +63,7 @@ class _CardVerifyWithdrawPasswordState extends BaseState<CardVerifyWithdrawPassw
                         margin: EdgeInsets.symmetric(vertical: 20.auto),
                         alignment: Alignment.center,
                         child: Text(
-                          "¥ 0.00",
+                          " 0.00",
                           /* _vm.mainAccountBalance == null ? "-" : "¥ ${Format()
                               .currencyWithDecimalFormat(
                               _vm.mainAccountBalance)}",*/
@@ -174,7 +174,7 @@ class _CardVerifyWithdrawPasswordState extends BaseState<CardVerifyWithdrawPassw
         description: "因风控原因，进行本项操作以前，您需先创建提款密码。",
         buttonText1: "确认",
         onClick: () => Navigator.pop(context),
-        onClick2: (){
+        onClick2: () {
           Navigator.pop(context);
         },
       ),
