@@ -150,44 +150,32 @@ class _MainCardState extends BaseState<MainCard> {
   }
 
   _buildBankCardItem(BankCard bankCard) => Container(
-      margin: EdgeInsets.only(top: 10.auto),
-      padding: EdgeInsets.only(left: 30.auto, right: 20.auto),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        image: DecorationImage(image: AssetImage("images/card/card_bg.png"), fit: BoxFit.cover),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black12,
-            offset: Offset(0.0, 3.0),
-            spreadRadius: 0.0, //(x,y)
-            blurRadius: 15.0,
-          ),
-        ],
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-            margin: EdgeInsets.symmetric(vertical: 20.auto),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  bankCard.bankType.getName(context),
-                  style: TextStyle(fontSize: 11.auto),
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 10.auto),
-                  child: Text(
-                    bankCard.bankType == BankType.CRYPTO ? (bankCard.bankDetail.address) : (bankCard.bankDetail.bankAccount ?? ""),
-                    style: TextStyle(fontSize: 15.auto, color: CustomColor.theme_bar_gradient_2),
-                  ),
-                )
-              ],
+        margin: EdgeInsets.only(top: 10.auto),
+        padding: EdgeInsets.symmetric(vertical: 20.auto, horizontal: 30.auto),
+        width: context.screenWidth,
+        height: 90.auto,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          image: DecorationImage(image: AssetImage("images/card/card_bg.png"), fit: BoxFit.cover),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              bankCard.bankType.getName(context),
+              style: TextStyle(fontSize: 11.auto),
             ),
-          )
-        ],
-      ));
+            Container(
+              margin: EdgeInsets.only(top: 10.auto),
+              child: Text(
+                _getDisplayBankAccountText(bankCard) ?? "",
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(fontSize: 15.auto, color: CustomColor.theme_bar_gradient_2),
+              ),
+            ),
+          ],
+        ),
+      );
 
   _buildDeleteHintText() => Container(
         margin: EdgeInsets.only(right: 23.auto, top: 10.auto),
@@ -213,64 +201,64 @@ class _MainCardState extends BaseState<MainCard> {
       );
 
   _buildAddCardItem() => InkWell(
-    onTap: () async {
-      await Navigator.of(context).pushNamed("/add_card");
-      _getBankCardList(); //reinitdata after pop from  add card
-    },
-    child: Container(
-      margin: EdgeInsets.only(top: 15.auto, left: 5.auto, right: 5.auto, bottom: 20.auto),
-      child: FDottedLine(
-          color: CustomColor.theme_button_disable_bg,
-          height: 70.0,
-          width: context.screenWidth,
-          space: 2.0,
-          corner: FDottedLineCorner.all(10.auto),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Expanded(
-                flex:8,
-                child: Container(
-                  margin: EdgeInsets.symmetric(vertical: 20.auto, horizontal: 20.auto),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      AutoSizeText(
-                        getTranslatedText("add_card"),
-                        style: TextStyle(color: Colors.black),
-                        minFontSize: 5,
-                        stepGranularity: 1,
+        onTap: () async {
+          await Navigator.of(context).pushNamed("/add_card");
+          _getBankCardList(); //reinitdata after pop from  add card
+        },
+        child: Container(
+          margin: EdgeInsets.only(top: 15.auto, left: 5.auto, right: 5.auto, bottom: 20.auto),
+          child: FDottedLine(
+              color: CustomColor.theme_button_disable_bg,
+              height: 70.0,
+              width: context.screenWidth,
+              space: 2.0,
+              corner: FDottedLineCorner.all(10.auto),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                    flex: 8,
+                    child: Container(
+                      margin: EdgeInsets.symmetric(vertical: 20.auto, horizontal: 20.auto),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          AutoSizeText(
+                            getTranslatedText("add_card"),
+                            style: TextStyle(color: Colors.black),
+                            minFontSize: 5,
+                            stepGranularity: 1,
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(top: 5.auto),
+                            child: AutoSizeText(
+                              getTranslatedText("max_card_hint"),
+                              style: TextStyle(color: CustomColor.theme_button_disable_bg),
+                              minFontSize: 5,
+                              maxFontSize: 11,
+                              stepGranularity: 1,
+                            ),
+                          )
+                        ],
                       ),
-                      Container(
-                        margin: EdgeInsets.only(top: 5.auto),
-                        child: AutoSizeText(
-                          getTranslatedText("max_card_hint"),
-                          style: TextStyle(color: CustomColor.theme_button_disable_bg),
-                          minFontSize: 5,
-                          maxFontSize: 11,
-                          stepGranularity: 1,
-                        ),
-                      )
-                    ],
+                    ),
                   ),
-                ),
-              ),
-              Expanded(
-                flex: 1,
-                child: Container(
-                    margin: EdgeInsets.symmetric(horizontal: 20.auto),
-                    child: ImageIcon(
-                        AssetImage(
-                          "images/card/ic_add_card.png",
-                        ),
-                        size: 23.auto,
-                        color: CustomColor.theme_button_disable_bg)),
-              ),
-            ],
-          )),
-    ),
-  );
+                  Expanded(
+                    flex: 1,
+                    child: Container(
+                        margin: EdgeInsets.symmetric(horizontal: 20.auto),
+                        child: ImageIcon(
+                            AssetImage(
+                              "images/card/ic_add_card.png",
+                            ),
+                            size: 23.auto,
+                            color: CustomColor.theme_button_disable_bg)),
+                  ),
+                ],
+              )),
+        ),
+      );
 
   _delete(BankCard card, int index) async {
     if (_vm.bankCardList.length > 1) //only show when existing list more than 1, else overlapped
@@ -297,6 +285,19 @@ class _MainCardState extends BaseState<MainCard> {
     }
   }
 
+  _getDisplayBankAccountText(BankCard bankCard) {
+    switch (bankCard.bankType) {
+      case BankType.CRYPTO:
+        return bankCard.bankDetail.address;
+      case BankType.THIRD_PARTY:
+        return bankCard.bankDetail.phone;
+      case BankType.FPS:
+        return bankCard.bankDetail.phone;
+      default:
+        return bankCard.bankDetail.bankAccount;
+    }
+  }
+
   _handleApiState() async {
     handleApiState(_vm.getBankCardListApiState, isAutoHideLoading: isInitLoading, onSuccess: () {
       if (!isInitLoading) {
@@ -307,8 +308,7 @@ class _MainCardState extends BaseState<MainCard> {
       });
     });
 
-    handleApiState(_vm.getWithdrawalInfoListApiState, isAutoHideLoading: false, onSuccess: (){});
-    handleApiState(_vm.deleteBankCardApiState, isAutoHideLoading: false, onSuccess: (){});
-
+    handleApiState(_vm.getWithdrawalInfoListApiState, isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.deleteBankCardApiState, isAutoHideLoading: false, onSuccess: () {});
   }
 }

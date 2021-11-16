@@ -10,6 +10,7 @@ import 'package:tgp_flutter/custom/gradient_button.dart';
 import 'package:tgp_flutter/entity/deposit_redirect.dart';
 import 'package:tgp_flutter/entity/deposit_redirect_applepay.dart';
 import 'package:tgp_flutter/entity/manual_deposit_order.dart';
+import 'package:tgp_flutter/entity/payment_qr_code.dart';
 import 'package:tgp_flutter/entity/promotion.dart';
 import 'package:tgp_flutter/extension/format.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
@@ -30,18 +31,20 @@ class ManualDepositOrderView extends StatefulWidget {
   final String depositChannel;
   final String orderNo;
   final String promotionName;
+  final PaymentQrCode paymentQrCode;
 
-  ManualDepositOrderView({
-    Key key,
-    this.method,
-    this.id,
-    this.manualDepositOrder,
-    this.depositRedirect,
-    this.depositAmount,
-    this.depositChannel,
-    this.orderNo,
-    this.promotionName,
-  }) : super(key: key);
+  ManualDepositOrderView(
+      {Key key,
+      this.method,
+      this.id,
+      this.manualDepositOrder,
+      this.depositRedirect,
+      this.depositAmount,
+      this.depositChannel,
+      this.orderNo,
+      this.promotionName,
+      this.paymentQrCode})
+      : super(key: key);
 
   @override
   _ManualDepositOrderViewState createState() => _ManualDepositOrderViewState();
@@ -97,7 +100,7 @@ class _ManualDepositOrderViewState extends BaseState<ManualDepositOrderView> {
                 Row(
                   children: [
                     Expanded(
-                      flex:1,
+                      flex: 1,
                       child: Column(
                         children: [
                           Container(
@@ -121,17 +124,16 @@ class _ManualDepositOrderViewState extends BaseState<ManualDepositOrderView> {
                         ],
                       ),
                     ),
-                    Expanded(
-                      flex:1,
-                      child: Visibility(
-                        visible: widget.manualDepositOrder.qrCode != null,
-                        child: QrImage(
-                          data: widget.manualDepositOrder.qrCode,
-                          version: QrVersions.auto,
-                          size: 150.0,
-                        ),
-                      ),
-                    ),
+                    widget.paymentQrCode?.qrCodeFileUrl == null
+                        ? Container()
+                        : Expanded(
+                            flex: 1,
+                            child: Image.network(
+                              widget.paymentQrCode.qrCodeFileUrl,
+                              width: 150,
+                              height: 150,
+                            )),
+                    //: Container(),
                   ],
                 ),
                 Divider(
@@ -168,11 +170,12 @@ class _ManualDepositOrderViewState extends BaseState<ManualDepositOrderView> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 GradientButton(
-                    title: getTranslatedText("upload_prof"),
-                    onClick: () => _vm.uploadDepositImage(uploadImage.path, widget.id),
-                    isEnabled: uploadImage == null ? false : true,
-                    radius: 4.8,
-                    height: 44.5),
+                  title: getTranslatedText("upload_prof"),
+                  onClick: () => _vm.uploadDepositImage(uploadImage.path, widget.id),
+                  isEnabled: uploadImage == null ? false : true,
+                  radius: 4.8,
+                  height: 44.5,
+                ),
                 Container(
                     margin: EdgeInsets.only(top: 10.auto),
                     child: GradientButton(

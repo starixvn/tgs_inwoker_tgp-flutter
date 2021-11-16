@@ -396,12 +396,15 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
             context,
             MaterialPageRoute(
                 builder: (context) => ManualDepositOrderView(
-                    method: _payment.methodCode,
-                    depositAmount: Format().currencySymbolWithDecimalFormat(double.parse(_amountController.text)),
-                    depositChannel: channelPickerText,
-                    promotionName: promotionId != "-1" ? promotionName : null,
-                    orderNo: _vm.orderNo,
-                    manualDepositOrder:  _vm.getDepositOrderApiState.result)));
+                      id: paymentChannelId,
+                      method: _payment.methodCode,
+                      depositAmount: Format().currencySymbolWithDecimalFormat(double.parse(_amountController.text)),
+                      depositChannel: channelPickerText,
+                      promotionName: promotionId != "-1" ? promotionName : null,
+                      orderNo: _vm.orderNo,
+                      manualDepositOrder: _vm.getDepositOrderApiState.result,
+                      paymentQrCode: _payment.qrCode,
+                    )));
         _clearTextField();
       });
     });
@@ -439,14 +442,15 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
             context,
             MaterialPageRoute(
                 builder: (context) => DepositOrderView(
-                    method: _payment.methodCode,
-                    depositRedirect: depositRedirect,
-                    depositAmount: Format().currencySymbolWithDecimalFormat(double.parse(_amountController.text)),
-                    depositChannel: channelPickerText,
-                    promotionName: promotionId != "-1" ? promotionName : null,
-                    exchangeRate: exchangeRate,
-                    expectedAmount: expectedAmount,
-                    transName: transferName,)));
+                      method: _payment.methodCode,
+                      depositRedirect: depositRedirect,
+                      depositAmount: Format().currencySymbolWithDecimalFormat(double.parse(_amountController.text)),
+                      depositChannel: channelPickerText,
+                      promotionName: promotionId != "-1" ? promotionName : null,
+                      exchangeRate: exchangeRate,
+                      expectedAmount: expectedAmount,
+                      transName: transferName,
+                    )));
         _clearTextField();
       });
 }

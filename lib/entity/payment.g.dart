@@ -18,7 +18,10 @@ Payment _$PaymentFromJson(Map<String, dynamic> json) {
     ..paymentCode = json['paymentcode'] as String
     ..methodId = json['methodid'] as String
     ..methodCode = json['methodcode'] as String
-    ..order = json['displayorder'] as int;
+    ..order = json['displayorder'] as int
+    ..qrCode = json['extended'] == null
+        ? null
+        : PaymentQrCode.fromJson(json['extended'] as Map<String, dynamic>);
 }
 
 Map<String, dynamic> _$PaymentToJson(Payment instance) => <String, dynamic>{
@@ -31,6 +34,7 @@ Map<String, dynamic> _$PaymentToJson(Payment instance) => <String, dynamic>{
       'methodid': instance.methodId,
       'methodcode': instance.methodCode,
       'displayorder': instance.order,
+      'extended': instance.qrCode,
     };
 
 T _$enumDecode<T>(

@@ -316,12 +316,12 @@ class _AddCardState extends BaseState<AddCard> {
   }
 
   _onClick() {
-    if ((_vm.pBankType != BankType.CRYPTO && _vm.pBankType != BankType.BANK) &&
+    /*if ((_vm.pBankType != BankType.CRYPTO && _vm.pBankType != BankType.BANK) &&
         !validate.validateChinaPhoneNumber(_phoneController.text)) {
       setState(() {
         CustomToast.show(getTranslatedText("phone_format_error_msg"));
       });
-    } else{
+    } else {*/
       ProgressDialog.show(context, _vm.brandLogoUrl);
       _vm.addBankCard(
           address: _addressController.text,
@@ -330,7 +330,8 @@ class _AddCardState extends BaseState<AddCard> {
           bankBranch: _bankBranchController.text,
           name: _nameController.text,
           phone: _phoneController.text,
-          realName: _realNameController.text);}
+          realName: _realNameController.text);
+    //}
   }
 
   _handleApiState() {

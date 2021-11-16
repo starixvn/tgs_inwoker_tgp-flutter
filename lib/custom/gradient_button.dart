@@ -11,6 +11,7 @@ class GradientButton extends StatelessWidget {
   final double radius;
   final double height;
   final double fontSize;
+  final double maxFontSize;
   final double width;
   final double padding;
 
@@ -22,6 +23,7 @@ class GradientButton extends StatelessWidget {
       @required this.radius,
       @required this.height,
       this.fontSize,
+        this.maxFontSize,
         this.width,
         this.padding
       })
@@ -52,7 +54,8 @@ class GradientButton extends StatelessWidget {
                 title,
                 style: TextStyle(color: Colors.white),
                 textAlign: TextAlign.center,
-                minFontSize: fontSize ?? 16,
+                minFontSize: fontSize ?? 12,
+                maxFontSize: maxFontSize??12,
                 stepGranularity: 1,
                 maxLines: title.contains(" ")?2:1,
               ),

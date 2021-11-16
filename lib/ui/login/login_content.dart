@@ -156,6 +156,8 @@ class _LoginContentState extends BaseState<LoginContent> {
           isEnabled: true,
           radius: 2.9,
           height: 44.5,
+          fontSize: 16,
+          maxFontSize: 16,
         ),
       );
 
