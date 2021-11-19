@@ -157,6 +157,7 @@ class _ForgotPasswordState extends BaseState<ForgotPassword> {
   _onTextChange() {
     setState(() {
       if (_otpController.text.isNotEmpty && _emailController.text.isNotEmpty) {
+        isOtpEnabled = true;
         isButtonEnabled = true;
       } else if (_emailController.text.isNotEmpty) {
         isOtpEnabled = true;

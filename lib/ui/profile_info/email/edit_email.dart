@@ -148,8 +148,9 @@ class _EditEmailState extends BaseState<EditEmail> {
 
   _onTextChange() {
     setState(() {
-      if (_otpController.text.isNotEmpty)
-        isButtonEnabled = true;
+      if (_otpController.text.isNotEmpty){
+        isOtpEnabled = true;
+        isButtonEnabled = true;}
       else if (_emailController.text.isNotEmpty) {
         isOtpEnabled = true;
         isButtonEnabled = false;
@@ -205,7 +206,8 @@ class _EditEmailState extends BaseState<EditEmail> {
     }, onError: (_){
       if(_vm.emailVerifyApiState.errorCode == 409){
         CustomToast.show(getTranslatedText("email_duplicate"));
-      }
+
+    }else showApiErrorMessage(_vm.emailVerifyApiState);
     });
   }
 }

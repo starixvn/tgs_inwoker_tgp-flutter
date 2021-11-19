@@ -9,10 +9,12 @@ part of 'brand_logo.dart';
 BrandLogo _$BrandLogoFromJson(Map<String, dynamic> json) {
   return BrandLogo()
     ..id = json['brandId'] as String
-    ..mobileUrl = json['mobileLogoUrl'] as String;
+    ..mobileUrl = json['mobileLogoUrl'] as String
+    ..hasInvitationCode = json['hasInvitationCode'] as bool;
 }
 
 Map<String, dynamic> _$BrandLogoToJson(BrandLogo instance) => <String, dynamic>{
       'brandId': instance.id,
       'mobileLogoUrl': instance.mobileUrl,
+      'hasInvitationCode': instance.hasInvitationCode,
     };

@@ -316,12 +316,7 @@ class _AddCardState extends BaseState<AddCard> {
   }
 
   _onClick() {
-    /*if ((_vm.pBankType != BankType.CRYPTO && _vm.pBankType != BankType.BANK) &&
-        !validate.validateChinaPhoneNumber(_phoneController.text)) {
-      setState(() {
-        CustomToast.show(getTranslatedText("phone_format_error_msg"));
-      });
-    } else {*/
+
     ProgressDialog.show(context, _vm.brandLogoUrl);
     _vm.addBankCard(
         address: _addressController.text,

@@ -74,10 +74,7 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
             });
           } else if (onError != null) {
             onError(eventResult.error);
-          } else if(userRepo.apiError!=null){
-            String error = userRepo.apiError[eventResult.errorMsgId] ?? "";
-            CustomToast.show(error);
-          }
+          } else showApiErrorMessage(eventResult);
         } else {
           _showErrorMessage(eventResult);
         }
@@ -148,6 +145,13 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
       errorMessage = getTranslatedText(errorKey);
     }
     CustomToast.show(errorMessage);
+  }
+
+  showApiErrorMessage(EventResult eventResult){
+    if(userRepo.apiError!=null){
+      String error = userRepo.apiError[eventResult.errorMsgId] ?? "";
+      CustomToast.show(error);
+    }
   }
 
   String parseHtmlString(String htmlString) {

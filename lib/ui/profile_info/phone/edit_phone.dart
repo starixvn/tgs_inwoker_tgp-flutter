@@ -148,8 +148,9 @@ class _EditPhoneState extends BaseState<EditPhone> {
 
   _onTextChange() {
     setState(() {
-      if (_otpController.text.isNotEmpty)
-        isButtonEnabled = true;
+      if (_otpController.text.isNotEmpty){
+        isOtpEnabled = true;
+        isButtonEnabled = true;}
       else if (_phoneController.text.isNotEmpty) {
         isOtpEnabled = true;
         isButtonEnabled = false;

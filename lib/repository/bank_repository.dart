@@ -59,15 +59,15 @@ class BankRepository extends BaseRepository {
   Future<EventResult<String>> getManualThirdPartyDepositId(
       String account, String amount, String paymentId, String promotionId) async {
     return await ApiRequestBuilder<String>(
-        method: HttpMethod.PUT,
-        endPoint: "api/deposit/manual/thirdparty",
-        params: {
-          "account": account,
-          "amount": amount,
-          "paymentid": paymentId,
-          "promotionid": promotionId,
-        },
-        jwtRefresher: jwtAuth)
+            method: HttpMethod.PUT,
+            endPoint: "api/deposit/manual/thirdparty",
+            params: {
+              "account": account,
+              "amount": amount,
+              "paymentid": paymentId,
+              "promotionid": promotionId,
+            },
+            jwtRefresher: jwtAuth)
         .execute();
   }
 
@@ -110,11 +110,12 @@ class BankRepository extends BaseRepository {
   }
 
   Future<EventResult<dynamic>> addBankCard(String paymentChannelId, BankType bankType,
-      {String address, bankAccount, bankName, name, bankBranch}) async {
+      {String address, bankAccount, bankName, name, bankBranch, phone, realName}) async {
     return await ApiRequestBuilder<dynamic>(
             method: HttpMethod.POST,
             endPoint: "api/bankinfo",
-            params: address != null
+            params:
+                /*address != null
                 ? {
                     "paymentchannelid": paymentChannelId,
                     "banktype": bankType.getJson,
@@ -129,7 +130,31 @@ class BankRepository extends BaseRepository {
                       "name": name,
                       "bankBranch": bankBranch
                     },
-                  },
+                  },*/
+                (() {
+              switch (bankType) {
+                case BankType.BANK:
+                  return {
+                    "paymentchannelid": paymentChannelId,
+                    "banktype": bankType.getJson,
+                    "detail": {"bankAccount": bankAccount, "bankName": bankName, "name": name, "bankBranch": bankBranch}
+                  };
+                  break;
+                case BankType.CRYPTO:
+                  return {
+                    "paymentchannelid": paymentChannelId,
+                    "banktype": bankType.getJson,
+                    "detail": {"address": address},
+                  };
+                default:
+                  return {
+                    "paymentchannelid": paymentChannelId,
+                    "banktype": bankType.getJson,
+                    "detail": {"phone": phone, "username":realName},
+                  };
+                  break;
+              }
+            }()),
             jwtRefresher: jwtAuth)
         .execute();
   }
@@ -185,13 +210,13 @@ class BankRepository extends BaseRepository {
     return await ApiRequestBuilder<DepositRedirectApplePay>(
             method: HttpMethod.POST,
             endPoint: "api/deposit/bank/applepay",
-            params:  {
-                    "amount": int.parse(amount),
-                    "paymentid": paymentId,
-                    "promotionid": promotionId,
-                    "transname": transName
-                  },
-        converter: (json) => DepositRedirectApplePay.fromJson(json),
+            params: {
+              "amount": int.parse(amount),
+              "paymentid": paymentId,
+              "promotionid": promotionId,
+              "transname": transName
+            },
+            converter: (json) => DepositRedirectApplePay.fromJson(json),
             jwtRefresher: jwtAuth)
         .execute();
   }
@@ -248,24 +273,22 @@ class BankRepository extends BaseRepository {
 
   Future<EventResult<DepositRedirect>> maticPayDepositOrder(String amount, String paymentId, String promotionId) async {
     return await ApiRequestBuilder<DepositRedirect>(
-        method: HttpMethod.POST,
-        endPoint: "api/deposit/bank/maticpay",
-        params: {
-          "amount": amount,
-          "paymentid": paymentId,
-          "promotionid": promotionId,
-        },
-        converter: (json) => DepositRedirect.fromJson(json),
-        jwtRefresher: jwtAuth)
+            method: HttpMethod.POST,
+            endPoint: "api/deposit/bank/maticpay",
+            params: {
+              "amount": amount,
+              "paymentid": paymentId,
+              "promotionid": promotionId,
+            },
+            converter: (json) => DepositRedirect.fromJson(json),
+            jwtRefresher: jwtAuth)
         .execute();
   }
 
   Future<EventResult<dynamic>> getTurnoverAmount() async {
     //will return int or double
     return await ApiRequestBuilder<dynamic>(
-        method: HttpMethod.GET,
-        endPoint: "api/withdraw/player/amount",
-        jwtRefresher: jwtAuth)
+            method: HttpMethod.GET, endPoint: "api/withdraw/player/amount", jwtRefresher: jwtAuth)
         .execute();
   }
 }

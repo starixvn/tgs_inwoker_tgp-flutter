@@ -165,6 +165,7 @@ class _EmailVerificationState extends BaseState<EmailVerification> {
   _onTextChange() {
     setState(() {
       if (_otpController.text.isNotEmpty && _emailController.text.isNotEmpty) {
+        isOtpEnabled = true;
         isButtonEnabled = true;
       } else if (_emailController.text.isNotEmpty) {
         isOtpEnabled = true;
@@ -225,7 +226,7 @@ class _EmailVerificationState extends BaseState<EmailVerification> {
     }, onError: (_){
       if(_vm.emailVerifyApiState.errorCode == 409){
         CustomToast.show(getTranslatedText("email_duplicate"));
-      }
+      }else showApiErrorMessage(_vm.emailVerifyApiState);
     });
   }
 }

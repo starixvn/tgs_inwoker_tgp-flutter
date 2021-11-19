@@ -29,7 +29,7 @@ class _LoginState extends BaseState<Login> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: version == null
-          ? buildProgressDialog(_vm.brandLogoUrl)
+          ? buildProgressDialog(_vm.brandLogo.mobileUrl)
           : Container(
               height: context.screenHeight,
               width: context.screenWidth,
@@ -72,13 +72,13 @@ class _LoginState extends BaseState<Login> {
 
   _buildLogoImage() => Container(
         margin: EdgeInsets.only(top: ScreenUtil.getInstance().statusBarHeight, left: 27.auto, right: 27.auto),
-        child: (_vm?.brandLogoUrl?.isEmpty ?? true)
+        child: (_vm?.brandLogo.mobileUrl?.isEmpty ?? true)
             ? Container(
                 height: 100.auto,
               )
             : CachedNetworkImage(
                 placeholder: (context, url) => Container(),
-                imageUrl: _vm.brandLogoUrl,
+                imageUrl: _vm.brandLogo.mobileUrl,
                 height: 100.auto,
                 //handling error
                 errorWidget: (context, url, error) => Container(),

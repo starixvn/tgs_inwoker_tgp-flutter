@@ -25,7 +25,7 @@ class LoginViewModel extends BaseViewModel {
   bool isUsernameExist = false;
   var securityKey, _username, _password;
 
-  get brandLogoUrl => contentRepo.brandLogo?.mobileUrl;
+  get brandLogo => contentRepo.brandLogo;
 
   login(String username, String password, bool rememberMe) async {
     setLoading();

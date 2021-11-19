@@ -160,22 +160,25 @@ class _RegisterContentState extends BaseState<RegisterContent> {
         ),
       );
 
-  _buildPromotionCodeTextFormField() => Container(
-        margin: EdgeInsets.only(top: 10.auto),
-        child: LoginTextFormField(
-          icon: SvgPicture.asset(
-            "images/login/ic_login_promotion.svg",
-            height: 20.auto,
+  _buildPromotionCodeTextFormField() => Visibility(
+    visible: !_vm.brandLogo.hasInvitationCode,
+    child: Container(
+          margin: EdgeInsets.only(top: 10.auto),
+          child: LoginTextFormField(
+            icon: SvgPicture.asset(
+              "images/login/ic_login_promotion.svg",
+              height: 20.auto,
+            ),
+            hintText: getTranslatedText("signup_promotion_code_hint"),
+            onChanged: (value) => null,
+            onFieldSubmitted: (value) => _register(),
+            controller: invitationCode,
+            width: context.screenWidth,
+            textInputType: TextInputType.text,
+            textInputAction: TextInputAction.done,
           ),
-          hintText: getTranslatedText("signup_promotion_code_hint"),
-          onChanged: (value) => null,
-          onFieldSubmitted: (value) => _register(),
-          controller: invitationCode,
-          width: context.screenWidth,
-          textInputType: TextInputType.text,
-          textInputAction: TextInputAction.done,
         ),
-      );
+  );
 
   _buildRegisterButton() => Container(
         margin: EdgeInsets.only(top: 50.auto, bottom: 10.auto),
@@ -228,7 +231,7 @@ class _RegisterContentState extends BaseState<RegisterContent> {
         CustomToast.show(getTranslatedText("confirm_pay_error_msg"));
       });
     } else {
-      ProgressDialog.show(context, _vm.brandLogoUrl);
+      ProgressDialog.show(context, _vm.brandLogo.mobileUrl);
       _checkUsername();
     }
   }
@@ -251,7 +254,7 @@ class _RegisterContentState extends BaseState<RegisterContent> {
         CustomToast.show(getTranslatedText("username_exist"));
       } else {
         WidgetsBinding.instance.addPostFrameCallback((_) {
-          ProgressDialog.show(context, _vm.brandLogoUrl);
+          ProgressDialog.show(context, _vm.brandLogo.mobileUrl);
           _vm.register(username.text, password.text, confirmPassword.text, invitationCode.text);
         });
       }

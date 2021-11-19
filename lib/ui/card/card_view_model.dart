@@ -69,7 +69,7 @@ class CardViewModel extends BaseViewModel {
   addBankCard({String address, bankAccount, bankName, name, bankBranch, phone, realName}) async {
     setLoading();
     addBankCardApiState = await bankRepo.addBankCard(pWithdrawalInfo.channelId, pBankType,
-        address: address, bankAccount: bankAccount, bankName: bankName, bankBranch: bankBranch, name: name);
+        address: address, bankAccount: bankAccount, bankName: bankName, bankBranch: bankBranch, name: name, phone: phone, realName:realName);
     setLoading(false);
     return addBankCardApiState;
   }
