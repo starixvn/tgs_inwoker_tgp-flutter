@@ -161,7 +161,7 @@ class _RegisterContentState extends BaseState<RegisterContent> {
       );
 
   _buildPromotionCodeTextFormField() => Visibility(
-    visible: !_vm.brandLogo.hasInvitationCode,
+    visible: !(_vm.brandLogo?.hasInvitationCode ?? false),
     child: Container(
           margin: EdgeInsets.only(top: 10.auto),
           child: LoginTextFormField(
