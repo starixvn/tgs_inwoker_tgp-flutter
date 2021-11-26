@@ -49,10 +49,11 @@ class _DepositWebState extends BaseState<DepositWeb> {
           ),
         ),
         body: InAppWebView(
-          initialUrl: widget.url,
+          initialUrlRequest: URLRequest(url:Uri.parse(widget.url)),
+          //initialUrl: widget.url,
           initialOptions: InAppWebViewGroupOptions(
               crossPlatform: InAppWebViewOptions(
-                debuggingEnabled: true,
+                //debuggingEnabled: true,
                 javaScriptEnabled: true,
               ),
               android: AndroidInAppWebViewOptions(
@@ -61,12 +62,12 @@ class _DepositWebState extends BaseState<DepositWeb> {
               )),
           onWebViewCreated: (InAppWebViewController controller) {
             _webViewController = controller;
-            _webViewController.loadUrl(url: widget.url);
+            _webViewController.loadUrl(urlRequest: URLRequest(url:Uri.parse(widget.url)),);
           },
-          onLoadStart: (InAppWebViewController controller, String url) {
+          onLoadStart: ( controller,  url) {
             ProgressDialog.show(context, widget.brandLogoUrl);
           },
-          onLoadStop: (InAppWebViewController controller, String url) async {
+          onLoadStop: ( controller,  url) async {
             ProgressDialog.hide();
           },
         ));

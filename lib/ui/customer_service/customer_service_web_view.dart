@@ -67,10 +67,10 @@ class _CustomerServiceWebViewState extends BaseState<CustomerServiceWebView> {
       body: widget.url == null
           ? buildProgressDialog(widget.brandLogoUrl)
           : InAppWebView(
-        initialUrl: widget.url,
+        initialUrlRequest: URLRequest(url:Uri.parse(widget.url)),
         initialOptions: InAppWebViewGroupOptions(
             crossPlatform: InAppWebViewOptions(
-              debuggingEnabled: true,
+              //debuggingEnabled: true,
               javaScriptEnabled: true,
             ),
             android: AndroidInAppWebViewOptions(
@@ -79,12 +79,12 @@ class _CustomerServiceWebViewState extends BaseState<CustomerServiceWebView> {
             )),
         onWebViewCreated: (InAppWebViewController controller) {
           _webViewController = controller;
-          _webViewController.loadUrl(url: widget.url);
+          _webViewController.loadUrl(urlRequest: URLRequest(url:Uri.parse(widget.url)));
         },
-        onLoadStart: (InAppWebViewController controller, String url) {
+        onLoadStart: ( controller,  url) {
           ProgressDialog.show(context, widget.brandLogoUrl);
         },
-        onLoadStop: (InAppWebViewController controller, String url) async {
+        onLoadStop: ( controller,  url) async {
           ProgressDialog.hide();
         },
       ),

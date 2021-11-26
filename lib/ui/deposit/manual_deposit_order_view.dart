@@ -278,10 +278,18 @@ class _ManualDepositOrderViewState extends BaseState<ManualDepositOrderView> {
       );
 
   Future<void> chooseImage() async {
-    File choosedImage = await ImagePicker.pickImage(source: ImageSource.gallery);
+    /*File choosedImage = await ImagePicker.pickImage(source: ImageSource.gallery);
     //set source: ImageSource.camera to get image from camera
     setState(() {
       uploadImage = choosedImage;
+    });*/
+
+    ImagePicker picker = ImagePicker();
+    XFile choosedImage = await picker.pickImage(source: ImageSource.gallery);
+    //XFile file = File(picker.path);
+    //set source: ImageSource.camera to get image from camera
+    setState(() {
+      uploadImage = File(choosedImage.path);
     });
   }
 
