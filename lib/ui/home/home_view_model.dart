@@ -27,6 +27,7 @@ class HomeViewModel extends BaseViewModel {
   bool isNotLogin = false, isExpired = false;
   var getBasicInfoApiState, getAnnouncementApiState, getApiErrorLocalizationApiState, getBannerApiState;
   String announcement;
+  Announcement firstAnnouncement;
   double gameBalance = 0.0, totalBalance;
   List<HomeBanner> bannerList;
 
@@ -60,6 +61,7 @@ class HomeViewModel extends BaseViewModel {
       if (_list?.isEmpty ?? true)
         announcement = "";
       else {
+        firstAnnouncement = _list.first;
         announcement = _getAnnouncementContent(_list.first);
         if (_list.length != 1) {
           for (var i = 1; i < _list.length; i++) {

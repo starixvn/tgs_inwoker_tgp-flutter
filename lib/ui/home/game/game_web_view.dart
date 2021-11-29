@@ -165,7 +165,7 @@ class _GameWebState extends BaseState<GameWeb> {
   }
 
   _displayDialog() {
-    //if (isHabaPPGamePlatform()) webviewPlugin.close();
+   // if (isHabaPPGamePlatform()) webviewPlugin.close();
     showDialog(
       context: context,
       builder: (BuildContext context) => LeaveGameDialog(),

@@ -52,16 +52,15 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
                         children: [
                           _buildInfoCard(
                             "basic_info",
-                            [ProfileInfoItem.REALNAME, ProfileInfoItem.PHONE_NUMBER,
-                              ProfileInfoItem.EMAIL],
-                            ["real_ name_verification", "phone_verification",
-                              "email_verification"],
+                            [ProfileInfoItem.REALNAME, ProfileInfoItem.PHONE_NUMBER, ProfileInfoItem.EMAIL],
+                            ["real_name_verification", "phone_verification", "email_verification"],
                             itemDescriptionList: [
                               _getItemText(_vm.userProfile.realname),
                               _getItemText(_vm.userProfile.phone),
                               _getItemText(_vm.userProfile.email)
                             ],
                           ),
+                          EnvironmentConfig.isShowWechatQQ?
                           _buildInfoCard(
                             "other_info",
                             [ProfileInfoItem.QQ_NUMBER, ProfileInfoItem.WECHAT_NUMBER],
@@ -71,7 +70,7 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
                               _getItemText(_vm.userProfile.wechat),
                               //_getItemText(/*_vm.userProfile.memberAddress, isShowSet: true*/)
                             ],
-                          ),
+                          ):Container(),
                           Padding(
                             padding: EdgeInsets.only(bottom: 10.auto),
                             child: _buildInfoCard(
@@ -96,8 +95,7 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
         });
   }
 
-  _buildAppBar() =>
-      AppBar(
+  _buildAppBar() => AppBar(
         automaticallyImplyLeading: false,
         flexibleSpace: Container(
           decoration: gradientDecoration,
@@ -116,7 +114,7 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
       );
 
   _buildInfoCard(String title, List<ProfileInfoItem> itemList, List<String> pathList,
-      {List<String> itemDescriptionList, bool isSecurity = false}) =>
+          {List<String> itemDescriptionList, bool isSecurity = false}) =>
       Container(
         margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 15.auto),
         child: Card(
@@ -137,21 +135,21 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
                 ),
                 Column(
                     children: List.generate(itemList.length, (index) {
-                      return Container(
-                        child: !isSecurity
-                            ? _buildInfoItem(
-                          itemList[index].getImagePath,
-                          itemList[index].getDisplayName(context),
-                          pathList[index],
-                          itemDescription: itemDescriptionList != null ? itemDescriptionList[index] : "",
-                        )
-                            : _buildInfoItemWithoutText(
-                          itemList[index].getImagePath,
-                          itemList[index].getDisplayName(context),
-                          pathList[index],
-                        ),
-                      );
-                    }))
+                  return Container(
+                    child: !isSecurity
+                        ? _buildInfoItem(
+                            itemList[index].getImagePath,
+                            itemList[index].getDisplayName(context),
+                            pathList[index],
+                            itemDescription: itemDescriptionList != null ? itemDescriptionList[index] : "",
+                          )
+                        : _buildInfoItemWithoutText(
+                            itemList[index].getImagePath,
+                            itemList[index].getDisplayName(context),
+                            pathList[index],
+                          ),
+                  );
+                }))
               ],
             ),
           ),
@@ -159,58 +157,63 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
       );
 
   _buildInfoItem(String imagePath, String itemTitle, String routePath, {String itemDescription}) {
-    if(routePath == "phone_verification" && EnvironmentConfig.appTitleName != "HKJP") return Container();
-    else return InkWell(
-      onTap: () {
-        Navigator.of(context).pushNamed("/$routePath");
-      },
-      highlightColor: Colors.transparent,
-      child: Container(
-        margin: EdgeInsets.only(top: 20.auto),
-        child: Row(
-          children: [
-            Container(
-                margin: EdgeInsets.only(right: 10.auto),
-                child: ImageIcon(
-                  AssetImage(imagePath),
-                  size: 20.auto,
-                )
-              /*Image.asset(imagePath,
+    if ((routePath == "phone_verification" &&
+            !(EnvironmentConfig.appTitleName == "HKJP" && EnvironmentConfig.isShowSmsVerification)) ||
+        (routePath == "real_name_verification" && !EnvironmentConfig.isShowIcVerification) /*||
+        (routePath == "qq_account" && !EnvironmentConfig.isShowWechatQQ) ||
+        (routePath == "wechat" && !EnvironmentConfig.isShowWechatQQ)*/)
+      return Container();
+    else
+      return InkWell(
+        onTap: () {
+          Navigator.of(context).pushNamed("/$routePath");
+        },
+        highlightColor: Colors.transparent,
+        child: Container(
+          margin: EdgeInsets.only(top: 20.auto),
+          child: Row(
+            children: [
+              Container(
+                  margin: EdgeInsets.only(right: 10.auto),
+                  child: ImageIcon(
+                    AssetImage(imagePath),
+                    size: 20.auto,
+                  )
+                  /*Image.asset(imagePath,
                   width: 20.auto,
                 ),*/
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  itemTitle,
-                  style: TextStyle(fontSize: 15.auto),
-                ),
-                itemDescription != null
-                    ? Container(
-                  margin: EdgeInsets.only(top: 3.auto),
-                  child: Text(
-                    itemDescription,
-                    style: TextStyle(fontSize: 15.auto, color: CustomColor.theme_bar_gradient_1),
                   ),
-                )
-                    : Container()
-              ],
-            ),
-            Spacer(),
-            Icon(
-              Icons.arrow_forward_ios,
-              size: 13.auto,
-            ),
-          ],
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    itemTitle,
+                    style: TextStyle(fontSize: 15.auto),
+                  ),
+                  itemDescription != null
+                      ? Container(
+                          margin: EdgeInsets.only(top: 3.auto),
+                          child: Text(
+                            itemDescription,
+                            style: TextStyle(fontSize: 15.auto, color: CustomColor.theme_bar_gradient_1),
+                          ),
+                        )
+                      : Container()
+                ],
+              ),
+              Spacer(),
+              Icon(
+                Icons.arrow_forward_ios,
+                size: 13.auto,
+              ),
+            ],
+          ),
         ),
-      ),
-    );
+      );
   }
 
-  _buildInfoItemWithoutText(String imagePath, String itemTitle, String routePath) =>
-      InkWell(
+  _buildInfoItemWithoutText(String imagePath, String itemTitle, String routePath) => InkWell(
         onTap: () {
           Navigator.of(context).pushNamed("/$routePath");
         },
@@ -225,10 +228,10 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
                     AssetImage(imagePath),
                     size: 20.auto,
                   )
-                /*Image.asset(imagePath,
+                  /*Image.asset(imagePath,
                   width: 20.auto,
                 ),*/
-              ),
+                  ),
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,

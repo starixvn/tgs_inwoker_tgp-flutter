@@ -76,4 +76,23 @@ class ApiRequestBuilder<T> extends ChangeNotifier {
       return EventResult.failure(baseResponse.error, baseResponse.msg, baseResponse.errorMsgId, response.statusCode);
     }
   }
+
+  Future<EventResult<dynamic>> executeWithoutBaseResponse() async {
+    var response = await api(method, endPoint,
+        content: params, isAuthorization: isAuthorization, imageContent: imageContent, timeout: timeout);
+    var result = resolveWithoutBaseResponse(response, converter, consumer);
+    if (retryCounter < 2 && !isJWTAuthRequest) {
+      retryCounter++;
+      await jwtRefresher();
+      return executeWithoutBaseResponse();
+    }
+    return result;
+  }
+
+  EventResult<dynamic> resolveWithoutBaseResponse<T>(http.Response response,
+      [ResponseResultConverter<T> converter, void Function(T) onSuccess]) {
+    var value = response.body;
+    // if (value != null) {
+    return EventResult.success(value);
+  }
 }

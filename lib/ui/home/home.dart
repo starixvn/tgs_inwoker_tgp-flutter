@@ -1,4 +1,4 @@
- import 'package:auto_size_text/auto_size_text.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
@@ -57,15 +57,18 @@ class _HomeState extends BaseState<Home> {
     super.initState();
   }
 
-  _initData() {
-    _vm.getAnnouncement();
+  _initData() async {
+    await _vm.getAnnouncement();
     _vm.getBanner();
     _vm.resumeIfNeed();
     _gameViewModel.getGameProviderList(isRefresh: true);
     getLanguage();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (EnvironmentConfig.isShowMarqueePopUp) _displayMarqueeDialog();
+    });
   }
 
-   getLanguage() async {
+  getLanguage() async {
     SharedPreferences _prefs = await SharedPreferences.getInstance();
     languageCode = _prefs.getString("LANGUAGE_CODE") ?? "en-US";
   }
@@ -141,7 +144,7 @@ class _HomeState extends BaseState<Home> {
   _buildMarqueeRow() => Row(
         children: [
           Container(
-            width: languageCode.contains("zh")?context.screenWidth /10:context.screenWidth / 5,
+            width: languageCode.contains("zh") ? context.screenWidth / 10 : context.screenWidth / 5,
             padding: EdgeInsets.only(left: 10.auto),
             child: AutoSizeText(
               getTranslatedText("notice"),
@@ -189,7 +192,7 @@ class _HomeState extends BaseState<Home> {
     if (result) _initData();
   }
 
-  _displayDialog() async {
+  _displayLoginDialog() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     var loginLater = prefs.getBool("login_later") ?? false;
     if (_vm.userProfile == null && !loginLater) {
@@ -210,18 +213,33 @@ class _HomeState extends BaseState<Home> {
     }
   }
 
+  _displayMarqueeDialog() async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => CustomDialog(
+        title: /*_vm.firstAnnouncement?.localization == null
+            ?*/
+            (_vm.firstAnnouncement.content),
+        //: ((_vm.firstAnnouncement?.localization?.name)),
+        description: /*_vm.firstAnnouncement?.localization == null
+            ?*/
+            _vm.firstAnnouncement?.content,
+        //: (_vm.firstAnnouncement?.localization?.content),
+        buttonText1: getTranslatedText("confirm"),
+        //buttonText2: getTranslatedText("no"),
+        onClick: () => Navigator.of(context).pop(),
+      ),
+    );
+  }
+
   _handleApiState() {
-    if (widget.isFirstRun != null && widget.isFirstRun) {
-      if (_vm.isNotLogin) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
+    if (widget.isFirstRun ?? false) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (_vm.isNotLogin) {
           navigateToLogin();
-        });
-        _vm.markIsNotLogin();
-      } else if (_vm.isExpired) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          _displayDialog();
-        });
-      }
+          _vm.markIsNotLogin();
+        } else if (_vm.isExpired) _displayLoginDialog();
+      });
     }
     handleApiState(_vm.getBasicInfoApiState, isAutoHideLoading: false, onSuccess: () {});
     handleApiState(_vm.getAnnouncementApiState, isAutoHideLoading: false, onSuccess: () {});

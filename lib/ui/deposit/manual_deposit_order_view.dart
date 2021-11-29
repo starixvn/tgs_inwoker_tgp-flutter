@@ -286,7 +286,8 @@ class _ManualDepositOrderViewState extends BaseState<ManualDepositOrderView> {
 
     ImagePicker picker = ImagePicker();
     XFile choosedImage = await picker.pickImage(source: ImageSource.gallery);
-    //XFile file = File(picker.path);
+
+    //XFile file = File(picker!.path);
     //set source: ImageSource.camera to get image from camera
     setState(() {
       uploadImage = File(choosedImage.path);

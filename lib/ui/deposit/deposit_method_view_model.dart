@@ -22,7 +22,10 @@ class DepositMethodViewModel extends BaseViewModel {
       applePayDepositOrderApiState,
       getUmPayDepositOrderApiState,
       getExchangeRateApiState,
-      maticPayDepositOrderApiState;
+      maticPayDepositOrderApiState,
+      help2PayDepositOrderApiState,
+      getHelp2PayHtmlTextApiState,
+      skyPayDepositOrderApiState;
   List<Payment> paymentList;
   var depositOrder, orderNo, exchangeRate;
 
@@ -35,8 +38,11 @@ class DepositMethodViewModel extends BaseViewModel {
 
   getManualDepositId(BankType bankType, String account, String amount, String paymentId, String promotionId) async {
     setLoading();
-    if(bankType == BankType.BANK) getManualDepositIdApiState = await depositRepo.getManualBankDepositId(account, amount, paymentId, promotionId);
-    else getManualDepositIdApiState = await depositRepo.getManualThirdPartyDepositId(account, amount, paymentId, promotionId);
+    if (bankType == BankType.BANK)
+      getManualDepositIdApiState = await depositRepo.getManualBankDepositId(account, amount, paymentId, promotionId);
+    else
+      getManualDepositIdApiState =
+          await depositRepo.getManualThirdPartyDepositId(account, amount, paymentId, promotionId);
     if (getManualDepositIdApiState.isSuccess) {
       orderNo = getManualDepositIdApiState.result;
       getManualDepositOrder(orderNo);
@@ -107,5 +113,26 @@ class DepositMethodViewModel extends BaseViewModel {
     maticPayDepositOrderApiState = await depositRepo.maticPayDepositOrder(amount, paymentId, promotionId);
     setLoading(false);
     return maticPayDepositOrderApiState;
+  }
+
+  help2PayDepositOrder(String amount, String paymentId, String promotionId) async {
+    setLoading();
+    help2PayDepositOrderApiState = await depositRepo.help2PayDepositOrder(amount, paymentId, promotionId);
+    setLoading(false);
+    return help2PayDepositOrderApiState;
+  }
+
+  getHelp2PayHtmlText(String url) async {
+    setLoading();
+    getHelp2PayHtmlTextApiState = await depositRepo.getHelp2PayHtmlText(url.substring(1));
+    setLoading(false);
+    return getHelp2PayHtmlTextApiState;
+  }
+
+  skyPayDepositOrder(String amount, String paymentId, String promotionId) async {
+    setLoading();
+    skyPayDepositOrderApiState = await depositRepo.skyPayDepositOrder(amount, paymentId, promotionId);
+    setLoading(false);
+    return skyPayDepositOrderApiState;
   }
 }

@@ -11,10 +11,6 @@ environment_config:
       default: "https://operator.srvptt.com/"
     currency:
       default: "CNY"
-    imageUrl:
-      default: "https://dev.lobby.tgsdev.gq/assets/images/"
-    csUrl:
-      default: "https://direct.lc.chat/12646566/"
     appTitleName:
       default: "PG Gaming"
     slotGameUrl:
@@ -29,3 +25,23 @@ environment_config:
       default: "pg_login_logo"
     environmentStage:
       default: "prod_gpi"
+    isShowSmsVerification:
+      type: bool
+      default: true
+    isShowBankBranch:
+      #add bank card
+      type: bool
+      default: true
+    isShowIcVerification:
+      type: bool
+      default: true
+    isShowWechatQQ:
+      type: bool
+      default: true
+    isShowBankAcc:
+      #deposit
+      type: bool
+      default: true
+    isShowMarqueePopUp:
+      type: bool
+      default: true

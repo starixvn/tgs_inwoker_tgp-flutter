@@ -20,6 +20,7 @@ import 'package:tgp_flutter/ui/customer_service/customer_service.dart';
 import 'package:tgp_flutter/ui/customer_service/customer_service_qr_code.dart';
 import 'package:tgp_flutter/ui/customer_service/customer_service_web_view.dart';
 import 'package:tgp_flutter/ui/deposit/deposit.dart';
+import 'package:tgp_flutter/ui/deposit/deposit_html.dart';
 import 'package:tgp_flutter/ui/forgot_password/forgot_password.dart';
 import 'package:tgp_flutter/ui/frequent_question/frequent_question.dart';
 import 'package:tgp_flutter/ui/home/home.dart';
@@ -66,6 +67,7 @@ Future main() async {
   // // String packageName = packageInfo.packageName;
   // // String version = packageInfo.version;
   // // String buildNumber = packageInfo.buildNumber;
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(MyApp());
 }
 

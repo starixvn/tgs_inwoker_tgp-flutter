@@ -61,7 +61,7 @@ Future<http.Response> api(HttpMethod method, final endPoint,
 
         response = await client
             .get(
-          Uri.parse(url + queryParams),
+              Uri.parse(url + queryParams),
               headers: header,
             )
             .timeout(timeoutDuration, onTimeout: onTimeout)
@@ -72,7 +72,7 @@ Future<http.Response> api(HttpMethod method, final endPoint,
     case HttpMethod.DELETE:
       response = await client
           .delete(
-        Uri.parse(url),
+            Uri.parse(url),
             headers: header,
           )
           .timeout(timeoutDuration, onTimeout: onTimeout)
@@ -81,7 +81,7 @@ Future<http.Response> api(HttpMethod method, final endPoint,
     case HttpMethod.PATCH:
       response = await client
           .patch(
-        Uri.parse(url),
+            Uri.parse(url),
             headers: header,
             body: jsonEncode(content),
           )
@@ -91,7 +91,7 @@ Future<http.Response> api(HttpMethod method, final endPoint,
     case HttpMethod.PUT:
       response = await client
           .put(
-        Uri.parse(url),
+            Uri.parse(url),
             headers: header,
             body: jsonEncode(content),
           )
@@ -113,7 +113,7 @@ Future<http.Response> api(HttpMethod method, final endPoint,
     default:
       response = await client
           .post(
-        Uri.parse(url),
+            Uri.parse(url),
             headers: header,
             body: jsonEncode(content),
           )

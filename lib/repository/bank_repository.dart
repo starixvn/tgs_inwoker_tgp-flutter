@@ -291,4 +291,46 @@ class BankRepository extends BaseRepository {
             method: HttpMethod.GET, endPoint: "api/withdraw/player/amount", jwtRefresher: jwtAuth)
         .execute();
   }
+
+  Future<EventResult<DepositRedirect>> help2PayDepositOrder(String amount, String paymentId, String promotionId) async {
+    return await ApiRequestBuilder<DepositRedirect>(
+        method: HttpMethod.POST,
+        endPoint: "api/deposit/bank/help2pay",
+        params: {
+          "amount": amount,
+          "paymentid": paymentId,
+          "promotionid": promotionId,
+        },
+        converter: (json) => DepositRedirect.fromJson(json),
+        jwtRefresher: jwtAuth)
+        .execute();
+  }
+
+  Future<EventResult<dynamic>> getHelp2PayHtmlText(String url) async {
+    return await ApiRequestBuilder(
+        method: HttpMethod.GET,
+        endPoint: url,
+        /*params: {
+          "amount": amount,
+          "paymentid": paymentId,
+          "promotionid": promotionId,
+        },*/
+      //  converter: (json) => DepositRedirect.fromJson(json),
+        jwtRefresher: jwtAuth)
+        .executeWithoutBaseResponse();
+  }
+
+  Future<EventResult<DepositRedirect>> skyPayDepositOrder(String amount, String paymentId, String promotionId) async {
+    return await ApiRequestBuilder<DepositRedirect>(
+        method: HttpMethod.POST,
+        endPoint: "api/deposit/bank/skypay",
+        params: {
+          "amount": amount,
+          "paymentid": paymentId,
+          "promotionid": promotionId,
+        },
+        converter: (json) => DepositRedirect.fromJson(json),
+        jwtRefresher: jwtAuth)
+        .execute();
+  }
 }

@@ -67,7 +67,7 @@ class _ForgotPasswordState extends BaseState<ForgotPassword> {
                 child: Column(
                   children: [
                     //CustomTabBar(index:1),
-                    EnvironmentConfig.appTitleName == "HKJP" ? _buildPhoneTextFormField() : _buildTextFormField(),
+                    (EnvironmentConfig.appTitleName == "HKJP"|| EnvironmentConfig.isShowSmsVerification) ? _buildPhoneTextFormField() : _buildTextFormField(),
                     _buildOtpTextFormField(),
                     _buildButton()
                   ],
@@ -170,7 +170,7 @@ class _ForgotPasswordState extends BaseState<ForgotPassword> {
   }
 
   _getSmsCode() {
-    if (EnvironmentConfig.appTitleName == "HKJP") {
+    if (EnvironmentConfig.appTitleName == "HKJP"||EnvironmentConfig.isShowSmsVerification) {
       if (!validate.validateAreaCodeAndPhone(display, _emailController.text)) {
         setState(() {
           CustomToast.show(getTranslatedText("phone_format_error_msg"));

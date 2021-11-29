@@ -13,11 +13,7 @@ class DepositWeb extends StatefulWidget {
   final String url;
   final String brandLogoUrl;
 
-  DepositWeb({
-    Key key,
-    this.url,
-    this.brandLogoUrl
-  }) : super(key: key);
+  DepositWeb({Key key, this.url, this.brandLogoUrl}) : super(key: key);
 
   @override
   _DepositWebState createState() => _DepositWebState();
@@ -29,47 +25,47 @@ class _DepositWebState extends BaseState<DepositWeb> {
   Widget build(BuildContext context) {
     print("url=${widget.url}");
     return Scaffold(
-        resizeToAvoidBottomInset: false,
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          flexibleSpace: Container(
-            decoration: gradientDecoration,
-          ),
-          centerTitle: true,
-          title: Text(
-            getTranslatedText("deposit"),
-            style: TextStyle(fontSize: 20.auto),
-          ),
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
+      resizeToAvoidBottomInset: false,
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        flexibleSpace: Container(
+          decoration: gradientDecoration,
         ),
-        body: InAppWebView(
-          initialUrlRequest: URLRequest(url:Uri.parse(widget.url)),
-          //initialUrl: widget.url,
-          initialOptions: InAppWebViewGroupOptions(
-              crossPlatform: InAppWebViewOptions(
-                //debuggingEnabled: true,
-                javaScriptEnabled: true,
-              ),
-              android: AndroidInAppWebViewOptions(
-                useWideViewPort: true,
-                mixedContentMode: AndroidMixedContentMode.MIXED_CONTENT_ALWAYS_ALLOW,
-              )),
-          onWebViewCreated: (InAppWebViewController controller) {
-            _webViewController = controller;
-            _webViewController.loadUrl(urlRequest: URLRequest(url:Uri.parse(widget.url)),);
+        centerTitle: true,
+        title: Text(
+          getTranslatedText("deposit"),
+          style: TextStyle(fontSize: 20.auto),
+        ),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
           },
-          onLoadStart: ( controller,  url) {
-            ProgressDialog.show(context, widget.brandLogoUrl);
-          },
-          onLoadStop: ( controller,  url) async {
-            ProgressDialog.hide();
-          },
-        ));
+        ),
+      ),
+      body: InAppWebView(
+        initialUrlRequest: URLRequest(url: Uri.parse(widget.url)),
+        initialOptions: InAppWebViewGroupOptions(
+            crossPlatform: InAppWebViewOptions(
+              //debuggingEnabled: true,
+              javaScriptEnabled: true,
+            ),
+            android: AndroidInAppWebViewOptions(
+              useWideViewPort: true,
+              mixedContentMode: AndroidMixedContentMode.MIXED_CONTENT_ALWAYS_ALLOW,
+            )),
+        onWebViewCreated: (InAppWebViewController controller) {
+          _webViewController = controller;
+          _webViewController.loadUrl(urlRequest: URLRequest(url: Uri.parse(widget.url)));
+        },
+        onLoadStart: (controller, url) {
+          ProgressDialog.show(context, widget.brandLogoUrl);
+        },
+        onLoadStop: (controller, url) async {
+          ProgressDialog.hide();
+        },
+      ),
+    );
   }
 }

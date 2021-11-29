@@ -11,11 +11,13 @@ import 'package:tgp_flutter/entity/deposit_redirect.dart';
 import 'package:tgp_flutter/entity/manual_deposit_order.dart';
 import 'package:tgp_flutter/entity/payment.dart';
 import 'package:tgp_flutter/entity/promotion.dart';
+import 'package:tgp_flutter/environment_config.dart';
 import 'package:tgp_flutter/extension/format.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
+import 'package:tgp_flutter/ui/deposit/deposit_html.dart';
 import 'package:tgp_flutter/ui/deposit/deposit_method_view_model.dart';
 import 'package:tgp_flutter/ui/deposit/deposit_order_view.dart';
 import 'package:tgp_flutter/ui/deposit/deposit_web.dart';
@@ -75,7 +77,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
               children: [
                 _buildCard("deposit_method", _vm.depositMethodList.keys.toList(), isDepositMethod: true),
                 _buildCard("deposit_channel", _vm.paymentList),
-                if (_isManualDeposit())
+                if (_isManualDeposit() && EnvironmentConfig.isShowBankAcc)
                   _buildNameTextField("bank_acc_name", "enter_bank_acc_name", _bankNameController),
                 if (_isApplePayDeposit())
                   _buildNameTextField("transfer_name", "enter_transfer_name", _transferNameController),
@@ -298,7 +300,11 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
           _amountController.text, _payment.id, promotionId ?? null, methodPickerText == getTranslatedText("crypto"));
     } else if (widget.paymentCode == "MaticPay") {
       _vm.maticPayDepositOrder(_amountController.text, _payment.id, promotionId ?? null);
-    } else //currently is LeePay
+    }else if (_isHelp2PayDeposit()) {
+      _vm.help2PayDepositOrder(_amountController.text, _payment.id, promotionId ?? null);
+    } else if (widget.paymentCode == "SkyPay") {
+      _vm.skyPayDepositOrder(_amountController.text, _payment.id, promotionId ?? null);
+    }else //currently is LeePay
       _vm.leePayDepositOrder(_amountController.text, _payment.id, promotionId ?? null);
   }
 
@@ -316,6 +322,10 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
 
   _isUmPayDeposit() {
     return widget.paymentCode == "UmPay";
+  }
+
+  _isHelp2PayDeposit() {
+    return widget.paymentCode == "Help2Pay";
   }
 
   onSelectedMethod(BankType bankType) async {
@@ -426,6 +436,35 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
           depositRedirect: _vm.maticPayDepositOrderApiState.result,
           exchangeRate: _vm.exchangeRate,
           expectedAmount: _calculateExpectedAmount());
+    });
+
+    handleApiState(_vm.help2PayDepositOrderApiState, onSuccess: () {
+      /*_navigateToDepositOrder(
+          depositRedirect: _vm.help2PayDepositOrderApiState.result,
+          exchangeRate: _vm.exchangeRate,
+          expectedAmount: _calculateExpectedAmount());*/
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        await _vm.getHelp2PayHtmlText(_vm.help2PayDepositOrderApiState.result.paymentUrl);
+      });
+    });
+
+    handleApiState(_vm.getHelp2PayHtmlTextApiState, onSuccess: () {
+      /*_navigateToDepositOrder(
+          depositRedirect: _vm.help2PayDepositOrderApiState.result,
+          exchangeRate: _vm.exchangeRate,
+          expectedAmount: _calculateExpectedAmount());*/
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        await Navigator.push(context, MaterialPageRoute(
+            builder: (context) => DepositHtml(
+              htmlText: _vm.getHelp2PayHtmlTextApiState.result.toString(),
+            )
+        ));
+      });
+    });
+
+    handleApiState(_vm.skyPayDepositOrderApiState, onSuccess: () {
+      _navigateToDepositOrder(
+          depositRedirect: _vm.skyPayDepositOrderApiState.result,);
     });
     handleApiState(_vm.getExchangeRateApiState, isAutoHideLoading: false, onSuccess: () {});
   }

@@ -6,10 +6,6 @@ class EnvironmentConfig {
 
   static const String currency = 'CNY';
 
-  static const String imageUrl = 'https://dev.lobby.tgsdev.gq/assets/images/';
-
-  static const String csUrl = 'https://direct.lc.chat/12646566/';
-
   static const String appTitleName = 'PG Gaming';
 
   static const String slotGameUrl = 'https://images.srvptt.com/';
@@ -21,4 +17,16 @@ class EnvironmentConfig {
   static const String imageLogo = 'pg_login_logo';
 
   static const String environmentStage = 'development';
+
+  static const bool isShowSmsVerification = true;
+
+  static const bool isShowIcVerification = true;
+
+  static const bool isShowWechatQQ = true;
+
+  static const bool isShowBankBranch = true;
+
+  static const bool isShowBankAcc = false;
+
+  static const bool isShowMarqueePopUp = true;
 }

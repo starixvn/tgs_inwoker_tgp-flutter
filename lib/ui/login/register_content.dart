@@ -242,9 +242,8 @@ class _RegisterContentState extends BaseState<RegisterContent> {
 
   _handleApiState() {
     handleApiState(_vm.registerApiState, onSuccess: () {
-      if (EnvironmentConfig.appTitleName == "HKJP")
+      if (EnvironmentConfig.appTitleName == "HKJP" || EnvironmentConfig.isShowSmsVerification)
         widget.onSubmitUsernameAndPassword([username.text, password.text]);
-
       //_navigateToPhoneReVerification(username: username.text, password: password.text);
       else
         _navigateToHome();

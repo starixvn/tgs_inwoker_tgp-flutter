@@ -8,6 +8,7 @@ import 'package:tgp_flutter/custom/custom_toast.dart';
 import 'package:tgp_flutter/data/provider/input_validation_provider.dart';
 import 'package:tgp_flutter/entity/bank_type.dart';
 import 'package:tgp_flutter/entity/withdrawal_info.dart';
+import 'package:tgp_flutter/environment_config.dart';
 import 'package:tgp_flutter/extension/format.dart';
 import 'package:tgp_flutter/my_behavior.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
@@ -190,7 +191,10 @@ class _AddCardState extends BaseState<AddCard> {
       case BankType.BANK:
         return [
           _buildBankTextField("bank_name", "enter_bank_name", _bankNameController, false),
-          _buildBankTextField("bank_branch", "enter_bank_branch", _bankBranchController, false),
+          Visibility(
+            visible: EnvironmentConfig.isShowBankBranch,
+            child:_buildBankTextField("bank_branch", "enter_bank_branch", _bankBranchController, false),
+          ),
           _buildBankTextField("bank_acc_name", "enter_bank_acc_name", _nameController, false),
           _buildBankTextField("card_number", "enter_card_number", _bankNumController, true),
         ];
@@ -274,8 +278,8 @@ class _AddCardState extends BaseState<AddCard> {
           {
             if ((_bankNumController.text?.isNotEmpty ?? false) &&
                 (_bankNameController.text?.isNotEmpty ?? false) &&
-                (_nameController.text?.isNotEmpty ?? false) &&
-                (_bankBranchController.text.isNotEmpty))
+                (_nameController.text?.isNotEmpty ?? false) /*&&
+                (_bankBranchController.text.isNotEmpty)*/)
               isButtonEnabled = true;
             else
               isButtonEnabled = false;
