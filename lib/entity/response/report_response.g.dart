@@ -1,22 +1,22 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'transaction_response.dart';
+part of 'report_response.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-TransactionResponse<T> _$TransactionResponseFromJson<T>(
+ReportResponse<T> _$ReportResponseFromJson<T>(
   Map<String, dynamic> json,
   T Function(Object? json) fromJsonT,
 ) =>
-    TransactionResponse<T>(
+    ReportResponse<T>(
       json['totalCount'] as int,
       (json['items'] as List<dynamic>?)?.map(fromJsonT).toList(),
     );
 
-Map<String, dynamic> _$TransactionResponseToJson<T>(
-  TransactionResponse<T> instance,
+Map<String, dynamic> _$ReportResponseToJson<T>(
+  ReportResponse<T> instance,
   Object? Function(T value) toJsonT,
 ) =>
     <String, dynamic>{

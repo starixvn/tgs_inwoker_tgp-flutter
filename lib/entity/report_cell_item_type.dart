@@ -1,4 +1,4 @@
-enum TransactionCellItemType {
+enum ReportCellItemType {
   TOP,
   CENTER,
   BOTTOM,

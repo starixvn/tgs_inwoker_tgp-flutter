@@ -9,7 +9,6 @@ import 'package:tgp_flutter/src/gradient_decoration.dart';
 import 'package:tgp_flutter/ui/message/message_view.dart';
 import 'package:tgp_flutter/ui/profile/profile_bottom_item.dart';
 import 'package:tgp_flutter/ui/profile_info/profile_info.dart';
-import 'package:tgp_flutter/ui/transaction/transaction.dart';
 
 class ReferFriend extends StatefulWidget {
   @override

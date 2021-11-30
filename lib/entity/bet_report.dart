@@ -2,11 +2,11 @@ import 'package:tgp_flutter/entity/bank_type.dart';
 
 import 'package:json_annotation/json_annotation.dart';
 
-part 'bet_transaction.g.dart';
+part 'bet_report.g.dart';
 
 @JsonSerializable()
-class BetTransaction {
-  BetTransaction(
+class BetReport {
+  BetReport(
       this.id, this.createdOn, this.gameProviderName, this.betAmount, this.validBetAmount, this.winLoss, this.gameName);
 
   String id;
@@ -17,7 +17,7 @@ class BetTransaction {
   double winLoss;
   String gameName;
 
-  factory BetTransaction.fromJson(Map<String, dynamic> json) => _$BetTransactionFromJson(json);
+  factory BetReport.fromJson(Map<String, dynamic> json) => _$BetReportFromJson(json);
 
-  Map<String, dynamic> toJson() => _$BetTransactionToJson(this);
+  Map<String, dynamic> toJson() => _$BetReportToJson(this);
 }

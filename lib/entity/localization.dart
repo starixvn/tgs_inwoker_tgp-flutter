@@ -10,6 +10,7 @@ class Localization {
   String? subSubject;
   String? content;
   String? mobileBanner;
+  String? subject;
 
   factory Localization.fromJson(Map<String, dynamic> json) => _$LocalizationFromJson(json);
 

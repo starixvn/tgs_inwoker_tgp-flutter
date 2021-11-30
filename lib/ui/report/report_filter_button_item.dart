@@ -4,17 +4,17 @@ import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
 
-class TransactionFilterButtonItem extends StatefulWidget {
+class ReportFilterButtonItem extends StatefulWidget {
   final int index;
   final ValueChanged<int> onTextChanged;
 
-  const TransactionFilterButtonItem({required this.index, required this.onTextChanged});
+  const ReportFilterButtonItem({required this.index, required this.onTextChanged});
 
   @override
-  _TransactionFilterButtonItemState createState() => _TransactionFilterButtonItemState();
+  _ReportFilterButtonItemState createState() => _ReportFilterButtonItemState();
 }
 
-class _TransactionFilterButtonItemState extends BaseState<TransactionFilterButtonItem> {
+class _ReportFilterButtonItemState extends BaseState<ReportFilterButtonItem> {
   var currentFilterIndex = 0;
   var filterTabList = [
     {"id": "0", "text": "today"},

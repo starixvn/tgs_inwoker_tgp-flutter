@@ -82,7 +82,8 @@ class _MessageItemState extends BaseState<MessageItem> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              widget.message.subject,
+              (widget.message.localization?.subject) ??
+                  widget.message.subject,
               style: TextStyle(fontSize: 15.auto),
             ),
             Container(

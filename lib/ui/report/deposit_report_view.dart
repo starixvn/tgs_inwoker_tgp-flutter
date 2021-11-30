@@ -3,58 +3,58 @@ import 'package:flutter/material.dart';
 import 'package:tgp_flutter/custom/custom_picker.dart';
 import 'package:tgp_flutter/custom/custom_picker_dialog.dart';
 import 'package:tgp_flutter/entity/status.dart';
-import 'package:tgp_flutter/entity/transaction_cell_item_type.dart';
+import 'package:tgp_flutter/entity/report_cell_item_type.dart';
 import 'package:tgp_flutter/extension/format.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
 import 'package:tgp_flutter/ui/deposit/deposit_order_view.dart';
 import 'package:tgp_flutter/ui/deposit/manual_deposit_order_view.dart';
-import 'package:tgp_flutter/ui/transaction/base_transaction.dart';
-import 'package:tgp_flutter/ui/transaction/transaction_cell_item.dart';
-import 'package:tgp_flutter/ui/transaction/transaction_view_model.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:tgp_flutter/ui/report/base_report.dart';
+import 'package:tgp_flutter/ui/report/report_cell_item.dart';
+import 'package:tgp_flutter/ui/report/report_view_model.dart';
 
-class DepositTransactionView extends StatefulWidget {
-  final TransactionViewModel vm;
+class DepositReportView extends StatefulWidget {
+  final ReportViewModel vm;
 
-  DepositTransactionView({
+  DepositReportView({
     required this.vm,
   });
 
   @override
-  DepositTransactionViewState createState() => DepositTransactionViewState();
+  DepositReportViewState createState() => DepositReportViewState();
 }
 
-class DepositTransactionViewState extends BaseState<DepositTransactionView> {
+class DepositReportViewState extends BaseState<DepositReportView> {
   ScrollController _scrollController = ScrollController();
   var isLoading = false;
   RefreshController _refreshController = RefreshController();
   var pickerText1;
   var filterIndex = 0;
-  TransactionViewModel _vm = TransactionViewModel();
+  ReportViewModel _vm = ReportViewModel();
 
   void initState() {
     _scrollController.addListener(_scrollListener);
     WidgetsBinding.instance!.addPostFrameCallback((_) {
-      _getTransaction();
+      _getReport();
     });
     super.initState();
   }
 
   Widget build(BuildContext context) {
-    return ProviderWidget<TransactionViewModel>(
+    return ProviderWidget<ReportViewModel>(
         model: _vm,
         builder: (ctx, vm, _) {
           _handleApiState();
-          return BaseTransaction(
-            transactionHeaderList: ["time", "status", "amount", ""],
+          return BaseReport(
+            reportHeaderList: ["time", "status", "amount", ""],
             getPickerBox: _getPickerBox(),
             filterIndex: filterIndex,
             expandedHeight: 250,
             vm: _vm,
-            getTransaction: (mIsLoadMore, mStatus) {
-              _getTransaction(isLoadMore: mIsLoadMore, status: mStatus);
+            getReport: (mIsLoadMore, mStatus) {
+              _getReport(isLoadMore: mIsLoadMore, status: mStatus);
             },
             setIndex: (value) {
               setState(() {
@@ -63,7 +63,7 @@ class DepositTransactionViewState extends BaseState<DepositTransactionView> {
             },
             scrollController: _scrollController,
             refreshController: _refreshController,
-            list: _vm.accountTransactionList,
+            list: _vm.accountReportList,
             displayItemList: _getList(),
             isUploadButton: true,
             url: _vm.brandLogoUrl,
@@ -71,38 +71,38 @@ class DepositTransactionViewState extends BaseState<DepositTransactionView> {
         });
   }
 
-  List<Widget> _getList() => _vm.accountTransactionList == null
+  List<Widget> _getList() => _vm.accountReportList == null
       ? []
-      : List.generate(_vm.accountTransactionList!.length, (index) {
+      : List.generate(_vm.accountReportList!.length, (index) {
           return Container(
-            child: TransactionCellItem(
+            child: ReportCellItem(
               list: [
-                _vm.accountTransactionList![index].id,
-                _vm.accountTransactionList![index].orderNo,
-                Format().dateTimeFormat(_vm.accountTransactionList![index].createdOn),
-                _vm.accountTransactionList![index].status.getName(context),
-                _vm.accountTransactionList![index].amount.toString(),
-                _vm.accountTransactionList![index].status == Status.WaitingPayment ? true : false
+                _vm.accountReportList![index].id,
+                _vm.accountReportList![index].orderNo,
+                Format().dateTimeFormat(_vm.accountReportList![index].createdOn),
+                _vm.accountReportList![index].status.getName(context),
+                _vm.accountReportList![index].amount.toString(),
+                _vm.accountReportList![index].status == Status.WaitingPayment ? true : false
               ],
-              getManualDepositId: () => _vm.getManualDepositOrder(_vm.accountTransactionList![index].id),
-              type: _getTransactionItemType(index),
+              getManualDepositId: () => _vm.getManualDepositOrder(_vm.accountReportList![index].id),
+              type: _getReportItemType(index),
               isEndRecord: _vm.endRecord,
-              isUploadButton: _vm.accountTransactionList![index].canUploadCerts,
-              isDepositTransaction: true,
+              isUploadButton: _vm.accountReportList![index].canUploadCerts,
+              isDepositReport: true,
             ),
           );
         }).toList();
 
-  _getTransactionItemType(int index) {
-    if (_vm.accountTransactionList!.length == 1) {
-      return TransactionCellItemType.SINGLE;
+  _getReportItemType(int index) {
+    if (_vm.accountReportList!.length == 1) {
+      return ReportCellItemType.SINGLE;
     } else {
       if (index == 0) {
-        return TransactionCellItemType.TOP;
-      } else if (index == _vm.accountTransactionList!.length - 1) {
-        return TransactionCellItemType.BOTTOM;
+        return ReportCellItemType.TOP;
+      } else if (index == _vm.accountReportList!.length - 1) {
+        return ReportCellItemType.BOTTOM;
       } else {
-        return TransactionCellItemType.CENTER;
+        return ReportCellItemType.CENTER;
       }
     }
   }
@@ -139,7 +139,7 @@ class DepositTransactionViewState extends BaseState<DepositTransactionView> {
                 setState(() {
                   if (value is Status) {
                     pickerText1 = value.getName(context);
-                    _getTransaction(status: value);
+                    _getReport(status: value);
                   }
                   Navigator.pop(context);
                   // ProgressDialog.show(context, _vm.brandLogoUrl);
@@ -150,19 +150,19 @@ class DepositTransactionViewState extends BaseState<DepositTransactionView> {
 
   _scrollListener() {
     if (_scrollController.offset >= _scrollController.position.maxScrollExtent) {
-      _getTransaction(isLoadMore: true);
+      _getReport(isLoadMore: true);
       setState(() {
         isLoading = true;
       });
     }
   }
 
-  _getTransaction({bool isLoadMore = false, Status? status}) async {
-    await _vm.getAccountTransaction(isLoadMore: isLoadMore, status: status);
+  _getReport({bool isLoadMore = false, Status? status}) async {
+    await _vm.getAccountReport(isLoadMore: isLoadMore, status: status);
   }
 
   _handleApiState() {
-    handleApiState(_vm.getAccountTransactionApiState, isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getAccountReportApiState, isAutoHideLoading: false, onSuccess: () {});
     handleApiState(_vm.getDepositOrderApiState, onSuccess: () {
       WidgetsBinding.instance!.addPostFrameCallback((_) async {
         await Navigator.push(

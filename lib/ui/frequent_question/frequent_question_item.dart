@@ -6,7 +6,7 @@ import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
-import 'package:tgp_flutter/ui/transaction/transaction.dart';
+
 
 
 class FrequentQuestionItem extends StatefulWidget{

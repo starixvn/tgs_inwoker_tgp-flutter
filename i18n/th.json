@@ -966,5 +966,7 @@
   "login_time_out": "การเข้าสู่ระบบหมดเวลา",
   "withdrawal_amount_warning": "จำนวนเงินฝากต้องเป็นหน่วยร้อยหยวน",
   "game_platform_inactive": "แพลตฟอร์มเกมปิดอยู่",
-  "edit_email": "แก้ไขที่อยู่อีเมล"
+  "edit_email": "แก้ไขที่อยู่อีเมล",
+  "promotion_name": "ชื่อโปรโมชั่น",
+  "promotion_history": "ประวัติโปรโมชั่น"
 }

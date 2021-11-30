@@ -54,7 +54,7 @@ import 'package:tgp_flutter/ui/promotion/promotion_page.dart';
 
 import 'package:tgp_flutter/ui/referFriend/refer_friend.dart';
 import 'package:tgp_flutter/ui/splash/splash.dart';
-import 'package:tgp_flutter/ui/transaction/transaction.dart';
+import 'package:tgp_flutter/ui/report/report.dart';
 import 'package:tgp_flutter/ui/withdraw/withdraw.dart';
 import 'package:tgp_flutter/ui/home/child_game/child_game.dart';
 import 'package:tgp_flutter/ui/transfer/wallet_transfer.dart';
@@ -167,7 +167,7 @@ class _MyAppState extends BaseState<MyApp> {
                   RoutePath.deposit: (context) => Deposit(),
                   RoutePath.walletTransfer: (context) => WalletTransfer(),
                   RoutePath.withdraw: (context) => Withdraw(),
-                  RoutePath.transaction: (context) => Transaction(),
+                  RoutePath.transaction: (context) => Report(),
                   RoutePath.mainCard: (context) => MainCard(),
                   RoutePath.message: (context) => MessageView(),
                   RoutePath.frequentQuestion: (context) => FrequentQuestion(),

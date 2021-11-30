@@ -5,20 +5,20 @@ import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
 
-class TransactionHeaderItem extends StatefulWidget {
+class ReportHeaderItem extends StatefulWidget {
   final List<String> headerList;
   final bool isUploadButton;
 
-  const TransactionHeaderItem({
+  const ReportHeaderItem({
     required this.headerList,
     required this.isUploadButton,
   });
 
   @override
-  _TransactionHeaderItemState createState() => _TransactionHeaderItemState();
+  _ReportHeaderItemState createState() => _ReportHeaderItemState();
 }
 
-class _TransactionHeaderItemState extends BaseState<TransactionHeaderItem> {
+class _ReportHeaderItemState extends BaseState<ReportHeaderItem> {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 10.auto, horizontal: 20.auto),

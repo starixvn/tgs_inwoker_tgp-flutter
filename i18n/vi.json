@@ -966,5 +966,7 @@
   "login_time_out": "Đăng nhập đã hết thời gian",
   "withdrawal_amount_warning": "Số tiền gửi phải tính bằng đơn vị trăm nhân dân tệ",
   "game_platform_inactive": "Nền tảng trò chơi đã bị đóng",
-  "edit_email": "Chỉnh sửa địa chỉ email"
+  "edit_email": "Chỉnh sửa địa chỉ email",
+  "promotion_name": "tên khuyến mãi",
+  "promotion_history": "lịch sử thăng tiến"
 }

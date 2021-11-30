@@ -11,7 +11,7 @@ Localization _$LocalizationFromJson(Map<String, dynamic> json) => Localization(
       json['subSubject'] as String?,
       json['content'] as String?,
       json['mobileBanner'] as String?,
-    );
+    )..subject = json['subject'] as String?;
 
 Map<String, dynamic> _$LocalizationToJson(Localization instance) =>
     <String, dynamic>{
@@ -19,4 +19,5 @@ Map<String, dynamic> _$LocalizationToJson(Localization instance) =>
       'subSubject': instance.subSubject,
       'content': instance.content,
       'mobileBanner': instance.mobileBanner,
+      'subject': instance.subject,
     };

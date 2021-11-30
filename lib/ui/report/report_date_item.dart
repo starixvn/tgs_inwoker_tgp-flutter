@@ -4,18 +4,18 @@ import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
 
-class TransactionDateItem extends StatefulWidget {
+class ReportDateItem extends StatefulWidget {
   final DateTime date;
   final String title;
   final ValueChanged<DateTime> onDateChanged;
 
-  const TransactionDateItem({required this.date, required this.title, required this.onDateChanged});
+  const ReportDateItem({required this.date, required this.title, required this.onDateChanged});
 
   @override
-  _TransactionDateItemState createState() => _TransactionDateItemState();
+  _ReportDateItemState createState() => _ReportDateItemState();
 }
 
-class _TransactionDateItemState extends BaseState<TransactionDateItem> {
+class _ReportDateItemState extends BaseState<ReportDateItem> {
   var date;
 
   Widget build(BuildContext context) {

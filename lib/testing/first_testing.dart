@@ -2,6 +2,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:tgp_flutter/testing/first_testing.mocks.dart';
+import 'package:tgp_flutter/main_view_model.dart';
 
 // Generate a MockClient using the Mockito package.
 // Create new instances of this class in each test.
@@ -10,6 +12,7 @@ void main() {
   /*group('fetchAlbum', () {
     test('returns an Album if the http call completes successfully', () async {
       final client = MockClient();
+      var _vm = MainViewModel();
 
       // Use Mockito to return a successful response when it calls the
       // provided http.Client.
@@ -18,7 +21,7 @@ void main() {
           .thenAnswer((_) async =>
           http.Response('{"userId": 1, "id": 2, "title": "mock"}', 200));
 
-      expect(await fetchAlbum(client), isA<Album>());
+      expect(await _vm.getAuthToken(client), isA<Album>());
     });
 
     test('throws an exception if the http call completes with an error', () {

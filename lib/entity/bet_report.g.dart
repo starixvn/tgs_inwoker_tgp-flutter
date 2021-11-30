@@ -1,13 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'bet_transaction.dart';
+part of 'bet_report.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-BetTransaction _$BetTransactionFromJson(Map<String, dynamic> json) =>
-    BetTransaction(
+BetReport _$BetReportFromJson(Map<String, dynamic> json) => BetReport(
       json['id'] as String,
       json['createdOn'] as String,
       json['gameProviderName'] as String,
@@ -17,8 +16,7 @@ BetTransaction _$BetTransactionFromJson(Map<String, dynamic> json) =>
       json['gameName'] as String,
     );
 
-Map<String, dynamic> _$BetTransactionToJson(BetTransaction instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$BetReportToJson(BetReport instance) => <String, dynamic>{
       'id': instance.id,
       'createdOn': instance.createdOn,
       'gameProviderName': instance.gameProviderName,

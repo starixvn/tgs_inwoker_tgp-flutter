@@ -97,8 +97,15 @@ class _ManualDepositOrderViewState extends BaseState<ManualDepositOrderView> {
               children: [
                 Row(
                   children: [
-                    widget.paymentQrCode!.qrCodeFileUrl == null
-                        ? Container()
+                    (widget.paymentQrCode?.qrCodeFileUrl?.isEmpty ?? true)
+                        ? Expanded(
+                            flex: 2,
+                            child: QrImage(
+                              data: widget.manualDepositOrder!.qrCode!,
+                              version: QrVersions.auto,
+                              size: 150.0,
+                            ),
+                          )
                         : Expanded(
                             flex: 2,
                             child: Image.network(
@@ -107,12 +114,13 @@ class _ManualDepositOrderViewState extends BaseState<ManualDepositOrderView> {
                               height: 150,
                             ),
                           ),
-                    widget.paymentQrCode!.qrCodeFileUrl == null
-                        ? Container()
-                        : Expanded(
+                    ((widget.paymentQrCode?.qrCodeFileUrl?.isEmpty ?? true) ||
+                            (widget.manualDepositOrder?.qrCode?.isEmpty ?? true))
+                        ? Expanded(
                             flex: 1,
                             child: Container(),
-                          ),
+                          )
+                        : Container(),
                     Expanded(
                       flex: 2,
                       child: Column(

@@ -1,44 +1,40 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter/custom/gradient_button.dart';
-import 'package:tgp_flutter/entity/account_transaction.dart';
-import 'package:tgp_flutter/entity/bet_transaction.dart';
-import 'package:tgp_flutter/entity/daily_transaction.dart';
-import 'package:tgp_flutter/entity/bet_transaction.dart';
-import 'package:tgp_flutter/entity/transaction_cell_item_type.dart';
+import 'package:tgp_flutter/entity/report_cell_item_type.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
 
-class TransactionCellItem extends StatefulWidget {
+class ReportCellItem extends StatefulWidget {
   final List<dynamic> list;
-  final TransactionCellItemType type;
+  final ReportCellItemType type;
   final bool isEndRecord;
   final bool isUploadButton;
-  final bool isDepositTransaction;
-  final bool isWithdrawTransaction;
+  final bool isDepositReport;
+  final bool isWithdrawReport;
   final Function? getManualDepositId;
 
-  TransactionCellItem({
+  ReportCellItem({
     required this.list,
     required this.type,
     required this.isEndRecord,
     this.isUploadButton = false,
     this.getManualDepositId,
-    this.isDepositTransaction = false,
-    this.isWithdrawTransaction = false,
+    this.isDepositReport = false,
+    this.isWithdrawReport = false,
   });
 
   @override
-  _TransactionCellItemState createState() => _TransactionCellItemState();
+  _ReportCellItemState createState() => _ReportCellItemState();
 }
 
-class _TransactionCellItemState extends BaseState<TransactionCellItem> {
+class _ReportCellItemState extends BaseState<ReportCellItem> {
   var text1, text2, text3;
 
   Widget build(BuildContext context) {
     //only one item
-    if (widget.type == TransactionCellItemType.SINGLE) {
+    if (widget.type == ReportCellItemType.SINGLE) {
       return Container(
         padding: EdgeInsets.only(bottom: 10.auto),
         child: Container(
@@ -47,22 +43,22 @@ class _TransactionCellItemState extends BaseState<TransactionCellItem> {
             color: Colors.white,
             borderRadius: BorderRadius.all(Radius.circular(10)),
           ),
-          child: _getTransactionCellItem(isLast: true),
+          child: _getReportCellItem(isLast: true),
         ),
       );
     }
     //top item
-    else if (widget.type == TransactionCellItemType.TOP) {
+    else if (widget.type == ReportCellItemType.TOP) {
       return Container(
           padding: EdgeInsets.only(top: 5.auto),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
           ),
-          child: _getTransactionCellItem());
+          child: _getReportCellItem());
     }
     //bottom item
-    else if (widget.type == TransactionCellItemType.BOTTOM) {
+    else if (widget.type == ReportCellItemType.BOTTOM) {
       return Column(children: [
         Container(
           padding: EdgeInsets.only(bottom: 10.auto),
@@ -72,7 +68,7 @@ class _TransactionCellItemState extends BaseState<TransactionCellItem> {
                 color: Colors.white,
                 borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10)),
               ),
-              child: _getTransactionCellItem(isLast: true)),
+              child: _getReportCellItem(isLast: true)),
         ),
         widget.isEndRecord
             ? Container(
@@ -85,11 +81,11 @@ class _TransactionCellItemState extends BaseState<TransactionCellItem> {
             : Container()
       ]);
     } else {
-      return Container(color: Colors.white, child: _getTransactionCellItem());
+      return Container(color: Colors.white, child: _getReportCellItem());
     }
   }
 
-  _getTransactionCellItem({bool isLast = false}) => Column(children: [
+  _getReportCellItem({bool isLast = false}) => Column(children: [
         Container(
           margin: EdgeInsets.symmetric(horizontal: 10.auto),
           child: Column(
@@ -114,7 +110,7 @@ class _TransactionCellItemState extends BaseState<TransactionCellItem> {
                           ],
                         ),
                         Visibility(
-                          visible: widget.isDepositTransaction || widget.isWithdrawTransaction,
+                          visible: widget.isDepositReport || widget.isWithdrawReport,
                           child: Row(
                             children: [
                               Text(
@@ -140,7 +136,7 @@ class _TransactionCellItemState extends BaseState<TransactionCellItem> {
                   return (() {
                     if (index == 0 || index == 1)
                       return Container();
-                    else if (index == 5 && widget.isDepositTransaction)
+                    else if (index == 5 && widget.isDepositReport)
                       return Expanded(
                         flex: 2,
                         child: widget.isUploadButton

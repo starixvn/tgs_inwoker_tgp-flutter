@@ -1,20 +1,19 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'daily_transaction.dart';
+part of 'daily_report.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-DailyTransaction _$DailyTransactionFromJson(Map<String, dynamic> json) =>
-    DailyTransaction(
+DailyReport _$DailyReportFromJson(Map<String, dynamic> json) => DailyReport(
       json['bet_time'] as String,
       json['bet_amount'],
       json['win_loss'],
       json['turnover'],
     );
 
-Map<String, dynamic> _$DailyTransactionToJson(DailyTransaction instance) =>
+Map<String, dynamic> _$DailyReportToJson(DailyReport instance) =>
     <String, dynamic>{
       'bet_time': instance.betTime,
       'bet_amount': instance.betAmount,

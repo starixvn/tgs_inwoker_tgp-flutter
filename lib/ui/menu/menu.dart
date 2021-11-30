@@ -11,7 +11,7 @@ import 'package:tgp_flutter/ui/card/main_card.dart';
 import 'package:tgp_flutter/ui/deposit/deposit.dart';
 import 'package:tgp_flutter/ui/home/home.dart';
 import 'package:tgp_flutter/ui/message/message_view.dart';
-import 'package:tgp_flutter/ui/transaction/transaction.dart';
+import 'package:tgp_flutter/ui/report/report.dart';
 import 'package:tgp_flutter/ui/transfer/wallet_transfer.dart';
 import 'package:tgp_flutter/ui/withdraw/withdraw.dart';
 
@@ -85,6 +85,11 @@ class _MenuState extends BaseState<Menu> {
                 MenuItem(
                   image: "ic_menu_withdraw_history",
                   text: getTranslatedText("transfer_history"),
+                  navigationPath: "transaction",
+                  navigationID: 3,
+                ),MenuItem(
+                  image: "ic_menu_withdraw_history",
+                  text: getTranslatedText("promotion_history"),
                   navigationPath: "transaction",
                   navigationID: 3,
                 ),

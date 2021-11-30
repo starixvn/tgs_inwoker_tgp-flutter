@@ -1,18 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tgp_flutter/entity/account_transaction.dart';
+import 'package:tgp_flutter/entity/account_report.dart';
 import 'package:tgp_flutter/entity/bank_card.dart';
+import 'package:tgp_flutter/entity/bet_report.dart';
 import 'package:tgp_flutter/entity/brand_communication.dart';
 import 'package:tgp_flutter/entity/live_chat.dart';
-import 'package:tgp_flutter/entity/transfer_transaction.dart';
+import 'package:tgp_flutter/entity/promotion_report.dart';
+import 'package:tgp_flutter/entity/transfer_report.dart';
 import 'package:tgp_flutter/entity/http_method.dart';
 import 'package:tgp_flutter/entity/response/check_username_response.dart';
 import 'package:tgp_flutter/entity/response/edit_password_response.dart';
 import 'package:tgp_flutter/entity/response/list_response.dart';
 import 'package:tgp_flutter/entity/response/login_response.dart';
 import 'package:tgp_flutter/entity/response/register_response.dart';
-import 'package:tgp_flutter/entity/bet_transaction.dart';
-import 'package:tgp_flutter/entity/response/transaction_response.dart';
+import 'package:tgp_flutter/entity/response/report_response.dart';
 import 'package:tgp_flutter/entity/status.dart';
 import 'package:tgp_flutter/entity/user_profile.dart';
 import 'package:tgp_flutter/entity/main_wallet.dart';
@@ -170,7 +171,7 @@ class UserRepository extends BaseRepository {
         .execute();
   }
 
-  Future<EventResult<ListResponse<BetTransaction>>> getTransaction(
+  Future<EventResult<ListResponse<BetReport>>> getReport(
     DateTime startDate,
     DateTime endDate,
     int page,
@@ -180,7 +181,7 @@ class UserRepository extends BaseRepository {
       String sortBy,
       bool showAll*/
   ) async {
-    return await ApiRequestBuilder<ListResponse<BetTransaction>>(
+    return await ApiRequestBuilder<ListResponse<BetReport>>(
             method: HttpMethod.GET,
             endPoint: "api/playerreport/rounds",
             params: {
@@ -193,7 +194,7 @@ class UserRepository extends BaseRepository {
               "all": "false",
             },
             converter: (json) =>
-                ListResponse.fromJson(json, (res) => BetTransaction.fromJson(res as Map<String, dynamic>)),
+                ListResponse.fromJson(json, (res) => BetReport.fromJson(res as Map<String, dynamic>)),
             jwtRefresher: jwtAuth)
         .execute();
   }
@@ -210,14 +211,14 @@ class UserRepository extends BaseRepository {
         .execute();
   }
 
-  Future<EventResult<TransactionResponse<AccountTransaction>>> getAccountTransaction(
+  Future<EventResult<ReportResponse<AccountReport>>> getAccountReport(
       DateTime startDate, DateTime endDate, int page, int rows, Status status
       /*int orderBy,
       bool isDesc,
       String sortBy,
       bool showAll*/
       ) async {
-    return await ApiRequestBuilder<TransactionResponse<AccountTransaction>>(
+    return await ApiRequestBuilder<ReportResponse<AccountReport>>(
             method: HttpMethod.GET,
             endPoint: "api/deposit/player/list",
             params: {
@@ -232,14 +233,14 @@ class UserRepository extends BaseRepository {
               "OrderBy": "1"
             },
             converter: (json) =>
-                TransactionResponse.fromJson(json, (res) => AccountTransaction.fromJson(res as Map<String, dynamic>)),
+                ReportResponse.fromJson(json, (res) => AccountReport.fromJson(res as Map<String, dynamic>)),
             jwtRefresher: jwtAuth)
         .execute();
   }
 
-  Future<EventResult<TransactionResponse<AccountTransaction>>> getWithdrawTransaction(
+  Future<EventResult<ReportResponse<AccountReport>>> getWithdrawReport(
       DateTime startDate, DateTime endDate, int page, int rows, Status status) async {
-    return await ApiRequestBuilder<TransactionResponse<AccountTransaction>>(
+    return await ApiRequestBuilder<ReportResponse<AccountReport>>(
             method: HttpMethod.GET,
             endPoint: "api/withdraw/player/list",
             params: {
@@ -254,18 +255,18 @@ class UserRepository extends BaseRepository {
               "OrderBy": "1"
             },
             converter: (json) =>
-                TransactionResponse.fromJson(json, (res) => AccountTransaction.fromJson(res as Map<String, dynamic>)),
+                ReportResponse.fromJson(json, (res) => AccountReport.fromJson(res as Map<String, dynamic>)),
             jwtRefresher: jwtAuth)
         .execute();
   }
 
-  Future<EventResult<TransactionResponse<TransferTransaction>>> getTransferTransaction(
+  Future<EventResult<ReportResponse<TransferReport>>> getTransferReport(
     DateTime startDate,
     DateTime endDate,
     int page,
     int rows,
   ) async {
-    return await ApiRequestBuilder<TransactionResponse<TransferTransaction>>(
+    return await ApiRequestBuilder<ReportResponse<TransferReport>>(
             method: HttpMethod.GET,
             endPoint: "api/game/balance/list",
             params: {
@@ -279,7 +280,7 @@ class UserRepository extends BaseRepository {
               "IsDesc": "true"
             },
             converter: (json) =>
-                TransactionResponse.fromJson(json, (res) => TransferTransaction.fromJson(res as Map<String, dynamic>)),
+                ReportResponse.fromJson(json, (res) => TransferReport.fromJson(res as Map<String, dynamic>)),
             jwtRefresher: jwtAuth)
         .execute();
   }
@@ -325,6 +326,28 @@ class UserRepository extends BaseRepository {
   Future<EventResult<dynamic>> setAutoTransferValue() async {
     return await ApiRequestBuilder<dynamic>(
             method: HttpMethod.POST, endPoint: "api/player/game/auto-transfer", jwtRefresher: jwtAuth)
+        .execute();
+  }
+
+  Future<EventResult<ReportResponse<PromotionReport>>> getPromotionReport(
+      DateTime startDate,
+      DateTime endDate,
+      int page,
+      int rows,
+      ) async {
+    return await ApiRequestBuilder<ReportResponse<PromotionReport>>(
+        method: HttpMethod.GET,
+        endPoint: "api/playerpromotion/joined",
+        params: {
+          "page": page.toString(),
+          "rows": rows.toString(),
+          "sort": "promotionName",
+          "all": "false",
+          "desc": "true"
+        },
+        converter: (json) =>
+            ReportResponse.fromJson(json, (res) => PromotionReport.fromJson(res as Map<String, dynamic>)),
+        jwtRefresher: jwtAuth)
         .execute();
   }
 }

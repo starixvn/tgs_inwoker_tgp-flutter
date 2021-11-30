@@ -1,13 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'account_transaction.dart';
+part of 'account_report.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-AccountTransaction _$AccountTransactionFromJson(Map<String, dynamic> json) =>
-    AccountTransaction(
+AccountReport _$AccountReportFromJson(Map<String, dynamic> json) =>
+    AccountReport(
       json['id'] as String,
       json['createdon'] as String,
       json['updatedOn'] as String,
@@ -17,7 +17,7 @@ AccountTransaction _$AccountTransactionFromJson(Map<String, dynamic> json) =>
       json['orderno'] as String,
     );
 
-Map<String, dynamic> _$AccountTransactionToJson(AccountTransaction instance) =>
+Map<String, dynamic> _$AccountReportToJson(AccountReport instance) =>
     <String, dynamic>{
       'id': instance.id,
       'createdon': instance.createdOn,

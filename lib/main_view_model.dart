@@ -3,6 +3,7 @@ import 'package:tgp_flutter/entity/language_option.dart';
 import 'package:tgp_flutter/repository/base_repository.dart';
 import 'package:tgp_flutter/repository/content_repository.dart';
 import 'package:tgp_flutter/repository/user_repository.dart';
+import 'package:tgp_flutter/testing/first_testing.mocks.dart';
 
 class MainViewModel extends BaseViewModel{
   final contentRepo = ContentRepository.getSingleton();
