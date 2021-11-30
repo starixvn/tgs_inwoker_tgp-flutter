@@ -33,7 +33,7 @@ class _AddCardState extends BaseState<AddCard> {
       _phoneController = TextEditingController();
   var _vm = CardViewModel();
   var isButtonEnabled = false;
-  String bankTypePickerText, channelPickerText;
+  String? bankTypePickerText, channelPickerText;
   InputValidationProvider validate = new InputValidationProvider();
 
   @override
@@ -131,11 +131,11 @@ class _AddCardState extends BaseState<AddCard> {
   _buildChannelPicker() => CustomPicker(
       title: "channel",
       displayText: channelPickerText == null ? getTranslatedText("select_channel") : channelPickerText,
-      list: _vm.withdrawalInfoList,
+      list: _vm.withdrawalInfoList ?? [],
       isHintText: false,
       width: context.screenWidth,
       onClick: () {
-        _buildBottomSheet("channel", _vm.withdrawalInfoList);
+        _buildBottomSheet("channel", _vm.withdrawalInfoList ?? []);
       });
 
   _buildBankTextField(String title, String hint, TextEditingController controller, bool isNum) => CustomTextFormField(
@@ -193,7 +193,7 @@ class _AddCardState extends BaseState<AddCard> {
           _buildBankTextField("bank_name", "enter_bank_name", _bankNameController, false),
           Visibility(
             visible: EnvironmentConfig.isShowBankBranch,
-            child:_buildBankTextField("bank_branch", "enter_bank_branch", _bankBranchController, false),
+            child: _buildBankTextField("bank_branch", "enter_bank_branch", _bankBranchController, false),
           ),
           _buildBankTextField("bank_acc_name", "enter_bank_acc_name", _nameController, false),
           _buildBankTextField("card_number", "enter_card_number", _bankNumController, true),
@@ -251,7 +251,7 @@ class _AddCardState extends BaseState<AddCard> {
         builder: (BuildContext bc) {
           return CustomPickerDialog(
               title: title,
-              list: list ?? [],
+              list: list,
               onChanged: (value) {
                 setState(() {
                   if (value is BankType)
@@ -268,7 +268,7 @@ class _AddCardState extends BaseState<AddCard> {
       switch (_vm.pBankType) {
         case BankType.CRYPTO:
           {
-            if (_addressController.text?.isNotEmpty ?? false)
+            if (_addressController.text.isNotEmpty)
               isButtonEnabled = true;
             else
               isButtonEnabled = false;
@@ -276,10 +276,11 @@ class _AddCardState extends BaseState<AddCard> {
           }
         case BankType.BANK:
           {
-            if ((_bankNumController.text?.isNotEmpty ?? false) &&
-                (_bankNameController.text?.isNotEmpty ?? false) &&
-                (_nameController.text?.isNotEmpty ?? false) /*&&
-                (_bankBranchController.text.isNotEmpty)*/)
+            if ((_bankNumController.text.isNotEmpty) &&
+                    (_bankNameController.text.isNotEmpty) &&
+                    (_nameController.text.isNotEmpty) /*&&
+                (_bankBranchController.text.isNotEmpty)*/
+                )
               isButtonEnabled = true;
             else
               isButtonEnabled = false;
@@ -287,7 +288,7 @@ class _AddCardState extends BaseState<AddCard> {
           }
         default:
           {
-            if ((_realNameController.text?.isNotEmpty ?? false) && (_phoneController.text?.isNotEmpty ?? false))
+            if ((_realNameController.text.isNotEmpty) && (_phoneController.text.isNotEmpty))
               isButtonEnabled = true;
             else
               isButtonEnabled = false;
@@ -297,30 +298,29 @@ class _AddCardState extends BaseState<AddCard> {
     });
   }
 
-  onSelectedBankType({BankType bankType}) async {
+  onSelectedBankType({BankType? bankType}) async {
     if (bankType == null) bankType = _vm.pBankType;
     await _vm.onSelectedBankType(bankType);
     onSelectedWithdrawalInfo();
     setState(() {
       // currBankType = bankType;
-      bankTypePickerText = bankType.getName(context);
+      bankTypePickerText = bankType!.getName(context);
     });
   }
 
-  onSelectedWithdrawalInfo({WithdrawalInfo withdrawalInfo}) async {
+  onSelectedWithdrawalInfo({WithdrawalInfo? withdrawalInfo}) async {
     await _vm.onSelectedWithdrawalInfo(withdrawalInfo: withdrawalInfo);
     setState(() {
       //  channelPickerText = _vm.pWithdrawalInfo.channelName.replaceAll(RegExp("_"), " ");
-      if (_vm.pWithdrawalInfo.channelName == "PrimePay_BankTransfer_Custom") {
+      if (_vm.pWithdrawalInfo!.channelName == "PrimePay_BankTransfer_Custom") {
         channelPickerText = getTranslatedText("custom_bank");
       } else {
-        channelPickerText = _vm.pWithdrawalInfo.channelCode;
+        channelPickerText = _vm.pWithdrawalInfo!.channelCode;
       }
     });
   }
 
   _onClick() {
-
     ProgressDialog.show(context, _vm.brandLogoUrl);
     _vm.addBankCard(
         address: _addressController.text,
@@ -335,7 +335,7 @@ class _AddCardState extends BaseState<AddCard> {
 
   _handleApiState() {
     handleApiState(_vm.addBankCardApiState, onSuccess: () {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
         Navigator.of(context).pop(true);
       });
     });

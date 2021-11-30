@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:json_annotation/json_annotation.dart';
 import 'package:tgp_flutter/localizations/language_provider.dart';
 
@@ -20,7 +21,7 @@ extension BankTypeExtension on BankType {
     BankType.FPS: "FPS",
   };
 
-  String get getJson => json[this];
+  String? get getJson => json[this];
 
   String getName(BuildContext context) {
     switch (this) {

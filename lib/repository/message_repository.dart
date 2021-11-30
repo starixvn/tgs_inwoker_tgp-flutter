@@ -13,15 +13,15 @@ import 'package:tgp_flutter/network/services/api_service.dart';
 import 'base_repository.dart';
 
 class MessageRepository extends BaseRepository {
-  static MessageRepository _singleton;
-  UserProfile userProfile;
-  List<GameProvider> gameProviderList;
+  static MessageRepository? _singleton;
+  UserProfile? userProfile;
+  List<GameProvider>? gameProviderList;
 
   static MessageRepository getSingleton() {
     if (_singleton == null) {
       _singleton = MessageRepository();
     }
-    return _singleton;
+    return _singleton!;
   }
 
   getLanguage() async {
@@ -38,7 +38,7 @@ class MessageRepository extends BaseRepository {
               "page": page.toString(),
               "rows": rows.toString(),
             },
-            converter: (json) => ListResponse.fromJson(json, (res) => Message.fromJson(res)),
+            converter: (json) => ListResponse.fromJson(json, (res) => Message.fromJson(res as Map<String, dynamic>)),
             jwtRefresher: jwtAuth)
         .execute();
   }

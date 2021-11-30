@@ -1,5 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:fdottedline/fdottedline.dart';
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter/custom/custom_picker_dialog.dart';
 import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
@@ -48,23 +48,23 @@ class _MainCardState extends BaseState<MainCard> {
               resizeToAvoidBottomInset: false,
               backgroundColor: Colors.white,
               appBar: _buildAppBar(),
-              body: _vm.bankCardList == null || _vm.bankCardList.length == 0
+              body: _vm.bankCardList == null || _vm.bankCardList!.length == 0
                   ? buildProgressDialog(_vm.brandLogoUrl)
                   : Padding(
                       padding: EdgeInsets.symmetric(horizontal: 15.auto),
                       child: ListView(
                         children: [
                           Wrap(
-                            children: List.generate(_vm.bankCardList.length, (index) {
+                            children: List.generate(_vm.bankCardList!.length, (index) {
                               return Container(
                                   child: Dismissible(
                                 key: UniqueKey(),
-                                child: _buildBankCardItem(_vm.bankCardList[index]),
+                                child: _buildBankCardItem(_vm.bankCardList![index]),
                                 background: _swipeLeftBackground(),
                                 direction: DismissDirection.endToStart,
                                 behavior: HitTestBehavior.deferToChild,
                                 onDismissed: (_) {
-                                  _delete(_vm.bankCardList[index], index);
+                                  _delete(_vm.bankCardList![index], index);
                                 },
                               ));
                             }),
@@ -207,64 +207,51 @@ class _MainCardState extends BaseState<MainCard> {
         },
         child: Container(
           margin: EdgeInsets.only(top: 15.auto, left: 5.auto, right: 5.auto, bottom: 20.auto),
-          child: FDottedLine(
+          child: DottedBorder(
               color: CustomColor.theme_button_disable_bg,
-              height: 70.0,
-              width: context.screenWidth,
-              space: 2.0,
-              corner: FDottedLineCorner.all(10.auto),
+              borderType: BorderType.RRect,
+              radius: Radius.circular(10.auto),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Expanded(
-                    flex: 8,
-                    child: Container(
-                      margin: EdgeInsets.symmetric(vertical: 20.auto, horizontal: 20.auto),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          AutoSizeText(
-                            getTranslatedText("add_card"),
-                            style: TextStyle(color: Colors.black),
-                            minFontSize: 5,
-                            stepGranularity: 1,
+                  Container(
+                    margin: EdgeInsets.symmetric(vertical: 20.auto, horizontal: 20.auto),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          getTranslatedText("add_card"),
+                          style: TextStyle(fontSize: 11.auto, color: Colors.black),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(top: 5.auto),
+                          child: Text(
+                            getTranslatedText("max_card_hint"),
+                            style: TextStyle(fontSize: 9.auto, color: Colors.black),
                           ),
-                          Container(
-                            margin: EdgeInsets.only(top: 5.auto),
-                            child: AutoSizeText(
-                              getTranslatedText("max_card_hint"),
-                              style: TextStyle(color: CustomColor.theme_button_disable_bg),
-                              minFontSize: 5,
-                              maxFontSize: 11,
-                              stepGranularity: 1,
-                            ),
-                          )
-                        ],
-                      ),
+                        )
+                      ],
                     ),
                   ),
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                        margin: EdgeInsets.symmetric(horizontal: 20.auto),
-                        child: ImageIcon(
-                            AssetImage(
-                              "images/card/ic_add_card.png",
-                            ),
-                            size: 23.auto,
-                            color: CustomColor.theme_button_disable_bg)),
-                  ),
+                  Container(
+                      margin: EdgeInsets.symmetric(horizontal: 20.auto),
+                      child: ImageIcon(
+                          AssetImage(
+                            "images/card/ic_add_card.png",
+                          ),
+                          size: 23.auto,
+                          color: CustomColor.theme_button_disable_bg)),
                 ],
               )),
         ),
       );
 
   _delete(BankCard card, int index) async {
-    if (_vm.bankCardList.length > 1) //only show when existing list more than 1, else overlapped
+    if (_vm.bankCardList!.length > 1) //only show when existing list more than 1, else overlapped
       ProgressDialog.show(context, _vm.brandLogoUrl);
     setState(() {
-      _vm.bankCardList.removeAt(index);
+      _vm.bankCardList!.removeAt(index);
     });
     await _vm.deleteBankCard(card.id);
   }
@@ -274,7 +261,7 @@ class _MainCardState extends BaseState<MainCard> {
   }
 
   _checkBankCardListLength() async {
-    if (_vm.bankCardList.length == 0) {
+    if (_vm.bankCardList!.length == 0) {
       var result = await Navigator.of(context).pushNamed("/add_card");
       if (result == null) //no result mean no card added
         Navigator.pop(context);
@@ -303,7 +290,7 @@ class _MainCardState extends BaseState<MainCard> {
       if (!isInitLoading) {
         isInitLoading = true;
       }
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
         _checkBankCardListLength(); //check card list every time fetched
       });
     });

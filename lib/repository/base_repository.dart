@@ -22,8 +22,8 @@ class BaseRepository extends ChangeNotifier {
         converter: (json) => LoginResponse.fromJson(json)).execute();
 
     if (apiState.isSuccess || apiState.isMaintenance) {
-      var authToken = apiState.result.token;
-      _savePreferences(authToken);
+      var authToken = apiState.result?.token;
+      _savePreferences(authToken!);
       print("Authorization:" + authToken);
     }
     return apiState;
@@ -34,7 +34,7 @@ class BaseRepository extends ChangeNotifier {
     prefs.setString("auth_token", authToken);
   }
 
-  setRepoValues(Function set){
+  setRepoValues(Function set) {
     set();
     notifyListeners();
   }

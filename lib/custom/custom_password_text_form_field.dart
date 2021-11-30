@@ -16,16 +16,14 @@ class CustomPasswordTextFormField extends StatefulWidget {
   final Function onShowPassword;
 
   CustomPasswordTextFormField(
-      {Key key,
-      this.title,
-      this.hintText,
-      this.onChanged,
-      this.onFieldSubmitted,
-      this.controller,
-      this.width,
-      this.obscurePassword,
-      this.onShowPassword})
-      : super(key: key);
+      {required this.title,
+      required this.hintText,
+      required this.onChanged,
+      required this.onFieldSubmitted,
+      required this.controller,
+      required this.width,
+      required this.obscurePassword,
+      required this.onShowPassword});
 
   @override
   _CustomPasswordTextFormFieldState createState() => _CustomPasswordTextFormFieldState();
@@ -70,7 +68,7 @@ class _CustomPasswordTextFormFieldState extends BaseState<CustomPasswordTextForm
                     border: InputBorder.none,
                     hintText: widget.hintText,
                     hintStyle: TextStyle(color: CustomColor.very_light_pink_two, fontSize: 13.auto),
-                    suffixIcon:IconButton(
+                    suffixIcon: IconButton(
                       iconSize: 18.auto,
                       padding: EdgeInsets.zero,
                       splashColor: Colors.transparent,
@@ -78,8 +76,7 @@ class _CustomPasswordTextFormFieldState extends BaseState<CustomPasswordTextForm
                       icon: Icon(widget.obscurePassword ? Icons.visibility_off : Icons.visibility,
                           color: CustomColor.very_light_pink_two),
                       onPressed: () => widget.onShowPassword(),
-                    )
-                ),
+                    )),
               ),
             ),
           ]),

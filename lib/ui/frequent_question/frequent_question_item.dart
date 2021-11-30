@@ -10,15 +10,15 @@ import 'package:tgp_flutter/ui/transaction/transaction.dart';
 
 
 class FrequentQuestionItem extends StatefulWidget{
-  final String number;
-  final String title;
-  final String description;
+  final String? number;
+  final String? title;
+  final String? description;
 
-  FrequentQuestionItem({Key key,
+  FrequentQuestionItem({
     this.number,
     this.title,
     this.description
-  }) : super(key: key);
+  }) ;
 
   @override
   _FrequentQuestionItemState createState() => _FrequentQuestionItemState();
@@ -53,7 +53,7 @@ class _FrequentQuestionItemState extends BaseState<FrequentQuestionItem> {
                     ),
                     Expanded(
                       child: Text(
-                        widget.title,
+                        widget.title!,
                         style: TextStyle(
                             fontSize: 14.auto,
                             color: CustomColor.theme_title_text_color
@@ -73,7 +73,7 @@ class _FrequentQuestionItemState extends BaseState<FrequentQuestionItem> {
               show?Container(
                 margin: EdgeInsets.only(top: 20.auto),
                 child: Text(
-                  widget.description,
+                  widget.description!,
                   style: TextStyle(
                       fontSize: 14.auto,
                       color: CustomColor.theme_title_text_color

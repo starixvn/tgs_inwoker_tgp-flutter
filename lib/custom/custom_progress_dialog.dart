@@ -7,29 +7,29 @@ import 'package:flutter/material.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 //import 'package:progress_dialog/progress_dialog.dart';
 
-CustomProgressDialog _progressDialog;
+CustomProgressDialog? _progressDialog;
 
 class ProgressDialog {
   ProgressDialog.show(BuildContext context, String url) {
     create(context, url);
-    _progressDialog.show();
+    _progressDialog!.show();
   }
 
   ProgressDialog.hide() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _progressDialog.dismiss();
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      _progressDialog!.dismiss();
     });
   }
 
-  create(BuildContext context, String url) {
+  create(BuildContext context, String? url) {
     _progressDialog = CustomProgressDialog(context, blur: 2, dismissable: false);
-    _progressDialog.setLoadingWidget(Column(
+    _progressDialog!.setLoadingWidget(Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         (url?.isNotEmpty ?? false)
             ? CachedNetworkImage(
                 placeholder: (context, url) => Container(),
-                imageUrl: url,
+                imageUrl: url!,
                 width: 200.auto,
                 //handling error
                 fit: BoxFit.cover,

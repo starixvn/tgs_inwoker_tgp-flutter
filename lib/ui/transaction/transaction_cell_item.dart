@@ -17,10 +17,17 @@ class TransactionCellItem extends StatefulWidget {
   final bool isUploadButton;
   final bool isDepositTransaction;
   final bool isWithdrawTransaction;
-  final Function getManualDepositId;
+  final Function? getManualDepositId;
 
-  TransactionCellItem({Key key, this.list, this.type, this.isEndRecord, this.isUploadButton = false, this.getManualDepositId, this.isDepositTransaction = false, this.isWithdrawTransaction = false})
-      : super(key: key);
+  TransactionCellItem({
+    required this.list,
+    required this.type,
+    required this.isEndRecord,
+    this.isUploadButton = false,
+    this.getManualDepositId,
+    this.isDepositTransaction = false,
+    this.isWithdrawTransaction = false,
+  });
 
   @override
   _TransactionCellItemState createState() => _TransactionCellItemState();
@@ -90,15 +97,15 @@ class _TransactionCellItemState extends BaseState<TransactionCellItem> {
               widget.list[0].isEmpty
                   ? Container()
                   : Column(
-                    children: [
-                      Row(
+                      children: [
+                        Row(
                           children: [
                             Text(
                               getTranslatedText("order_number"),
                               style: TextStyle(fontSize: 12, color: Colors.grey[700]),
                             ),
                             AutoSizeText(
-                              widget.list[0]??"",
+                              widget.list[0] ?? "",
                               style: TextStyle(color: Colors.grey[700]),
                               minFontSize: 10,
                               maxFontSize: 12,
@@ -106,32 +113,32 @@ class _TransactionCellItemState extends BaseState<TransactionCellItem> {
                             )
                           ],
                         ),
-                      Visibility(
-                        visible: widget.isDepositTransaction || widget.isWithdrawTransaction,
-                        child: Row(
-                          children: [
-                            Text(
-                              getTranslatedText("gms_order_number"),
-                              style: TextStyle(fontSize: 12, color: Colors.grey[700]),
-                            ),
-                            AutoSizeText(
-                              widget.list[1]?? "",
-                              style: TextStyle(color: Colors.grey[700]),
-                              minFontSize: 10,
-                              maxFontSize: 12,
-                              stepGranularity: 1,
-                            )
-                          ],
+                        Visibility(
+                          visible: widget.isDepositTransaction || widget.isWithdrawTransaction,
+                          child: Row(
+                            children: [
+                              Text(
+                                getTranslatedText("gms_order_number"),
+                                style: TextStyle(fontSize: 12, color: Colors.grey[700]),
+                              ),
+                              AutoSizeText(
+                                widget.list[1] ?? "",
+                                style: TextStyle(color: Colors.grey[700]),
+                                minFontSize: 10,
+                                maxFontSize: 12,
+                                stepGranularity: 1,
+                              )
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
+                      ],
+                    ),
               Container(
                 margin: EdgeInsets.only(top: 5.auto),
                 child: Row(
                     children: List.generate(widget.list.length, (index) {
                   return (() {
-                    if (index == 0 || index==1)
+                    if (index == 0 || index == 1)
                       return Container();
                     else if (index == 5 && widget.isDepositTransaction)
                       return Expanded(
@@ -139,7 +146,7 @@ class _TransactionCellItemState extends BaseState<TransactionCellItem> {
                         child: widget.isUploadButton
                             ? GradientButton(
                                 title: getTranslatedText("upload_prof"),
-                                onClick: () => widget.getManualDepositId(),
+                                onClick: () => widget.getManualDepositId!(),
                                 isEnabled: true,
                                 radius: 4.8,
                                 height: 30,

@@ -6,9 +6,9 @@ import 'package:tgp_flutter/ui/base_state.dart';
 class EditSecurityAnswerDisable extends StatefulWidget{
   final String title;
 
-  EditSecurityAnswerDisable({Key key,
-    this.title,
-  }) : super(key: key);
+  EditSecurityAnswerDisable({
+    required this.title,
+  });
 
   @override
   _EditSecurityAnswerDisableState createState() => _EditSecurityAnswerDisableState();

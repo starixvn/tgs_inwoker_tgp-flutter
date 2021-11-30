@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+
 import 'package:json_annotation/json_annotation.dart';
 import 'package:tgp_flutter/entity/game_tag.dart';
 import 'package:tgp_flutter/entity/game_type.dart';
@@ -8,7 +9,8 @@ part 'game.g.dart';
 
 @JsonSerializable()
 class Game {
-  Game();
+  Game(this.id, this.code, this.name, this.description, this.gamePlatformCode, this.isActive, this.type, this.tag,
+      this.localizedName, this.isFavourite);
 
   int id;
   String code;

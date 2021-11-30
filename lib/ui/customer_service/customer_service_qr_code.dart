@@ -63,8 +63,8 @@ class _CustomerServiceQrCodeState extends BaseState<CustomerServiceQrCode> {
             body: Container(
               margin: EdgeInsets.only(top: 20.auto),
               child: Column(
-                children: List.generate(_vm.communicationList.length, (index) {
-                  return _buildQrImage(_vm.communicationList[index]);
+                children: List.generate(_vm.communicationList!.length, (index) {
+                  return _buildQrImage(_vm.communicationList![index]);
                 }),
               ),
             ),
@@ -72,13 +72,12 @@ class _CustomerServiceQrCodeState extends BaseState<CustomerServiceQrCode> {
         });
   }
 
-  _buildQrImage(BrandCommunication brandCommunication) =>
-      Container(
+  _buildQrImage(BrandCommunication brandCommunication) => Container(
         width: context.screenWidth,
         margin: EdgeInsets.only(bottom: 20.auto),
         child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
           QrImage(
-            data: brandCommunication.qrCodeUrl,
+            data: brandCommunication.qrCodeUrl!,
             version: QrVersions.auto,
             size: 200.0,
           ),

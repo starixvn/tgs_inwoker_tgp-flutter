@@ -6,13 +6,11 @@ part of 'exchange_rate.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-ExchangeRate _$ExchangeRateFromJson(Map<String, dynamic> json) {
-  return ExchangeRate(
-    json['buyprice'] as String,
-    json['sellprice'] as String,
-    json['updatetime'] as String,
-  );
-}
+ExchangeRate _$ExchangeRateFromJson(Map<String, dynamic> json) => ExchangeRate(
+      json['buyprice'] as String,
+      json['sellprice'] as String,
+      json['updatetime'] as String,
+    );
 
 Map<String, dynamic> _$ExchangeRateToJson(ExchangeRate instance) =>
     <String, dynamic>{

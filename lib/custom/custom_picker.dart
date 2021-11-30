@@ -8,18 +8,18 @@ class CustomPicker extends StatefulWidget{
   final String title;
   final String displayText;
   final List<dynamic> list;
-  final Function onClick;
+  final Function? onClick;
   final bool isHintText;
   final double width;
 
-  CustomPicker({Key key,
-    this.title,
-    this.displayText,
-    this.list,
+  CustomPicker({
+    required this.title,
+    required this.displayText,
+    required this.list,
     this.onClick,
-    this.isHintText,
-    this.width
-  }) : super(key: key);
+    required this.isHintText,
+    required this.width
+  }) ;
 
   @override
   _CustomPickerState createState() => _CustomPickerState();
@@ -56,7 +56,7 @@ class _CustomPickerState extends BaseState<CustomPicker> {
               highlightColor: Colors.transparent,
               splashColor: Colors.transparent,
                 onTap: () {
-                  widget.onClick();
+                  widget.onClick!();
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

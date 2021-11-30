@@ -9,15 +9,19 @@ import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
 
 class CustomDialog extends StatelessWidget {
-  final String title, description, buttonText1, buttonText2;
-  final Function onClick, onClick2;
+  final String? title;
+  final String description;
+  final String buttonText1;
+  final String? buttonText2;
+  final Function onClick;
+  final Function? onClick2;
 
   CustomDialog({
     this.title,
-    this.description,
-    this.buttonText1,
+    required this.description,
+    required this.buttonText1,
     this.buttonText2,
-    this.onClick,
+    required this.onClick,
     this.onClick2,
   });
 
@@ -62,7 +66,7 @@ class CustomDialog extends StatelessWidget {
                       padding: EdgeInsets.only(bottom: 13.auto, left: 10.auto),
                       alignment: Alignment.topLeft,
                       child: Text(
-                        title,
+                        title!,
                         style: TextStyle(
                           fontSize: 18.auto,
                           fontWeight: FontWeight.w500,
@@ -117,15 +121,15 @@ class CustomDialog extends StatelessWidget {
       );
 
   _buildBackButton(BuildContext context) => Container(
-    margin: EdgeInsets.only(left: 10.auto),
-    child: OutlineBorderButton(
-          onClick: () => this.onClick2(),
-          title: buttonText2,
+        margin: EdgeInsets.only(left: 10.auto),
+        child: OutlineBorderButton(
+          onClick: () => this.onClick2!(),
+          title: buttonText2!,
           isEnabled: true,
           width: context.screenWidth / 3.5,
           height: context.screenHeight / 18,
           fontSize: 13.auto,
           color: Colors.white,
         ),
-  );
+      );
 }

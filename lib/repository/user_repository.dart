@@ -25,16 +25,16 @@ import 'package:tgp_flutter/network/services/api_service.dart';
 import 'base_repository.dart';
 
 class UserRepository extends BaseRepository {
-  static UserRepository _singleton;
-  UserProfile userProfile;
-  MainWallet wallet;
-  Map<String, dynamic> apiError;
+  static UserRepository? _singleton;
+  UserProfile? userProfile;
+  MainWallet? wallet;
+  Map<String, dynamic>? apiError;
 
   static UserRepository getSingleton() {
     if (_singleton == null) {
       _singleton = UserRepository();
     }
-    return _singleton;
+    return _singleton!;
   }
 
   Future<EventResult<LoginResponse>> login(String username, String password) async {
@@ -192,7 +192,8 @@ class UserRepository extends BaseRepository {
               "sort": "CreatedOn",
               "all": "false",
             },
-            converter: (json) => ListResponse.fromJson(json, (res) => BetTransaction.fromJson(res)),
+            converter: (json) =>
+                ListResponse.fromJson(json, (res) => BetTransaction.fromJson(res as Map<String, dynamic>)),
             jwtRefresher: jwtAuth)
         .execute();
   }
@@ -230,7 +231,8 @@ class UserRepository extends BaseRepository {
               "ShowAll": "false",
               "OrderBy": "1"
             },
-            converter: (json) => TransactionResponse.fromJson(json, (res) => AccountTransaction.fromJson(res)),
+            converter: (json) =>
+                TransactionResponse.fromJson(json, (res) => AccountTransaction.fromJson(res as Map<String, dynamic>)),
             jwtRefresher: jwtAuth)
         .execute();
   }
@@ -251,7 +253,8 @@ class UserRepository extends BaseRepository {
               "ShowAll": "false",
               "OrderBy": "1"
             },
-            converter: (json) => TransactionResponse.fromJson(json, (res) => AccountTransaction.fromJson(res)),
+            converter: (json) =>
+                TransactionResponse.fromJson(json, (res) => AccountTransaction.fromJson(res as Map<String, dynamic>)),
             jwtRefresher: jwtAuth)
         .execute();
   }
@@ -275,7 +278,8 @@ class UserRepository extends BaseRepository {
               "ShowAll": "false",
               "IsDesc": "true"
             },
-            converter: (json) => TransactionResponse.fromJson(json, (res) => TransferTransaction.fromJson(res)),
+            converter: (json) =>
+                TransactionResponse.fromJson(json, (res) => TransferTransaction.fromJson(res as Map<String, dynamic>)),
             jwtRefresher: jwtAuth)
         .execute();
   }

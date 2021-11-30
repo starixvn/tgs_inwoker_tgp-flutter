@@ -27,13 +27,12 @@ class _EditPhoneState extends BaseState<EditPhone> {
   var isButtonEnabled = false, isOtpEnabled = false, isTextFieldEnabled = false, isOtpCountdown = false;
   InputValidationProvider validate = new InputValidationProvider();
   int currIndex = 0;
-  String display;
+  String display = "+852";
 
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       _getUserProfile();
-      display = "+852";
     });
     super.initState();
   }
@@ -141,17 +140,17 @@ class _EditPhoneState extends BaseState<EditPhone> {
         onClick: () {
           _onClick();
         },
-        isEnabled: isButtonEnabled ?? false,
+        isEnabled: isButtonEnabled,
         color: CustomColor.theme_bar_gradient_2,
         radius: 9.6,
       ));
 
   _onTextChange() {
     setState(() {
-      if (_otpController.text.isNotEmpty){
+      if (_otpController.text.isNotEmpty) {
         isOtpEnabled = true;
-        isButtonEnabled = true;}
-      else if (_phoneController.text.isNotEmpty) {
+        isButtonEnabled = true;
+      } else if (_phoneController.text.isNotEmpty) {
         isOtpEnabled = true;
         isButtonEnabled = false;
       } else {
@@ -194,7 +193,7 @@ class _EditPhoneState extends BaseState<EditPhone> {
 
     handleApiState(_vm.submitVerifyCodeApiState, onSuccess: () {
       if (currIndex == 0) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
+        WidgetsBinding.instance!.addPostFrameCallback((_) {
           setState(() {
             _clearTextField();
             currIndex = 1;

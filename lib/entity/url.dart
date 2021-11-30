@@ -1,14 +1,14 @@
 import 'package:json_annotation/json_annotation.dart';
+
 part 'url.g.dart';
 
 @JsonSerializable()
-
 class Url {
-  Url();
+  Url(this.url);
 
   String url;
 
   factory Url.fromJson(Map<String, dynamic> json) => _$UrlFromJson(json);
-  Map<String, dynamic> toJson() => _$UrlToJson(this);
 
+  Map<String, dynamic> toJson() => _$UrlToJson(this);
 }

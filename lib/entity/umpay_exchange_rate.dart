@@ -1,13 +1,13 @@
 import 'package:tgp_flutter/entity/bank_detail.dart';
 import 'package:tgp_flutter/entity/bank_type.dart';
+
 import 'package:json_annotation/json_annotation.dart';
 
 part 'umpay_exchange_rate.g.dart';
 
 @JsonSerializable()
-
 class UmPayExchangeRate {
-  UmPayExchangeRate();
+  UmPayExchangeRate(this.rate, this.fee, this.inRate, this.outRate);
 
   double rate;
   double fee;
@@ -17,6 +17,6 @@ class UmPayExchangeRate {
   double outRate;
 
   factory UmPayExchangeRate.fromJson(Map<String, dynamic> json) => _$UmPayExchangeRateFromJson(json);
-  Map<String, dynamic> toJson() => _$UmPayExchangeRateToJson(this);
 
+  Map<String, dynamic> toJson() => _$UmPayExchangeRateToJson(this);
 }

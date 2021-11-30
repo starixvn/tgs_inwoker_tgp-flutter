@@ -18,11 +18,10 @@ class CustomPickerDialog extends StatefulWidget {
   final ValueChanged<dynamic> onChanged;
 
   CustomPickerDialog({
-    Key key,
-    @required this.title,
-    this.list,
-    this.onChanged,
-  }) : super(key: key);
+    required this.title,
+    required this.list,
+    required this.onChanged,
+  });
 
   @override
   _CustomPickerDialogState createState() => _CustomPickerDialogState();
@@ -39,7 +38,7 @@ class _CustomPickerDialogState extends BaseState<CustomPickerDialog> {
           margin: EdgeInsets.only(left: 5, right: 5, top: 5),
           decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Colors.grey, width: 1.0))),
           child: Text(
-            getTranslatedText(widget.title) ?? "",
+            getTranslatedText(widget.title) ?? widget.title,
             style: TextStyle(
               fontSize: 13.auto,
               color: Colors.red,
@@ -105,6 +104,7 @@ class _CustomPickerDialogState extends BaseState<CustomPickerDialog> {
           _getText(index),
           style: TextStyle(fontSize: 13.auto),
           textAlign: TextAlign.center,
+          overflow: TextOverflow.ellipsis,
         );
 
   _getBankCardPickerItem(index) {
@@ -112,19 +112,37 @@ class _CustomPickerDialogState extends BaseState<CustomPickerDialog> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
-          bankType.getName(context),
-          style: TextStyle(fontSize: 13.auto),
-          textAlign: TextAlign.center,
+        Expanded(
+          flex:2,
+          child: Text(
+            bankType.getName(context),
+            style: TextStyle(fontSize: 13.auto),
+            textAlign: TextAlign.left,
+          ),
         ),
-        Text(
-          bankType == BankType.CRYPTO
-              ? (widget.list[index].bankDetail.address)
-              : (widget.list[index].bankDetail.bankAccount ?? ""),
-          style: TextStyle(fontSize: 13.auto),
-          textAlign: TextAlign.center,
+        Expanded(
+          flex:3,
+          child: Text(
+            _getDisplayBankAccountText (widget.list[index]),
+            style: TextStyle(fontSize: 13.auto),
+            textAlign: TextAlign.center,
+            overflow: TextOverflow.ellipsis,
+          ),
         )
       ],
     );
+  }
+
+  _getDisplayBankAccountText(BankCard bankCard) {
+    switch (bankCard.bankType) {
+      case BankType.CRYPTO:
+        return bankCard.bankDetail.address;
+      case BankType.THIRD_PARTY:
+        return bankCard.bankDetail.phone;
+      case BankType.FPS:
+        return bankCard.bankDetail.phone;
+      default:
+        return bankCard.bankDetail.bankAccount;
+    }
   }
 }

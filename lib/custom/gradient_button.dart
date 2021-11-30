@@ -10,24 +10,21 @@ class GradientButton extends StatelessWidget {
   final bool isEnabled;
   final double radius;
   final double height;
-  final double fontSize;
-  final double maxFontSize;
-  final double width;
-  final double padding;
+  final double? fontSize;
+  final double? maxFontSize;
+  final double? width;
+  final double? padding;
 
   GradientButton(
-      {Key key,
-      @required this.title,
-      @required this.onClick,
-      @required this.isEnabled,
-      @required this.radius,
-      @required this.height,
+      {required this.title,
+      required this.onClick,
+      required this.isEnabled,
+      required this.radius,
+      required this.height,
       this.fontSize,
-        this.maxFontSize,
-        this.width,
-        this.padding
-      })
-      : super(key: key);
+      this.maxFontSize,
+      this.width,
+      this.padding});
 
   @override
   Widget build(BuildContext context) {
@@ -40,8 +37,8 @@ class GradientButton extends StatelessWidget {
             child: Container(
               alignment: Alignment.center,
               height: height.auto,
-              width: width??context.screenWidth,
-              padding: EdgeInsets.all(padding??0),
+              width: width ?? context.screenWidth,
+              padding: EdgeInsets.all(padding ?? 0),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [CustomColor.theme_bar_gradient_1, CustomColor.theme_bar_gradient_2],
@@ -55,9 +52,9 @@ class GradientButton extends StatelessWidget {
                 style: TextStyle(color: Colors.white),
                 textAlign: TextAlign.center,
                 minFontSize: fontSize ?? 12,
-                maxFontSize: maxFontSize??12,
+                maxFontSize: maxFontSize ?? 12,
                 stepGranularity: 1,
-                maxLines: title.contains(" ")?2:1,
+                maxLines: title.contains(" ") ? 2 : 1,
               ),
             ),
           )
@@ -73,7 +70,7 @@ class GradientButton extends StatelessWidget {
             child: Container(
               alignment: Alignment.center,
               height: height.auto,
-              width: width??context.screenWidth,
+              width: width ?? context.screenWidth,
               child: Text(
                 title,
                 textAlign: TextAlign.center,

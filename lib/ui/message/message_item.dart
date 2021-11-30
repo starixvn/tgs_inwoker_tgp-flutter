@@ -15,8 +15,8 @@ class MessageItem extends StatefulWidget {
   final Function(String) onReadMessage;
 
   MessageItem({
-    this.message,
-    this.onReadMessage,
+    required this.message,
+    required this.onReadMessage,
   });
 
   @override

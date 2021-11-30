@@ -7,10 +7,6 @@ import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
 
 class MessageActionDialog extends StatefulWidget {
-  MessageActionDialog({
-    Key key,
-  }) : super(key: key);
-
   @override
   _MessageActionDialogState createState() => _MessageActionDialogState();
 }

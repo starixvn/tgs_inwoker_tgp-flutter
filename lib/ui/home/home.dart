@@ -18,7 +18,6 @@ import 'package:tgp_flutter/ui/base_state.dart';
 import 'package:tgp_flutter/ui/home/game/game_view_model.dart';
 import 'package:tgp_flutter/ui/home/home_user_info_view.dart';
 import 'package:tgp_flutter/ui/home/home_view_model.dart';
-import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:marquee/marquee.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/ui/login/login.dart';
@@ -28,7 +27,7 @@ import 'game/game_view.dart';
 class Home extends StatefulWidget {
   final bool isFirstRun;
 
-  Home({this.isFirstRun});
+  Home({this.isFirstRun = false});
 
   @override
   _HomeState createState() => _HomeState();
@@ -44,7 +43,7 @@ class _HomeState extends BaseState<Home> {
   // String marquee = "《GD真人维护公告》GD真人将于 7 月 2 8 日 09:00 至 14:00 进行维护 维护期间不提供游戏相关服务。若有问题欢迎与在线客服联系 如有问题欢迎与在线客服联系，谢谢";
   ScrollController controller = ScrollController();
   var currentTabIndex = "0";
-  UserProfile user;
+  UserProfile? user;
 
   var itemHeightRatio = 335 / 90;
   var _vm = HomeViewModel();
@@ -63,9 +62,11 @@ class _HomeState extends BaseState<Home> {
     _vm.resumeIfNeed();
     _gameViewModel.getGameProviderList(isRefresh: true);
     getLanguage();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (EnvironmentConfig.isShowMarqueePopUp) _displayMarqueeDialog();
-    });
+    if (widget.isFirstRun) {
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
+        if (EnvironmentConfig.isShowMarqueePopUp) _displayMarqueeDialog();
+      });
+    }
   }
 
   getLanguage() async {
@@ -104,17 +105,17 @@ class _HomeState extends BaseState<Home> {
 
   _buildImageSlider() => Container(
         height: context.screenHeight / 5,
-        child: _vm.bannerList == null || _vm.bannerList.isEmpty
+        child: _vm.bannerList == null || _vm.bannerList!.isEmpty
             ? _buildEmptyContainer()
             : ImageSlideshow(
                 initialPage: 0,
                 indicatorColor: CustomColor.theme_bar_gradient_2,
                 indicatorBackgroundColor: Colors.grey,
                 children: List.generate(
-                    _vm.bannerList?.length,
+                    _vm.bannerList!.length,
                     (index) => CachedNetworkImage(
                           placeholder: (context, url) => _buildEmptyContainer(),
-                          imageUrl: _vm.bannerList[index].mobileUrl ?? "",
+                          imageUrl: _vm.bannerList![index].mobileUrl,
                           //handling error
                           fit: BoxFit.fill,
                           errorWidget: (context, url, error) => _buildEmptyContainer(),
@@ -160,7 +161,7 @@ class _HomeState extends BaseState<Home> {
       );
 
   _buildTextMarquee() {
-    var announcement = _removeMultiLine(parseHtmlString(_vm.announcement));
+    var announcement = _removeMultiLine(parseHtmlString(_vm.announcement??""));
     return Expanded(
       child: Container(
         decoration: BoxDecoration(color: CustomColor.theme_bar_gradient_1, borderRadius: BorderRadius.circular(10.0)),
@@ -189,7 +190,7 @@ class _HomeState extends BaseState<Home> {
 
   navigateToLogin() async {
     var result = await Navigator.of(context).pushNamed(RoutePath.login);
-    if (result) _initData();
+    if (result != null) _initData();
   }
 
   _displayLoginDialog() async {
@@ -219,11 +220,11 @@ class _HomeState extends BaseState<Home> {
       builder: (BuildContext context) => CustomDialog(
         title: /*_vm.firstAnnouncement?.localization == null
             ?*/
-            (_vm.firstAnnouncement.content),
+            (_vm.firstAnnouncement?.content ?? ""),
         //: ((_vm.firstAnnouncement?.localization?.name)),
         description: /*_vm.firstAnnouncement?.localization == null
             ?*/
-            _vm.firstAnnouncement?.content,
+            _vm.firstAnnouncement?.content ?? "",
         //: (_vm.firstAnnouncement?.localization?.content),
         buttonText1: getTranslatedText("confirm"),
         //buttonText2: getTranslatedText("no"),
@@ -233,8 +234,8 @@ class _HomeState extends BaseState<Home> {
   }
 
   _handleApiState() {
-    if (widget.isFirstRun ?? false) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+    if (widget.isFirstRun) {
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
         if (_vm.isNotLogin) {
           navigateToLogin();
           _vm.markIsNotLogin();

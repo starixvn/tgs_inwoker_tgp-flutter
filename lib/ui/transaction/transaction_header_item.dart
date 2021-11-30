@@ -9,7 +9,10 @@ class TransactionHeaderItem extends StatefulWidget {
   final List<String> headerList;
   final bool isUploadButton;
 
-  const TransactionHeaderItem({Key key, this.headerList, this.isUploadButton}) : super(key: key);
+  const TransactionHeaderItem({
+    required this.headerList,
+    required this.isUploadButton,
+  });
 
   @override
   _TransactionHeaderItemState createState() => _TransactionHeaderItemState();
@@ -24,7 +27,9 @@ class _TransactionHeaderItemState extends BaseState<TransactionHeaderItem> {
         return Expanded(
           flex: /*(index == 3 && widget.isUploadButton) ? 1 :*/ 2,
           child: index == 3 && widget.isUploadButton
-              ? Container(width: 45.auto,)
+              ? Container(
+                  width: 45.auto,
+                )
               : AutoSizeText(
                   getTranslatedText(widget.headerList[index]) ?? " ",
                   minFontSize: 5,

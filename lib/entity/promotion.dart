@@ -5,29 +5,16 @@ part 'promotion.g.dart';
 
 @JsonSerializable()
 class Promotion {
-  Promotion();
+  Promotion(this.id, this.name, this.from, this.to, this.vipLevels, this.localization, this.mobileBanner, this.content,
+      this.terms);
 
   String id;
   String name;
   String from;
   String to;
-  int status;
-  String promotionType;
-  double bonusAmountLimit;
-  double amountUsed;
-  bool unlimited;
-  int gameType;
-  double percentage;
-  double totalAmountLimit;
-  double turnoverMultiple;
-  List<String> gameProviderIds;
   List<int> vipLevels;
-  String createdOn;
-  String updatedOn;
-  String createdByUsername;
-  String updatedByUsername;
-  Localization localization;
-  String mobileBanner;
+  Localization? localization;
+  String? mobileBanner;
   String content;
   String terms;
 

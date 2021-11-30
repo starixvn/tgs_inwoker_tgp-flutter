@@ -10,27 +10,25 @@ class CustomTextFormField extends StatefulWidget {
   final ValueChanged<String> onFieldSubmitted;
   final ValueChanged<String> onChanged;
   final TextEditingController controller;
-  final FocusNode focusNode;
+  final FocusNode? focusNode;
   final double width;
-  final Widget button;
+  final Widget? button;
   final TextInputType textInputType;
   final TextInputAction textInputAction;
   final bool enabled;
 
   CustomTextFormField(
-      {Key key,
-      this.title,
-      this.hintText,
-      this.onChanged,
-      this.onFieldSubmitted,
-      this.controller,
+      {required this.title,
+      required this.hintText,
+      required this.onChanged,
+      required this.onFieldSubmitted,
+      required this.controller,
       this.focusNode,
-      this.width,
+      required this.width,
       this.button,
-      this.textInputType,
-      this.textInputAction,
-      this.enabled})
-      : super(key: key);
+      required this.textInputType,
+      required this.textInputAction,
+      this.enabled = true});
 
   @override
   _CustomTextFormFieldState createState() => _CustomTextFormFieldState();
@@ -65,7 +63,7 @@ class _CustomTextFormFieldState extends BaseState<CustomTextFormField> {
                   width: widget.width,
                   height: 40.auto,
                   child: TextFormField(
-                    enabled: widget.enabled ?? true,
+                    enabled: widget.enabled,
                     autofocus: false,
                     onChanged: (value) => widget.onChanged(value),
                     focusNode: widget.focusNode,
@@ -85,7 +83,7 @@ class _CustomTextFormFieldState extends BaseState<CustomTextFormField> {
                   ),
                 ),
               ]),
-              widget.button == null ? Container() : widget.button
+              widget.button == null ? Container() : widget.button!
             ],
           ),
         ));

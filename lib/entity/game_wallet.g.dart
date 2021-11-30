@@ -6,9 +6,9 @@ part of 'game_wallet.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-GameWallet _$GameWalletFromJson(Map<String, dynamic> json) {
-  return GameWallet()..balance = (json['balance'] as num)?.toDouble();
-}
+GameWallet _$GameWalletFromJson(Map<String, dynamic> json) => GameWallet(
+      (json['balance'] as num?)?.toDouble(),
+    );
 
 Map<String, dynamic> _$GameWalletToJson(GameWallet instance) =>
     <String, dynamic>{

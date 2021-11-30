@@ -1,3 +1,4 @@
+
 import 'package:json_annotation/json_annotation.dart';
 import 'package:tgp_flutter/entity/game_type.dart';
 part 'game_provider2.g.dart';
@@ -10,7 +11,7 @@ class GameProvider2 {
   GameType gameType;
   String code;
   String name;
-  String description;
+  String? description;
   int status;
 
   factory GameProvider2.fromJson(Map<String, dynamic> json) => _$GameProvider2FromJson(json);

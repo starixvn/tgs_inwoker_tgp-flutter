@@ -20,21 +20,21 @@ class GameViewModel extends BaseViewModel {
 
   @override
   List<BaseRepository> get repoList => [contentRepo];
-  EventResult getGameUrlApiState,
+  var getGameUrlApiState,
       getGameProviderListApiState,
       getLobbyGameUrlApiState,
       getFavouriteGameApiState,
       setFavouriteGameApiState,
       deleteFavouriteGameApiState,
       getGameApiState;
-  List<Game> _gameList, filteredGameList;
+  List<Game>? _gameList, filteredGameList;
   Map<String, List<Game>> gameListMap = new Map<String, List<Game>>();
   int mCategory = 0;
-  String mPlatform, mSearchQuery = "";
-  GameType mGameType;
+  String? mPlatform, mSearchQuery = "";
+  GameType? mGameType;
   var url, lobbyUrl;
-  List<GameProvider2> platformList;
-  List<List<GameProvider2>> gameProviderList;
+  List<GameProvider2>? platformList;
+  List<List<GameProvider2>>? gameProviderList;
   List<GameType> gameTypeList = [
     GameType.Sportsbook,
     GameType.ESports,
@@ -63,7 +63,7 @@ class GameViewModel extends BaseViewModel {
       getGameProviderListApiState = await contentRepo.getGameProviderList();
       _gameProviderList = getGameProviderListApiState.result;
     } else {
-      _gameProviderList = contentRepo.gameProviderList;
+      _gameProviderList = contentRepo.gameProviderList!;
     }
     // if (contentRepo.gameProviderList == null|| isFromChildGame) return;
 
@@ -88,14 +88,14 @@ class GameViewModel extends BaseViewModel {
     setLoading();
     var apiState = await contentRepo.getGameList(gamePlatformCode, gameType);
     if (apiState.isSuccess) {
-      if (apiState.result.isEmpty) {
+      if (apiState.result!.isEmpty) {
         getGameApiState = apiState;
         await getPlatformList(gameType);
         isGamePlatformInactive = true;
         mPlatform = "ALL";
-        await filter(gamePlatformCode: mPlatform);
+        await filter(gamePlatformCode: mPlatform!);
       } else {
-        gameListMap[gamePlatformCode] = apiState.result;
+        gameListMap[gamePlatformCode] = apiState.result!;
         if (gameType == GameType.Slot || gameType == GameType.EGame || gameType == GameType.Fishing)
           await _getFavoriteGame(gameType).then((_apiState) {
             if (_apiState.result.isNotEmpty) {
@@ -132,12 +132,13 @@ class GameViewModel extends BaseViewModel {
 
   _getRecommendGameList() {
     if (_gameList != null)
-      return _gameList.where((element) => element.tag.isRecommend == true).take(6).toList();
+      return _gameList!.where((element) => element.tag.isRecommend == true).take(6).toList();
     else
       return <Game>[];
   }
 
-  filter({BuildContext context, int category, String searchQuery, String gamePlatformCode, GameType gameType}) async {
+  filter(
+      {BuildContext? context, int? category, String? searchQuery, String? gamePlatformCode, GameType? gameType}) async {
     if (context != null) _context = context;
     if (gamePlatformCode != null && gameType != null) {
       mGameType = gameType;
@@ -178,11 +179,11 @@ class GameViewModel extends BaseViewModel {
   Future<List<Game>> _filterPlatform() async {
     if (mPlatform == "ALL") {
       //get all game list
-      List<Game> _list = await _addGameList(_gameList);
+      List<Game> _list = await _addGameList(_gameList!);
       return _list;
     } else {
       //if (gameListMap[mPlatform] == null) {
-      return await getGameList(mPlatform, mGameType).then((apiState) {
+      return await getGameList(mPlatform!, mGameType!).then((apiState) {
         if (apiState.result.isEmpty) {
           List<Game> list = [];
           return list;
@@ -194,9 +195,9 @@ class GameViewModel extends BaseViewModel {
 
   _addGameList(List<Game> list) async {
     var task = <Future>[];
-    platformList.forEach((platform) {
+    platformList!.forEach((platform) {
       if (gameListMap[platform.code] == null) {
-        task.add(getGameList(platform.code, mGameType));
+        task.add(getGameList(platform.code, mGameType!));
       }
     });
     await Future.wait(task);
@@ -204,10 +205,10 @@ class GameViewModel extends BaseViewModel {
   }
 
   List<Game> _filterSearch(List<Game> gameList) {
-    if (mSearchQuery == null || mSearchQuery.isEmpty) {
+    if (mSearchQuery == null || (mSearchQuery?.isEmpty ?? true)) {
       return gameList;
     } else {
-      var list = gameList.where((element) => element.name.toLowerCase().contains(mSearchQuery.toLowerCase())).toList();
+      var list = gameList.where((element) => element.name.toLowerCase().contains(mSearchQuery!.toLowerCase())).toList();
       return list;
     }
   }
@@ -215,7 +216,7 @@ class GameViewModel extends BaseViewModel {
   getPlatformList(GameType gameType) async {
     await getGameProviderList(isRefresh: true);
     platformList =
-        (gameProviderList.expand((e) => e).toList()).where((element) => element.gameType == gameType).toList();
+        (gameProviderList!.expand((e) => e).toList()).where((element) => element.gameType == gameType).toList();
     isLoading = false;
     notifyListeners();
     return platformList;

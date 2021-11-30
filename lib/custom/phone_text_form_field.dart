@@ -14,20 +14,18 @@ class PhoneTextFormField extends StatefulWidget {
   final double width;
   final TextInputAction textInputAction;
   final bool enabled;
-  final ValueChanged<String>  onAreaCodeClicked;
+  final ValueChanged<String> onAreaCodeClicked;
   final String displayedAreaCode;
 
   PhoneTextFormField(
-      {Key key,
-      this.onChanged,
-      this.onFieldSubmitted,
-      this.controller,
-      this.width,
-      this.textInputAction,
-      this.enabled,
-      this.onAreaCodeClicked,
-      this.displayedAreaCode})
-      : super(key: key);
+      {required this.onChanged,
+      required this.onFieldSubmitted,
+      required this.controller,
+      required this.width,
+      required this.textInputAction,
+      required this.enabled,
+      required this.onAreaCodeClicked,
+      required this.displayedAreaCode});
 
   @override
   _PhoneTextFormFieldState createState() => _PhoneTextFormFieldState();
@@ -74,7 +72,7 @@ class _PhoneTextFormFieldState extends BaseState<PhoneTextFormField> {
                         Expanded(
                           flex: 5,
                           child: AutoSizeText(
-                            widget.displayedAreaCode ?? areaCodeList.first,
+                            widget.displayedAreaCode,
                             style: TextStyle(
                               color: CustomColor.theme_bar_gradient_1,
                             ),
@@ -109,7 +107,7 @@ class _PhoneTextFormFieldState extends BaseState<PhoneTextFormField> {
                 alignment: Alignment.center,
                 child: TextFormField(
                   textAlign: TextAlign.left,
-                  enabled: widget.enabled ?? true,
+                  enabled: widget.enabled,
                   autofocus: false,
                   onChanged: (value) => widget.onChanged(value),
                   controller: widget.controller,
@@ -139,8 +137,7 @@ class _PhoneTextFormFieldState extends BaseState<PhoneTextFormField> {
           return CustomPickerDialog(
               title: getTranslatedText("area_code"),
               list: areaCodeList,
-              onChanged: (value) => widget.onAreaCodeClicked(value)
-          );
+              onChanged: (value) => widget.onAreaCodeClicked(value));
         });
   }
 }

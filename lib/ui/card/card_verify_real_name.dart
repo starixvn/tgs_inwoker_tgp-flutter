@@ -205,7 +205,7 @@ class _CardVerifyRealNameState extends BaseState<CardVerifyRealName> {
     if(_vm.editSurnameApiState.isSuccess){
        ProgressDialog.hide();
       _vm.resetApiState(isEditSurnameApiState: true);
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
         if(_vm.userProfile.memberSafePassword.isEmpty){
           Navigator.of(context).pushReplacementNamed('/card_verify_withdraw_password');
           Navigator.of(context).popAndPushNamed("/card_verify_withdraw_password");

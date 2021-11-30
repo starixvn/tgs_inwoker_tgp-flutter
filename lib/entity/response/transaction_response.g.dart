@@ -8,19 +8,18 @@ part of 'transaction_response.dart';
 
 TransactionResponse<T> _$TransactionResponseFromJson<T>(
   Map<String, dynamic> json,
-  T Function(Object json) fromJsonT,
-) {
-  return TransactionResponse<T>(
-    json['totalCount'] as int,
-    (json['items'] as List)?.map(fromJsonT)?.toList(),
-  );
-}
+  T Function(Object? json) fromJsonT,
+) =>
+    TransactionResponse<T>(
+      json['totalCount'] as int,
+      (json['items'] as List<dynamic>?)?.map(fromJsonT).toList(),
+    );
 
 Map<String, dynamic> _$TransactionResponseToJson<T>(
   TransactionResponse<T> instance,
-  Object Function(T value) toJsonT,
+  Object? Function(T value) toJsonT,
 ) =>
     <String, dynamic>{
       'totalCount': instance.totalCount,
-      'items': instance.items?.map(toJsonT)?.toList(),
+      'items': instance.items?.map(toJsonT).toList(),
     };

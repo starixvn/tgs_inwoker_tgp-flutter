@@ -1,6 +1,6 @@
-enum TransactionCellItemType{
+enum TransactionCellItemType {
   TOP,
   CENTER,
   BOTTOM,
-  SINGLE
+  SINGLE,
 }

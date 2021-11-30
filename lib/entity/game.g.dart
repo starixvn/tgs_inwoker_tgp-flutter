@@ -6,21 +6,18 @@ part of 'game.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Game _$GameFromJson(Map<String, dynamic> json) {
-  return Game()
-    ..id = json['id'] as int
-    ..code = json['code'] as String
-    ..name = json['name'] as String
-    ..description = json['description'] as String
-    ..gamePlatformCode = json['gpcode'] as String
-    ..isActive = json['isactive'] as bool
-    ..type = _$enumDecodeNullable(_$GameTypeEnumMap, json['type'])
-    ..tag = json['tag'] == null
-        ? null
-        : GameTag.fromJson(json['tag'] as Map<String, dynamic>)
-    ..localizedName = json['localizedName'] as String
-    ..isFavourite = json['isFavourite'] as bool;
-}
+Game _$GameFromJson(Map<String, dynamic> json) => Game(
+      json['id'] as int,
+      json['code'] as String,
+      json['name'] as String,
+      json['description'] as String,
+      json['gpcode'] as String,
+      json['isactive'] as bool,
+      $enumDecode(_$GameTypeEnumMap, json['type']),
+      GameTag.fromJson(json['tag'] as Map<String, dynamic>),
+      json['localizedName'] as String,
+      json['isFavourite'] as bool,
+    );
 
 Map<String, dynamic> _$GameToJson(Game instance) => <String, dynamic>{
       'id': instance.id,
@@ -34,38 +31,6 @@ Map<String, dynamic> _$GameToJson(Game instance) => <String, dynamic>{
       'localizedName': instance.localizedName,
       'isFavourite': instance.isFavourite,
     };
-
-T _$enumDecode<T>(
-  Map<T, dynamic> enumValues,
-  dynamic source, {
-  T unknownValue,
-}) {
-  if (source == null) {
-    throw ArgumentError('A value must be provided. Supported values: '
-        '${enumValues.values.join(', ')}');
-  }
-
-  final value = enumValues.entries
-      .singleWhere((e) => e.value == source, orElse: () => null)
-      ?.key;
-
-  if (value == null && unknownValue == null) {
-    throw ArgumentError('`$source` is not one of the supported values: '
-        '${enumValues.values.join(', ')}');
-  }
-  return value ?? unknownValue;
-}
-
-T _$enumDecodeNullable<T>(
-  Map<T, dynamic> enumValues,
-  dynamic source, {
-  T unknownValue,
-}) {
-  if (source == null) {
-    return null;
-  }
-  return _$enumDecode<T>(enumValues, source, unknownValue: unknownValue);
-}
 
 const _$GameTypeEnumMap = {
   GameType.Sportsbook: 1,

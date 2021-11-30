@@ -32,7 +32,7 @@ class _AddressState extends BaseState<Address> {
 
   @override
   void initState() {
-    /*WidgetsBinding.instance.addPostFrameCallback((_) {
+    /*WidgetsBinding.instance!.addPostFrameCallback((_) {
       setState(() {
         userProfile =  _vm.userProfile;
         if(_vm.userProfile.memberAddressSurename.isNotEmpty||
@@ -171,7 +171,7 @@ class _AddressState extends BaseState<Address> {
       /*_vm.updateAddress(_nameController.text, _contactController.text, _addressController.text, "");
       if (_vm.updateAddressApiState.isSuccess) {
         await _vm.getBasicInfo();
-        WidgetsBinding.instance.addPostFrameCallback((_) {
+        WidgetsBinding.instance!.addPostFrameCallback((_) {
            ProgressDialog.hide();
           setState(() {
             userProfile = _vm.getBasicInfoApiState.result;

@@ -10,14 +10,14 @@ import 'package:tgp_flutter/network/services/api_service.dart';
 import 'base_repository.dart';
 
 class AuthenticationRepository extends BaseRepository {
-  static AuthenticationRepository _singleton;
-  UserProfile userProfile;
+  static AuthenticationRepository? _singleton;
+  UserProfile? userProfile;
 
   static AuthenticationRepository getSingleton() {
     if (_singleton == null) {
       _singleton = AuthenticationRepository();
     }
-    return _singleton;
+    return _singleton!;
   }
 
   Future<EventResult<dynamic>> emailVerify(String email) async {
@@ -44,14 +44,14 @@ class AuthenticationRepository extends BaseRepository {
     return await ApiRequestBuilder<dynamic>(
             endPoint: "api/player/phone",
             params: {
-              "area":area,
+              "area": area,
               "phone": phone,
             },
             jwtRefresher: jwtAuth)
         .execute();
   }
 
-  Future<EventResult<dynamic>> getForgotPasswordCode(String email, String phone, String areaCode) async {
+  Future<EventResult<dynamic>> getForgotPasswordCode(String? email, String? phone, String? areaCode) async {
     return await ApiRequestBuilder<dynamic>(
             isAuthorization: false,
             endPoint: "api/player/password/forgot",
@@ -95,22 +95,20 @@ class AuthenticationRepository extends BaseRepository {
         .execute();
   }
 
-
   Future<EventResult<dynamic>> getReVerifyCode(String username, String password, String areaCode, String phone) async {
     return await ApiRequestBuilder<dynamic>(
-        endPoint: "api/player/init-phone",
-        params: {"username": username, "pwd": password, "areacode": areaCode, "phone": phone},
-        jwtRefresher: jwtAuth)
+            endPoint: "api/player/init-phone",
+            params: {"username": username, "pwd": password, "areacode": areaCode, "phone": phone},
+            jwtRefresher: jwtAuth)
         .execute();
   }
 
   Future<EventResult<dynamic>> phoneReVerify(String securityKey, validateCode) async {
     return await ApiRequestBuilder<dynamic>(
-        method: HttpMethod.PUT,
-        endPoint: "api/player/init-phone",
-        params: {"securitykey": securityKey, "validatecode": validateCode},
-        jwtRefresher: jwtAuth)
+            method: HttpMethod.PUT,
+            endPoint: "api/player/init-phone",
+            params: {"securitykey": securityKey, "validatecode": validateCode},
+            jwtRefresher: jwtAuth)
         .execute();
   }
-
 }

@@ -20,21 +20,18 @@ import 'package:tgp_flutter/ui/customer_service/customer_service_view_model.dart
 import 'package:tgp_flutter/ui/home/game/game_view_model.dart';
 
 class CustomerServiceWebView extends StatefulWidget {
-  final String url;
-  final String brandLogoUrl;
+  final String? url;
+  final String? brandLogoUrl;
 
-  CustomerServiceWebView({
-    Key key,
-    this.url,
-    this.brandLogoUrl
-  }) : super(key: key);
+  CustomerServiceWebView({this.url, this.brandLogoUrl});
 
   @override
   _CustomerServiceWebViewState createState() => _CustomerServiceWebViewState();
 }
 
 class _CustomerServiceWebViewState extends BaseState<CustomerServiceWebView> {
-  InAppWebViewController _webViewController;
+  InAppWebViewController? _webViewController;
+
   //var url = EnvironmentConfig.csUrl;
 //  CustomerServiceViewModel _vm = CustomerServiceViewModel();
 
@@ -65,29 +62,29 @@ class _CustomerServiceWebViewState extends BaseState<CustomerServiceWebView> {
         ),
       ),
       body: widget.url == null
-          ? buildProgressDialog(widget.brandLogoUrl)
+          ? buildProgressDialog(widget.brandLogoUrl!)
           : InAppWebView(
-        initialUrlRequest: URLRequest(url:Uri.parse(widget.url)),
-        initialOptions: InAppWebViewGroupOptions(
-            crossPlatform: InAppWebViewOptions(
-              //debuggingEnabled: true,
-              javaScriptEnabled: true,
+              initialUrlRequest: URLRequest(url: Uri.parse(widget.url!)),
+              initialOptions: InAppWebViewGroupOptions(
+                  crossPlatform: InAppWebViewOptions(
+                    //debuggingEnabled: true,
+                    javaScriptEnabled: true,
+                  ),
+                  android: AndroidInAppWebViewOptions(
+                    useWideViewPort: true,
+                    mixedContentMode: AndroidMixedContentMode.MIXED_CONTENT_ALWAYS_ALLOW,
+                  )),
+              onWebViewCreated: (InAppWebViewController controller) {
+                _webViewController = controller;
+                _webViewController!.loadUrl(urlRequest: URLRequest(url: Uri.parse(widget.url!)));
+              },
+              onLoadStart: (controller, url) {
+                ProgressDialog.show(context, widget.brandLogoUrl!);
+              },
+              onLoadStop: (controller, url) async {
+                ProgressDialog.hide();
+              },
             ),
-            android: AndroidInAppWebViewOptions(
-              useWideViewPort: true,
-              mixedContentMode: AndroidMixedContentMode.MIXED_CONTENT_ALWAYS_ALLOW,
-            )),
-        onWebViewCreated: (InAppWebViewController controller) {
-          _webViewController = controller;
-          _webViewController.loadUrl(urlRequest: URLRequest(url:Uri.parse(widget.url)));
-        },
-        onLoadStart: ( controller,  url) {
-          ProgressDialog.show(context, widget.brandLogoUrl);
-        },
-        onLoadStop: ( controller,  url) async {
-          ProgressDialog.hide();
-        },
-      ),
     );
   }
 }

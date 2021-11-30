@@ -26,8 +26,8 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
 
   handleApiState(
     EventResult eventResult, {
-    Function onSuccess,
-    Function onError,
+    required Function onSuccess,
+    Function? onError,
     bool isAutoHideLoading = true,
     bool isRequireResult = false,
     bool isCheckSessionExpired = true,
@@ -39,13 +39,15 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
         if (isAutoHideLoading) ProgressDialog.hide();
         if (eventResult.errorCode == 210) {
           UserRepository.getSingleton().clearSession();
-          WidgetsBinding.instance.addPostFrameCallback((_) {
+          WidgetsBinding.instance!.addPostFrameCallback((_) {
             Navigator.of(context).pushNamedAndRemoveUntil(RoutePath.empty, (Route<dynamic> route) => false);
             Navigator.of(context).pushNamed(RoutePath.blacklistedUser);
           });
-        } else if ((eventResult.errorCode == 102 || eventResult.errorCode == 101) && isCheckSessionExpired && !isSplashScreen) {
+        } else if ((eventResult.errorCode == 102 || eventResult.errorCode == 101) &&
+            isCheckSessionExpired &&
+            !isSplashScreen) {
           UserRepository.getSingleton().clearSession();
-          WidgetsBinding.instance.addPostFrameCallback((_) {
+          WidgetsBinding.instance!.addPostFrameCallback((_) {
             showDialog(
                 barrierDismissible: false,
                 context: context,
@@ -68,23 +70,24 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
           });
         } else if (eventResult.errorMsgId != null) {
           if (eventResult.errorMsgId == 'UnderMaintenance') {
-            WidgetsBinding.instance.addPostFrameCallback((_) {
+            WidgetsBinding.instance!.addPostFrameCallback((_) {
               Navigator.of(context).pushReplacementNamed(RoutePath.maintenance);
               Navigator.of(context).popAndPushNamed(RoutePath.maintenance);
             });
           } else if (onError != null) {
             onError(eventResult.error);
-          } else showApiErrorMessage(eventResult);
+          } else
+            showApiErrorMessage(eventResult);
         } else {
           _showErrorMessage(eventResult);
         }
       } else if (eventResult.isMaintenance) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
+        WidgetsBinding.instance!.addPostFrameCallback((_) {
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
                   builder: (context) => Maintenance(
-                    isShowCS: true,
-                    isShowsAppBar: false,
+                        isShowCS: true,
+                        isShowsAppBar: false,
                       )),
               (Route<dynamic> route) => false);
         });
@@ -144,19 +147,19 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
     if (errorKey != null) {
       errorMessage = getTranslatedText(errorKey);
     }
-    CustomToast.show(errorMessage);
+    CustomToast.show(errorMessage!);
   }
 
-  showApiErrorMessage(EventResult eventResult){
-    if(userRepo.apiError!=null){
-      String error = userRepo.apiError[eventResult.errorMsgId] ?? "";
+  showApiErrorMessage(EventResult eventResult) {
+    if (userRepo.apiError != null) {
+      String error = userRepo.apiError![eventResult.errorMsgId] ?? "";
       CustomToast.show(error);
     }
   }
 
   String parseHtmlString(String htmlString) {
-    final document = parse(htmlString ?? "");
-    final String parsedString = parse(document.body.text).documentElement.text;
+    final document = parse(htmlString);
+    final String parsedString = parse(document.body?.text).documentElement!.text;
 
     return parsedString;
   }

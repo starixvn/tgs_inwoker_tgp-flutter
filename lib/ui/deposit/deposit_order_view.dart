@@ -21,20 +21,19 @@ import 'deposit_view_model.dart';
 import 'deposit_web.dart';
 
 class DepositOrderView extends StatefulWidget {
-  final String method;
-  final String id;
-  final DepositRedirect depositRedirect;
-  final String depositAmount;
-  final String depositChannel;
-  final String promotionName;
-  final String transName;
-  final DepositRedirectApplePay depositRedirectApplePay;
-  final String exchangeRate;
-  final String expectedAmount;
+  final String? method;
+  final String? id;
+  final DepositRedirect? depositRedirect;
+  final String? depositAmount;
+  final String? depositChannel;
+  final String? promotionName;
+  final String? transName;
+  final DepositRedirectApplePay? depositRedirectApplePay;
+  final String? exchangeRate;
+  final String? expectedAmount;
 
   DepositOrderView(
-      {Key key,
-      this.method,
+      {this.method,
       this.id,
       this.depositRedirect,
       this.depositAmount,
@@ -43,8 +42,7 @@ class DepositOrderView extends StatefulWidget {
       this.transName,
       this.depositRedirectApplePay,
       this.exchangeRate,
-      this.expectedAmount})
-      : super(key: key);
+      this.expectedAmount});
 
   @override
   _DepositOrderViewState createState() => _DepositOrderViewState();
@@ -88,7 +86,6 @@ class _DepositOrderViewState extends BaseState<DepositOrderView> {
         ),
       );
 
-
   _buildLeepayOrder() => ListView(
         children: [
           Container(
@@ -109,7 +106,7 @@ class _DepositOrderViewState extends BaseState<DepositOrderView> {
                   alignment: Alignment.centerLeft,
                   child: Text(
                     //"10.00",
-                    widget.depositAmount,
+                    widget.depositAmount!,
                     style: TextStyle(
                         fontSize: (38.5).auto, color: CustomColor.theme_bar_gradient_2, fontWeight: FontWeight.w400),
                     //"¥ $amount"
@@ -120,12 +117,12 @@ class _DepositOrderViewState extends BaseState<DepositOrderView> {
                   color: CustomColor.very_light_pink_four,
                 ),
                 widget.depositRedirect != null
-                    ? _buildOrderText("order_no", widget.depositRedirect.formId)
-                    : _buildOrderText("order_no", widget.depositRedirectApplePay.formId),
-                _buildText("payment_type", widget.method),
-                _buildText("payment_channel", widget.depositChannel),
-                if (widget.exchangeRate != null) _buildText("exchange_rate", widget.exchangeRate),
-                if (widget.expectedAmount != null) _buildText("expected_amount", widget.expectedAmount),
+                    ? _buildOrderText("order_no", widget.depositRedirect!.formId)
+                    : _buildOrderText("order_no", widget.depositRedirectApplePay!.formId),
+                _buildText("payment_type", widget.method!),
+                _buildText("payment_channel", widget.depositChannel!),
+                if (widget.exchangeRate != null) _buildText("exchange_rate", widget.exchangeRate!),
+                if (widget.expectedAmount != null) _buildText("expected_amount", widget.expectedAmount!),
                 if (widget.transName != null) _buildText("transfer_name", widget.transName ?? ""),
                 if (widget.promotionName != null) _buildText("promotion_picker", widget.promotionName ?? ""),
               ],
@@ -142,11 +139,11 @@ class _DepositOrderViewState extends BaseState<DepositOrderView> {
                       context,
                       MaterialPageRoute(
                           builder: (context) => DepositWeb(
-                              url: widget.depositRedirect != null
-                                  ? widget.depositRedirect.paymentUrl
-                                  : widget.depositRedirectApplePay.paymentUrl,
-                            brandLogoUrl: _vm.brandLogoUrl,
-                          )))))
+                                url: widget.depositRedirect != null
+                                    ? widget.depositRedirect!.paymentUrl
+                                    : widget.depositRedirectApplePay!.paymentUrl,
+                                brandLogoUrl: _vm.brandLogoUrl,
+                              )))))
         ],
       );
 
@@ -165,7 +162,7 @@ class _DepositOrderViewState extends BaseState<DepositOrderView> {
             Expanded(
               flex: 8,
               child: AutoSizeText(
-                content ?? "",
+                content,
                 style: TextStyle(fontSize: 13.auto, color: Colors.black),
                 minFontSize: 2,
                 maxLines: 1,
@@ -190,7 +187,7 @@ class _DepositOrderViewState extends BaseState<DepositOrderView> {
             style: TextStyle(fontSize: 13.auto, color: CustomColor.grey),
           ),
           AutoSizeText(
-            content ?? "",
+            content,
             style: TextStyle(fontSize: 13.auto, color: Colors.black),
             minFontSize: 2,
             maxLines: 1,

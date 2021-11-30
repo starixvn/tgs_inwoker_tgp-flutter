@@ -6,18 +6,17 @@ part of 'user_profile.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-UserProfile _$UserProfileFromJson(Map<String, dynamic> json) {
-  return UserProfile()
-    ..username = json['username'] as String
-    ..realname = json['realname'] as String
-    ..phone = json['phone'] as String
-    ..email = json['email'] as String
-    ..qq = json['qq'] as String
-    ..wechat = json['wechat'] as String
-    ..isSetPayPassword = json['issetpaypassword'] as bool
-    ..identityAuthentication = json['identityauthentication'] as bool
-    ..vipLevel = json['viplevel'] as int;
-}
+UserProfile _$UserProfileFromJson(Map<String, dynamic> json) => UserProfile(
+      json['username'] as String,
+      json['realname'] as String?,
+      json['phone'] as String?,
+      json['email'] as String?,
+      json['qq'] as String?,
+      json['wechat'] as String?,
+      json['issetpaypassword'] as bool,
+      json['identityauthentication'] as bool,
+      json['viplevel'] as int,
+    );
 
 Map<String, dynamic> _$UserProfileToJson(UserProfile instance) =>
     <String, dynamic>{

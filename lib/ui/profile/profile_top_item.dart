@@ -12,11 +12,10 @@ class ProfileTopItem extends StatefulWidget {
   final String routePath;
 
   ProfileTopItem({
-    Key key,
-    this.title,
-    this.imagePath,
-    this.routePath,
-  }) : super(key: key);
+    required this.title,
+    required this.imagePath,
+    required this.routePath,
+  }) ;
 
   @override
   _ProfileTopItemState createState() => _ProfileTopItemState();
@@ -46,7 +45,7 @@ class _ProfileTopItemState extends BaseState<ProfileTopItem> {
     );
   }
 
-  _navigate() => WidgetsBinding.instance.addPostFrameCallback((_) {
+  _navigate() => WidgetsBinding.instance!.addPostFrameCallback((_) {
         Navigator.of(context).pushNamed("/${widget.routePath}");
       });
 }

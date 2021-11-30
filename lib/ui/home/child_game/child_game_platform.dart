@@ -12,26 +12,26 @@ import 'package:tgp_flutter/ui/base_state.dart';
 import 'package:tgp_flutter/ui/home/game/game_view_model.dart';
 
 class ChildGamePlatform extends StatefulWidget {
-  // final List<GameProvider2> platformList;
-  final List<Game> gameList;
+  final List<Game>? gameList;
   final bool isSearching;
   final Function(String) onFilterPlatform;
   final String initialPlatformCode;
   final GameViewModel vm;
 
-  ChildGamePlatform(
-      {/*this.platformList, */ this.gameList,
-      this.isSearching,
-      this.onFilterPlatform,
-      this.initialPlatformCode,
-      this.vm});
+  ChildGamePlatform({
+     this.gameList,
+    this.isSearching = false,
+    required this.onFilterPlatform,
+    required this.initialPlatformCode,
+    required this.vm,
+  });
 
   @override
   _ChildGamePlatformState createState() => _ChildGamePlatformState();
 }
 
 class _ChildGamePlatformState extends BaseState<ChildGamePlatform> with SingleTickerProviderStateMixin {
-  TabController _platformTabController;
+  late TabController _platformTabController;
   var platformTabIndex = 0;
   List<Map<String, String>> _platformTabList = [
     {"name": "all", "code": "ALL"}
@@ -53,7 +53,7 @@ class _ChildGamePlatformState extends BaseState<ChildGamePlatform> with SingleTi
     List<Map<String, String>> list = [
       {"name": "all", "code": "ALL"}
     ];
-    widget.vm.platformList.asMap().forEach((index, value) {
+    widget.vm.platformList!.asMap().forEach((index, value) {
       list.add({"name": value.name, "code": value.code});
       if (value.code == widget.initialPlatformCode) {
         platformTabIndex = index + 1;
@@ -68,7 +68,7 @@ class _ChildGamePlatformState extends BaseState<ChildGamePlatform> with SingleTi
       _buildPlatformTabBar(),
       Expanded(
           child: ChildGamePlatformTabBarView(
-        gameList: widget.gameList,
+        gameList: widget.gameList!,
         isDisabled: widget.isSearching,
         vm: widget.vm,
       )),
@@ -91,7 +91,7 @@ class _ChildGamePlatformState extends BaseState<ChildGamePlatform> with SingleTi
           setState(() {
             platformTabIndex = index;
           });
-          widget.onFilterPlatform(_platformTabList[index]["code"]);
+          widget.onFilterPlatform(_platformTabList[index]["code"]!);
         },
         indicator: ShapeDecoration(
           shape: RoundedRectangleBorder(
@@ -102,7 +102,7 @@ class _ChildGamePlatformState extends BaseState<ChildGamePlatform> with SingleTi
         unselectedLabelStyle: TextStyle(color: CustomColor.theme_button_disable_bg),
         tabs: _platformTabList.map<Widget>((item) {
           return Tab(
-            child: Text(item["code"] == "ALL" ? getTranslatedText(item["name"]) : item["name"],
+            child: Text(item["code"] == "ALL" ? getTranslatedText(item["name"]!) : item["name"],
                 style: TextStyle(
                   fontFamily: 'PingFang',
                   fontSize: 14.auto,

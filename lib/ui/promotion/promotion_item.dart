@@ -12,7 +12,11 @@ class PromotionItem extends StatefulWidget {
   final Promotion promotion;
   final PromotionViewModel vm;
 
-  PromotionItem({Key key, this.imagePath, this.promotion, this.vm}) : super(key: key);
+  PromotionItem({
+    required this.imagePath,
+    required this.promotion,
+    required this.vm,
+  });
 
   @override
   _PromotionItemState createState() => _PromotionItemState();
@@ -44,13 +48,13 @@ class _PromotionItemState extends BaseState<PromotionItem> {
             child: ClipRRect(
                 borderRadius: BorderRadius.circular(8),
                 child: CachedNetworkImage(
-                  height: 150.auto,
+                    height: 150.auto,
                     placeholder: (context, url) => Container(
                           width: 375,
                           height: 150,
                           color: CustomColor.very_light_pink_four,
                         ),
-                    imageUrl: imageUrl ?? "",
+                    imageUrl: imageUrl,
                     errorWidget: (context, url, error) => Container(
                           color: CustomColor.very_light_pink_four,
                         ),
@@ -60,8 +64,8 @@ class _PromotionItemState extends BaseState<PromotionItem> {
   }
 
   _getPromotionTitleName() {
-    if (widget.promotion.localization.name != null)
-      return widget.promotion.localization.name;
+    if (widget.promotion.localization!.name != null)
+      return widget.promotion.localization!.name;
     else
       return widget.promotion.name;
   }

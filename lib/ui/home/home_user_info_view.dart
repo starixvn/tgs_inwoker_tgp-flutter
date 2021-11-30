@@ -8,7 +8,6 @@ import 'package:tgp_flutter/localizations/language_provider.dart';
 import 'package:tgp_flutter/route_path.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
-import 'package:gradient_text/gradient_text.dart';
 import 'package:outline_gradient_button/outline_gradient_button.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
@@ -18,12 +17,17 @@ import 'package:tgp_flutter/ui/transfer/wallet_transfer.dart';
 import 'package:tgp_flutter/ui/withdraw/withdraw.dart';
 
 class HomeUserInfoView extends StatefulWidget {
-  final UserProfile userProfile;
-  final double wallet;
-  final void Function() onLoginTap;
-  final Function onRefreshHomePage;
+  final UserProfile? userProfile;
+  final double? wallet;
+  final void Function()? onLoginTap;
+  final Function? onRefreshHomePage;
 
-  HomeUserInfoView({@required this.userProfile, this.wallet, this.onLoginTap, this.onRefreshHomePage});
+  HomeUserInfoView({
+    this.userProfile,
+    this.wallet,
+    this.onLoginTap,
+    this.onRefreshHomePage,
+  });
 
   @override
   _HomeUserInfoViewState createState() => _HomeUserInfoViewState();
@@ -125,7 +129,7 @@ class _HomeUserInfoViewState extends BaseState<HomeUserInfoView> {
         child: Column(
           children: [
             AutoSizeText(
-              widget.wallet == null ? "-" : "${Format().currencyWithDecimalFormat(widget.wallet) ?? 0.0}",
+              widget.wallet == null ? "-" : "${Format().currencyWithDecimalFormat(widget.wallet!)}",
               style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
               minFontSize: 10,
               stepGranularity: 1,
@@ -150,7 +154,7 @@ class _HomeUserInfoViewState extends BaseState<HomeUserInfoView> {
           Container(
             padding: EdgeInsets.only(top: 10.auto, bottom: 10.auto),
             child: ColorButton(
-              onClick: () => widget.onLoginTap(),
+              onClick: () => widget.onLoginTap!(),
               height: 20.auto,
               text: AutoSizeText.rich(
                 TextSpan(style: TextStyle(fontSize: 12.auto, fontWeight: FontWeight.bold), children: [
@@ -180,13 +184,13 @@ class _HomeUserInfoViewState extends BaseState<HomeUserInfoView> {
       child: InkWell(
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
-        onTap: () async{
+        onTap: () async {
           if (widget.userProfile == null) {
-              var res = await Navigator.of(context).pushNamed(RoutePath.login);
-              if(res) widget.onRefreshHomePage();
+            var res = await Navigator.of(context).pushNamed(RoutePath.login);
+            if (res != null) widget.onRefreshHomePage!();
           } else {
             var res = await Navigator.of(context).pushNamed(routePath);
-            if(res) widget.onRefreshHomePage();
+            if (res != null) widget.onRefreshHomePage!();
           }
         },
         child: Container(

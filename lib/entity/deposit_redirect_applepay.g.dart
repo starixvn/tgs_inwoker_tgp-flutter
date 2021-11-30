@@ -7,12 +7,12 @@ part of 'deposit_redirect_applepay.dart';
 // **************************************************************************
 
 DepositRedirectApplePay _$DepositRedirectApplePayFromJson(
-    Map<String, dynamic> json) {
-  return DepositRedirectApplePay()
-    ..formId = json['formid'] as String
-    ..paymentUrl = json['paymenturl'] as String
-    ..errorMsg = json['errormsg'] as String;
-}
+        Map<String, dynamic> json) =>
+    DepositRedirectApplePay(
+      json['formid'] as String,
+      json['paymenturl'] as String,
+      json['errormsg'] as String,
+    );
 
 Map<String, dynamic> _$DepositRedirectApplePayToJson(
         DepositRedirectApplePay instance) =>

@@ -9,7 +9,7 @@ import 'package:tgp_flutter/repository/content_repository.dart';
 class DepositMethodViewModel extends BaseViewModel {
   final depositRepo = BankRepository.getSingleton();
   final contentRepo = ContentRepository.getSingleton();
-  final Map<BankType, List<Payment>> depositMethodList;
+  final Map<BankType, List<Payment>>? depositMethodList;
 
   DepositMethodViewModel(this.depositMethodList);
 
@@ -26,17 +26,17 @@ class DepositMethodViewModel extends BaseViewModel {
       help2PayDepositOrderApiState,
       getHelp2PayHtmlTextApiState,
       skyPayDepositOrderApiState;
-  List<Payment> paymentList;
+  List<Payment>? paymentList;
   var depositOrder, orderNo, exchangeRate;
 
   get brandLogoUrl => contentRepo.brandLogo?.mobileUrl;
 
   filterMethod(BankType bankType) async {
-    paymentList = depositMethodList[bankType];
+    paymentList = depositMethodList![bankType];
     notifyListeners();
   }
 
-  getManualDepositId(BankType bankType, String account, String amount, String paymentId, String promotionId) async {
+  getManualDepositId(BankType bankType, String account, String amount, String paymentId, String? promotionId) async {
     setLoading();
     if (bankType == BankType.BANK)
       getManualDepositIdApiState = await depositRepo.getManualBankDepositId(account, amount, paymentId, promotionId);
@@ -61,28 +61,28 @@ class DepositMethodViewModel extends BaseViewModel {
     return getDepositOrderApiState;
   }
 
-  leePayDepositOrder(String amount, String paymentId, String promotionId) async {
+  leePayDepositOrder(String amount, String paymentId, String? promotionId) async {
     setLoading();
     getLeepayOrderApiState = await depositRepo.leePayDepositOrder(amount, paymentId, promotionId);
     setLoading(false);
     return getLeepayOrderApiState;
   }
 
-  primePayDepositOrder(String amount, String paymentId, String promotionId) async {
+  primePayDepositOrder(String amount, String paymentId, String? promotionId) async {
     setLoading();
     primePayDepositOrderApiState = await depositRepo.primePayDepositOrder(amount, paymentId, promotionId);
     setLoading(false);
     return primePayDepositOrderApiState;
   }
 
-  applePayDepositOrder(String amount, String paymentId, String promotionId, String transName) async {
+  applePayDepositOrder(String amount, String paymentId, String? promotionId, String transName) async {
     setLoading();
     applePayDepositOrderApiState = await depositRepo.applePayDepositOrder(amount, paymentId, promotionId, transName);
     setLoading(false);
     return applePayDepositOrderApiState;
   }
 
-  umPayDepositOrder(String amount, String paymentId, String promotionId, bool isCrypto) async {
+  umPayDepositOrder(String amount, String paymentId, String? promotionId, bool isCrypto) async {
     setLoading();
     if (isCrypto)
       getUmPayDepositOrderApiState = await depositRepo.umPayCryptoDepositOrder(amount, paymentId, promotionId);
@@ -108,14 +108,14 @@ class DepositMethodViewModel extends BaseViewModel {
     return getExchangeRateApiState;
   }
 
-  maticPayDepositOrder(String amount, String paymentId, String promotionId) async {
+  maticPayDepositOrder(String amount, String paymentId, String? promotionId) async {
     setLoading();
     maticPayDepositOrderApiState = await depositRepo.maticPayDepositOrder(amount, paymentId, promotionId);
     setLoading(false);
     return maticPayDepositOrderApiState;
   }
 
-  help2PayDepositOrder(String amount, String paymentId, String promotionId) async {
+  help2PayDepositOrder(String amount, String paymentId, String? promotionId) async {
     setLoading();
     help2PayDepositOrderApiState = await depositRepo.help2PayDepositOrder(amount, paymentId, promotionId);
     setLoading(false);
@@ -129,7 +129,7 @@ class DepositMethodViewModel extends BaseViewModel {
     return getHelp2PayHtmlTextApiState;
   }
 
-  skyPayDepositOrder(String amount, String paymentId, String promotionId) async {
+  skyPayDepositOrder(String amount, String paymentId, String? promotionId) async {
     setLoading();
     skyPayDepositOrderApiState = await depositRepo.skyPayDepositOrder(amount, paymentId, promotionId);
     setLoading(false);

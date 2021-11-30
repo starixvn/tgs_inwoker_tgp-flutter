@@ -1,32 +1,30 @@
 import 'package:flutter/material.dart';
 import 'dart:ui' as ui show window;
 
-/**
+/*
  * @Author: Sky24n
  * @GitHub: https://github.com/Sky24n
  * @Email: sky24no@gmail.com
  * @Description: Screen Util.
- * @Date: 2018/9/8
- */
+ * @Date: 2018/9/8*/
 
 ///默认设计稿尺寸（单位 dp or pt）
 double _designW = 360.0;
 double _designH = 640.0;
 double _designD = 3.0;
 
-/**
- * 配置设计稿尺寸（单位 dp or pt）
- * w 宽
+/*
+* 配置设计稿尺寸（单位 dp or pt）
+* w 宽
  * h 高
- * density 像素密度
- */
+ * density 像素密度*/
 
 /// 配置设计稿尺寸 屏幕 宽，高，密度。
 /// Configuration design draft size  screen width, height, density.
 void setDesignWHD(double w, double h, {double density = 3.0}) {
-  _designW = w ?? _designW;
-  _designH = h ?? _designH;
-  _designD = density ?? _designD;
+  _designW = w /*?? _designW*/;
+  _designH = h /*?? _designH*/;
+  _designD = density /*?? _designD*/;
 }
 
 /// Screen Util.
@@ -37,7 +35,7 @@ class ScreenUtil {
   double _statusBarHeight = 0.0;
   double _bottomBarHeight = 0.0;
   double _appBarHeight = 0.0;
-  MediaQueryData _mediaQueryData;
+  MediaQueryData? _mediaQueryData;
 
   static final ScreenUtil _singleton = ScreenUtil();
 
@@ -83,7 +81,7 @@ class ScreenUtil {
   double get bottomBarHeight => _bottomBarHeight;
 
   /// media Query Data
-  MediaQueryData get mediaQueryData => _mediaQueryData;
+  MediaQueryData? get mediaQueryData => _mediaQueryData;
 
   /// screen width
   /// 当前屏幕 宽
@@ -131,7 +129,7 @@ class ScreenUtil {
   /// 返回根据屏幕宽适配后尺寸（单位 dp or pt）
   /// size 单位 dp or pt
   static double getScaleW(BuildContext context, double size) {
-    if (context == null || getScreenW(context) == 0.0) return size;
+    if (/*context == null ||*/ getScreenW(context) == 0.0) return size;
     return size * getScreenW(context) / _designW;
   }
 
@@ -140,7 +138,7 @@ class ScreenUtil {
   /// 返回根据屏幕高适配后尺寸 （单位 dp or pt）
   /// size unit dp or pt
   static double getScaleH(BuildContext context, double size) {
-    if (context == null || getScreenH(context) == 0.0) return size;
+    if (/*context == null ||*/ getScreenH(context) == 0.0) return size;
     return size * getScreenH(context) / _designH;
   }
 
@@ -149,7 +147,7 @@ class ScreenUtil {
   /// 返回根据屏幕宽适配后字体尺寸
   /// fontSize 字体尺寸
   static double getScaleSp(BuildContext context, double fontSize) {
-    if (context == null || getScreenW(context) == 0.0) return fontSize;
+    if (/*context == null ||*/ getScreenW(context) == 0.0) return fontSize;
     return fontSize * getScreenW(context) / _designW;
   }
 
@@ -181,9 +179,7 @@ class ScreenUtil {
   /// 返回根据屏幕宽适配后尺寸（单位 dp or pt）
   /// sizePx unit px
   double getWidthPx(double sizePx) {
-    return _screenWidth == 0.0
-        ? (sizePx / _designD)
-        : (sizePx * _screenWidth / (_designW * _designD));
+    return _screenWidth == 0.0 ? (sizePx / _designD) : (sizePx * _screenWidth / (_designW * _designD));
   }
 
   /// 仅支持纵屏。
@@ -191,9 +187,7 @@ class ScreenUtil {
   /// 返回根据屏幕高适配后尺寸（单位 dp or pt）
   /// sizePx unit px
   double getHeightPx(double sizePx) {
-    return _screenHeight == 0.0
-        ? (sizePx / _designD)
-        : (sizePx * _screenHeight / (_designH * _designD));
+    return _screenHeight == 0.0 ? (sizePx / _designD) : (sizePx * _screenHeight / (_designH * _designD));
   }
 
   /// 仅支持纵屏。
@@ -216,8 +210,7 @@ class ScreenUtil {
   /// 适配比率。
   /// Ratio.
   double getRatio() {
-    return (_screenWidth > _screenHeight ? _screenHeight : _screenWidth) /
-        _designW;
+    return (_screenWidth > _screenHeight ? _screenHeight : _screenWidth) / _designW;
   }
 
   /// 兼容横/纵屏。

@@ -19,7 +19,10 @@ class UpdateForgotPassword extends StatefulWidget {
   final String code;
   final String securityKey;
 
-  UpdateForgotPassword({this.code, this.securityKey});
+  UpdateForgotPassword({
+    required this.code,
+    required this.securityKey,
+  });
 
   @override
   _UpdateForgotPasswordState createState() => _UpdateForgotPasswordState();
@@ -144,7 +147,7 @@ class _UpdateForgotPasswordState extends BaseState<UpdateForgotPassword> {
         onClick: () {
           _onClick();
         },
-        isEnabled: isButtonEnabled ?? false,
+        isEnabled: isButtonEnabled,
         color: CustomColor.theme_bar_gradient_2,
         radius: 9.6,
       ));
@@ -177,7 +180,7 @@ class _UpdateForgotPasswordState extends BaseState<UpdateForgotPassword> {
   _handleApiState() {
     handleApiState(_vm.resetPasswordApiState, onSuccess: () {
       CustomToast.show(getTranslatedText("success"));
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
         var count = 0;
         Navigator.popUntil(context, (route) {
           return count++ == 2;

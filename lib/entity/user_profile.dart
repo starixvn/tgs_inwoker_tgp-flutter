@@ -1,16 +1,18 @@
 import 'package:json_annotation/json_annotation.dart';
-part 'user_profile.g.dart';
-@JsonSerializable()
 
+part 'user_profile.g.dart';
+
+@JsonSerializable()
 class UserProfile {
-  UserProfile();
+  UserProfile(this.username, this.realname, this.phone, this.email, this.qq, this.wechat, this.isSetPayPassword,
+      this.identityAuthentication, this.vipLevel);
 
   String username;
-  String realname;
-  String phone;
-  String email;
-  String qq;
-  String wechat;
+  String? realname;
+  String? phone;
+  String? email;
+  String? qq;
+  String? wechat;
   @JsonKey(name: 'issetpaypassword')
   bool isSetPayPassword;
   @JsonKey(name: 'identityauthentication')
@@ -18,7 +20,7 @@ class UserProfile {
   @JsonKey(name: 'viplevel')
   int vipLevel;
 
-
   factory UserProfile.fromJson(Map<String, dynamic> json) => _$UserProfileFromJson(json);
+
   Map<String, dynamic> toJson() => _$UserProfileToJson(this);
 }

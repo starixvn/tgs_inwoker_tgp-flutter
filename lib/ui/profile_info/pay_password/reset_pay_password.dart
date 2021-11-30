@@ -37,7 +37,7 @@ class _ResetPayPasswordState extends BaseState<ResetPayPassword> {
 
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       if (_vm.userProfile.email != null && _vm.userProfile.email.isNotEmpty) {
         setState(() {
           _emailController.text = _vm.userProfile.email;
@@ -269,7 +269,7 @@ class _ResetPayPasswordState extends BaseState<ResetPayPassword> {
 
   _handleApiState() {
     handleApiState(_vm.getPayPasswordCodeApiState, onSuccess: () {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
         setState(() {
           isOtpCountdown = true;
         });
@@ -278,7 +278,7 @@ class _ResetPayPasswordState extends BaseState<ResetPayPassword> {
 
     handleApiState(_vm.payPasswordVerifyApiState, onSuccess: () {
       CustomToast.show(getTranslatedText("success"));
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
         Navigator.pop(context);
         Navigator.pop(context);
       });

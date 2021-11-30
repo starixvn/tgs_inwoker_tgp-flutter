@@ -15,14 +15,16 @@ class ProfileViewModel extends BaseViewModel {
   final walletRepo = WalletRepository.getSingleton();
 
   var logoutApiState, getWalletBalanceApiState;
-  double gameBalance = 0.0, totalBalance;
+  double? gameBalance;
+  double? totalBalance;
 
   @override
   List<BaseRepository> get repoList => [userRepo];
 
   get userProfile => userRepo.userProfile;
 
-  get balance => userRepo.wallet.main;
+  get balance => userRepo.wallet?.main;
+
   get brandLogoUrl => contentRepo.brandLogo?.mobileUrl;
 
   logout() async {
@@ -33,21 +35,21 @@ class ProfileViewModel extends BaseViewModel {
   }
 
   computeTotalBalance() async {
-    var gameList = contentRepo.gameProviderList.where((element) => element.transferWallet == true);
+    var gameList = contentRepo.gameProviderList!.where((element) => element.transferWallet == true);
 
     var task = <Future>[];
     gameList.forEach((game) {
       task.add(_getGameWalletBalance(game));
     });
     await Future.wait(task);
-    totalBalance = balance + gameBalance;
+    totalBalance = (balance ?? 0.0) + (gameBalance ?? 0.0);
     notifyListeners();
   }
 
   _getGameWalletBalance(GameProvider game) async {
     var state = await walletRepo.getGameWallet(game.code);
     if (state.isSuccess) {
-      gameBalance += state.result.balance;
+      gameBalance = (gameBalance ?? 0.0) + state.result!.balance!;
     }
     notifyListeners();
   }

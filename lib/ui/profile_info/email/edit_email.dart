@@ -26,11 +26,11 @@ class _EditEmailState extends BaseState<EditEmail> {
   var isButtonEnabled = false, isOtpEnabled = false, isTextFieldEnabled = false, isOtpCountdown = false;
   InputValidationProvider validate = new InputValidationProvider();
   int currIndex = 0;
-  String display;
+  String? display;
 
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       _getUserProfile();
     });
     super.initState();
@@ -141,17 +141,17 @@ class _EditEmailState extends BaseState<EditEmail> {
         onClick: () {
           _onClick();
         },
-        isEnabled: isButtonEnabled ?? false,
+        isEnabled: isButtonEnabled,
         color: CustomColor.theme_bar_gradient_2,
         radius: 9.6,
       ));
 
   _onTextChange() {
     setState(() {
-      if (_otpController.text.isNotEmpty){
+      if (_otpController.text.isNotEmpty) {
         isOtpEnabled = true;
-        isButtonEnabled = true;}
-      else if (_emailController.text.isNotEmpty) {
+        isButtonEnabled = true;
+      } else if (_emailController.text.isNotEmpty) {
         isOtpEnabled = true;
         isButtonEnabled = false;
       } else {
@@ -191,23 +191,23 @@ class _EditEmailState extends BaseState<EditEmail> {
 
   _handleApiState() {
     handleApiState(_vm.getEmailCodeApiState, onSuccess: () {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
         setState(() {
           isOtpCountdown = true;
         });
       });
     });
     handleApiState(_vm.emailVerifyApiState, onSuccess: () {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
         CustomToast.show(getTranslatedText("success"));
         _getUserProfile();
         //if (widget.popDirection == 1) Navigator.of(context).pop(true);
       });
-    }, onError: (_){
-      if(_vm.emailVerifyApiState.errorCode == 409){
+    }, onError: (_) {
+      if (_vm.emailVerifyApiState.errorCode == 409) {
         CustomToast.show(getTranslatedText("email_duplicate"));
-
-    }else showApiErrorMessage(_vm.emailVerifyApiState);
+      } else
+        showApiErrorMessage(_vm.emailVerifyApiState);
     });
   }
 }

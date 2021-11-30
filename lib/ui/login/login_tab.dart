@@ -16,8 +16,8 @@ class LoginTab extends StatefulWidget {
 
 class _LoginTabState extends BaseState<LoginTab> with TickerProviderStateMixin {
   int tabIndex = 0;
-  String username, password;
-  TabController tabController;
+  String? username, password;
+  TabController? tabController;
 
   @override
   void initState() {
@@ -111,8 +111,8 @@ class _LoginTabState extends BaseState<LoginTab> with TickerProviderStateMixin {
       username = list[0];
       password = list[1];
     });
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      tabController.animateTo(2);
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      tabController!.animateTo(2);
     });
   }
 

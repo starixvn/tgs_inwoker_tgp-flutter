@@ -17,24 +17,23 @@ class OtpTextFormField extends StatefulWidget {
   final bool isEnabled;
   final bool isCountdown;
 
-  OtpTextFormField(
-      {Key key,
-      this.hintText,
-      this.onChanged,
-      this.controller,
-      this.textInputAction,
-      this.getOtpCode,
-      this.isEnabled,
-      this.isCountdown,
-      this.onCountDownEnd})
-      : super(key: key);
+  OtpTextFormField({
+    required this.hintText,
+    required this.onChanged,
+    required this.controller,
+    required this.textInputAction,
+    required this.getOtpCode,
+    required this.isEnabled,
+    required this.isCountdown,
+    required this.onCountDownEnd,
+  });
 
   @override
   _OtpTextFormFieldState createState() => _OtpTextFormFieldState();
 }
 
 class _OtpTextFormFieldState extends BaseState<OtpTextFormField> {
-  Timer _timer;
+  Timer? _timer;
   int _start = 0;
   static const int _duration = 5;
 
@@ -82,16 +81,17 @@ class _OtpTextFormFieldState extends BaseState<OtpTextFormField> {
                 ),
               ]),
               OutlineBorderButton(
-                  title: widget.isCountdown
-                      ? "${getTranslatedText("retry_otp")} (${_start}s)"
-                      : getTranslatedText("request_otp"),
-                  onClick: () => widget.isEnabled && !widget.isCountdown ? widget.getOtpCode() : null,
-                  width: 86.auto,
-                  height: 29.auto,
-                  color: CustomColor.theme_bar_gradient_2,
-                  fontSize: 11.auto
-                  //fontSize: 11.auto,
-                  )
+                title: widget.isCountdown
+                    ? "${getTranslatedText("retry_otp")} (${_start}s)"
+                    : getTranslatedText("request_otp"),
+                onClick: () => widget.isEnabled && !widget.isCountdown ? widget.getOtpCode() : null,
+                width: 86.auto,
+                height: 29.auto,
+                color: CustomColor.theme_bar_gradient_2,
+                fontSize: 11.auto,
+                isEnabled: true,
+                //fontSize: 11.auto,
+              )
             ],
           ),
         ));
@@ -100,10 +100,10 @@ class _OtpTextFormFieldState extends BaseState<OtpTextFormField> {
   @override
   void didUpdateWidget(covariant OtpTextFormField oldWidget) {
     if (oldWidget.isCountdown != widget.isCountdown) {
-      if (widget.isCountdown && (_timer == null || !_timer.isActive)) {
+      if (widget.isCountdown && (_timer == null || !_timer!.isActive)) {
         startTimer();
       } else {
-        if (_timer != null) _timer.cancel();
+        if (_timer != null) _timer!.cancel();
       }
     }
     super.didUpdateWidget(oldWidget);
@@ -132,7 +132,7 @@ class _OtpTextFormFieldState extends BaseState<OtpTextFormField> {
   @override
   void dispose() {
     print("disposedisposedisposedispose");
-    _timer.cancel();
+    _timer!.cancel();
     super.dispose();
   }
 }

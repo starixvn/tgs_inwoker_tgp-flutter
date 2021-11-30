@@ -21,7 +21,7 @@ class LoginViewModel extends BaseViewModel {
   @override
   List<BaseRepository> get repoList => [userRepo];
 
-  String token;
+  String? token;
   bool isUsernameExist = false;
   var securityKey, _username, _password;
 
@@ -41,7 +41,7 @@ class LoginViewModel extends BaseViewModel {
     return loginApiState;
   }
 
-  register(String username, String password, String rpassword, [String invitationCode]) async {
+  register(String username, String password, String rpassword, [String? invitationCode]) async {
     setLoading();
     registerApiState = await userRepo.register(username, password, rpassword, invitationCode ?? "");
     setLoading(false);
@@ -68,18 +68,18 @@ class LoginViewModel extends BaseViewModel {
 
   savePreferences(String username, String password, bool rememberMe) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString("token", token);
+    prefs.setString("token", token!);
     if (rememberMe) {
       prefs.setString("username", username);
       prefs.setString("password", password);
     }
   }
 
-  removePrefs() async{
+  removePrefs() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    if(prefs.getString("username")!=null||prefs.getString("username").isNotEmpty) await prefs.remove("username");
-    if(prefs.getString("password")!=null||prefs.getString("password").isNotEmpty) await prefs.remove("password");
-}
+    if (prefs.getString("username")?.isNotEmpty ?? false) await prefs.remove("username");
+    if (prefs.getString("password")?.isNotEmpty ?? false) await prefs.remove("password");
+  }
 
   getUsername() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();

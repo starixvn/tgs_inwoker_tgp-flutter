@@ -23,7 +23,11 @@ class PromotionItemDetails extends StatefulWidget {
   final Promotion promotion;
   final PromotionViewModel vm;
 
-  PromotionItemDetails({Key key, this.imagePath, this.promotion, this.vm}) : super(key: key);
+  PromotionItemDetails({
+    required this.imagePath,
+    required this.promotion,
+    required this.vm,
+  });
 
   @override
   _PromotionItemDetailsState createState() => _PromotionItemDetailsState();
@@ -50,7 +54,7 @@ class _PromotionItemDetailsState extends BaseState<PromotionItemDetails> {
               " - " +
               Format().dateTimeFormat(widget.promotion.to)),
           _buildPromotionContentText(
-              parseHtmlString(widget.promotion.content ?? widget.promotion.localization.content)),
+              parseHtmlString(widget.promotion.localization?.content ?? widget.promotion.content)),
           _buildPromotionTermsText(widget.promotion.terms),
           _buildJoinButton()
         ],
@@ -116,12 +120,12 @@ class _PromotionItemDetailsState extends BaseState<PromotionItemDetails> {
 
   _onClick() {
     if (widget.vm.userProfile == null) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
         Navigator.of(context).pushNamed("/login");
       });
       return;
-    }else{
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+    } else {
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
         Navigator.of(context).pushNamed(RoutePath.deposit);
       });
     }
@@ -145,7 +149,7 @@ class _PromotionItemDetailsState extends BaseState<PromotionItemDetails> {
         child: RichText(
             text: HTML.toTextSpan(
           context,
-          displayText ?? "",
+          displayText,
           defaultTextStyle: TextStyle(fontSize: 12.auto),
           overrideStyle: <String, TextStyle>{
             'p': TextStyle(fontSize: 15.auto),
@@ -153,11 +157,4 @@ class _PromotionItemDetailsState extends BaseState<PromotionItemDetails> {
           },
         )),
       );
-
-  _getPromotionTitleName() {
-    if (widget.promotion.localization == null || widget.promotion.localization.name.isEmpty)
-      return widget.promotion.name;
-    else
-      return widget.promotion.localization.name;
-  }
 }

@@ -8,7 +8,7 @@ import 'package:tgp_flutter/repository/user_repository.dart';
 class PromotionViewModel extends BaseViewModel {
   final contentRepo = ContentRepository.getSingleton();
   final userRepo = UserRepository.getSingleton();
-  EventResult getPromotionState;
+  var getPromotionState;
 
   @override
   List<BaseRepository> get repoList => [userRepo, contentRepo];
@@ -17,22 +17,23 @@ class PromotionViewModel extends BaseViewModel {
   get brandLogoUrl => contentRepo.brandLogo?.mobileUrl;
   var getPromotionListApiState, joinPromotionApiState;
   var promotionList;
-  int page, rows = 10;
-  bool endRecord;
+  int? page;
+  int rows = 10;
+  bool endRecord = false;
 
   getPromotionList({isLoadMore = false}) async {
     setLoading();
 
     if (isLoadMore) {
-      if (page * rows < getPromotionListApiState.result.totalCount)
-        page++;
+      if (page! * rows < getPromotionListApiState.result.totalCount)
+        page = page!+1;
       else
         return;
     } else
       page = 1;
 
     //if (userProfile == null)
-      getPromotionListApiState = await contentRepo.getPromotionList(page, rows, true, true, userProfile == null);
+      getPromotionListApiState = await contentRepo.getPromotionList(page!, rows, true, true, userProfile == null);
    /* else
       getPromotionListApiState = await contentRepo.getPlayerPromotionList(page, rows, true, true);*/
     List<Promotion> list = [];

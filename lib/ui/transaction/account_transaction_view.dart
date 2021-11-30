@@ -10,10 +10,11 @@ import 'package:tgp_flutter/ui/transaction/transaction_view_model.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class AccountTransactionView extends StatefulWidget {
-  final List<String> transactionHeaderList;
   final TransactionViewModel vm;
 
-  AccountTransactionView({Key key, this.transactionHeaderList, this.vm}) : super(key: key);
+  AccountTransactionView({
+    required this.vm,
+  });
 
   @override
   AccountTransactionViewState createState() => AccountTransactionViewState();
@@ -29,7 +30,7 @@ class AccountTransactionViewState extends BaseState<AccountTransactionView> {
 
   void initState() {
     _scrollController.addListener(_scrollListener);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       _getTransaction();
     });
     super.initState();
@@ -41,7 +42,7 @@ class AccountTransactionViewState extends BaseState<AccountTransactionView> {
         builder: (ctx, vm, _) {
           _handleApiState();
           return BaseTransaction(
-            transactionHeaderList: ["bet_time", "bet_platform","game", "bet_amount", "win_loss"],
+            transactionHeaderList: ["bet_time", "bet_platform", "game", "bet_amount", "win_loss"],
             getPickerBox: Container(),
             filterIndex: filterIndex,
             expandedHeight: 170,
@@ -64,27 +65,33 @@ class AccountTransactionViewState extends BaseState<AccountTransactionView> {
         });
   }
 
-  _getList() => _vm.betTransactionList ==null?[]:List.generate(_vm.betTransactionList.length, (index) {
-        return Container(
-          child: TransactionCellItem(list: [
-            _vm.betTransactionList[index].id,
-              "",
-            Format().dateTimeFormat(_vm.betTransactionList[index].createdOn),
-            _vm.betTransactionList[index].gameProviderName,
-            _vm.betTransactionList[index].gameName,
-            _vm.betTransactionList[index].betAmount.toString(),
-            _vm.betTransactionList[index].winLoss.toString(),
-          ], type: _getTransactionItemType(index), isEndRecord: _vm.endRecord, ),
-        );
-      }).toList();
+  List<Widget> _getList() => _vm.betTransactionList == null
+      ? []
+      : List.generate(_vm.betTransactionList!.length, (index) {
+          return Container(
+            child: TransactionCellItem(
+              list: [
+                _vm.betTransactionList![index].id,
+                "",
+                Format().dateTimeFormat(_vm.betTransactionList![index].createdOn),
+                _vm.betTransactionList![index].gameProviderName,
+                _vm.betTransactionList![index].gameName,
+                _vm.betTransactionList![index].betAmount.toString(),
+                _vm.betTransactionList![index].winLoss.toString(),
+              ],
+              type: _getTransactionItemType(index),
+              isEndRecord: _vm.endRecord,
+            ),
+          );
+        }).toList();
 
   _getTransactionItemType(int index) {
-    if (_vm.betTransactionList.length == 1) {
+    if (_vm.betTransactionList!.length == 1) {
       return TransactionCellItemType.SINGLE;
     } else {
       if (index == 0) {
         return TransactionCellItemType.TOP;
-      } else if (index == _vm.betTransactionList.length - 1) {
+      } else if (index == _vm.betTransactionList!.length - 1) {
         return TransactionCellItemType.BOTTOM;
       } else {
         return TransactionCellItemType.CENTER;
@@ -101,8 +108,8 @@ class AccountTransactionViewState extends BaseState<AccountTransactionView> {
     }
   }
 
-  _getTransaction({DateTime startDate, DateTime endDate, GameProvider platform, bool isLoadMore}) async {
-    await _vm.getTransaction(isLoadMore: isLoadMore ?? false);
+  _getTransaction({bool isLoadMore = false}) async {
+    await _vm.getTransaction(isLoadMore: isLoadMore);
   }
 
   _handleApiState() {

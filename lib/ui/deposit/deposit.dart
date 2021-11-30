@@ -44,11 +44,11 @@ class _DepositState extends BaseState<Deposit> {
               body: (() {
                 if (_vm.paymentCodeList == null)
                   return buildProgressDialog(_vm.brandLogoUrl);
-                else if (_vm.paymentCodeList.isEmpty)
+                else if (_vm.paymentCodeList!.isEmpty)
                   return Container();
                 else {
                   return DefaultTabController(
-                    length: _vm.paymentCodeList.keys.length,
+                    length: _vm.paymentCodeList!.keys.length,
                     child: Column(
                       children: [
                         Container(
@@ -66,10 +66,10 @@ class _DepositState extends BaseState<Deposit> {
                               });
                             },
                             unselectedLabelStyle: TextStyle(color: Colors.white),
-                            tabs: List.generate(_vm.paymentCodeList.keys.length, (index) {
+                            tabs: List.generate(_vm.paymentCodeList!.keys.length, (index) {
                               return Tab(
                                 child: Text(
-                                  getTranslatedText(_vm.paymentCodeList.keys.toList()[index]) ?? "",
+                                  getTranslatedText(_vm.paymentCodeList!.keys.toList()[index]) ?? "",
                                   style: TextStyle(
                                     fontFamily: 'PingFang',
                                     fontSize: 14.auto,
@@ -82,10 +82,10 @@ class _DepositState extends BaseState<Deposit> {
                         ),
                         Expanded(
                           child: TabBarView(
-                            children: List.generate(_vm.paymentCodeList.keys.length, (index) {
+                            children: List.generate(_vm.paymentCodeList!.keys.length, (index) {
                               return DepositMethod(
-                                paymentCode: _vm.paymentCodeList.keys.toList()[index],
-                                depositMethodList: _vm.paymentCodeList.values.toList()[index],
+                                paymentCode: _vm.paymentCodeList!.keys.toList()[index],
+                                depositMethodList: _vm.paymentCodeList!.values.toList()[index],
                                 promotionList: _vm.displayPromotionList,
                               );
                             }).toList(),

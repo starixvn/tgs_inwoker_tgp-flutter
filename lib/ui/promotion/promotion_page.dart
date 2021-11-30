@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gradient_text/gradient_text.dart';
 import 'package:tgp_flutter/custom/custom_dialog.dart';
 import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/localizations/language_provider.dart';
@@ -22,7 +21,7 @@ class _PromotionState extends BaseState<PromotionPage> {
   var currentTabIndex = 0;
   var currentBottomIndex = 1;
   PromotionViewModel _vm = PromotionViewModel();
-  BuildContext key = GlobalKey().currentContext;
+  BuildContext? key = GlobalKey().currentContext;
 
   @override
   void initState() {
@@ -89,32 +88,11 @@ class _PromotionState extends BaseState<PromotionPage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    GradientText(
+                    _buildGradientText(
                       getTranslatedText("promotion_empty1"),
-                      style: TextStyle(fontSize: context.screenWidth / 25, fontWeight: FontWeight.bold),
-                      gradient: LinearGradient(
-                        colors: [
-                          Color(0xff446597),
-                          Color(0xff282828),
-                        ],
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                      ),
-                      textAlign: TextAlign.center,
                     ),
-                    GradientText(
+                    _buildGradientText(
                       getTranslatedText("promotion_empty2"),
-                      //getTranslatedText("promotion_empty"),
-                      style: TextStyle(fontSize: context.screenWidth / 25, fontWeight: FontWeight.bold),
-                      gradient: LinearGradient(
-                        colors: [
-                          Color(0xff446597),
-                          Color(0xff282828),
-                        ],
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                      ),
-                      textAlign: TextAlign.center,
                     )
                   ],
                 ))
@@ -132,9 +110,28 @@ class _PromotionState extends BaseState<PromotionPage> {
     }
   }
 
+  _buildGradientText(String text) => ShaderMask(
+        shaderCallback: (bounds) {
+          return LinearGradient(
+            colors: [
+              Color(0xff446597),
+              Color(0xff282828),
+            ],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ).createShader(Offset.zero & bounds.size);
+        },
+        child: Text(
+          text,
+          textAlign: TextAlign.center,
+          style:
+              TextStyle(fontSize: context.screenWidth / 25, fontWeight: FontWeight.bold).copyWith(color: Colors.white),
+        ),
+      );
+
   _handleApiState() {
     handleApiState(_vm.joinPromotionApiState, onSuccess: () {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
         showDialog(
           context: context,
           builder: (BuildContext context) => CustomDialog(
@@ -154,7 +151,7 @@ class _PromotionState extends BaseState<PromotionPage> {
         );
       });
     }, onError: (errorMsg) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
         showDialog(
           context: context,
           builder: (BuildContext context) => CustomDialog(

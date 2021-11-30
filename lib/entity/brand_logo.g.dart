@@ -6,12 +6,11 @@ part of 'brand_logo.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-BrandLogo _$BrandLogoFromJson(Map<String, dynamic> json) {
-  return BrandLogo()
-    ..id = json['brandId'] as String
-    ..mobileUrl = json['mobileLogoUrl'] as String
-    ..hasInvitationCode = json['hasInvitationCode'] as bool;
-}
+BrandLogo _$BrandLogoFromJson(Map<String, dynamic> json) => BrandLogo(
+      json['brandId'] as String,
+      json['mobileLogoUrl'] as String,
+      json['hasInvitationCode'] as bool,
+    );
 
 Map<String, dynamic> _$BrandLogoToJson(BrandLogo instance) => <String, dynamic>{
       'brandId': instance.id,

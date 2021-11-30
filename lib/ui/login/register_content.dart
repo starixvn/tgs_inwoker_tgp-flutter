@@ -22,12 +22,11 @@ import 'dart:math' as math;
 import '../../src/custom_color.dart';
 
 class RegisterContent extends StatefulWidget {
-  final ValueChanged<dynamic> onSubmitUsernameAndPassword;
+  final ValueChanged<dynamic>? onSubmitUsernameAndPassword;
 
   RegisterContent({
-    Key key,
     this.onSubmitUsernameAndPassword,
-  }) : super(key: key);
+  });
 
   @override
   _RegisterContentState createState() => _RegisterContentState();
@@ -134,7 +133,6 @@ class _RegisterContentState extends BaseState<RegisterContent> {
           ),
           hintText: getTranslatedText("signup_pay_password_hint"),
           onChanged: (value) => null,
-          onFieldSubmitted: (value) => null,
           controller: pay,
           width: context.screenWidth,
           textInputType: TextInputType.text,
@@ -152,7 +150,6 @@ class _RegisterContentState extends BaseState<RegisterContent> {
           ),
           hintText: getTranslatedText("phone_number"),
           onChanged: (value) => null,
-          onFieldSubmitted: (value) => null,
           controller: pay,
           width: context.screenWidth,
           textInputType: TextInputType.text,
@@ -161,8 +158,8 @@ class _RegisterContentState extends BaseState<RegisterContent> {
       );
 
   _buildPromotionCodeTextFormField() => Visibility(
-    visible: !(_vm.brandLogo?.hasInvitationCode ?? false),
-    child: Container(
+        visible: !(_vm.brandLogo?.hasInvitationCode ?? false),
+        child: Container(
           margin: EdgeInsets.only(top: 10.auto),
           child: LoginTextFormField(
             icon: SvgPicture.asset(
@@ -178,7 +175,7 @@ class _RegisterContentState extends BaseState<RegisterContent> {
             textInputAction: TextInputAction.done,
           ),
         ),
-  );
+      );
 
   _buildRegisterButton() => Container(
         margin: EdgeInsets.only(top: 50.auto, bottom: 10.auto),
@@ -243,7 +240,7 @@ class _RegisterContentState extends BaseState<RegisterContent> {
   _handleApiState() {
     handleApiState(_vm.registerApiState, onSuccess: () {
       if (EnvironmentConfig.appTitleName == "HKJP" || EnvironmentConfig.isShowSmsVerification)
-        widget.onSubmitUsernameAndPassword([username.text, password.text]);
+        widget.onSubmitUsernameAndPassword!([username.text, password.text]);
       //_navigateToPhoneReVerification(username: username.text, password: password.text);
       else
         _navigateToHome();
@@ -252,7 +249,7 @@ class _RegisterContentState extends BaseState<RegisterContent> {
       if (result.isExist) {
         CustomToast.show(getTranslatedText("username_exist"));
       } else {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
+        WidgetsBinding.instance!.addPostFrameCallback((_) {
           ProgressDialog.show(context, _vm.brandLogo.mobileUrl);
           _vm.register(username.text, password.text, confirmPassword.text, invitationCode.text);
         });
@@ -261,13 +258,13 @@ class _RegisterContentState extends BaseState<RegisterContent> {
   }
 
   _navigateToHome() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       Navigator.of(context).pushNamed(RoutePath.home);
     });
   }
 
   _navigateToPhoneReVerification({String username = "", String password = ""}) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       Navigator.push(
           context,
           MaterialPageRoute(

@@ -1,10 +1,10 @@
 import 'package:json_annotation/json_annotation.dart';
+
 part 'daily_transaction.g.dart';
 
 @JsonSerializable()
-
 class DailyTransaction {
-  DailyTransaction();
+  DailyTransaction(this.betTime, this.betAmount, this.winLoss, this.turnover);
 
   @JsonKey(name: "bet_time")
   String betTime;
@@ -16,5 +16,6 @@ class DailyTransaction {
   dynamic turnover;
 
   factory DailyTransaction.fromJson(Map<String, dynamic> json) => _$DailyTransactionFromJson(json);
+
   Map<String, dynamic> toJson() => _$DailyTransactionToJson(this);
 }

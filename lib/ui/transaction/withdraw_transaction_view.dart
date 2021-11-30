@@ -13,14 +13,11 @@ import 'package:tgp_flutter/ui/transaction/transaction_view_model.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class WithdrawTransactionView extends StatefulWidget {
-  //final List<String> transactionHeaderList;
   final TransactionViewModel vm;
 
   WithdrawTransactionView({
-    Key key,
-    /*this.transactionHeaderList, */
-    this.vm,
-  }) : super(key: key);
+    required this.vm,
+  });
 
   @override
   WithdrawTransactionViewState createState() => WithdrawTransactionViewState();
@@ -36,7 +33,7 @@ class WithdrawTransactionViewState extends BaseState<WithdrawTransactionView> {
 
   void initState() {
     _scrollController.addListener(_scrollListener);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       _getTransaction();
     });
     super.initState();
@@ -71,17 +68,17 @@ class WithdrawTransactionViewState extends BaseState<WithdrawTransactionView> {
         });
   }
 
-  _getList() => _vm.withdrawTransactionList == null
+  List<Widget> _getList() => _vm.withdrawTransactionList == null
       ? []
-      : List.generate(_vm.withdrawTransactionList.length, (index) {
+      : List.generate(_vm.withdrawTransactionList!.length, (index) {
           return Container(
             child: TransactionCellItem(
               list: [
-                _vm.withdrawTransactionList[index].id,
-                _vm.withdrawTransactionList[index].orderNo,
-                Format().dateTimeFormat(_vm.withdrawTransactionList[index].createdOn),
-                _vm.withdrawTransactionList[index].status.getName(context),
-                _vm.withdrawTransactionList[index].amount.toString(),
+                _vm.withdrawTransactionList![index].id,
+                _vm.withdrawTransactionList![index].orderNo,
+                Format().dateTimeFormat(_vm.withdrawTransactionList![index].createdOn),
+                _vm.withdrawTransactionList![index].status.getName(context),
+                _vm.withdrawTransactionList![index].amount.toString(),
               ],
               type: _getTransactionItemType(index),
               isEndRecord: _vm.endRecord,
@@ -133,12 +130,12 @@ class WithdrawTransactionViewState extends BaseState<WithdrawTransactionView> {
   }
 
   _getTransactionItemType(int index) {
-    if (_vm.withdrawTransactionList.length == 1) {
+    if (_vm.withdrawTransactionList!.length == 1) {
       return TransactionCellItemType.SINGLE;
     } else {
       if (index == 0) {
         return TransactionCellItemType.TOP;
-      } else if (index == _vm.withdrawTransactionList.length - 1) {
+      } else if (index == _vm.withdrawTransactionList!.length - 1) {
         return TransactionCellItemType.BOTTOM;
       } else {
         return TransactionCellItemType.CENTER;
@@ -155,8 +152,8 @@ class WithdrawTransactionViewState extends BaseState<WithdrawTransactionView> {
     }
   }
 
-  _getTransaction({Status status, bool isLoadMore}) async {
-    await _vm.getWithdrawTransaction(isLoadMore: isLoadMore ?? false, status: status);
+  _getTransaction({Status? status, bool isLoadMore = false}) async {
+    await _vm.getWithdrawTransaction(isLoadMore: isLoadMore, status: status);
   }
 
   _handleApiState() {

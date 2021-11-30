@@ -39,8 +39,8 @@ extension ProfileInfoItemExtension on ProfileInfoItem {
     ProfileInfoItem.RESET_PAY_PASSWORD: "images/profile_info/ic_profile_info_withdraw_password.png",
   };
 
-  String getDisplayName(BuildContext context) => getTranslatedText(context,name[this]);
-  String get getImagePath => imagePath[this];
+  String? getDisplayName(BuildContext context) => getTranslatedText(context,name[this]!);
+  String? get getImagePath => imagePath[this];
 
   getTranslatedText(BuildContext context, String key) =>
       LanguageProvider().getTranslated(context, key);

@@ -6,11 +6,11 @@ part of 'transfer_limit.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-TransferLimit _$TransferLimitFromJson(Map<String, dynamic> json) {
-  return TransferLimit()
-    ..from = (json['from'] as num)?.toDouble()
-    ..to = (json['to'] as num)?.toDouble();
-}
+TransferLimit _$TransferLimitFromJson(Map<String, dynamic> json) =>
+    TransferLimit(
+      (json['from'] as num).toDouble(),
+      (json['to'] as num).toDouble(),
+    );
 
 Map<String, dynamic> _$TransferLimitToJson(TransferLimit instance) =>
     <String, dynamic>{

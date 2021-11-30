@@ -9,7 +9,11 @@ class CustomTabBar extends StatefulWidget {
   final String step1Text;
   final String step2Text;
 
-  CustomTabBar({Key key, this.index, this.step1Text, this.step2Text}) : super(key: key);
+  CustomTabBar({
+    required this.index,
+    required this.step1Text,
+    required this.step2Text,
+  });
 
   @override
   _CustomTabBarState createState() => _CustomTabBarState();
@@ -21,7 +25,7 @@ class _CustomTabBarState extends BaseState<CustomTabBar> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Expanded(
-          flex:1,
+          flex: 1,
           child: Column(
             children: [
               Text("STEP 1",
@@ -44,7 +48,8 @@ class _CustomTabBarState extends BaseState<CustomTabBar> {
               AutoSizeText(
                 getTranslatedText(widget.step1Text),
                 style: TextStyle(
-                    fontFamily: 'PingFang', color: (widget.index == 0) ? CustomColor.theme_bar_gradient_2 : Colors.grey),
+                    fontFamily: 'PingFang',
+                    color: (widget.index == 0) ? CustomColor.theme_bar_gradient_2 : Colors.grey),
                 textAlign: TextAlign.center,
                 minFontSize: 10,
                 stepGranularity: 1,
@@ -54,7 +59,7 @@ class _CustomTabBarState extends BaseState<CustomTabBar> {
           ),
         ),
         Expanded(
-          flex:1,
+          flex: 1,
           child: Column(
             children: [
               Text("STEP 2",

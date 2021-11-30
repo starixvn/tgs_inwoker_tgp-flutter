@@ -6,13 +6,13 @@ part of 'bank_extended_info.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-BankExtendedInfo _$BankExtendedInfoFromJson(Map<String, dynamic> json) {
-  return BankExtendedInfo()
-    ..channel = json['channel'] as String
-    ..systemId = json['systemId'] as String
-    ..systemKey = json['systemKey'] as String
-    ..channelCurrency = json['channelCurrency'] as String;
-}
+BankExtendedInfo _$BankExtendedInfoFromJson(Map<String, dynamic> json) =>
+    BankExtendedInfo(
+      json['channel'] as String?,
+      json['systemId'] as String?,
+      json['systemKey'] as String?,
+      json['channelCurrency'] as String?,
+    );
 
 Map<String, dynamic> _$BankExtendedInfoToJson(BankExtendedInfo instance) =>
     <String, dynamic>{

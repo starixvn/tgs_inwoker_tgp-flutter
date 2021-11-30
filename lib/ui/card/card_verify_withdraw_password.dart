@@ -27,7 +27,7 @@ class _CardVerifyWithdrawPasswordState extends BaseState<CardVerifyWithdrawPassw
 
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       _showDialog();
     });
     super.initState();
@@ -201,7 +201,7 @@ class _CardVerifyWithdrawPasswordState extends BaseState<CardVerifyWithdrawPassw
     if(_vm.updateWithdrawPasswordApiState.isSuccess){
        ProgressDialog.hide();
       _vm.resetApiState(isUpdateWithdrawPasswordApiState: true);
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
         Navigator.pop(context);
       });
     }*/

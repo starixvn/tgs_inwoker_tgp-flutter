@@ -38,7 +38,7 @@ class _WithdrawState extends BaseState<Withdraw> {
 
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       _checkUserProfile();
     });
     _vm.getTurnoverAmount();
@@ -220,9 +220,20 @@ class _WithdrawState extends BaseState<Withdraw> {
     if (selectedBankCard == null) {
       selectedBankCard = _vm.bankCardList.first;
     }
-    return selectedBankCard.bankType == BankType.CRYPTO
-        ? (selectedBankCard.bankDetail.address)
-        : (selectedBankCard.bankDetail.bankAccount ?? "");
+    return _getDisplayBankAccountText(selectedBankCard);
+  }
+
+  _getDisplayBankAccountText(BankCard bankCard) {
+    switch (bankCard.bankType) {
+      case BankType.CRYPTO:
+        return bankCard.bankDetail.address;
+      case BankType.THIRD_PARTY:
+        return bankCard.bankDetail.phone;
+      case BankType.FPS:
+        return bankCard.bankDetail.phone;
+      default:
+        return bankCard.bankDetail.bankAccount;
+    }
   }
 
   _buildTextField(String titleText, String hintText, TextEditingController controller, bool isNum) =>
@@ -320,7 +331,7 @@ class _WithdrawState extends BaseState<Withdraw> {
 
   _handleApiState() {
     handleApiState(_vm.withdrawApiState, onSuccess: () {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
         _showDialog();
         _amountController.clear();
         _payPasswordController.clear();

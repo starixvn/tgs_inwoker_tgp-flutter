@@ -9,11 +9,16 @@ import 'package:tgp_flutter/ui/home/game/game_view_model.dart';
 
 class ChildGamePlatformTabBarView extends StatefulWidget {
   final List<Game> gameList;
-  final Function onClick;
+  final Function? onClick;
   final bool isDisabled;
   final GameViewModel vm;
 
-  ChildGamePlatformTabBarView({@required this.gameList, this.onClick, this.isDisabled, this.vm});
+  ChildGamePlatformTabBarView({
+    required this.gameList,
+     this.onClick,
+    this.isDisabled = false,
+    required this.vm,
+  });
 
   @override
   _ChildGamePlatformTabBarViewState createState() => _ChildGamePlatformTabBarViewState();
@@ -24,7 +29,7 @@ class _ChildGamePlatformTabBarViewState extends BaseState<ChildGamePlatformTabBa
     return GridView.count(
       padding: EdgeInsets.all(10.auto),
       crossAxisCount: 2,
-     childAspectRatio: 165.5/198,
+      childAspectRatio: 165.5 / 198,
       shrinkWrap: true,
       physics: AlwaysScrollableScrollPhysics(),
       crossAxisSpacing: 10,
@@ -37,7 +42,7 @@ class _ChildGamePlatformTabBarViewState extends BaseState<ChildGamePlatformTabBa
             child: ChildGameItem(
               game: widget.gameList[index],
               //isFavourite: true,
-              isDisabled: widget.isDisabled ?? false,
+              isDisabled: widget.isDisabled ,
               vm: widget.vm,
             ));
       }),

@@ -22,17 +22,17 @@ import 'package:tgp_flutter/network/services/api_service.dart';
 import 'base_repository.dart';
 
 class ContentRepository extends BaseRepository {
-  static ContentRepository _singleton;
-  List<GameProvider> gameProviderList;
-  List<LanguageOption> languageOptionList;
-  List<Promotion> promotionList;
-  BrandLogo brandLogo;
+  static ContentRepository? _singleton;
+  List<GameProvider>? gameProviderList;
+  List<LanguageOption>? languageOptionList;
+  List<Promotion>? promotionList;
+  BrandLogo? brandLogo;
 
   static ContentRepository getSingleton() {
     if (_singleton == null) {
       _singleton = ContentRepository();
     }
-    return _singleton;
+    return _singleton!;
   }
 
   getLanguage() async {
@@ -131,7 +131,7 @@ class ContentRepository extends BaseRepository {
               //"sort":"",
               "all": all.toString(),
             },
-            converter: (json) => ListResponse.fromJson(json, (res) => Promotion.fromJson(res)),
+            converter: (json) => ListResponse.fromJson(json, (res) => Promotion.fromJson(res as Map<String, dynamic>)),
             jwtRefresher: jwtAuth)
         .execute();
   }

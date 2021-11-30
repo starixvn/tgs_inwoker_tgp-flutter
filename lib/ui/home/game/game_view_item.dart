@@ -14,11 +14,11 @@ import 'package:tgp_flutter/ui/home/home_view_model.dart';
 
 class GameViewItem extends StatefulWidget {
   final ScrollController controller;
-  final List<dynamic> gameProviderList;
-  final Function(GameProvider2) onGameClick;
+  final List<dynamic>? gameProviderList;
+  final Function(GameProvider2)? onGameClick;
   final Key key;
 
-  GameViewItem(this.key, {@required this.controller, this.gameProviderList, this.onGameClick}) : super(key: key);
+  GameViewItem(this.key, {required this.controller, this.gameProviderList, this.onGameClick}) ;
 
   @override
   GameViewItemState createState() => GameViewItemState();
@@ -34,13 +34,13 @@ class GameViewItemState extends BaseState<GameViewItem> {
   double _itemPaddingBottom = (5).auto;
 
   double get _itemWidth =>
-      context.size.width - _containerPaddingRight - _listViewPaddingRight - _itemPaddingRight - _itemPaddingLeft;
+      context.size!.width - _containerPaddingRight - _listViewPaddingRight - _itemPaddingRight - _itemPaddingLeft;
 
   double get itemHeight => _itemWidth * (1 / _imageRatio) + _itemPaddingTop + _itemPaddingBottom;
 
   @override
   Widget build(BuildContext context) {
-    var gameList = widget.gameProviderList.expand((element) => element).toList();
+    var gameList = widget.gameProviderList!.expand((element) => element).toList();
 
     return Expanded(
       child: Container(
@@ -58,7 +58,7 @@ class GameViewItemState extends BaseState<GameViewItem> {
             child: ListView(
                 padding: EdgeInsets.only(right: _listViewPaddingRight),
                 controller: widget.controller,
-                children: widget.gameProviderList
+                children: widget.gameProviderList!
                     .expand((element) => element)
                     .toList()
                     .map((item) => Container(
@@ -84,7 +84,7 @@ class GameViewItemState extends BaseState<GameViewItem> {
         onTap: () {
           if (gameProvider.status != 0) {
           } else
-            widget.onGameClick(gameProvider);
+            widget.onGameClick!(gameProvider);
         },
         child: Stack(
           children: [

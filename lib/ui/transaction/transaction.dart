@@ -17,9 +17,9 @@ import 'package:tgp_flutter/ui/transaction/transaction_view_model.dart';
 import 'package:tgp_flutter/ui/transaction/withdraw_transaction_view.dart';
 
 class Transaction extends StatefulWidget {
-  final int tabIndex;
+  final int? tabIndex;
 
-  Transaction({Key key, this.tabIndex}) : super(key: key);
+  Transaction({this.tabIndex});
 
   @override
   _TransactionState createState() => _TransactionState();
@@ -64,7 +64,7 @@ class _TransactionState extends BaseState<Transaction> with SingleTickerProvider
                 },
               ),
               title: Text(
-                getTranslatedText(tabList[currentTabIndex]["text"]),
+                getTranslatedText(tabList[currentTabIndex]["text"]!),
                 style: TextStyle(fontSize: 20.auto),
               ),
               bottom: PreferredSize(
@@ -98,7 +98,7 @@ class _TransactionState extends BaseState<Transaction> with SingleTickerProvider
                     unselectedLabelStyle: TextStyle(color: CustomColor.grey),
                     tabs: tabList.map((item) {
                       return Tab(
-                        child: Text(getTranslatedText(item["text"]) ?? tabList[currentTabIndex]["text"],
+                        child: Text(getTranslatedText(item["text"]!) ?? tabList[currentTabIndex]["text"],
                             style: TextStyle(
                               fontFamily: 'PingFang',
                               fontSize: 14.auto,

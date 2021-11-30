@@ -6,9 +6,9 @@ part of 'url.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Url _$UrlFromJson(Map<String, dynamic> json) {
-  return Url()..url = json['url'] as String;
-}
+Url _$UrlFromJson(Map<String, dynamic> json) => Url(
+      json['url'] as String,
+    );
 
 Map<String, dynamic> _$UrlToJson(Url instance) => <String, dynamic>{
       'url': instance.url,

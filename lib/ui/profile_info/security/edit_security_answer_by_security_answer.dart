@@ -127,7 +127,7 @@ class _EditSecurityAnswerBySecurityAnswerState extends BaseState<EditSecurityAns
   }
 
   _getUserProfile() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       setState(() {
         userProfile = _vm.userProfile;
         if (_vm.userProfile.memberName.isNotEmpty) {
@@ -157,7 +157,7 @@ class _EditSecurityAnswerBySecurityAnswerState extends BaseState<EditSecurityAns
     _vm.updateSecurityQuestion(securityQuestion.securityQuestionID, securityQuestion.answer, isReset);
     if(_vm.updateSecurityQuestionApiState.isSuccess){
       await _vm.getBasicInfo();
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
          ProgressDialog.hide();
         setState(() {
           userProfile = _vm.getBasicInfoApiState.result;

@@ -76,14 +76,14 @@ class MyApp extends StatefulWidget {
   _MyAppState createState() => _MyAppState();
 
   static void setLocale(BuildContext context, Locale newLocale) async {
-    _MyAppState state = context.findAncestorStateOfType<_MyAppState>();
-    state.setLocale(newLocale);
+    _MyAppState? state = context.findAncestorStateOfType<_MyAppState>();
+    state!.setLocale(newLocale);
   }
 }
 
 class _MyAppState extends BaseState<MyApp> {
   final appTitle = EnvironmentConfig.appTitleName;
-  Locale _locale;
+  Locale? _locale;
   var _vm = MainViewModel();
   var firstInit = true;
 
@@ -102,7 +102,7 @@ class _MyAppState extends BaseState<MyApp> {
 
 /*  @override
   void didChangeDependencies() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {*/
+    WidgetsBinding.instance!.addPostFrameCallback((_) {*/
   _getLocale() {
     LanguageProvider().getLocale().then((locale) {
       setState(() {
@@ -131,7 +131,6 @@ class _MyAppState extends BaseState<MyApp> {
       return EventResult.loading();
   }
 
-
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
@@ -143,16 +142,14 @@ class _MyAppState extends BaseState<MyApp> {
         builder: (BuildContext context, AsyncSnapshot<EventResult<List<LanguageOption>>> snapshot) {
           if (!snapshot.hasData) {
             return MaterialApp(debugShowCheckedModeBanner: false, home: Splash());
-          }
-          else if (snapshot.data.isMaintenance) {
+          } else if (snapshot.data!.isMaintenance) {
             return MaterialApp(debugShowCheckedModeBanner: false, home: Maintenance(isShowCS: true));
-          }
-          else {
+          } else {
             return GestureDetector(
               onTap: () {
                 FocusScopeNode currentFocus = FocusScope.of(context);
                 if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) {
-                  currentFocus.focusedChild.unfocus();
+                  currentFocus.focusedChild!.unfocus();
                 }
               },
               child: MaterialApp(
@@ -193,7 +190,7 @@ class _MyAppState extends BaseState<MyApp> {
                   RoutePath.language: (context) => LanguageView(),
                   RoutePath.addCard: (context) => AddCard(),
                   RoutePath.customerService: (context) => CustomerService(),
-                  RoutePath.promotionItemDetails: (context) => PromotionItemDetails(),
+                  // RoutePath.promotionItemDetails: (context) => PromotionItemDetails(),
                   RoutePath.csWebView: (context) => CustomerServiceWebView(),
                   RoutePath.csQrCode: (context) => CustomerServiceQrCode(),
                   RoutePath.maintenance: (context) => Maintenance(),
@@ -211,7 +208,7 @@ class _MyAppState extends BaseState<MyApp> {
                 locale: _locale,
                 localeResolutionCallback: (locale, supportedLocales) {
                   for (var supportedLocale in supportedLocales) {
-                    if (supportedLocale.languageCode == locale.languageCode &&
+                    if (supportedLocale.languageCode == locale!.languageCode &&
                         supportedLocale.scriptCode == locale.scriptCode) {
                       return supportedLocale;
                     }
@@ -231,9 +228,9 @@ class _MyAppState extends BaseState<MyApp> {
 
 class MyHomePage extends StatefulWidget {
   final bool isFirstRun;
-  final int index;
+  final int? index;
 
-  MyHomePage({this.isFirstRun, this.index});
+  MyHomePage({this.isFirstRun = false, this.index});
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -241,11 +238,11 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends BaseState<MyHomePage> {
   int currentBottomIndex = 0;
-  List _page;
+  List _page = [];
 
   @override
   void initState() {
-    if (widget.index != null) currentBottomIndex = widget.index;
+    if (widget.index != null) currentBottomIndex = widget.index!;
     super.initState();
   }
 
@@ -253,7 +250,7 @@ class _MyHomePageState extends BaseState<MyHomePage> {
   Widget build(BuildContext context) {
     _page = [
       Home(
-        isFirstRun: widget.isFirstRun ?? false,
+        isFirstRun: widget.isFirstRun,
       ),
       PromotionPage(),
       Menu(),

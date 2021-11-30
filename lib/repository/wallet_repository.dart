@@ -18,13 +18,13 @@ import 'package:tgp_flutter/network/services/api_service.dart';
 import 'base_repository.dart';
 
 class WalletRepository extends BaseRepository {
-  static WalletRepository _singleton;
+  static WalletRepository? _singleton;
 
   static WalletRepository getSingleton() {
     if (_singleton == null) {
       _singleton = WalletRepository();
     }
-    return _singleton;
+    return _singleton!;
   }
 
   Future<EventResult<GameWallet>> getGameWallet(String gpCode) async {
@@ -36,15 +36,12 @@ class WalletRepository extends BaseRepository {
         .execute();
   }
 
-  Future<EventResult<dynamic>> fundTransfer(String gpCode,int amount,bool isFundOut) async {
+  Future<EventResult<dynamic>> fundTransfer(String gpCode, int amount, bool isFundOut) async {
     return await ApiRequestBuilder<dynamic>(
-        method: HttpMethod.PUT,
-        endPoint: "api/game/balance/fund/${isFundOut ? "out" : "in"}",
-        params: {
-          "gpcode":gpCode,
-          "amount": amount
-        },
-        jwtRefresher: jwtAuth)
+            method: HttpMethod.PUT,
+            endPoint: "api/game/balance/fund/${isFundOut ? "out" : "in"}",
+            params: {"gpcode": gpCode, "amount": amount},
+            jwtRefresher: jwtAuth)
         .execute();
   }
 }

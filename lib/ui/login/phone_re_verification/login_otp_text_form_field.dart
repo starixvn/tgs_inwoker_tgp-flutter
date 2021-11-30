@@ -16,24 +16,23 @@ class LoginOtpTextFormField extends StatefulWidget {
   final bool isEnabled;
   final bool isCountdown;
 
-  LoginOtpTextFormField(
-      {Key key,
-      this.hintText,
-      this.onChanged,
-      this.controller,
-      this.textInputAction,
-      this.getOtpCode,
-      this.isEnabled,
-      this.isCountdown,
-      this.onCountDownEnd})
-      : super(key: key);
+  LoginOtpTextFormField({
+    required this.hintText,
+    required this.onChanged,
+    required this.controller,
+    required this.textInputAction,
+    required this.getOtpCode,
+    required this.isEnabled,
+    required this.isCountdown,
+    required this.onCountDownEnd,
+  });
 
   @override
   _LoginOtpTextFormFieldState createState() => _LoginOtpTextFormFieldState();
 }
 
 class _LoginOtpTextFormFieldState extends BaseState<LoginOtpTextFormField> {
-  Timer _timer;
+  Timer? _timer;
   int _start = 0;
   static const int _duration = 5;
 
@@ -87,10 +86,10 @@ class _LoginOtpTextFormFieldState extends BaseState<LoginOtpTextFormField> {
   @override
   void didUpdateWidget(covariant LoginOtpTextFormField oldWidget) {
     if (oldWidget.isCountdown != widget.isCountdown) {
-      if (widget.isCountdown && (_timer == null || !_timer.isActive)) {
+      if (widget.isCountdown && (_timer == null || !_timer!.isActive)) {
         startTimer();
       } else {
-        if (_timer != null) _timer.cancel();
+        if (_timer != null) _timer!.cancel();
       }
     }
     super.didUpdateWidget(oldWidget);
@@ -119,7 +118,7 @@ class _LoginOtpTextFormFieldState extends BaseState<LoginOtpTextFormField> {
   @override
   void dispose() {
     print("disposedisposedisposedispose");
-    _timer.cancel();
+    _timer!.cancel();
     super.dispose();
   }
 }

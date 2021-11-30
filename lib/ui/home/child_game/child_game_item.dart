@@ -25,7 +25,11 @@ class ChildGameItem extends StatefulWidget {
   final bool isDisabled;
   final GameViewModel vm;
 
-  ChildGameItem({/*this.isFavourite,*/ this.game, this.isDisabled, this.vm});
+  ChildGameItem({
+    required  this.game,
+    required this.isDisabled,
+    required this.vm,
+  });
 
   @override
   _ChildGameItemState createState() => _ChildGameItemState();
@@ -55,7 +59,7 @@ class _ChildGameItemState extends BaseState<ChildGameItem> {
 
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: widget.isDisabled ? () {} : () => _navigateToGameWeb(widget.game),
+      onTap: (widget.isDisabled) ? () {} : () => _navigateToGameWeb(widget.game),
       child: Container(
         child: ClipRRect(
           borderRadius: BorderRadius.circular(5),
@@ -99,14 +103,7 @@ class _ChildGameItemState extends BaseState<ChildGameItem> {
           "${widget.game.gamePlatformCode.toUpperCase()}/${languageCode ?? "en-US"}/$gameName.jpg";
   }
 
-  _getGameName() {
-    /*if (((getCurrentLanguage().apiCode == "zh-CN" || getCurrentLanguage().apiCode == "zh-TW") &&
-        (widget.game.gamePlatformCode == "HABA" || widget.game.gamePlatformCode == "PP")) ||
-        widget.game.gamePlatformCode == "SW"|| widget.game.type == GameType.Fishing )*/
-    return widget.game.code;
-    /*else
-      return widget.game.code.replaceAll(RegExp("_"), "");*/
-  }
+  _getGameName() => widget.game.code;
 
   _buildImageTitleAndFavouriteIcon() {
     return Container(
@@ -173,7 +170,7 @@ class _ChildGameItemState extends BaseState<ChildGameItem> {
       );
 
   _navigateToGameWeb(Game game) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       Navigator.push(
           context,
           MaterialPageRoute(

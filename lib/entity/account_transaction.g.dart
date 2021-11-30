@@ -6,16 +6,16 @@ part of 'account_transaction.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-AccountTransaction _$AccountTransactionFromJson(Map<String, dynamic> json) {
-  return AccountTransaction()
-    ..id = json['id'] as String
-    ..createdOn = json['createdon'] as String
-    ..updatedOn = json['updatedOn'] as String
-    ..status = _$enumDecodeNullable(_$StatusEnumMap, json['status'])
-    ..amount = (json['amount'] as num)?.toDouble()
-    ..canUploadCerts = json['canuploadcerts'] as bool
-    ..orderNo = json['orderno'] as String;
-}
+AccountTransaction _$AccountTransactionFromJson(Map<String, dynamic> json) =>
+    AccountTransaction(
+      json['id'] as String,
+      json['createdon'] as String,
+      json['updatedOn'] as String,
+      $enumDecode(_$StatusEnumMap, json['status']),
+      (json['amount'] as num).toDouble(),
+      json['canuploadcerts'] as bool,
+      json['orderno'] as String,
+    );
 
 Map<String, dynamic> _$AccountTransactionToJson(AccountTransaction instance) =>
     <String, dynamic>{
@@ -27,38 +27,6 @@ Map<String, dynamic> _$AccountTransactionToJson(AccountTransaction instance) =>
       'canuploadcerts': instance.canUploadCerts,
       'orderno': instance.orderNo,
     };
-
-T _$enumDecode<T>(
-  Map<T, dynamic> enumValues,
-  dynamic source, {
-  T unknownValue,
-}) {
-  if (source == null) {
-    throw ArgumentError('A value must be provided. Supported values: '
-        '${enumValues.values.join(', ')}');
-  }
-
-  final value = enumValues.entries
-      .singleWhere((e) => e.value == source, orElse: () => null)
-      ?.key;
-
-  if (value == null && unknownValue == null) {
-    throw ArgumentError('`$source` is not one of the supported values: '
-        '${enumValues.values.join(', ')}');
-  }
-  return value ?? unknownValue;
-}
-
-T _$enumDecodeNullable<T>(
-  Map<T, dynamic> enumValues,
-  dynamic source, {
-  T unknownValue,
-}) {
-  if (source == null) {
-    return null;
-  }
-  return _$enumDecode<T>(enumValues, source, unknownValue: unknownValue);
-}
 
 const _$StatusEnumMap = {
   Status.All: 'All',

@@ -24,7 +24,7 @@ import 'dart:math' as math;
 class LoginContent extends StatefulWidget {
   final child;
 
-  LoginContent({this.child, Key key}) : super(key: key);
+  LoginContent({this.child}) ;
 
   @override
   _LoginContentState createState() => _LoginContentState();
@@ -49,8 +49,8 @@ class _LoginContentState extends BaseState<LoginContent> {
   }
 
   void _changeLanguage(Language language) async {
-    Locale _locale = await LanguageProvider().setLocale(language);
-    MyApp.setLocale(context, _locale);
+    Locale? _locale = await LanguageProvider().setLocale(language);
+    MyApp.setLocale(context, _locale!);
     await _vm.getApiError();
   }
 
@@ -83,7 +83,6 @@ class _LoginContentState extends BaseState<LoginContent> {
           ),
           hintText: getTranslatedText("enter_username_hint"),
           onChanged: (value) => null,
-          onFieldSubmitted: (value) => null,
           controller: username,
           width: context.screenWidth,
           textInputType: TextInputType.text,
@@ -239,7 +238,7 @@ class _LoginContentState extends BaseState<LoginContent> {
   _navigateToHome() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool("login_later", true);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
               builder: (context) => MyHomePage(

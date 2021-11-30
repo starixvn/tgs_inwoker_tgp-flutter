@@ -4,30 +4,25 @@ import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
 
 class LoginTextFormField extends StatefulWidget {
-  final Widget icon;
+  final Widget? icon;
   final String hintText;
-  final ValueChanged<String> onFieldSubmitted;
-  final ValueChanged<String> onChanged;
-  final Function onShowPassword;
+  final ValueChanged<String?>? onChanged;
+  final ValueChanged<String?>? onFieldSubmitted;
   final TextEditingController controller;
   final double width;
-  final Widget button;
   final TextInputType textInputType;
   final TextInputAction textInputAction;
 
   LoginTextFormField({
-    Key key,
     this.icon,
-    this.hintText,
+    required this.hintText,
     this.onChanged,
+    required this.controller,
+    required this.width,
+    required this.textInputType,
+    required this.textInputAction,
     this.onFieldSubmitted,
-    this.onShowPassword,
-    this.controller,
-    this.width,
-    this.button,
-    this.textInputType,
-    this.textInputAction,
-  }) : super(key: key);
+  });
 
   @override
   _LoginTextFormFieldState createState() => _LoginTextFormFieldState();
@@ -49,9 +44,9 @@ class _LoginTextFormFieldState extends BaseState<LoginTextFormField> {
           Expanded(
             child: TextFormField(
               autofocus: false,
-              onChanged: (value) => widget.onChanged(value),
+              onChanged: (value) => widget.onChanged!(value),
               controller: widget.controller,
-              onFieldSubmitted: (value) => widget.onChanged(value),
+              onFieldSubmitted: (value) => widget.onChanged!(value),
               keyboardType: widget.textInputType,
               textInputAction: widget.textInputAction,
               style: TextStyle(color: CustomColor.theme_value_text_color, fontSize: 13.auto),

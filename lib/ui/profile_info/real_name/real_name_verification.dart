@@ -118,7 +118,7 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
   );
 
   _getUserProfile() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       var _realname = _vm.userProfile.realname;
       setState(() {
         if (_realname != null) {

@@ -1,9 +1,8 @@
-
-
 class Wallet {
-  double balance;
+  double? balance;
   String gpCode;
   String title;
   bool isMainWallet;
+
   Wallet(this.gpCode, this.title, {this.isMainWallet = false});
 }

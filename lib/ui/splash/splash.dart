@@ -15,7 +15,7 @@ import 'package:tgp_flutter/ui/home/home.dart';
 import 'package:tgp_flutter/ui/splash/splash_view_model.dart';
 
 class Splash extends StatefulWidget {
-  final String logoUrl;
+  final String? logoUrl;
 
   Splash({this.logoUrl});
 
@@ -28,7 +28,7 @@ class _SplashState extends BaseState<Splash> {
 
   @override
   void initState() {
-  /*  WidgetsBinding.instance.addPostFrameCallback((_) {
+  /*  WidgetsBinding.instance!.addPostFrameCallback((_) {
       _initData();
     });*/
     super.initState();
@@ -60,7 +60,7 @@ class _SplashState extends BaseState<Splash> {
                       ? Container()
                       : CachedNetworkImage(
                           placeholder: (context, url) => Container(),
-                          imageUrl: widget.logoUrl,
+                          imageUrl: widget.logoUrl!,
                           //handling error
                           fit: BoxFit.cover,
                           errorWidget: (context, url, error) => Container(),
@@ -86,7 +86,7 @@ class _SplashState extends BaseState<Splash> {
   }
 
   _navigateToHome() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
               builder: (context) => MyHomePage(

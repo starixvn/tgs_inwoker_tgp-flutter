@@ -21,8 +21,13 @@ class ProfileBottomItem extends StatefulWidget {
   final int navigationID;
   final bool isMessage;
 
-  ProfileBottomItem({Key key, this.title, this.imagePath, this.routePath, this.navigationID, this.isMessage})
-      : super(key: key);
+  ProfileBottomItem({
+    required this.title,
+    required this.imagePath,
+    required this.routePath,
+    required this.navigationID,
+    required this.isMessage,
+  });
 
   @override
   _ProfileBottomItemState createState() => _ProfileBottomItemState();
@@ -58,22 +63,22 @@ class _ProfileBottomItemState extends BaseState<ProfileBottomItem> {
   }
 
   _buildImageIcon() => Expanded(
-    flex:9,
-    child: ImageIcon(
+        flex: 9,
+        child: ImageIcon(
           widget.imagePath == "ic_customer_service"
               ? AssetImage("images/bottom_navigation_bar/ic_customer_service.png")
               : AssetImage("images/profile/${widget.imagePath}.png"),
           size: 27.auto,
         ),
-  );
+      );
 
   _buildProfileBottomItemText() => Expanded(
-    flex:8,
-    child: Container(
+        flex: 8,
+        child: Container(
           padding: EdgeInsets.only(top: 10.auto),
           child: AutoSizeText(
             widget.title,
-           // style: TextStyle(fontSize: 10),
+            // style: TextStyle(fontSize: 10),
             textAlign: TextAlign.center,
             minFontSize: 5,
             maxFontSize: 10,
@@ -81,9 +86,9 @@ class _ProfileBottomItemState extends BaseState<ProfileBottomItem> {
             maxLines: 2,
           ),
         ),
-  );
+      );
 
-  _navigate() => WidgetsBinding.instance.addPostFrameCallback((_) {
+  _navigate() => WidgetsBinding.instance!.addPostFrameCallback((_) {
         if (widget.navigationID == 0) {
           Navigator.of(context).pushNamed("/${widget.routePath}");
         } else {

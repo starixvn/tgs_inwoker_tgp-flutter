@@ -23,19 +23,18 @@ import 'deposit_view_model.dart';
 import 'deposit_web.dart';
 
 class ManualDepositOrderView extends StatefulWidget {
-  final String method;
-  final String id;
-  final ManualDepositOrder manualDepositOrder;
-  final DepositRedirect depositRedirect;
-  final String depositAmount;
-  final String depositChannel;
-  final String orderNo;
-  final String promotionName;
-  final PaymentQrCode paymentQrCode;
+  final String? method;
+  final String? id;
+  final ManualDepositOrder? manualDepositOrder;
+  final DepositRedirect? depositRedirect;
+  final String? depositAmount;
+  final String? depositChannel;
+  final String? orderNo;
+  final String? promotionName;
+  final PaymentQrCode? paymentQrCode;
 
   ManualDepositOrderView(
-      {Key key,
-      this.method,
+      {this.method,
       this.id,
       this.manualDepositOrder,
       this.depositRedirect,
@@ -43,15 +42,14 @@ class ManualDepositOrderView extends StatefulWidget {
       this.depositChannel,
       this.orderNo,
       this.promotionName,
-      this.paymentQrCode})
-      : super(key: key);
+      this.paymentQrCode});
 
   @override
   _ManualDepositOrderViewState createState() => _ManualDepositOrderViewState();
 }
 
 class _ManualDepositOrderViewState extends BaseState<ManualDepositOrderView> {
-  File uploadImage;
+  File? uploadImage;
   var _vm = DepositViewModel();
 
   @override
@@ -99,17 +97,17 @@ class _ManualDepositOrderViewState extends BaseState<ManualDepositOrderView> {
               children: [
                 Row(
                   children: [
-                    widget.paymentQrCode?.qrCodeFileUrl == null
+                    widget.paymentQrCode!.qrCodeFileUrl == null
                         ? Container()
                         : Expanded(
                             flex: 2,
                             child: Image.network(
-                              widget.paymentQrCode.qrCodeFileUrl,
+                              widget.paymentQrCode!.qrCodeFileUrl!,
                               width: 150,
                               height: 150,
                             ),
                           ),
-                    widget.paymentQrCode?.qrCodeFileUrl == null
+                    widget.paymentQrCode!.qrCodeFileUrl == null
                         ? Container()
                         : Expanded(
                             flex: 1,
@@ -130,7 +128,7 @@ class _ManualDepositOrderViewState extends BaseState<ManualDepositOrderView> {
                           Container(
                             alignment: Alignment.centerLeft,
                             child: AutoSizeText(
-                              Format().currencyWithDecimalFormat(widget.manualDepositOrder.amount),
+                              Format().currencyWithDecimalFormat(widget.manualDepositOrder!.amount),
                               style: TextStyle(fontSize: 38, fontWeight: FontWeight.w400),
                               minFontSize: 10,
                               maxLines: 1,
@@ -145,17 +143,17 @@ class _ManualDepositOrderViewState extends BaseState<ManualDepositOrderView> {
                   thickness: (1.0).auto,
                   color: CustomColor.very_light_pink_four,
                 ),
-                _buildOrderText("order_no", widget.orderNo ?? widget.id),
-                _buildText("payment_type", widget.manualDepositOrder.methodName),
-                _buildText("payment_channel", widget.manualDepositOrder.channelName),
+                _buildOrderText("order_no", widget.orderNo ?? widget.id!),
+                _buildText("payment_type", widget.manualDepositOrder!.methodName),
+                _buildText("payment_channel", widget.manualDepositOrder!.channelName),
                 _buildText(
                     "receiver_bank",
-                    widget.manualDepositOrder.qrCode == null
-                        ? widget.manualDepositOrder.bankAccountName
-                        : widget.manualDepositOrder.bankName),
+                    widget.manualDepositOrder!.qrCode == null
+                        ? widget.manualDepositOrder!.bankAccountName
+                        : widget.manualDepositOrder!.bankName),
                 Visibility(
-                  visible: widget.manualDepositOrder.qrCode == null,
-                  child: _buildText("receiver_bank_account", widget.manualDepositOrder.bankAccount),
+                  visible: widget.manualDepositOrder!.qrCode == null,
+                  child: _buildText("receiver_bank_account", widget.manualDepositOrder!.bankAccount),
                 ),
                 Visibility(
                   visible: widget.promotionName != null,
@@ -165,7 +163,7 @@ class _ManualDepositOrderViewState extends BaseState<ManualDepositOrderView> {
                 uploadImage == null
                     ? Container()
                     : Container(
-                        alignment: Alignment.centerRight, child: SizedBox(height: 80, child: Image.file(uploadImage)))
+                        alignment: Alignment.centerRight, child: SizedBox(height: 80, child: Image.file(uploadImage!)))
               ],
             ),
           ),
@@ -176,7 +174,7 @@ class _ManualDepositOrderViewState extends BaseState<ManualDepositOrderView> {
               children: [
                 GradientButton(
                   title: getTranslatedText("upload_prof"),
-                  onClick: () => _vm.uploadDepositImage(uploadImage.path, widget.id),
+                  onClick: () => _vm.uploadDepositImage(uploadImage!.path, widget.id!),
                   isEnabled: uploadImage == null ? false : true,
                   radius: 4.8,
                   height: 44.5,
@@ -210,7 +208,7 @@ class _ManualDepositOrderViewState extends BaseState<ManualDepositOrderView> {
             Expanded(
               flex: 8,
               child: AutoSizeText(
-                content ?? "",
+                content,
                 style: TextStyle(fontSize: 13.auto, color: Colors.black),
                 minFontSize: 2,
                 maxLines: 1,
@@ -235,7 +233,7 @@ class _ManualDepositOrderViewState extends BaseState<ManualDepositOrderView> {
             style: TextStyle(fontSize: 13.auto, color: CustomColor.grey),
           ),
           AutoSizeText(
-            content ?? "",
+            content,
             style: TextStyle(fontSize: 13.auto, color: Colors.black),
             minFontSize: 2,
             maxLines: 1,
@@ -285,18 +283,18 @@ class _ManualDepositOrderViewState extends BaseState<ManualDepositOrderView> {
     });*/
 
     ImagePicker picker = ImagePicker();
-    XFile choosedImage = await picker.pickImage(source: ImageSource.gallery);
+    XFile? choosedImage = await picker.pickImage(source: ImageSource.gallery);
 
     //XFile file = File(picker!.path);
     //set source: ImageSource.camera to get image from camera
     setState(() {
-      uploadImage = File(choosedImage.path);
+      uploadImage = File(choosedImage!.path);
     });
   }
 
   _handleApiState() {
     handleApiState(_vm.uploadDepositImageApiState, onSuccess: () {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
         showDialog(
           context: context,
           builder: (BuildContext context) => CustomDialog(

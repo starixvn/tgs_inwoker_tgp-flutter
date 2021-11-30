@@ -10,7 +10,7 @@ import 'package:tgp_flutter/custom/custom_toast.dart';
 import 'package:tgp_flutter/entity/http_method.dart';
 import 'package:tgp_flutter/environment_config.dart';
 
-http.Client client;
+http.Client? client;
 //const timeoutDuration = Duration(seconds: 5);
 
 Future<http.Response> api(HttpMethod method, final endPoint,
@@ -40,7 +40,7 @@ Future<http.Response> api(HttpMethod method, final endPoint,
   http.Response response;
   switch (method) {
     case HttpMethod.POST:
-      response = await client
+      response = await client!
           .post(
             Uri.parse(url),
             headers: header,
@@ -59,7 +59,7 @@ Future<http.Response> api(HttpMethod method, final endPoint,
 
         print("Api->Start ${method.getName}:$url");
 
-        response = await client
+        response = await client!
             .get(
               Uri.parse(url + queryParams),
               headers: header,
@@ -70,7 +70,7 @@ Future<http.Response> api(HttpMethod method, final endPoint,
       }
       break;
     case HttpMethod.DELETE:
-      response = await client
+      response = await client!
           .delete(
             Uri.parse(url),
             headers: header,
@@ -79,7 +79,7 @@ Future<http.Response> api(HttpMethod method, final endPoint,
           .catchError((e) => _handleError(e));
       break;
     case HttpMethod.PATCH:
-      response = await client
+      response = await client!
           .patch(
             Uri.parse(url),
             headers: header,
@@ -89,7 +89,7 @@ Future<http.Response> api(HttpMethod method, final endPoint,
           .catchError((e) => _handleError(e));
       break;
     case HttpMethod.PUT:
-      response = await client
+      response = await client!
           .put(
             Uri.parse(url),
             headers: header,
@@ -111,7 +111,7 @@ Future<http.Response> api(HttpMethod method, final endPoint,
           .catchError((e) => _handleError(e));
       break;
     default:
-      response = await client
+      response = await client!
           .post(
             Uri.parse(url),
             headers: header,
@@ -122,7 +122,7 @@ Future<http.Response> api(HttpMethod method, final endPoint,
       break;
   }
 
-  log("Api<-Done:${response?.statusCode} \n ${response?.body}");
+  log("Api<-Done:${response.statusCode} \n ${response.body}");
   return response;
 }
 
@@ -144,7 +144,7 @@ getLanguage() async {
 
 _getAuthorizationToken(Map<String, String> header) async {
   var prefs = await SharedPreferences.getInstance();
-  String authToken = prefs.getString("auth_token");
+  String? authToken = prefs.getString("auth_token");
   var auth_token =
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0ZTg2NzE5Zi0yNDNmLTQ2ZjYtYjAxMC01Yzc1OGI3Mjg1YWYiLCJqdGkiOiJjMjE1OWRlNS0wNWFiLTQzZTEtYWU2Yi00MTExZmYwYWFkYTQiLCJjdXJyIjoiQ05ZIiwibmJmIjoxNjE4NTU5ODgzLCJleHAiOjE2MTg1NjM0ODMsImlhdCI6MTYxODU1OTg4MywiaXNzIjoib3BlcmF0b3ItYXBpIn0.RxQJPt-YcVhwZ68_QEPlhyZhcNgvR-jftDLRbOBxGE8";
   if (authToken != null) {
@@ -157,7 +157,7 @@ _getToken(Map<String, String> header) async {
   var prefs = await SharedPreferences.getInstance();
   var _token =
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJTNGZZZVlCQjJhTnZlbXExWkpwank1RWlMWDNkQjBEZDJLNWRUa05PdVFYQmlLZXFIdFRXNXFXMW1HNFlPZGc3c2VKbnpEUVZmdHpDaWxpb3FnTFZPRTJIRFNvUDByblFXQTJkUzZQVVVBdmFFaFFMZHZDUU1ncnVBQlEySDVITWdmY09iMWJLenpld01jeWxKaUFqQnp2YWJSTnVPTFZEbXZ4V25DcXEwRlRVeTdZeENXUFIxS2JRSm5nak5IRTJuaDd4bFFRRWIxUmUydW1nZDZwWHl6Tm0iLCJqdGkiOiJlYWZhNDliMy01M2M1LTRjZWUtYTAyYi1mMTJjZjI5MjA1M2YiLCJuYmYiOjE2MTg1NjAwMTksImV4cCI6MTYxODYwMzIxOSwiaWF0IjoxNjE4NTYwMDE5LCJpc3MiOiJvcGVyYXRvci1hcGkifQ.Dl79XK0_ai8QlRZ6obORaEMaRXIm3qg6XXN7ikXekXs";
-  String token = prefs.getString("token");
+  String? token = prefs.getString("token");
   if (token != null) {
     header["Token"] = token;
   }

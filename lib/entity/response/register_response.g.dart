@@ -6,12 +6,11 @@ part of 'register_response.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-RegisterResponse _$RegisterResponseFromJson(Map<String, dynamic> json) {
-  return RegisterResponse(
-    json['uid'] as String,
-    json['isnew'] as bool,
-  );
-}
+RegisterResponse _$RegisterResponseFromJson(Map<String, dynamic> json) =>
+    RegisterResponse(
+      json['uid'] as String,
+      json['isnew'] as bool,
+    );
 
 Map<String, dynamic> _$RegisterResponseToJson(RegisterResponse instance) =>
     <String, dynamic>{

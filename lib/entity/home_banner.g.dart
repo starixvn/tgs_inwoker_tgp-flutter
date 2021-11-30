@@ -6,12 +6,11 @@ part of 'home_banner.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-HomeBanner _$HomeBannerFromJson(Map<String, dynamic> json) {
-  return HomeBanner()
-    ..id = json['id'] as String
-    ..mobileUrl = json['mobileurl'] as String
-    ..title = json['title'] as String;
-}
+HomeBanner _$HomeBannerFromJson(Map<String, dynamic> json) => HomeBanner(
+      json['id'] as String,
+      json['mobileurl'] as String,
+      json['title'] as String,
+    );
 
 Map<String, dynamic> _$HomeBannerToJson(HomeBanner instance) =>
     <String, dynamic>{

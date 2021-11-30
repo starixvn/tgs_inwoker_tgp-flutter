@@ -18,8 +18,8 @@ import 'package:tgp_flutter/ui/home/child_game/child_game_suggestion.dart';
 import 'package:tgp_flutter/ui/home/game/game_view_model.dart';
 
 class ChildGame extends StatefulWidget {
-  final String gamePlatformCode;
-  final GameType gameType;
+  final String? gamePlatformCode;
+  final GameType? gameType;
 
   ChildGame({this.gamePlatformCode, this.gameType});
 
@@ -55,8 +55,8 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
   }
 
   _initData() async {
-    _vm.getPlatformList(widget.gameType);
-    _vm.filter(context: context, gamePlatformCode: widget.gamePlatformCode, gameType: widget.gameType);
+    _vm.getPlatformList(widget.gameType!);
+    _vm.filter(context: context, gamePlatformCode: widget.gamePlatformCode!, gameType: widget.gameType!);
   }
 
   Widget build(BuildContext context) {
@@ -115,7 +115,7 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
         ],
       );
       // });
-   }
+    }
   }
 
   _buildChildGame() => Column(
@@ -133,10 +133,10 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
               indicatorWeight: 3,
               onTap: (index) {
                 ProgressDialog.show(context, _vm.brandLogoUrl);
-               // setState(() {
-                  _groupTabIndex = index;
-         //       });
-                _vm.filter(category: index).then((_){
+                // setState(() {
+                _groupTabIndex = index;
+                //       });
+                _vm.filter(category: index).then((_) {
                   ProgressDialog.hide();
                 });
               },
@@ -158,10 +158,10 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
               isSearching: isSearching,
               onFilterPlatform: (code) {
                 ProgressDialog.show(context, _vm.brandLogoUrl);
-               // setState(() {
-                  currGamePlatformCode = code;
-               // });
-                _vm.filter(gamePlatformCode: code).then((_){
+                // setState(() {
+                currGamePlatformCode = code;
+                // });
+                _vm.filter(gamePlatformCode: code).then((_) {
                   ProgressDialog.hide();
                 });
               },
@@ -228,7 +228,7 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
 
   _getAppTitle() {
     if (widget.gameType != null) {
-      return widget.gameType.getName(context);
+      return widget.gameType!.getName(context);
     }
   }
 
@@ -247,7 +247,7 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
         child: Container(padding: EdgeInsets.only(right: 8.auto), alignment: Alignment.center, child: Text("取消")),
       );
     } else {
-      if (_vm.mSearchQuery.isEmpty) {
+      if (_vm.mSearchQuery?.isEmpty ?? false) {
         // if not in searching mode and search controller text is empty
         return InkWell(
           onTap: () {
@@ -279,7 +279,7 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
     if (!_focusNode.hasFocus) {
       isSearching = false;
       isVisibleSuggestionList = false;
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
         searchController.text = "";
       });
     }
@@ -306,9 +306,9 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
     });
     handleApiState(_vm.getGameProviderListApiState, isAutoHideLoading: false, onSuccess: () {});
     handleApiState(_vm.getFavouriteGameApiState, isAutoHideLoading: !isInitLoading, onSuccess: () {
-      if(isInitLoading) isInitLoading = !isInitLoading;
+      if (isInitLoading) isInitLoading = !isInitLoading;
     });
-    handleApiState(_vm.setFavouriteGameApiState,  onSuccess: () {});
-    handleApiState(_vm.deleteFavouriteGameApiState,  onSuccess: () {});
+    handleApiState(_vm.setFavouriteGameApiState, onSuccess: () {});
+    handleApiState(_vm.deleteFavouriteGameApiState, onSuccess: () {});
   }
 }

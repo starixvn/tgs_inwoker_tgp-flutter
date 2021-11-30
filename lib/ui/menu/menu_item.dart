@@ -7,10 +7,10 @@ import 'package:tgp_flutter/ui/base_state.dart';
 import 'package:tgp_flutter/ui/transaction/transaction.dart';
 
 class MenuItem extends StatefulWidget {
-  final String image;
-  final String text;
-  final String navigationPath;
-  final int navigationID;
+  final String? image;
+  final String? text;
+  final String? navigationPath;
+  final int? navigationID;
 
   MenuItem({this.image, this.text, this.navigationPath, this.navigationID});
 
@@ -50,7 +50,7 @@ class _MenuItemState extends BaseState<MenuItem> {
           Container(
             margin: EdgeInsets.symmetric(vertical: 10.auto),
             child: Text(
-              widget.text,
+              widget.text!,
               style: TextStyle(fontSize: 10.auto, color: Colors.white),
             ),
           )
@@ -67,7 +67,7 @@ class _MenuItemState extends BaseState<MenuItem> {
           context,
           MaterialPageRoute(
               builder: (context) => Transaction(
-                    tabIndex: widget.navigationID,
+                    tabIndex: widget.navigationID!,
                   )));
     }
   }

@@ -33,7 +33,7 @@ class _EmailVerificationState extends BaseState<EmailVerification> {
 
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       _getUserProfile();
     });
     super.initState();
@@ -150,7 +150,7 @@ class _EmailVerificationState extends BaseState<EmailVerification> {
         onTap: () {
           Navigator.of(context)
               .pushNamed(RoutePath.editEmail)
-              .then((value) => WidgetsBinding.instance.addPostFrameCallback((_) {
+              .then((value) => WidgetsBinding.instance!.addPostFrameCallback((_) {
             _getUserProfile();
           }));
         },
@@ -211,14 +211,14 @@ class _EmailVerificationState extends BaseState<EmailVerification> {
 
   _handleApiState() {
     handleApiState(_vm.getEmailCodeApiState, onSuccess: () {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
         setState(() {
           isOtpCountdown = true;
         });
       });
     });
     handleApiState(_vm.emailVerifyApiState, onSuccess: () {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
         CustomToast.show(getTranslatedText("success"));
         _getUserProfile();
         if (widget.popDirection == 1) Navigator.of(context).pop(true);

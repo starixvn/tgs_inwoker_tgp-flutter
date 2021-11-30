@@ -21,8 +21,8 @@ class CustomerServiceViewModel extends BaseViewModel {
   get brandLogoUrl => contentRepo.brandLogo?.mobileUrl;
 
   var getBrandCommunicationApiState, getLiveChatUrlApiState;
-  List<BrandCommunication> communicationList;
-  String liveChatUrl;
+  List<BrandCommunication>? communicationList;
+  String? liveChatUrl;
 
   getBrandCommunication() async {
     setLoading();
@@ -46,7 +46,7 @@ class CustomerServiceViewModel extends BaseViewModel {
       ]; //corresponding list
       Map<String, String> map = Map.fromIterables(pattern, replace);
       liveChatUrl =
-          map.entries.fold(getLiveChatUrlApiState.result.setting.url, (prev, e) => prev.replaceAll(e.key, e.value));
+          map.entries.fold(getLiveChatUrlApiState.result.setting.url, (prev, e) => prev!.replaceAll(e.key, e.value));
     }
     setLoading(false);
     return getLiveChatUrlApiState;

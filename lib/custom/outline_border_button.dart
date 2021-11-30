@@ -7,21 +7,20 @@ class OutlineBorderButton extends StatelessWidget {
   final String title;
   final Function onClick;
   final bool isEnabled;
-  final double width;
-  final double height;
-  final Color color;
+  final double? width;
+  final double? height;
+  final Color? color;
   final double fontSize;
 
   OutlineBorderButton({
-    Key key,
-    this.title,
-    this.onClick,
-    this.isEnabled,
+    required this.title,
+    required this.onClick,
+    required this.isEnabled,
     this.width,
     this.height,
     this.color,
-    this.fontSize,
-  }) : super(key: key);
+    required this.fontSize,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +38,7 @@ class OutlineBorderButton extends StatelessWidget {
         /*width: width??context.screenWidth,
           height: 25.auto,*/
         child: SizedBox(
-          width: width-20,
+          width: (width ?? context.screenWidth) - 20,
           child: AutoSizeText(
             title,
             style: TextStyle(color: CustomColor.theme_bar_gradient_2, fontSize: fontSize),

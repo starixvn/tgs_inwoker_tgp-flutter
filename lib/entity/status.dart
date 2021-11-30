@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:json_annotation/json_annotation.dart';
 import 'package:tgp_flutter/localizations/language_provider.dart';
 

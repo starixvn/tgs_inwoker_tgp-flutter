@@ -27,11 +27,10 @@ class _ForgotPasswordState extends BaseState<ForgotPassword> {
       _phoneController = TextEditingController();
   var isButtonEnabled = false, isOtpEnabled = false, isOtpCountdown = false;
   InputValidationProvider validate = new InputValidationProvider();
-  String display;
+  String display = "+852";
 
   @override
   void initState() {
-    display = "+852";
     super.initState();
   }
 
@@ -67,7 +66,9 @@ class _ForgotPasswordState extends BaseState<ForgotPassword> {
                 child: Column(
                   children: [
                     //CustomTabBar(index:1),
-                    (EnvironmentConfig.appTitleName == "HKJP"|| EnvironmentConfig.isShowSmsVerification) ? _buildPhoneTextFormField() : _buildTextFormField(),
+                    (EnvironmentConfig.appTitleName == "HKJP" || EnvironmentConfig.isShowSmsVerification)
+                        ? _buildPhoneTextFormField()
+                        : _buildTextFormField(),
                     _buildOtpTextFormField(),
                     _buildButton()
                   ],
@@ -145,7 +146,7 @@ class _ForgotPasswordState extends BaseState<ForgotPassword> {
         onClick: () {
           _checkValidation();
         },
-        isEnabled: isButtonEnabled ?? false,
+        isEnabled: isButtonEnabled ,
         color: CustomColor.theme_bar_gradient_2,
         radius: 9.6,
       ));
@@ -170,7 +171,7 @@ class _ForgotPasswordState extends BaseState<ForgotPassword> {
   }
 
   _getSmsCode() {
-    if (EnvironmentConfig.appTitleName == "HKJP"||EnvironmentConfig.isShowSmsVerification) {
+    if (EnvironmentConfig.appTitleName == "HKJP" || EnvironmentConfig.isShowSmsVerification) {
       if (!validate.validateAreaCodeAndPhone(display, _emailController.text)) {
         setState(() {
           CustomToast.show(getTranslatedText("phone_format_error_msg"));
@@ -193,7 +194,7 @@ class _ForgotPasswordState extends BaseState<ForgotPassword> {
 
   _handleApiState() {
     handleApiState(_vm.getForgotPasswordCodeApiState, onSuccess: () {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
         setState(() {
           isOtpCountdown = true;
         });

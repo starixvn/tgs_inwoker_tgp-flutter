@@ -7,19 +7,18 @@ import 'package:tgp_flutter/ui/base_state.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class DepositHtml extends StatefulWidget {
-  final String htmlText;
+  final String? htmlText;
 
   DepositHtml({
-    Key key,
     this.htmlText,
-  }) : super(key: key);
+  });
 
   @override
   _DepositHtmlState createState() => _DepositHtmlState();
 }
 
 class _DepositHtmlState extends BaseState<DepositHtml> {
-  WebViewController _controller;
+  WebViewController? _controller;
   String text = r"""<!DOCTYPE html> <html> <head>
   <title></title>
   </head>
@@ -93,57 +92,11 @@ class _DepositHtmlState extends BaseState<DepositHtml> {
   }
 
   _loadUrl() async {
-    _controller.loadUrl(
+    _controller!.loadUrl(
       Uri.dataFromString(
-        widget.htmlText,
+        widget.htmlText!,
         mimeType: 'text/html',
       ).toString(),
     );
   }
 }
-
-/*class _CustomWidgetFactory extends WidgetFactory {
-  _CustomWidgetFactory(HtmlWidgetConfig config) : super(config);
-
-  @override
-  NodeMetadata parseLocalName(NodeMetadata meta, String localName) async {
-    if (localName != 'form') return super.parseLocalName(meta, localName);
-
-    return lazySet(null,
-        buildOp: BuildOp(
-          onWidgets: (meta, _) => [
-            Builder(
-              builder: (context) => RaisedButton(
-                child: Text("Submit this form."),
-                onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-                    builder: (_) => _FormSubmit(meta.domElement.outerHtml))),
-              ),
-            ),
-          ],
-        ));
-  }
-}
-
-class _FormSubmit extends StatelessWidget {
-  final String html;
-
-  _FormSubmit(String formHtml)
-      : html = """<html>
-<body onload="document.getElementsByTagName('form')[0].submit();">
-  <p>Loading...</p>
-  <div style="opacity: 0">$formHtml</div>
-</body>
-</html>""";
-
-  @override
-  Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(),
-    body: webview_flutter.WebView(
-      initialUrl: Uri.dataFromString(
-        html,
-        mimeType: 'text/html',
-      ).toString(),
-      javascriptMode: webview_flutter.JavascriptMode.unrestricted,
-    ),
-  );
-}*/

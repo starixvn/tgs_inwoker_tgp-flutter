@@ -7,18 +7,17 @@ class MyLocalizations {
   MyLocalizations(this.locale);
 
   final Locale locale;
-  static MyLocalizations of(BuildContext context) {
+
+  static MyLocalizations? of(BuildContext context) {
     return Localizations.of<MyLocalizations>(context, MyLocalizations);
   }
 
-  Map<String, String> _localizedValues;
+  late Map<String, String> _localizedValues;
 
   Future<void> load() async {
-    String jsonStringValues =
-    await rootBundle.loadString('i18n/${locale.toString()}.json');
+    String jsonStringValues = await rootBundle.loadString('i18n/${locale.toString()}.json');
     Map<String, dynamic> mappedJson = json.decode(jsonStringValues);
-    _localizedValues =
-        mappedJson.map((key, value) => MapEntry(key, value.toString()));
+    _localizedValues = mappedJson.map((key, value) => MapEntry(key, value.toString()));
   }
 
   String translate(String key) {
@@ -26,17 +25,15 @@ class MyLocalizations {
   }
 
 // static member to have simple access to the delegate from Material App
-  static const LocalizationsDelegate<MyLocalizations> delegate =
-  _MyLocalizationsDelegate();
+  static const LocalizationsDelegate<MyLocalizations> delegate = _MyLocalizationsDelegate();
 }
 
-class _MyLocalizationsDelegate
-    extends LocalizationsDelegate<MyLocalizations> {
+class _MyLocalizationsDelegate extends LocalizationsDelegate<MyLocalizations> {
   const _MyLocalizationsDelegate();
 
   @override
   bool isSupported(Locale locale) {
-    return ['en', 'zh','id', 'vi','th'].contains(locale.languageCode);
+    return ['en', 'zh', 'id', 'vi', 'th'].contains(locale.languageCode);
   }
 
   @override

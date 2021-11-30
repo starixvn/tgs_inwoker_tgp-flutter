@@ -34,7 +34,7 @@ class _MaintenanceState extends BaseState<Maintenance> {
   @override
   void initState() {
     if (widget.isShowCS) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
         _vm.getBrandCommunication();
         _vm.getLiveChatUrl(getCurrentLanguage().apiCode);
       });

@@ -115,7 +115,7 @@ class _EditSecurityAnswerViaEmailState extends BaseState<EditSecurityAnswerViaEm
   }
 
   _getUserProfile() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       setState(() {
         userProfile = _vm.userProfile;
         if (_vm.userProfile.memberName.isNotEmpty) {
@@ -145,7 +145,7 @@ class _EditSecurityAnswerViaEmailState extends BaseState<EditSecurityAnswerViaEm
     _vm.updateSecurityQuestion(securityQuestion.securityQuestionID, securityQuestion.answer, isReset);
     if(_vm.updateSecurityQuestionApiState.isSuccess){
       await _vm.getBasicInfo();
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
          ProgressDialog.hide();
         setState(() {
           userProfile = _vm.getBasicInfoApiState.result;

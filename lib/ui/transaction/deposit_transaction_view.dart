@@ -19,9 +19,8 @@ class DepositTransactionView extends StatefulWidget {
   final TransactionViewModel vm;
 
   DepositTransactionView({
-    Key key,
-    this.vm,
-  }) : super(key: key);
+    required this.vm,
+  });
 
   @override
   DepositTransactionViewState createState() => DepositTransactionViewState();
@@ -37,7 +36,7 @@ class DepositTransactionViewState extends BaseState<DepositTransactionView> {
 
   void initState() {
     _scrollController.addListener(_scrollListener);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       _getTransaction();
     });
     super.initState();
@@ -72,35 +71,35 @@ class DepositTransactionViewState extends BaseState<DepositTransactionView> {
         });
   }
 
-  _getList() => _vm.accountTransactionList == null
+  List<Widget> _getList() => _vm.accountTransactionList == null
       ? []
-      : List.generate(_vm.accountTransactionList.length, (index) {
+      : List.generate(_vm.accountTransactionList!.length, (index) {
           return Container(
             child: TransactionCellItem(
               list: [
-                _vm.accountTransactionList[index].id,
-                _vm.accountTransactionList[index].orderNo,
-                Format().dateTimeFormat(_vm.accountTransactionList[index].createdOn),
-                _vm.accountTransactionList[index].status.getName(context),
-                _vm.accountTransactionList[index].amount.toString(),
-                _vm.accountTransactionList[index].status == Status.WaitingPayment ? true : false
+                _vm.accountTransactionList![index].id,
+                _vm.accountTransactionList![index].orderNo,
+                Format().dateTimeFormat(_vm.accountTransactionList![index].createdOn),
+                _vm.accountTransactionList![index].status.getName(context),
+                _vm.accountTransactionList![index].amount.toString(),
+                _vm.accountTransactionList![index].status == Status.WaitingPayment ? true : false
               ],
-              getManualDepositId: () => _vm.getManualDepositOrder(_vm.accountTransactionList[index].id),
+              getManualDepositId: () => _vm.getManualDepositOrder(_vm.accountTransactionList![index].id),
               type: _getTransactionItemType(index),
               isEndRecord: _vm.endRecord,
-              isUploadButton: _vm.accountTransactionList[index].canUploadCerts,
+              isUploadButton: _vm.accountTransactionList![index].canUploadCerts,
               isDepositTransaction: true,
             ),
           );
         }).toList();
 
   _getTransactionItemType(int index) {
-    if (_vm.accountTransactionList.length == 1) {
+    if (_vm.accountTransactionList!.length == 1) {
       return TransactionCellItemType.SINGLE;
     } else {
       if (index == 0) {
         return TransactionCellItemType.TOP;
-      } else if (index == _vm.accountTransactionList.length - 1) {
+      } else if (index == _vm.accountTransactionList!.length - 1) {
         return TransactionCellItemType.BOTTOM;
       } else {
         return TransactionCellItemType.CENTER;
@@ -158,14 +157,14 @@ class DepositTransactionViewState extends BaseState<DepositTransactionView> {
     }
   }
 
-  _getTransaction({bool isLoadMore, Status status}) async {
-    await _vm.getAccountTransaction(isLoadMore: isLoadMore ?? false, status: status);
+  _getTransaction({bool isLoadMore = false, Status? status}) async {
+    await _vm.getAccountTransaction(isLoadMore: isLoadMore, status: status);
   }
 
   _handleApiState() {
     handleApiState(_vm.getAccountTransactionApiState, isAutoHideLoading: false, onSuccess: () {});
     handleApiState(_vm.getDepositOrderApiState, onSuccess: () {
-      WidgetsBinding.instance.addPostFrameCallback((_) async {
+      WidgetsBinding.instance!.addPostFrameCallback((_) async {
         await Navigator.push(
             context,
             MaterialPageRoute(

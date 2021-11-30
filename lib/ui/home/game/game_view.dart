@@ -14,8 +14,8 @@ import 'package:tgp_flutter/ui/home/game/game_view_model.dart';
 import 'package:tgp_flutter/ui/home/game/game_web_view.dart';
 
 class GameView extends StatefulWidget {
-  final GameViewModel vm;
-  final Function onRefreshHomePage;
+  final GameViewModel? vm;
+  final Function? onRefreshHomePage;
 
   GameView({this.vm, this.onRefreshHomePage});
 
@@ -27,12 +27,12 @@ class _GameViewState extends BaseState<GameView> {
   var _controller = ScrollController();
   var currentTabIndex = 0;
   GlobalKey<GameViewItemState> gameViewItem = GlobalKey();
-  GameViewModel _vm;
+  late GameViewModel _vm;
   var gameName;
 
   @override
   void initState() {
-    _vm = widget.vm;
+    _vm = widget.vm!;
     _controller.addListener(_scrollListener);
     super.initState();
   }
@@ -124,12 +124,12 @@ class _GameViewState extends BaseState<GameView> {
   }
 
   _onTabClick(int tabIndex) {
-    var itemHeight = gameViewItem.currentState.itemHeight;
+    var itemHeight = gameViewItem.currentState!.itemHeight;
     var des = 0.0;
 
-    _vm.gameProviderList.asMap().forEach((i, element) {
+    _vm.gameProviderList!.asMap().forEach((i, element) {
       if (tabIndex > i) {
-        des += itemHeight * _vm.gameProviderList[i].length;
+        des += itemHeight * _vm.gameProviderList![i].length;
       }
     });
     setState(() {
@@ -139,16 +139,16 @@ class _GameViewState extends BaseState<GameView> {
   }
 
   _scrollListener() {
-    var scrollTab = gameViewItem.currentState.itemHeight;
+    var scrollTab = gameViewItem.currentState!.itemHeight;
     var des = 0.0;
     var index = 0;
 
-    _vm.gameProviderList.asMap().forEach((i, element) {
+    _vm.gameProviderList!.asMap().forEach((i, element) {
       if (_controller.offset >= des) {
-        des += scrollTab * _vm.gameProviderList[i].length;
+        des += scrollTab * _vm.gameProviderList![i].length;
         index = i;
       } else if (_controller.offset >= _controller.position.maxScrollExtent) {
-        index = _vm.gameProviderList.length - 1;
+        index = _vm.gameProviderList!.length - 1;
       }
     });
     setState(() {
@@ -176,7 +176,7 @@ class _GameViewState extends BaseState<GameView> {
   }
 
   navigateToLogin() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       Navigator.of(context).pushNamed("/login");
     });
   }
@@ -192,7 +192,7 @@ class _GameViewState extends BaseState<GameView> {
                     gamePlatformCode: gamePlatformCode,
                     gameType: gameType,
                   )));
-      if (result) widget.onRefreshHomePage();
+      if (result) widget.onRefreshHomePage!();
     } else if (gameType == GameType.Lottery || gameType == GameType.LotteryLobby) {
       //only tcg will need to get gamelist
       await _vm.getGameList(gamePlatformCode, gameType);
@@ -202,9 +202,9 @@ class _GameViewState extends BaseState<GameView> {
               builder: (context) => GameWeb(
                     gamePlatformCode: gamePlatformCode,
                     gameType: gameType,
-                    gameId: _vm.gameListMap[gamePlatformCode].first.id,
+                    gameId: _vm.gameListMap[gamePlatformCode]!.first.id,
                   )));
-      if (result) widget.onRefreshHomePage();
+      if (result) widget.onRefreshHomePage!();
     } else {
       //navigate to game web
       var result = await Navigator.push(
@@ -214,7 +214,7 @@ class _GameViewState extends BaseState<GameView> {
                     gamePlatformCode: gamePlatformCode,
                     gameType: gameType,
                   )));
-      if (result ?? false) widget.onRefreshHomePage();
+      if (result ?? false) widget.onRefreshHomePage!();
     }
   }
 
