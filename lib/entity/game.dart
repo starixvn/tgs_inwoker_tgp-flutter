@@ -15,7 +15,7 @@ class Game {
   int id;
   String code;
   String name;
-  String description;
+  String? description;
   @JsonKey(name: "gpcode")
   String gamePlatformCode;
   @JsonKey(name: "isactive")

@@ -4,7 +4,7 @@ import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
 
-class CustomPicker extends StatefulWidget{
+class CustomPicker extends StatefulWidget {
   final String title;
   final String displayText;
   final List<dynamic> list;
@@ -12,14 +12,13 @@ class CustomPicker extends StatefulWidget{
   final bool isHintText;
   final double width;
 
-  CustomPicker({
-    required this.title,
-    required this.displayText,
-    required this.list,
-    this.onClick,
-    required this.isHintText,
-    required this.width
-  }) ;
+  CustomPicker(
+      {required this.title,
+      required this.displayText,
+      required this.list,
+      this.onClick,
+      required this.isHintText,
+      required this.width});
 
   @override
   _CustomPickerState createState() => _CustomPickerState();
@@ -37,24 +36,25 @@ class _CustomPickerState extends BaseState<CustomPicker> {
       child: Container(
         width: widget.width,
         height: 50.auto,
-        margin: EdgeInsets.symmetric(
-            vertical: 15.auto, horizontal: 20.auto),
+        margin: EdgeInsets.symmetric(vertical: 15.auto, horizontal: 20.auto),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Container(
-              margin: EdgeInsets.only(bottom: 8.auto,),
+              margin: EdgeInsets.only(
+                bottom: 8.auto,
+              ),
               child: Text(
-                getTranslatedText(widget.title)??widget.title,
+                getTranslatedText(widget.title) ?? widget.title,
                 style: TextStyle(
-                    fontSize: 9.auto,
+                  fontSize: 9.auto,
                 ),
               ),
             ),
             InkWell(
-              highlightColor: Colors.transparent,
-              splashColor: Colors.transparent,
+                highlightColor: Colors.transparent,
+                splashColor: Colors.transparent,
                 onTap: () {
                   widget.onClick!();
                 },
@@ -66,7 +66,7 @@ class _CustomPickerState extends BaseState<CustomPicker> {
                       child: AutoSizeText(
                         widget.displayText,
                         style: TextStyle(
-                            color: widget.isHintText?Colors.grey:CustomColor.theme_bar_gradient_1,
+                          color: widget.isHintText ? Colors.grey : CustomColor.theme_bar_gradient_1,
                         ),
                         maxFontSize: 12,
                         minFontSize: 8,
@@ -81,8 +81,7 @@ class _CustomPickerState extends BaseState<CustomPicker> {
                       ),
                     )
                   ],
-                )
-            )
+                ))
           ],
         ),
       ),

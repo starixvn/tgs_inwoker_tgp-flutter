@@ -60,7 +60,7 @@ class _DepositWebState extends BaseState<DepositWeb> {
           _webViewController!.loadUrl(urlRequest: URLRequest(url: Uri.parse(widget.url!)));
         },
         onLoadStart: (controller, url) {
-          ProgressDialog.show(context, widget.brandLogoUrl!);
+          ProgressDialog.show(context, widget.brandLogoUrl);
         },
         onLoadStop: (controller, url) async {
           ProgressDialog.hide();

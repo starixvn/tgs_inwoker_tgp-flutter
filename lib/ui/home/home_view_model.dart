@@ -25,7 +25,7 @@ class HomeViewModel extends BaseViewModel {
 
   get balance => userRepo.wallet?.main;
   bool isNotLogin = false, isExpired = false;
-  var getBasicInfoApiState, getAnnouncementApiState, getApiErrorLocalizationApiState, getBannerApiState;
+  var getBasicInfoApiState, getAnnouncementApiState, getApiErrorLocalizationApiState, getBannerApiState, loginApiState;
   String? announcement;
   Announcement? firstAnnouncement;
   double gameBalance = 0.0;
@@ -38,6 +38,7 @@ class HomeViewModel extends BaseViewModel {
     var token = prefs.getString("token");
     if (token != null) {
       print(token);
+      await autoLogin();
       await getUserInfo();
       await userRepo.getWalletBalance();
       await _computeTotalBalance();
@@ -76,9 +77,9 @@ class HomeViewModel extends BaseViewModel {
   }
 
   _getAnnouncementContent(Announcement text) {
-    if (text.localization?.content?.isNotEmpty ?? true)
+    if (text.localization?.content?.isNotEmpty ?? false)
       return text.localization?.content;
-    else if (text.content?.isNotEmpty ?? true)
+    else if (text.content?.isNotEmpty ?? false)
       return text.content;
     else
       return "";
@@ -119,5 +120,26 @@ class HomeViewModel extends BaseViewModel {
     getBasicInfoApiState = await userRepo.getBasicInfo();
     setLoading(false);
     return getBasicInfoApiState;
+  }
+
+  autoLogin() async {
+    setLoading();
+    loginApiState = await userRepo.login(await getUsername(), await getPassword());
+    if (loginApiState.isSuccess) {
+      getUserInfo();
+      // getWalletBalance();
+    }
+    setLoading(false);
+    return loginApiState;
+  }
+
+  getUsername() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString("username") ?? "";
+  }
+
+  getPassword() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString("password") ?? "";
   }
 }

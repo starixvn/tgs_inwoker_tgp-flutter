@@ -70,7 +70,7 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
                               _getItemText(_vm.userProfile.wechat),
                               //_getItemText(/*_vm.userProfile.memberAddress, isShowSet: true*/)
                             ],
-                          ):Container(),
+                       ) :Container(),
                           Padding(
                             padding: EdgeInsets.only(bottom: 10.auto),
                             child: _buildInfoCard(
@@ -159,9 +159,7 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
   _buildInfoItem(String imagePath, String itemTitle, String routePath, {String? itemDescription}) {
     if ((routePath == "phone_verification" &&
             !(EnvironmentConfig.appTitleName == "HKJP" && EnvironmentConfig.isShowSmsVerification)) ||
-        (routePath == "real_name_verification" && !EnvironmentConfig.isShowIcVerification) /*||
-        (routePath == "qq_account" && !EnvironmentConfig.isShowWechatQQ) ||
-        (routePath == "wechat" && !EnvironmentConfig.isShowWechatQQ)*/)
+        (routePath == "real_name_verification" && !EnvironmentConfig.isShowIcVerification))
       return Container();
     else
       return InkWell(
@@ -252,7 +250,7 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
         ),
       );
 
-  _getItemText(String text) {
+  _getItemText(String? text) {
     if (text != null && text.isNotEmpty)
       return text;
     else

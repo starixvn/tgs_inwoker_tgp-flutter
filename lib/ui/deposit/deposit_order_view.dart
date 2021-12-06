@@ -16,6 +16,7 @@ import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
+import 'package:tgp_flutter/ui/deposit/deposit_html.dart';
 
 import 'deposit_view_model.dart';
 import 'deposit_web.dart';
@@ -31,18 +32,23 @@ class DepositOrderView extends StatefulWidget {
   final DepositRedirectApplePay? depositRedirectApplePay;
   final String? exchangeRate;
   final String? expectedAmount;
+  final String? htmlText;
+  final bool isHelp2Pay;
 
-  DepositOrderView(
-      {this.method,
-      this.id,
-      this.depositRedirect,
-      this.depositAmount,
-      this.depositChannel,
-      this.promotionName,
-      this.transName,
-      this.depositRedirectApplePay,
-      this.exchangeRate,
-      this.expectedAmount});
+  DepositOrderView({
+    this.method,
+    this.id,
+    this.depositRedirect,
+    this.depositAmount,
+    this.depositChannel,
+    this.promotionName,
+    this.transName,
+    this.depositRedirectApplePay,
+    this.exchangeRate,
+    this.expectedAmount,
+    this.htmlText,
+    this.isHelp2Pay = false,
+  });
 
   @override
   _DepositOrderViewState createState() => _DepositOrderViewState();
@@ -53,6 +59,25 @@ class _DepositOrderViewState extends BaseState<DepositOrderView> {
 
   @override
   void initState() {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      if (widget.htmlText?.isNotEmpty ?? false)
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => DepositHtml(
+                      htmlText: widget.htmlText,
+                    )));
+      else
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => DepositWeb(
+                      url: widget.depositRedirect != null
+                          ? widget.depositRedirect!.paymentUrl
+                          : widget.depositRedirectApplePay!.paymentUrl,
+                      brandLogoUrl: _vm.brandLogoUrl,
+                    )));
+    });
     super.initState();
   }
 
@@ -116,9 +141,7 @@ class _DepositOrderViewState extends BaseState<DepositOrderView> {
                   thickness: (1.0).auto,
                   color: CustomColor.very_light_pink_four,
                 ),
-                widget.depositRedirect != null
-                    ? _buildOrderText("order_no", widget.depositRedirect!.formId)
-                    : _buildOrderText("order_no", widget.depositRedirectApplePay!.formId),
+                _buildOrderText("order_no", _getOrderNoText()),
                 _buildText("payment_type", widget.method!),
                 _buildText("payment_channel", widget.depositChannel!),
                 if (widget.exchangeRate != null) _buildText("exchange_rate", widget.exchangeRate!),
@@ -129,23 +152,26 @@ class _DepositOrderViewState extends BaseState<DepositOrderView> {
             ),
           ),
           Container(
-              margin: EdgeInsets.only(left: 15.auto, right: 15.auto, top: 10.auto),
-              child: GradientButton(
-                  title: getTranslatedText("done"),
-                  radius: 4.8,
-                  height: 44.5,
-                  isEnabled: true,
-                  onClick: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => DepositWeb(
-                                url: widget.depositRedirect != null
-                                    ? widget.depositRedirect!.paymentUrl
-                                    : widget.depositRedirectApplePay!.paymentUrl,
-                                brandLogoUrl: _vm.brandLogoUrl,
-                              )))))
+            margin: EdgeInsets.only(left: 15.auto, right: 15.auto, top: 10.auto),
+            child: GradientButton(
+              title: getTranslatedText("done"),
+              radius: 4.8,
+              height: 44.5,
+              isEnabled: true,
+              onClick: () => Navigator.pop(context),
+            ),
+          )
         ],
       );
+
+  _getOrderNoText() {
+    if (widget.depositRedirect != null)
+      return widget.depositRedirect!.formId;
+    /*else if (widget.isHelp2Pay)
+      return widget.id;*/
+    else
+      return widget.depositRedirectApplePay!.formId;
+  }
 
   _buildOrderText(String title, String content) => Container(
         margin: EdgeInsets.only(top: 15.auto),
@@ -173,7 +199,7 @@ class _DepositOrderViewState extends BaseState<DepositOrderView> {
         ),
       );
 
-  _buildText(String title, String content) {
+  _buildText(String title, String? content) {
     if (content == "BankTransfer")
       content = getTranslatedText("bank_transfer");
     else if (content == "Crypto") content = getTranslatedText("crypto");
@@ -187,7 +213,7 @@ class _DepositOrderViewState extends BaseState<DepositOrderView> {
             style: TextStyle(fontSize: 13.auto, color: CustomColor.grey),
           ),
           AutoSizeText(
-            content,
+            content ?? "",
             style: TextStyle(fontSize: 13.auto, color: Colors.black),
             minFontSize: 2,
             maxLines: 1,

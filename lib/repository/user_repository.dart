@@ -6,6 +6,7 @@ import 'package:tgp_flutter/entity/bet_report.dart';
 import 'package:tgp_flutter/entity/brand_communication.dart';
 import 'package:tgp_flutter/entity/live_chat.dart';
 import 'package:tgp_flutter/entity/promotion_report.dart';
+import 'package:tgp_flutter/entity/response/report_response2.dart';
 import 'package:tgp_flutter/entity/transfer_report.dart';
 import 'package:tgp_flutter/entity/http_method.dart';
 import 'package:tgp_flutter/entity/response/check_username_response.dart';
@@ -329,13 +330,13 @@ class UserRepository extends BaseRepository {
         .execute();
   }
 
-  Future<EventResult<ReportResponse<PromotionReport>>> getPromotionReport(
+  Future<EventResult<ReportResponse2<PromotionReport>>> getPromotionReport(
       DateTime startDate,
       DateTime endDate,
       int page,
       int rows,
       ) async {
-    return await ApiRequestBuilder<ReportResponse<PromotionReport>>(
+    return await ApiRequestBuilder<ReportResponse2<PromotionReport>>(
         method: HttpMethod.GET,
         endPoint: "api/playerpromotion/joined",
         params: {
@@ -346,7 +347,7 @@ class UserRepository extends BaseRepository {
           "desc": "true"
         },
         converter: (json) =>
-            ReportResponse.fromJson(json, (res) => PromotionReport.fromJson(res as Map<String, dynamic>)),
+            ReportResponse2.fromJson(json, (res) => PromotionReport.fromJson(res as Map<String, dynamic>)),
         jwtRefresher: jwtAuth)
         .execute();
   }

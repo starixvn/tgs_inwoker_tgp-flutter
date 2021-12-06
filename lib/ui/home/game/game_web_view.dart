@@ -1,18 +1,8 @@
-import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-//import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
-import 'package:tgp_flutter/custom/custom_dialog.dart';
-import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/custom/leave_game_dialog.dart';
-import 'package:tgp_flutter/entity/game.dart';
 import 'package:tgp_flutter/entity/game_type.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
-import 'package:tgp_flutter/src/custom_color.dart';
-
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
@@ -23,7 +13,7 @@ class GameWeb extends StatefulWidget {
   final String? gamePlatformCode;
   final GameType? gameType;
 
-  GameWeb({ this.gameId, this.gameType, this.gamePlatformCode}) ;
+  GameWeb({this.gameId, this.gameType, this.gamePlatformCode});
 
   @override
   _GameWebState createState() => _GameWebState();
@@ -31,31 +21,22 @@ class GameWeb extends StatefulWidget {
 
 class _GameWebState extends BaseState<GameWeb> {
   var _vm = GameViewModel();
-
   InAppWebViewController? _webViewController;
-
-  //WebViewController _webViewController;
   var isLoading = false;
   String? url, lobbyUrl;
-  //FlutterWebviewPlugin webviewPlugin = FlutterWebviewPlugin();
 
   @override
   void initState() {
     lobbyUrl =
         "http://gci.aggdemo.com:81/forwardGame.do?params=4DJlwdGL1cWclbwxZFKgtr6rJmU8Mqe0y4VXswlHs8uWLV/LAwtfY9/SYLWTh/MBrOQNAdd/nZiuIaXx1/ZDX71ziYHXpHj9WeekhidF60CbLBd9VFlD9EYcWQOX7ALM/w3Ww5Yy86wEsd/IgnUTGwU7vX+3btJezXPCNriz+iYgg9d9jU6yEAXdEN0H7L/tkDdt8IWJGjAqQ2334aF5vlPc2f7DCzM7&key=8dc57f4377fc86da1d0d9e47495993e0";
     WidgetsBinding.instance!.addPostFrameCallback((_) {
-      if (widget.gameType == null|| widget.gameId == 1800001 || widget.gameId == 1800002 || widget.gameId == 1800003)
+      if (widget.gameType == null || widget.gameId == 1800001 || widget.gameId == 1800002 || widget.gameId == 1800003)
         _vm.getGameUrl(widget.gamePlatformCode!, widget.gameId!, lobbyUrl!);
+      else if (widget.gamePlatformCode == "BC")
+        _vm.getBetConstructHtml();
       else
         _vm.getLobbyGameUrl(widget.gamePlatformCode!, widget.gameType!, lobbyUrl!);
     });
-    /*if (isHabaPPGamePlatform()) {
-      webviewPlugin.onUrlChanged.listen((String url) {
-        if (url == lobbyUrl) {
-          _displayDialog();
-        }
-      });
-    }*/
     super.initState();
   }
 
@@ -70,7 +51,9 @@ class _GameWebState extends BaseState<GameWeb> {
               resizeToAvoidBottomInset: false,
               backgroundColor: Colors.white,
               appBar: _buildAppBar(),
-              body: isLoading || url == null ? buildProgressDialog(_vm.brandLogoUrl) : _buildWebView(),
+              body: url == null || _vm.betConstructHtmlText == null
+                  ? buildProgressDialog(_vm.brandLogoUrl)
+                  : _buildWebView(),
             );
           }),
     );
@@ -114,44 +97,80 @@ class _GameWebState extends BaseState<GameWeb> {
             useWideViewPort: true,
             hidden: true,
           )
-        : */InAppWebView(
-      initialUrlRequest: URLRequest(url:Uri.parse(_getValidUrl(url!))),
-      initialOptions: InAppWebViewGroupOptions(
-          crossPlatform: InAppWebViewOptions(
-            //debuggingEnabled: true,
-              javaScriptEnabled: true, useShouldOverrideUrlLoading: true),
-          android: AndroidInAppWebViewOptions(
-            useWideViewPort: true,
-            mixedContentMode: AndroidMixedContentMode.MIXED_CONTENT_ALWAYS_ALLOW,
-          )),
-      onWebViewCreated: (InAppWebViewController controller) {
-        _webViewController = controller;
-        _webViewController!.loadUrl(urlRequest: URLRequest(url:Uri.parse(_getValidUrl(url!))));
-      },
-      onExitFullscreen: (InAppWebViewController controller) {
-        Navigator.pop(
-          context,
-        );
-      },
-      onLoadStart: ( controller,  url) {
-        //ProgressDialog.show(context, _vm.brandLogoUrl);
-      },
-      onLoadStop: ( controller,  url) async {
-        // ProgressDialog.hide();
-      },
-      shouldOverrideUrlLoading: (controller, navigationAction) async {
-        var uri = navigationAction.request.url;
-        if (uri == Uri.parse(lobbyUrl!)) {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) => LeaveGameDialog(),
-          );
-          return NavigationActionPolicy.CANCEL;
-        } else {
-          return NavigationActionPolicy.ALLOW;
-        }
-      },
-    );
+        : */
+        widget.gamePlatformCode == "BC"
+            ? Container(
+                width: context.screenWidth,
+                height: context.screenHeight,
+                child: InAppWebView(
+                    initialUrlRequest: URLRequest(
+                        url: Uri.parse(
+                      Uri.dataFromString(
+                        """<!DOCTYPE html><html><head><title></title></head><body>""" + url! + """</body></html>""",
+                        mimeType: 'text/html',
+                      ).toString(),
+                    )),
+                    initialOptions: InAppWebViewGroupOptions(
+                        crossPlatform: InAppWebViewOptions(
+                            //debuggingEnabled: true,
+                            javaScriptEnabled: true,
+                            useShouldOverrideUrlLoading: true),
+                        android: AndroidInAppWebViewOptions(
+                          useWideViewPort: true,
+                          mixedContentMode: AndroidMixedContentMode.MIXED_CONTENT_ALWAYS_ALLOW,
+                        )),
+                    onWebViewCreated: (InAppWebViewController webViewController) {
+                      _webViewController = webViewController;
+                      _webViewController!.loadUrl(
+                          urlRequest: URLRequest(
+                        url: Uri.parse(
+                          Uri.dataFromString(
+                            """<!DOCTYPE html><html><head><title></title></head><body>""" + url! + """</body></html>""",
+                            mimeType: 'text/html',
+                          ).toString(),
+                        ),
+                      ));
+                    }),
+              )
+            : InAppWebView(
+                initialUrlRequest: URLRequest(url: Uri.parse(_getValidUrl(url!))),
+                initialOptions: InAppWebViewGroupOptions(
+                    crossPlatform: InAppWebViewOptions(
+                        //debuggingEnabled: true,
+                        javaScriptEnabled: true,
+                        useShouldOverrideUrlLoading: true),
+                    android: AndroidInAppWebViewOptions(
+                      useWideViewPort: true,
+                      mixedContentMode: AndroidMixedContentMode.MIXED_CONTENT_ALWAYS_ALLOW,
+                    )),
+                onWebViewCreated: (InAppWebViewController controller) {
+                  _webViewController = controller;
+                  _webViewController!.loadUrl(urlRequest: URLRequest(url: Uri.parse(_getValidUrl(url!))));
+                },
+                onExitFullscreen: (InAppWebViewController controller) {
+                  Navigator.pop(
+                    context,
+                  );
+                },
+                onLoadStart: (controller, url) {
+                  //ProgressDialog.show(context, _vm.brandLogoUrl);
+                },
+                onLoadStop: (controller, url) async {
+                  // ProgressDialog.hide();
+                },
+                shouldOverrideUrlLoading: (controller, navigationAction) async {
+                  var uri = navigationAction.request.url;
+                  if (uri == Uri.parse(lobbyUrl!)) {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) => LeaveGameDialog(),
+                    );
+                    return NavigationActionPolicy.CANCEL;
+                  } else {
+                    return NavigationActionPolicy.ALLOW;
+                  }
+                },
+              );
   }
 
   _getValidUrl(String? url) {
@@ -165,7 +184,7 @@ class _GameWebState extends BaseState<GameWeb> {
   }
 
   _displayDialog() {
-   // if (isHabaPPGamePlatform()) webviewPlugin.close();
+    // if (isHabaPPGamePlatform()) webviewPlugin.close();
     showDialog(
       context: context,
       builder: (BuildContext context) => LeaveGameDialog(),
@@ -174,8 +193,10 @@ class _GameWebState extends BaseState<GameWeb> {
 
   _loadWebView() {
     isLoading = true;
-    if (widget.gameType == null || widget.gameId == 1800001 || widget.gameId == 1800002 || widget.gameId == 1800003 )
+    if (widget.gameType == null || widget.gameId == 1800001 || widget.gameId == 1800002 || widget.gameId == 1800003)
       _vm.getGameUrl(widget.gamePlatformCode!, widget.gameId!, lobbyUrl!);
+    else if (widget.gamePlatformCode == "BC")
+      _vm.getBetConstructHtml();
     else
       _vm.getLobbyGameUrl(widget.gamePlatformCode!, widget.gameType!, lobbyUrl!);
   }
@@ -196,6 +217,12 @@ class _GameWebState extends BaseState<GameWeb> {
         isLoading = isLoading;
       }
       url = _vm.lobbyUrl;
+    });
+    handleApiState(_vm.getBetConstructHtmlApiState, isAutoHideLoading: false, onSuccess: () {
+      if (isLoading) {
+        isLoading = isLoading;
+      }
+      url = _vm.betConstructHtmlText;
     });
   }
 }

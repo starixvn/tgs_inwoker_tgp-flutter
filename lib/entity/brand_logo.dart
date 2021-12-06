@@ -9,8 +9,8 @@ class BrandLogo {
   @JsonKey(name: 'brandId')
   String id;
   @JsonKey(name: 'mobileLogoUrl')
-  String mobileUrl;
-  bool hasInvitationCode;
+  String? mobileUrl;
+  bool? hasInvitationCode;
 
   factory BrandLogo.fromJson(Map<String, dynamic> json) => _$BrandLogoFromJson(json);
 

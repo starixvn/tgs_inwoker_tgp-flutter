@@ -126,7 +126,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
             isHintText: isHintText,
             width: context.screenWidth,
             onClick: () {
-              _buildBottomSheet(title, list??[]);
+              _buildBottomSheet(title, list ?? []);
             },
           ),
         ));
@@ -400,10 +400,6 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
     });
 
     handleApiState(_vm.getDepositOrderApiState, onSuccess: () {
-      /*_navigateToDepositOrder(
-        manualDepositOrder: _vm.getDepositOrderApiState.result,
-        orderNo: _vm.orderNo,
-      );*/
       WidgetsBinding.instance!.addPostFrameCallback((_) async {
         await Navigator.push(
             context,
@@ -442,29 +438,16 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
     });
 
     handleApiState(_vm.help2PayDepositOrderApiState, onSuccess: () {
-      /*_navigateToDepositOrder(
-          depositRedirect: _vm.help2PayDepositOrderApiState.result,
-          exchangeRate: _vm.exchangeRate,
-          expectedAmount: _calculateExpectedAmount());*/
       WidgetsBinding.instance!.addPostFrameCallback((_) async {
         await _vm.getHelp2PayHtmlText(_vm.help2PayDepositOrderApiState.result.paymentUrl);
+        _navigateToDepositOrder(
+          depositRedirect: _vm.help2PayDepositOrderApiState.result,
+          htmlText: _vm.getHelp2PayHtmlTextApiState.result.toString(),
+        );
       });
     });
 
-    handleApiState(_vm.getHelp2PayHtmlTextApiState, onSuccess: () {
-      /*_navigateToDepositOrder(
-          depositRedirect: _vm.help2PayDepositOrderApiState.result,
-          exchangeRate: _vm.exchangeRate,
-          expectedAmount: _calculateExpectedAmount());*/
-      WidgetsBinding.instance!.addPostFrameCallback((_) async {
-        await Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => DepositHtml(
-                      htmlText: _vm.getHelp2PayHtmlTextApiState.result.toString(),
-                    )));
-      });
-    });
+    handleApiState(_vm.getHelp2PayHtmlTextApiState, onSuccess: () {});
 
     handleApiState(_vm.skyPayDepositOrderApiState, onSuccess: () {
       _navigateToDepositOrder(
@@ -474,13 +457,13 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
     handleApiState(_vm.getExchangeRateApiState, isAutoHideLoading: false, onSuccess: () {});
   }
 
-  _navigateToDepositOrder(
-          {DepositRedirect? depositRedirect,
-          String? orderNo,
-          String? exchangeRate,
-          String? expectedAmount,
-          String? transferName,
-          ManualDepositOrder? manualDepositOrder}) =>
+  _navigateToDepositOrder({
+    DepositRedirect? depositRedirect,
+    String? exchangeRate,
+    String? expectedAmount,
+    String? transferName,
+    String? htmlText,
+  }) =>
       WidgetsBinding.instance!.addPostFrameCallback((_) async {
         await Navigator.push(
             context,
@@ -495,6 +478,8 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
                       exchangeRate: exchangeRate,
                       expectedAmount: expectedAmount,
                       transName: transferName,
+                      htmlText: htmlText,
+                      id: _payment?.id ?? "",
                     )));
         _clearTextField();
       });

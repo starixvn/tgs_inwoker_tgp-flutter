@@ -25,7 +25,7 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
   getTranslatedText(String key) => LanguageProvider().getTranslated(context, key);
 
   handleApiState(
-    EventResult eventResult, {
+    EventResult? eventResult, {
     required Function onSuccess,
     Function? onError,
     bool isAutoHideLoading = true,
@@ -43,7 +43,7 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
             Navigator.of(context).pushNamedAndRemoveUntil(RoutePath.empty, (Route<dynamic> route) => false);
             Navigator.of(context).pushNamed(RoutePath.blacklistedUser);
           });
-        } else if ((eventResult.errorCode == 102 || eventResult.errorCode == 101) &&
+        } /*else if ((eventResult.errorCode == 102 || eventResult.errorCode == 101) &&
             isCheckSessionExpired &&
             !isSplashScreen) {
           UserRepository.getSingleton().clearSession();
@@ -68,7 +68,7 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
                       ),
                     ));
           });
-        } else if (eventResult.errorMsgId != null) {
+        }*/ else if (eventResult.errorMsgId != null) {
           if (eventResult.errorMsgId == 'UnderMaintenance') {
             WidgetsBinding.instance!.addPostFrameCallback((_) {
               Navigator.of(context).pushReplacementNamed(RoutePath.maintenance);
@@ -102,7 +102,7 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
     eventResult.isHandled = true;
   }
 
-  buildProgressDialog(String url) => Center(
+  buildProgressDialog(String? url) => Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

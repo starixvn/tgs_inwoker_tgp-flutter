@@ -168,7 +168,12 @@ class _WithdrawState extends BaseState<Withdraw> {
         padding: EdgeInsets.symmetric(vertical: 10.auto, horizontal: 10.auto),
         alignment: Alignment.centerRight,
         child: InkWell(
-          onTap: () => Navigator.of(context).pushNamed("/main_card"),
+          onTap: () async {
+            var result = await Navigator.of(context).pushNamed("/main_card");
+            if (result != null) {
+              await _vm.getBankCardList();
+            }
+          },
           child: Wrap(children: [
             Container(
               margin: EdgeInsets.only(right: 5.auto),

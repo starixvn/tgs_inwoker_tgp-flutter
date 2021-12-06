@@ -10,7 +10,7 @@ import 'package:tgp_flutter/src/custom_color.dart';
 CustomProgressDialog? _progressDialog;
 
 class ProgressDialog {
-  ProgressDialog.show(BuildContext context, String url) {
+  ProgressDialog.show(BuildContext context, String? url) {
     create(context, url);
     _progressDialog!.show();
   }

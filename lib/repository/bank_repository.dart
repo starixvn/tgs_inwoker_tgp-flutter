@@ -114,24 +114,7 @@ class BankRepository extends BaseRepository {
     return await ApiRequestBuilder<dynamic>(
             method: HttpMethod.POST,
             endPoint: "api/bankinfo",
-            params:
-                /*address != null
-                ? {
-                    "paymentchannelid": paymentChannelId,
-                    "banktype": bankType.getJson,
-                    "detail": {"address": address},
-                  }
-                : {
-                    "paymentchannelid": paymentChannelId,
-                    "banktype": bankType.getJson,
-                    "detail": {
-                      "bankAccount": bankAccount,
-                      "bankName": bankName,
-                      "name": name,
-                      "bankBranch": bankBranch
-                    },
-                  },*/
-                (() {
+            params: (() {
               switch (bankType) {
                 case BankType.BANK:
                   return {
@@ -179,7 +162,8 @@ class BankRepository extends BaseRepository {
         .execute();
   }
 
-  Future<EventResult<DepositRedirect>> primePayDepositOrder(String amount, String paymentId, String? promotionId) async {
+  Future<EventResult<DepositRedirect>> primePayDepositOrder(
+      String amount, String paymentId, String? promotionId) async {
     return await ApiRequestBuilder<DepositRedirect>(
             method: HttpMethod.POST,
             endPoint: "api/deposit/bank/primepay",
@@ -271,7 +255,8 @@ class BankRepository extends BaseRepository {
         .execute();
   }
 
-  Future<EventResult<DepositRedirect>> maticPayDepositOrder(String amount, String paymentId, String? promotionId) async {
+  Future<EventResult<DepositRedirect>> maticPayDepositOrder(
+      String amount, String paymentId, String? promotionId) async {
     return await ApiRequestBuilder<DepositRedirect>(
             method: HttpMethod.POST,
             endPoint: "api/deposit/bank/maticpay",
@@ -292,7 +277,8 @@ class BankRepository extends BaseRepository {
         .execute();
   }
 
-  Future<EventResult<DepositRedirect>> help2PayDepositOrder(String amount, String paymentId, String? promotionId) async {
+  Future<EventResult<DepositRedirect>> help2PayDepositOrder(
+      String amount, String paymentId, String? promotionId) async {
     return await ApiRequestBuilder<DepositRedirect>(
             method: HttpMethod.POST,
             endPoint: "api/deposit/bank/help2pay",

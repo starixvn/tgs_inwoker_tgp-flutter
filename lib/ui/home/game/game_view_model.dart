@@ -26,7 +26,8 @@ class GameViewModel extends BaseViewModel {
       getFavouriteGameApiState,
       setFavouriteGameApiState,
       deleteFavouriteGameApiState,
-      getGameApiState;
+      getGameApiState,
+      getBetConstructHtmlApiState;
   List<Game>? _gameList, filteredGameList;
   Map<String, List<Game>> gameListMap = new Map<String, List<Game>>();
   int mCategory = 0;
@@ -48,6 +49,7 @@ class GameViewModel extends BaseViewModel {
   var _context;
   bool isLoading = false;
   bool isGamePlatformInactive = false;
+  String? betConstructHtmlText;
 
   get userProfile => userRepo.userProfile;
 
@@ -267,5 +269,15 @@ class GameViewModel extends BaseViewModel {
 
   setGamePlatformInactiveFalse() {
     isGamePlatformInactive = false;
+  }
+
+  getBetConstructHtml() async{
+    setLoading();
+    getBetConstructHtmlApiState = await contentRepo.getBetConstructHtml();
+    if(getBetConstructHtmlApiState.isSuccess){
+      betConstructHtmlText = getBetConstructHtmlApiState.result;
+    }
+    setLoading(false);
+    return getBetConstructHtmlApiState;
   }
 }

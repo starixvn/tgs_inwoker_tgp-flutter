@@ -93,7 +93,7 @@ class _MainCardState extends BaseState<MainCard> {
                           index: 4,
                         )),
                 (Route<dynamic> route) => false);*/
-            Navigator.pop(context);
+            Navigator.pop(context, true);
           },
         ),
         title: Text(

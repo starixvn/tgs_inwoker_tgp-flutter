@@ -296,7 +296,6 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
 
   _handleApiState() {
     handleApiState(_vm.getGameApiState, isAutoHideLoading: false, onSuccess: () {
-      print("111");
       if (_vm.isGamePlatformInactive) {
         currGamePlatformCode = "ALL";
         _vm.filter(gamePlatformCode: currGamePlatformCode);

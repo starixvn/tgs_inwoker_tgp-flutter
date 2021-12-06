@@ -27,7 +27,7 @@ environment_config:
       default: "staging"
     isShowSmsVerification:
       type: bool
-      default: true
+      default: false
     isShowBankBranch:
       #add bank card
       type: bool
@@ -44,4 +44,4 @@ environment_config:
       default: true
     isShowMarqueePopUp:
       type: bool
-      default: true
+      default: false

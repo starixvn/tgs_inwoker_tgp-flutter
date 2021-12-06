@@ -219,4 +219,17 @@ class ContentRepository extends BaseRepository {
       }),
     ).execute();
   }
+
+  Future<EventResult<dynamic>> getBetConstructHtml() async {
+    return await ApiRequestBuilder<dynamic>(
+      method: HttpMethod.GET,
+      endPoint: "api/game/bc",
+      //converter: (json) => BrandLogo.fromJson(json),
+      jwtRefresher: jwtAuth,
+      //isAuthorization: false,
+      /*consumer: (result) => setRepoValues(() {
+        brandLogo = result;
+      }),*/
+    ).executeWithoutBaseResponse();
+  }
 }

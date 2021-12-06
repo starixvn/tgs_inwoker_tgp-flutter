@@ -23,7 +23,7 @@ class EditEmail extends StatefulWidget {
 class _EditEmailState extends BaseState<EditEmail> {
   var _vm = EmailVerificationViewModel();
   TextEditingController _emailController = TextEditingController(), _otpController = TextEditingController();
-  var isButtonEnabled = false, isOtpEnabled = false, isTextFieldEnabled = false, isOtpCountdown = false;
+  var isButtonEnabled = false, isOtpEnabled = true, isTextFieldEnabled = true, isOtpCountdown = false;
   InputValidationProvider validate = new InputValidationProvider();
   int currIndex = 0;
   String? display;
@@ -48,13 +48,13 @@ class _EditEmailState extends BaseState<EditEmail> {
                   padding: EdgeInsets.only(top: 10.auto, left: 10.auto, right: 10.auto),
                   child: Column(
                     children: [
+                      //CustomTabBar(index:1),
                       CustomTabBar(
                         index: currIndex,
                         step1Text: "verify_current_email",
                         step2Text: "set_new_email",
                       ),
-                      _buildVerifyOldEmailNumber()
-                      // currIndex == 0 ? _buildVerifyOldEmailNumber() : _buildResetPayPassword()
+                      _buildEmailTextFormField(), _buildOtpTextFormField(), _buildButton()
                     ],
                   )));
         });
@@ -199,9 +199,15 @@ class _EditEmailState extends BaseState<EditEmail> {
     });
     handleApiState(_vm.emailVerifyApiState, onSuccess: () {
       WidgetsBinding.instance!.addPostFrameCallback((_) {
-        CustomToast.show(getTranslatedText("success"));
-        _getUserProfile();
-        //if (widget.popDirection == 1) Navigator.of(context).pop(true);
+        if (currIndex == 0) {
+          setState(() {
+            _clearTextField();
+            currIndex = 1;
+          });
+        } else {
+          CustomToast.show(getTranslatedText("success"));
+          Navigator.pop(context);
+        }
       });
     }, onError: (_) {
       if (_vm.emailVerifyApiState.errorCode == 409) {
@@ -209,5 +215,13 @@ class _EditEmailState extends BaseState<EditEmail> {
       } else
         showApiErrorMessage(_vm.emailVerifyApiState);
     });
+  }
+
+  _clearTextField() {
+    _emailController.clear();
+    _otpController.clear();
+    isButtonEnabled = false;
+    isOtpEnabled = false;
+    isTextFieldEnabled = true;
   }
 }

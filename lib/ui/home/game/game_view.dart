@@ -116,7 +116,7 @@ class _GameViewState extends BaseState<GameView> {
             minFontSize: 5,
             stepGranularity: 1,
             textAlign: TextAlign.center,
-            maxLines: title.contains(" ")?2:1,
+            maxLines: title.contains(" ") ? 2 : 1,
           ),
         )),
       ),
