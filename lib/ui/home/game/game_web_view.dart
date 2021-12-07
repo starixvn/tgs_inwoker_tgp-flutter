@@ -33,12 +33,16 @@ class _GameWebState extends BaseState<GameWeb> {
     lobbyUrl =
         "http://gci.aggdemo.com:81/forwardGame.do?params=4DJlwdGL1cWclbwxZFKgtr6rJmU8Mqe0y4VXswlHs8uWLV/LAwtfY9/SYLWTh/MBrOQNAdd/nZiuIaXx1/ZDX71ziYHXpHj9WeekhidF60CbLBd9VFlD9EYcWQOX7ALM/w3Ww5Yy86wEsd/IgnUTGwU7vX+3btJezXPCNriz+iYgg9d9jU6yEAXdEN0H7L/tkDdt8IWJGjAqQ2334aF5vlPc2f7DCzM7&key=8dc57f4377fc86da1d0d9e47495993e0";
     WidgetsBinding.instance!.addPostFrameCallback((_) {
-      if (widget.gameType == null || widget.gameId == 1800001 || widget.gameId == 1800002 || widget.gameId == 1800003)
+      if (widget.gameType == null ||
+          widget.gameId == 1800001 ||
+          widget.gameId == 1800002 ||
+          widget.gameId == 1800003)
         _vm.getGameUrl(widget.gamePlatformCode!, widget.gameId!, lobbyUrl!);
       else if (widget.gamePlatformCode == "BC")
         _vm.getBetConstructHtml();
       else
-        _vm.getLobbyGameUrl(widget.gamePlatformCode!, widget.gameType!, lobbyUrl!);
+        _vm.getLobbyGameUrl(
+            widget.gamePlatformCode!, widget.gameType!, lobbyUrl!);
     });
     super.initState();
   }
@@ -104,7 +108,8 @@ class _GameWebState extends BaseState<GameWeb> {
     return widget.gamePlatformCode == "BC"
         ? GameHtml(htmlText: _vm.url)
         : InAppWebView(
-            initialUrlRequest: URLRequest(url: Uri.parse(_getValidUrl(_vm.url!))),
+            initialUrlRequest:
+                URLRequest(url: Uri.parse(_getValidUrl(_vm.url!))),
             initialOptions: InAppWebViewGroupOptions(
                 crossPlatform: InAppWebViewOptions(
                     //debuggingEnabled: true,
@@ -112,12 +117,15 @@ class _GameWebState extends BaseState<GameWeb> {
                     useShouldOverrideUrlLoading: true),
                 android: AndroidInAppWebViewOptions(
                   useWideViewPort: true,
-                  mixedContentMode: AndroidMixedContentMode.MIXED_CONTENT_ALWAYS_ALLOW,
+                  mixedContentMode:
+                      AndroidMixedContentMode.MIXED_CONTENT_ALWAYS_ALLOW,
                 )),
             onWebViewCreated: (InAppWebViewController controller) {
               _webViewController = controller;
 
-              _webViewController!.loadUrl(urlRequest: URLRequest(url: Uri.parse(_getValidUrl(_vm.url!))));
+              _webViewController!.loadUrl(
+                  urlRequest:
+                      URLRequest(url: Uri.parse(_getValidUrl(_vm.url!))));
             },
             onExitFullscreen: (InAppWebViewController controller) {
               Navigator.pop(
@@ -128,9 +136,10 @@ class _GameWebState extends BaseState<GameWeb> {
               //ProgressDialog.show(context, _vm.brandLogoUrl);
             },
             onLoadStop: (controller, url) async {
+              var html =
+                  '<html><body><div id="bcsportsbookcontainer"></div><script id="bcsportsbook" src="https://devmobile.srvttt.com/js/partnerinit.js?containerID=bcsportsbookcontainer&UserId=1877685&AuthToken=cZTomgocaIibAJpAUPiZmo&lang=eng&sport=1"></script></body></html>';
               await controller.evaluateJavascript(
-                  source:
-                      '<html><body><div id="bcsportsbookcontainer"></div><script id="bcsportsbook" src="https://devmobile.srvttt.com/js/partnerinit.js?containerID=bcsportsbookcontainer&UserId=1877685&AuthToken=cZTomgocaIibAJpAUPiZmo&lang=eng&sport=1"></script></body></html>');
+                  source: "document.write('" + html + "')");
               // ProgressDialog.hide();
             },
             shouldOverrideUrlLoading: (controller, navigationAction) async {
@@ -168,12 +177,16 @@ class _GameWebState extends BaseState<GameWeb> {
 
   _loadWebView() {
     isLoading = true;
-    if (widget.gameType == null || widget.gameId == 1800001 || widget.gameId == 1800002 || widget.gameId == 1800003)
+    if (widget.gameType == null ||
+        widget.gameId == 1800001 ||
+        widget.gameId == 1800002 ||
+        widget.gameId == 1800003)
       _vm.getGameUrl(widget.gamePlatformCode!, widget.gameId!, lobbyUrl!);
     else if (widget.gamePlatformCode == "BC")
       _vm.getBetConstructHtml();
     else
-      _vm.getLobbyGameUrl(widget.gamePlatformCode!, widget.gameType!, lobbyUrl!);
+      _vm.getLobbyGameUrl(
+          widget.gamePlatformCode!, widget.gameType!, lobbyUrl!);
   }
 
   isHabaPPGamePlatform() {
@@ -181,8 +194,11 @@ class _GameWebState extends BaseState<GameWeb> {
   }
 
   _handleApiState() {
-    handleApiState(_vm.getGameUrlApiState, isAutoHideLoading: false, onSuccess: () {});
-    handleApiState(_vm.getLobbyGameUrlApiState, isAutoHideLoading: false, onSuccess: () {});
-    handleApiState(_vm.getBetConstructHtmlApiState, isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getGameUrlApiState,
+        isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getLobbyGameUrlApiState,
+        isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getBetConstructHtmlApiState,
+        isAutoHideLoading: false, onSuccess: () {});
   }
 }
