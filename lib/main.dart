@@ -121,6 +121,8 @@ class _MyAppState extends BaseState<MyApp> {
       await _vm.getLanguageOption();
       _vm.getApiError();
       _vm.getBrandLogo();
+      _vm.resumeIfNeed();
+     // _vm.autoLogin();
       setState(() {
         firstInit = false;
       });
@@ -222,8 +224,11 @@ class _MyAppState extends BaseState<MyApp> {
   }
 
   _handleApiState() {
-    handleApiState(_vm.getLanguageApiState, isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getLanguageApiState, isAutoHideLoading: false, isSplashScreen: true, onSuccess: (){});
+    handleApiState(_vm.getBrandLogoApiState, isAutoHideLoading: false, isSplashScreen: true, onSuccess: () {});
+    handleApiState(_vm.authApiState, isAutoHideLoading: false, isSplashScreen: true, onSuccess: () {});
   }
+
 }
 
 class MyHomePage extends StatefulWidget {

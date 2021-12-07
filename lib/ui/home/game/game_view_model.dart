@@ -33,7 +33,7 @@ class GameViewModel extends BaseViewModel {
   int mCategory = 0;
   String? mPlatform, mSearchQuery = "";
   GameType? mGameType;
-  var url, lobbyUrl;
+  String? url, lobbyUrl;
   List<GameProvider2>? platformList;
   List<List<GameProvider2>>? gameProviderList;
   List<GameType> gameTypeList = [
@@ -126,7 +126,7 @@ class GameViewModel extends BaseViewModel {
     setLoading();
     getLobbyGameUrlApiState = await contentRepo.getLobbyGameUrl(gamePlatformCode, gameType, _lobbyUrl);
     if (getLobbyGameUrlApiState.isSuccess) {
-      lobbyUrl = getLobbyGameUrlApiState.result.url;
+      url = getLobbyGameUrlApiState.result.url;
     }
     setLoading(false);
     return getLobbyGameUrlApiState;
@@ -275,7 +275,7 @@ class GameViewModel extends BaseViewModel {
     setLoading();
     getBetConstructHtmlApiState = await contentRepo.getBetConstructHtml();
     if(getBetConstructHtmlApiState.isSuccess){
-      betConstructHtmlText = getBetConstructHtmlApiState.result;
+      url = getBetConstructHtmlApiState.result;
     }
     setLoading(false);
     return getBetConstructHtmlApiState;

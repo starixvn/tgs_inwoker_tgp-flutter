@@ -172,6 +172,7 @@ class _WithdrawState extends BaseState<Withdraw> {
             var result = await Navigator.of(context).pushNamed("/main_card");
             if (result != null) {
               await _vm.getBankCardList();
+              selectedBankCard = _vm.bankCardList.first;
             }
           },
           child: Wrap(children: [

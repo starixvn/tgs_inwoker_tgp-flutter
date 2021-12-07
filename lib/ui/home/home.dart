@@ -57,12 +57,12 @@ class _HomeState extends BaseState<Home> {
   }
 
   _initData() async {
-    await _vm.getAnnouncement();
+    _vm.getAnnouncement();
     _vm.getBanner();
-    _vm.resumeIfNeed();
     _gameViewModel.getGameProviderList(isRefresh: true);
+    _vm.getTotalBalance();
     getLanguage();
-    if (widget.isFirstRun) {
+    if (widget.isFirstRun && _vm.firstAnnouncement!=null) {
       WidgetsBinding.instance!.addPostFrameCallback((_) {
         if (EnvironmentConfig.isShowMarqueePopUp) _displayMarqueeDialog();
       });
@@ -82,7 +82,7 @@ class _HomeState extends BaseState<Home> {
           return Scaffold(
               resizeToAvoidBottomInset: false,
               backgroundColor: Colors.white,
-              body: _vm.bannerList == null ? buildProgressDialog(_vm.brandLogoUrl) : _buildWidget());
+              body: _buildWidget());
         });
   }
 
@@ -145,7 +145,7 @@ class _HomeState extends BaseState<Home> {
   _buildMarqueeRow() => Row(
         children: [
           Container(
-            width: languageCode.contains("zh") ? context.screenWidth / 10 : context.screenWidth / 5,
+            width: (languageCode?.contains("zh")?? false) ? context.screenWidth / 10 : context.screenWidth / 5,
             padding: EdgeInsets.only(left: 10.auto),
             child: AutoSizeText(
               getTranslatedText("notice"),

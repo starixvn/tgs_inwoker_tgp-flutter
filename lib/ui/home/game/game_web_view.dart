@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter/custom/leave_game_dialog.dart';
 import 'package:tgp_flutter/entity/game_type.dart';
@@ -7,6 +9,7 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
 import 'package:tgp_flutter/ui/home/game/game_view_model.dart';
+import 'package:tgp_flutter/ui/home/game/game_html.dart';
 
 class GameWeb extends StatefulWidget {
   final int? gameId;
@@ -51,7 +54,7 @@ class _GameWebState extends BaseState<GameWeb> {
               resizeToAvoidBottomInset: false,
               backgroundColor: Colors.white,
               appBar: _buildAppBar(),
-              body: url == null || _vm.betConstructHtmlText == null
+              body: (_vm.url == null /*|| _vm.betConstructHtmlText == null*/)
                   ? buildProgressDialog(_vm.brandLogoUrl)
                   : _buildWebView(),
             );
@@ -88,7 +91,7 @@ class _GameWebState extends BaseState<GameWeb> {
       );
 
   _buildWebView() {
-    return /*isHabaPPGamePlatform()
+    /*isHabaPPGamePlatform()
         ? WebviewScaffold(
             url: _getValidUrl(url),
             withZoom: false,
@@ -98,79 +101,51 @@ class _GameWebState extends BaseState<GameWeb> {
             hidden: true,
           )
         : */
-        widget.gamePlatformCode == "BC"
-            ? Container(
-                width: context.screenWidth,
-                height: context.screenHeight,
-                child: InAppWebView(
-                    initialUrlRequest: URLRequest(
-                        url: Uri.parse(
-                      Uri.dataFromString(
-                        """<!DOCTYPE html><html><head><title></title></head><body>""" + url! + """</body></html>""",
-                        mimeType: 'text/html',
-                      ).toString(),
-                    )),
-                    initialOptions: InAppWebViewGroupOptions(
-                        crossPlatform: InAppWebViewOptions(
-                            //debuggingEnabled: true,
-                            javaScriptEnabled: true,
-                            useShouldOverrideUrlLoading: true),
-                        android: AndroidInAppWebViewOptions(
-                          useWideViewPort: true,
-                          mixedContentMode: AndroidMixedContentMode.MIXED_CONTENT_ALWAYS_ALLOW,
-                        )),
-                    onWebViewCreated: (InAppWebViewController webViewController) {
-                      _webViewController = webViewController;
-                      _webViewController!.loadUrl(
-                          urlRequest: URLRequest(
-                        url: Uri.parse(
-                          Uri.dataFromString(
-                            """<!DOCTYPE html><html><head><title></title></head><body>""" + url! + """</body></html>""",
-                            mimeType: 'text/html',
-                          ).toString(),
-                        ),
-                      ));
-                    }),
-              )
-            : InAppWebView(
-                initialUrlRequest: URLRequest(url: Uri.parse(_getValidUrl(url!))),
-                initialOptions: InAppWebViewGroupOptions(
-                    crossPlatform: InAppWebViewOptions(
-                        //debuggingEnabled: true,
-                        javaScriptEnabled: true,
-                        useShouldOverrideUrlLoading: true),
-                    android: AndroidInAppWebViewOptions(
-                      useWideViewPort: true,
-                      mixedContentMode: AndroidMixedContentMode.MIXED_CONTENT_ALWAYS_ALLOW,
-                    )),
-                onWebViewCreated: (InAppWebViewController controller) {
-                  _webViewController = controller;
-                  _webViewController!.loadUrl(urlRequest: URLRequest(url: Uri.parse(_getValidUrl(url!))));
-                },
-                onExitFullscreen: (InAppWebViewController controller) {
-                  Navigator.pop(
-                    context,
-                  );
-                },
-                onLoadStart: (controller, url) {
-                  //ProgressDialog.show(context, _vm.brandLogoUrl);
-                },
-                onLoadStop: (controller, url) async {
-                  // ProgressDialog.hide();
-                },
-                shouldOverrideUrlLoading: (controller, navigationAction) async {
-                  var uri = navigationAction.request.url;
-                  if (uri == Uri.parse(lobbyUrl!)) {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) => LeaveGameDialog(),
-                    );
-                    return NavigationActionPolicy.CANCEL;
-                  } else {
-                    return NavigationActionPolicy.ALLOW;
-                  }
-                },
+    return widget.gamePlatformCode == "BC"
+        ? GameHtml(htmlText: _vm.url)
+        : InAppWebView(
+            initialUrlRequest: URLRequest(url: Uri.parse(_getValidUrl(_vm.url!))),
+            initialOptions: InAppWebViewGroupOptions(
+                crossPlatform: InAppWebViewOptions(
+                    //debuggingEnabled: true,
+                    javaScriptEnabled: true,
+                    useShouldOverrideUrlLoading: true),
+                android: AndroidInAppWebViewOptions(
+                  useWideViewPort: true,
+                  mixedContentMode: AndroidMixedContentMode.MIXED_CONTENT_ALWAYS_ALLOW,
+                )),
+            onWebViewCreated: (InAppWebViewController controller) {
+              _webViewController = controller;
+
+              _webViewController!.loadUrl(urlRequest: URLRequest(url: Uri.parse(_getValidUrl(_vm.url!))));
+            },
+            onExitFullscreen: (InAppWebViewController controller) {
+              Navigator.pop(
+                context,
               );
+            },
+            onLoadStart: (controller, url) {
+              //ProgressDialog.show(context, _vm.brandLogoUrl);
+            },
+            onLoadStop: (controller, url) async {
+              await controller.evaluateJavascript(
+                  source:
+                      '<html><body><div id="bcsportsbookcontainer"></div><script id="bcsportsbook" src="https://devmobile.srvttt.com/js/partnerinit.js?containerID=bcsportsbookcontainer&UserId=1877685&AuthToken=cZTomgocaIibAJpAUPiZmo&lang=eng&sport=1"></script></body></html>');
+              // ProgressDialog.hide();
+            },
+            shouldOverrideUrlLoading: (controller, navigationAction) async {
+              var uri = navigationAction.request.url;
+              if (uri == Uri.parse(lobbyUrl!)) {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) => LeaveGameDialog(),
+                );
+                return NavigationActionPolicy.CANCEL;
+              } else {
+                return NavigationActionPolicy.ALLOW;
+              }
+            },
+          );
   }
 
   _getValidUrl(String? url) {
@@ -206,23 +181,8 @@ class _GameWebState extends BaseState<GameWeb> {
   }
 
   _handleApiState() {
-    handleApiState(_vm.getGameUrlApiState, isAutoHideLoading: false, onSuccess: () {
-      if (isLoading) {
-        isLoading = isLoading;
-      }
-      url = _vm.url;
-    });
-    handleApiState(_vm.getLobbyGameUrlApiState, isAutoHideLoading: false, onSuccess: () {
-      if (isLoading) {
-        isLoading = isLoading;
-      }
-      url = _vm.lobbyUrl;
-    });
-    handleApiState(_vm.getBetConstructHtmlApiState, isAutoHideLoading: false, onSuccess: () {
-      if (isLoading) {
-        isLoading = isLoading;
-      }
-      url = _vm.betConstructHtmlText;
-    });
+    handleApiState(_vm.getGameUrlApiState, isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getLobbyGameUrlApiState, isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getBetConstructHtmlApiState, isAutoHideLoading: false, onSuccess: () {});
   }
 }

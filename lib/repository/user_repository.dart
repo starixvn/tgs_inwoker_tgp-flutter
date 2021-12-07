@@ -340,6 +340,8 @@ class UserRepository extends BaseRepository {
         method: HttpMethod.GET,
         endPoint: "api/playerpromotion/joined",
         params: {
+          "From": startDate.toString(),
+          "To": endDate.toString(),
           "page": page.toString(),
           "rows": rows.toString(),
           "sort": "promotionName",

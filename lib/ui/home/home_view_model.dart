@@ -28,7 +28,7 @@ class HomeViewModel extends BaseViewModel {
   var getBasicInfoApiState, getAnnouncementApiState, getApiErrorLocalizationApiState, getBannerApiState, loginApiState;
   String? announcement;
   Announcement? firstAnnouncement;
-  double gameBalance = 0.0;
+  double? gameBalance;
   double? totalBalance;
   List<HomeBanner>? bannerList;
 
@@ -40,13 +40,20 @@ class HomeViewModel extends BaseViewModel {
       print(token);
       await autoLogin();
       await getUserInfo();
-      await userRepo.getWalletBalance();
-      await _computeTotalBalance();
+
       if (userProfile == null) isExpired = true;
       print("Token: " + token);
       print("Authorization: " + prefs.getString("auth_token")!);
     } else
       isNotLogin = true;
+    setLoading(false);
+    notifyListeners();
+  }
+
+  getTotalBalance() async{
+    setLoading();
+    await userRepo.getWalletBalance();
+    await _computeTotalBalance();
     setLoading(false);
     notifyListeners();
   }
@@ -86,21 +93,21 @@ class HomeViewModel extends BaseViewModel {
   }
 
   _computeTotalBalance() async {
-    var gameList = contentRepo.gameProviderList?.where((element) => element.transferWallet == true);
+    var gameList = contentRepo.gameProviderList!.where((element) => element.transferWallet == true);
 
     var task = <Future>[];
-    gameList?.forEach((game) {
+    gameList.forEach((game) {
       task.add(_getGameWalletBalance(game));
     });
     await Future.wait(task);
-    totalBalance = balance + gameBalance;
+    totalBalance = (balance ?? 0.0) + (gameBalance ?? 0.0);
     notifyListeners();
   }
 
   _getGameWalletBalance(GameProvider game) async {
     var state = await walletRepo.getGameWallet(game.code);
     if (state.isSuccess) {
-      gameBalance += state.result?.balance ?? 0.0;
+      gameBalance = (gameBalance ?? 0.0) + state.result!.balance!;
     }
     notifyListeners();
   }
