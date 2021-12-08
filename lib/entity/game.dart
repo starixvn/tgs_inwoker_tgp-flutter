@@ -22,8 +22,8 @@ class Game {
   bool isActive;
   GameType type;
   GameTag tag;
-  String localizedName; // = getTranslated(context, code);
-  bool isFavourite = false;
+  String? localizedName; // = getTranslated(context, code);
+  bool? isFavourite = false;
 
   String gamePlatformName() {
     switch (gamePlatformCode) {

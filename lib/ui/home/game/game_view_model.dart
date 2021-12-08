@@ -139,8 +139,13 @@ class GameViewModel extends BaseViewModel {
       return <Game>[];
   }
 
-  filter(
-      {BuildContext? context, int? category, String? searchQuery, String? gamePlatformCode, GameType? gameType}) async {
+  filter({
+    BuildContext? context,
+    int? category,
+    String? searchQuery,
+    String? gamePlatformCode,
+    GameType? gameType,
+  }) async {
     if (context != null) _context = context;
     if (gamePlatformCode != null && gameType != null) {
       mGameType = gameType;
@@ -271,10 +276,10 @@ class GameViewModel extends BaseViewModel {
     isGamePlatformInactive = false;
   }
 
-  getBetConstructHtml() async{
+  getBetConstructHtml() async {
     setLoading();
     getBetConstructHtmlApiState = await contentRepo.getBetConstructHtml();
-    if(getBetConstructHtmlApiState.isSuccess){
+    if (getBetConstructHtmlApiState.isSuccess) {
       url = getBetConstructHtmlApiState.result;
     }
     setLoading(false);

@@ -138,12 +138,12 @@ class _ChildGameItemState extends BaseState<ChildGameItem> {
             flex: 1,
             child: InkWell(
               onTap: () {
-                widget.game.isFavourite
+                widget.game.isFavourite!
                     ? widget.vm.deleteFavoriteGame(widget.game)
                     : widget.vm.setFavoriteGame(widget.game);
               },
               child: Image.asset(
-                widget.game.isFavourite
+                widget.game.isFavourite!
                     ? "images/child_game/ic_favorite_selected.png"
                     : "images/child_game/ic_favorite.png",
                 width: 15.auto,
