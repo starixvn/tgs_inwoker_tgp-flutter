@@ -10,7 +10,7 @@ Game _$GameFromJson(Map<String, dynamic> json) => Game(
       json['id'] as int,
       json['code'] as String,
       json['name'] as String,
-      json['description'] as String,
+      json['description'] as String?,
       json['gpcode'] as String,
       json['isactive'] as bool,
       $enumDecode(_$GameTypeEnumMap, json['type']),

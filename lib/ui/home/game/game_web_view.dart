@@ -12,7 +12,6 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
 import 'package:tgp_flutter/ui/home/game/game_view_model.dart';
-import 'package:tgp_flutter/ui/home/game/game_html.dart';
 
 class GameWeb extends StatefulWidget {
   final int? gameId;
@@ -39,8 +38,6 @@ class _GameWebState extends BaseState<GameWeb> {
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       if (widget.gameType == null || widget.gameId == 1800001 || widget.gameId == 1800002 || widget.gameId == 1800003)
         _vm.getGameUrl(widget.gamePlatformCode!, widget.gameId!, lobbyUrl!);
-      else if (widget.gamePlatformCode == "BC")
-        _vm.getBetConstructHtml();
       else
         _vm.getLobbyGameUrl(widget.gamePlatformCode!, widget.gameType!, lobbyUrl!);
     });
@@ -110,113 +107,54 @@ class _GameWebState extends BaseState<GameWeb> {
             hidden: true,
           )
         : */
-    // GameHtml(htmlText: _vm.url!,)
-    var apiUrl = EnvironmentConfig.url + "/api/game/bc";
+    var apiUrl = EnvironmentConfig.url + "api/game/bc";
 
-    return widget.gamePlatformCode == "BC"
-        ? //web view for bet consturct only
-
-        InAppWebView(
-            //initialUrlRequest: URLRequest(url: Uri.dataFromString(_getValidUrl("https://www.google.com/"))),
-            //  initialUrlRequest: URLRequest(url: Uri.parse(apiUrl), headers: {
-            //    "Authentication": "bearer "+ prefs.getString("auth_token")!,
-            //    "token": prefs.getString("token")!
-            //  }),
-            // initialData: InAppWebViewInitialData(
-            //     data:
-            //         """<!DOCTYPE html><html><head><title></title></head><body><div id="bcsportsbookcontainer"></div><script id="bcsportsbook" src="https://devmobile.srvttt.com/js/partnerinit.js?containerID=bcsportsbookcontainer&UserId=1877685&AuthToken=cZTomgocaIibAJpAUPiZmo&lang=chi&sport=1"></script></body></html>"""),
-            initialOptions: InAppWebViewGroupOptions(
-                crossPlatform: InAppWebViewOptions(
-                    //debuggingEnabled: true,
-                    javaScriptEnabled: true,
-                    useShouldOverrideUrlLoading: true),
-                android: AndroidInAppWebViewOptions(
-                  useWideViewPort: true,
-                  mixedContentMode: AndroidMixedContentMode.MIXED_CONTENT_ALWAYS_ALLOW,
-                )),
-            onWebViewCreated: (InAppWebViewController controller) async {
-              _webViewController = controller;
-              _webViewController!.loadUrl(
-                  urlRequest: URLRequest(url: Uri.parse(apiUrl), headers: {
-                "Authentication": "bearer " + prefs.getString("auth_token")!,
-                "token": prefs.getString("token")!
-              }));
-              /*_webViewController!.loadUrl(
-                  urlRequest: URLRequest(
-                      url: Uri.parse(Uri.dataFromString(
-                html,
-                mimeType: 'text/html',
-                encoding: Encoding.getByName('utf-8'),
-              ).toString())));*/
-            },
-            onExitFullscreen: (InAppWebViewController controller) {
-              Navigator.pop(
-                context,
-              );
-            },
-            onLoadStart: (controller, url) {},
-            onLoadStop: (controller, url) async {
-              //var html = '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"></head><body><div id="bcsportsbookcontainer"></div><script id="bcsportsbook" src="https://devmobile.srvttt.com/js/partnerinit.js?containerID=bcsportsbookcontainer&UserId=1877685&AuthToken=cZTomgocaIibAJpAUPiZmo&lang=chi&sport=1"></script></body></html>';// + _vm.url! + '</body></html>';
-              //await controller.evaluateJavascript(source: html);//"document.write('" + html + "')");
-              //ProgressDialog.hide();
-            },
-            shouldOverrideUrlLoading: (controller, navigationAction) async {
-              var uri = navigationAction.request.url;
-              if (uri == Uri.parse(lobbyUrl!)) {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) => LeaveGameDialog(),
-                );
-                return NavigationActionPolicy.CANCEL;
-              } else {
-                return NavigationActionPolicy.ALLOW;
-              }
-            },
-          )
-        :
-        //web view for others
-        InAppWebView(
-            initialUrlRequest: URLRequest(url: Uri.parse(_getValidUrl(_vm.url!))),
-            initialOptions: InAppWebViewGroupOptions(
-                crossPlatform: InAppWebViewOptions(
-                    //debuggingEnabled: true,
-                    javaScriptEnabled: true,
-                    useShouldOverrideUrlLoading: true),
-                android: AndroidInAppWebViewOptions(
-                  useWideViewPort: true,
-                  mixedContentMode: AndroidMixedContentMode.MIXED_CONTENT_ALWAYS_ALLOW,
-                )),
-            onWebViewCreated: (InAppWebViewController controller) {
-              _webViewController = controller;
-              _webViewController!.loadUrl(urlRequest: URLRequest(url: Uri.parse(_getValidUrl(_vm.url!))));
-            },
-            onExitFullscreen: (InAppWebViewController controller) {
-              Navigator.pop(
-                context,
-              );
-            },
-            onLoadStart: (controller, url) {
-              //ProgressDialog.show(context, _vm.brandLogoUrl);
-            },
-            onLoadStop: (controller, url) async {
-              /* var html =
-                  '<html><body><div id="bcsportsbookcontainer"></div><script id="bcsportsbook" src="https://devmobile.srvttt.com/js/partnerinit.js?containerID=bcsportsbookcontainer&UserId=1877685&AuthToken=cZTomgocaIibAJpAUPiZmo&lang=eng&sport=1"></script></body></html>';
-              await controller.evaluateJavascript(source: "document.write('" + html + "')");
-              // ProgressDialog.hide();*/
-            },
-            shouldOverrideUrlLoading: (controller, navigationAction) async {
-              var uri = navigationAction.request.url;
-              if (uri == Uri.parse(lobbyUrl!)) {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) => LeaveGameDialog(),
-                );
-                return NavigationActionPolicy.CANCEL;
-              } else {
-                return NavigationActionPolicy.ALLOW;
-              }
-            },
+    return InAppWebView(
+      initialUrlRequest: URLRequest(url: Uri.parse(_getValidUrl(_vm.url!))),
+      initialOptions: InAppWebViewGroupOptions(
+          crossPlatform: InAppWebViewOptions(
+              //debuggingEnabled: true,
+              javaScriptEnabled: true,
+              useShouldOverrideUrlLoading: true),
+          android: AndroidInAppWebViewOptions(
+            useWideViewPort: true,
+            mixedContentMode: AndroidMixedContentMode.MIXED_CONTENT_ALWAYS_ALLOW,
+          )),
+      onWebViewCreated: (InAppWebViewController controller) {
+        _webViewController = controller;
+        _webViewController!.loadUrl(
+            urlRequest: widget.gamePlatformCode == "BC"
+                ? //bet construct only
+                URLRequest(url: Uri.parse(apiUrl), headers: {
+                    "Authentication": "bearer " + prefs.getString("auth_token")!,
+                    "token": prefs.getString("token")!
+                  })
+                : URLRequest(url: Uri.parse(_getValidUrl(_vm.url!))));
+      },
+      onExitFullscreen: (InAppWebViewController controller) {
+        Navigator.pop(
+          context,
+        );
+      },
+      onLoadStart: (controller, url) {
+        //ProgressDialog.show(context, _vm.brandLogoUrl);
+      },
+      onLoadStop: (controller, url) async {
+        // ProgressDialog.hide();
+      },
+      shouldOverrideUrlLoading: (controller, navigationAction) async {
+        var uri = navigationAction.request.url;
+        if (uri == Uri.parse(lobbyUrl!)) {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) => LeaveGameDialog(),
           );
+          return NavigationActionPolicy.CANCEL;
+        } else {
+          return NavigationActionPolicy.ALLOW;
+        }
+      },
+    );
   }
 
   _getValidUrl(String? url) {
@@ -241,8 +179,6 @@ class _GameWebState extends BaseState<GameWeb> {
     isLoading = true;
     if (widget.gameType == null || widget.gameId == 1800001 || widget.gameId == 1800002 || widget.gameId == 1800003)
       _vm.getGameUrl(widget.gamePlatformCode!, widget.gameId!, lobbyUrl!);
-    else if (widget.gamePlatformCode == "BC")
-      _vm.getBetConstructHtml();
     else
       _vm.getLobbyGameUrl(widget.gamePlatformCode!, widget.gameType!, lobbyUrl!);
   }

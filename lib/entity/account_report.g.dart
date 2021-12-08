@@ -10,7 +10,7 @@ AccountReport _$AccountReportFromJson(Map<String, dynamic> json) =>
     AccountReport(
       json['id'] as String,
       json['createdon'] as String,
-      json['updatedOn'] as String,
+      json['updatedOn'] as String?,
       $enumDecode(_$StatusEnumMap, json['status']),
       (json['amount'] as num).toDouble(),
       json['canuploadcerts'] as bool,

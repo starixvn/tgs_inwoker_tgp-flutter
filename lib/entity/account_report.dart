@@ -11,7 +11,7 @@ class AccountReport {
   String id;
   @JsonKey(name: 'createdon')
   String createdOn;
-  String updatedOn;
+  String? updatedOn;
   Status status;
   double amount;
   @JsonKey(name: 'canuploadcerts')

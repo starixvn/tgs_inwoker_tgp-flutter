@@ -59,7 +59,7 @@ class _HomeState extends BaseState<Home> {
   _initData() async {
     _vm.getAnnouncement();
     _vm.getBanner();
-    _gameViewModel.getGameProviderList(isRefresh: true);
+    await _gameViewModel.getGameProviderList(isRefresh: true);
     _vm.getTotalBalance();
     getLanguage();
     if (widget.isFirstRun && _vm.firstAnnouncement!=null) {
