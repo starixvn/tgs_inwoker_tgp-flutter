@@ -21,8 +21,18 @@ if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
 
-def keystoreProperties = new Properties()
+def getKeyStoreFile(String name, defaultLocalFileName) {
+    def keyStoreBase64 = System.getenv(name)
+    if (keyStoreBase64 == null) {
+        return file(rootDir.getCanonicalPath() + '/' + defaultLocalFileName)
+    }
+    File file = File.createTempFile("tmp_ks", ".jks")
+    file.bytes = keyStoreBase64.decodeBase64()
+    return file
+}
+
 def keystorePropertiesFile = rootProject.file('key.properties')
+def keystoreProperties = new Properties()
 if (keystorePropertiesFile.exists()) {
     keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 }
@@ -56,7 +66,7 @@ android {
         release {
             keyAlias keystoreProperties['keyAlias']
             keyPassword keystoreProperties['keyPassword']
-            storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
+            storeFile keystoreProperties['storeFile'] ? getKeyStoreFile("RELEASE_KEYSTORE_BASE64", keystoreProperties['storeFile']) : null
             storePassword keystoreProperties['storePassword']
         }
     }
