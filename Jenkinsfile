@@ -1,9 +1,9 @@
 pipeline{
     agent any
-    parameters {
-        string(name: 'DEPLOY_ENV', defaultValue: 'TESTING', description: 'The target environment')
-        choice(name: 'CHOICE', choices:['choice 1','choice 2','choice 3'], description: 'The testing choice')
-    }
+ //   parameters {
+ //       string(name: 'DEPLOY_ENV', defaultValue: 'TESTING', description: 'The target environment')
+ //       choice(name: 'CHOICE', choices:['choice 1','choice 2','choice 3'], description: 'The testing choice')
+ //   }
     stages{
         stage ('Flutter Doctor') {
             steps {
@@ -11,17 +11,17 @@ pipeline{
             }
         }
 
-        stage ('test stage') {
-            when {
-                expression {
-                    prarams.CHOICE == 'choice 1'
-                }
-            }
+ //       stage ('test stage') {
+ //           when {
+ //               expression {
+ //                   prarams.CHOICE == 'choice 1'
+ //               }
+ //           }
             
-            steps {
-                echo "test output condition"
-            }
-        }
+ //           steps {
+ //               echo "test output condition"
+ //           }
+  //      }
         stage ('Flutter clean') {
             steps {
                 cmd_exec('flutter clean')
@@ -29,7 +29,7 @@ pipeline{
         }
         stage ('Flutter Build APK') {
             steps {
-                echo "test output ${DEPLOY_ENV}"
+//                echo "test output ${DEPLOY_ENV}"
                 cmd_exec('flutter build apk --split-per-abi')
             }
         }
