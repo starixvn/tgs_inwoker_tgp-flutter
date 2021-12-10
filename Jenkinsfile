@@ -30,7 +30,7 @@ pipeline{
         stage ('Flutter Build APK') {
             steps {
 //                echo "test output ${DEPLOY_ENV}"
-                cmd_exec('flutter build apk --split-per-abi')
+                cmd_exec('flutter build apk')
             }
         }
         
