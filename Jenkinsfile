@@ -4,13 +4,13 @@ pipeline{
     stages{
         stage ('Flutter Doctor') {
             steps {
-                sh "flutter doctor -v"
+                cmd_exec('flutter doctor -v')
             }
         }
 
         stage ('Flutter Build APK') {
             steps {
-                sh "flutter build apk --split-per-abi"
+                cmd_exec('flutter build apk --split-per-abi')
             }
         }
         
