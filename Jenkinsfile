@@ -8,7 +8,7 @@ pipeline{
             }
         }
 
-        stage ('Flutter Build APK') {
+        stage ('delete res file') {
             steps {
                 cmd_exec('rm -rf android/app/src/main/res/drawable-*')
             }
