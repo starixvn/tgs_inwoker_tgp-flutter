@@ -14,7 +14,7 @@ pipeline{
         stage ('test stage') {
             when {
                 expression {
-                    prarams.CHOICE == 'choice 1'
+                    params.CHOICE == 'choice 1'
                 }
             }
             
