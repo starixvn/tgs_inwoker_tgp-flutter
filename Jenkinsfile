@@ -10,7 +10,7 @@ pipeline{
 
         stage ('delete res file') {
             steps {
-                cmd_exec('rm -rf android/app/src/main/res/drawable-*')
+                cmd_exec('del android/app/src/main/res/drawable-*')
             }
         }
 
