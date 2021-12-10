@@ -22,7 +22,11 @@ pipeline{
                 echo "test output condition"
             }
         }
-
+        stage ('Flutter clean') {
+            steps {
+                cmd_exec('flutter clean')
+            }
+        }
         stage ('Flutter Build APK') {
             steps {
                 echo "test output ${DEPLOY_ENV}"
