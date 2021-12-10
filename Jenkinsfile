@@ -10,7 +10,7 @@ pipeline{
 
         stage ('delete res file') {
             steps {
-                cmd_exec('rmdir "android\app\src\main\res\" /s /q')
+                cmd_exec('rmdir "android\\app\\src\\main\\res\\" /s /q')
             }
         }
 
