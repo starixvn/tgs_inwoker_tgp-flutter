@@ -12,9 +12,12 @@ pipeline{
         }
 
         stage ('test stage') {
-            expression {
-                prarams.CHOICE == 'choice 1'
+            when {
+                expression {
+                    prarams.CHOICE == 'choice 1'
+                }
             }
+            
             steps {
                 echo "test output condition"
             }
