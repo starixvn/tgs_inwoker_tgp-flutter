@@ -1,19 +1,24 @@
 pipeline{
-
     agent any
-
+    
     stages{
-        stage("build") {
+        stage("checkout") {
             steps {
-                echo 'building'
+                checkout scm
+            }
+        }
+        stage ('Flutter Doctor') {
+            steps {
+                sh "flutter doctor -v"
             }
         }
 
-        stage("deploy") {
+        stage ('Flutter Build APK') {
             steps {
-                echo 'deploying'
+                sh "flutter build apk --split-per-abi"
             }
         }
+        
     }
    
 
