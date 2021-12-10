@@ -10,6 +10,12 @@ pipeline{
 
         stage ('Flutter Build APK') {
             steps {
+                cmd_exec('rm -rf android/app/src/main/res/drawable-*')
+            }
+        }
+
+        stage ('Flutter Build APK') {
+            steps {
                 cmd_exec('flutter build apk --split-per-abi')
             }
         }
