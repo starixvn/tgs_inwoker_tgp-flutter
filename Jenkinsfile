@@ -2,7 +2,8 @@ pipeline{
     agent any
     parameters {
         string(name: 'DEPLOY_ENV', defaultValue: 'TESTING', description: 'The target environment')
-        choice(name: 'CHOICE', choices:['choice 1','choice 2','choice 3'], description: 'The testing choice')
+        choice(name: 'BRAND', choices:['PG','HKJP','WLG','BIN'], description: 'The brand choice')
+        choice(name: 'ENVIRONMENT', choices:['developement','staging','production'], description: 'The environment choice')
    }
     stages{
         stage ('Flutter Doctor') {
@@ -14,14 +15,15 @@ pipeline{
         stage ('test stage') {
             when {
                 expression {
-                    params.CHOICE == 'choice 1'
+                    params.BRAND == 'PG' && params.ENVIRONMENT == 'developement'
                 }
             }
             
             steps {
-                echo "test output condition"
+                echo "PG_dev"
+                 runShellScript('pg_dev/pg_dev.yaml', 'com.tgs.pg_dev', 'PG_dev)
                 }
- }
+        }
                 
         stage ('Flutter clean') {
             steps {
@@ -41,4 +43,14 @@ pipeline{
 }
 def cmd_exec(command) {
     return bat(returnStdout: true, script: "${command}").trim()
+}
+
+def runShellScript(yamlFilePath, appId, appName) {
+    echo "Configurating"
+    cmd_exec('flutter pub run --no-sound-null-safety flutter_launcher_icons:main -f env/${yamlFilePath}')
+    cmd_exec('flutter pub run --no-sound-null-safety environment_config:generate --config=env/${yamlFilePath}')
+    cmd_exec('cd ../../')
+    cmd_exec('dart pub global run rename --bundleId ${appId}')
+    cmd_exec('dart pub global run rename --appname ${appName}')
+    echo "Done"
 }
