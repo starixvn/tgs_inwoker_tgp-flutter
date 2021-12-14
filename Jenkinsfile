@@ -21,7 +21,7 @@ pipeline{
             
             steps {
                 echo "PG_dev"
-                 runShellScript('pg_dev/pg_dev.yaml', 'com.tgs.pg_dev', 'PG_dev)
+                 runShellScript('pg_dev/pg_dev.yaml', 'com.tgs.pg_dev', 'PG_dev')
                 }
         }
                 
