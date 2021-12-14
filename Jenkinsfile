@@ -47,10 +47,11 @@ def cmd_exec(command) {
 
 def runShellScript(yamlFilePath, appId, appName) {
     echo "Configurating"
-    cmd_exec('flutter pub run --no-sound-null-safety flutter_launcher_icons:main -f env/${yamlFilePath}')
-    cmd_exec('flutter pub run --no-sound-null-safety environment_config:generate --config=env/${yamlFilePath}')
-    cmd_exec('cd ../../')
-    cmd_exec('dart pub global run rename --bundleId ${appId}')
-    cmd_exec('dart pub global run rename --appname ${appName}')
+    echo "${yamlFilePath}, ${appId}, ${appName}"
+    sh 'flutter pub run --no-sound-null-safetyflutter_launcher_icons:main -f env/$yamlFilePath'
+    sh 'flutter pub run --no-sound-null-safety environment_config:generate --config=env/$yamlFilePath'
+    sh 'cd ../../'
+    sh 'dart pub global run rename --bundleId $appId'
+    sh 'dart pub global run rename --appname $appName'
     echo "Done"
 }
