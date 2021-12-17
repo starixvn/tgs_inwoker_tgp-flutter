@@ -969,5 +969,6 @@
   "game_platform_inactive": "Platform permainan ditutup",
   "edit_email": "Edit alamat email",
   "promotion_name": "Nama Promosi",
-  "promotion_history": "Riwayat Promosi"
+  "promotion_history": "Riwayat Promosi",
+  "image_size_limit": "Ukuran foto lebih besar dari batas upload, silakan upload lagi"
 }

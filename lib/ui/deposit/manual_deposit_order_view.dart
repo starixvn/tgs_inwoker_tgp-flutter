@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:tgp_flutter/custom/color_button.dart';
 import 'package:tgp_flutter/custom/custom_dialog.dart';
+import 'package:tgp_flutter/custom/custom_toast.dart';
 import 'package:tgp_flutter/custom/gradient_button.dart';
 import 'package:tgp_flutter/entity/deposit_redirect.dart';
 import 'package:tgp_flutter/entity/deposit_redirect_applepay.dart';
@@ -97,30 +98,7 @@ class _ManualDepositOrderViewState extends BaseState<ManualDepositOrderView> {
               children: [
                 Row(
                   children: [
-                    (widget.paymentQrCode?.qrCodeFileUrl?.isEmpty ?? true)
-                        ? Expanded(
-                            flex: 2,
-                            child: QrImage(
-                              data: widget.manualDepositOrder!.qrCode!,
-                              version: QrVersions.auto,
-                              size: 150.0,
-                            ),
-                          )
-                        : Expanded(
-                            flex: 2,
-                            child: Image.network(
-                              widget.paymentQrCode!.qrCodeFileUrl!,
-                              width: 150,
-                              height: 150,
-                            ),
-                          ),
-                    ((widget.paymentQrCode?.qrCodeFileUrl?.isEmpty ?? true) ||
-                            (widget.manualDepositOrder?.qrCode?.isEmpty ?? true))
-                        ? Expanded(
-                            flex: 1,
-                            child: Container(),
-                          )
-                        : Container(),
+                    _displayImage(),
                     Expanded(
                       flex: 2,
                       child: Column(
@@ -200,6 +178,32 @@ class _ManualDepositOrderViewState extends BaseState<ManualDepositOrderView> {
           )
         ],
       );
+
+  _displayImage() {
+    if (widget.manualDepositOrder!.qrCode?.isEmpty ?? false)
+      return Expanded(
+        flex: 2,
+        child: QrImage(
+          data: widget.manualDepositOrder!.qrCode!,
+          version: QrVersions.auto,
+          size: 150.0,
+        ),
+      );
+    else if (widget.paymentQrCode!.qrCodeFileUrl?.isEmpty ?? false)
+      return Expanded(
+        flex: 2,
+        child: Image.network(
+          widget.paymentQrCode!.qrCodeFileUrl!,
+          width: 150,
+          height: 150,
+        ),
+      );
+    else if ((widget.paymentQrCode?.qrCodeFileUrl?.isEmpty ?? false) ||
+        (widget.manualDepositOrder?.qrCode?.isEmpty ?? false))
+      return Expanded(flex: 1, child: Container());
+    else
+      return Container();
+  }
 
   _buildOrderText(String title, String content) => Container(
         margin: EdgeInsets.only(top: 15.auto),
@@ -292,12 +296,17 @@ class _ManualDepositOrderViewState extends BaseState<ManualDepositOrderView> {
 
     ImagePicker picker = ImagePicker();
     XFile? choosedImage = await picker.pickImage(source: ImageSource.gallery);
-
-    //XFile file = File(picker!.path);
-    //set source: ImageSource.camera to get image from camera
-    setState(() {
-      uploadImage = File(choosedImage!.path);
-    });
+    File imageFile;
+    imageFile = File(choosedImage!.path);
+    var bytes = imageFile.readAsBytesSync().lengthInBytes;
+    if (bytes > 10485760) {
+      //restrict upload image to 10MB
+      CustomToast.show(getTranslatedText("image_size_limit"));
+    } else {
+      setState(() {
+        uploadImage = imageFile;
+      });
+    }
   }
 
   _handleApiState() {

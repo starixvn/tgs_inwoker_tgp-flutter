@@ -110,7 +110,7 @@ class _GameWebState extends BaseState<GameWeb> {
     var apiUrl = EnvironmentConfig.url + "api/game/bc";
 
     return InAppWebView(
-      initialUrlRequest: URLRequest(url: Uri.parse(_getValidUrl(_vm.url!))),
+      //initialUrlRequest: URLRequest(url: Uri.parse(_getValidUrl(_vm.url!))),
       initialOptions: InAppWebViewGroupOptions(
           crossPlatform: InAppWebViewOptions(
               //debuggingEnabled: true,
@@ -118,18 +118,25 @@ class _GameWebState extends BaseState<GameWeb> {
               useShouldOverrideUrlLoading: true),
           android: AndroidInAppWebViewOptions(
             useWideViewPort: true,
+            domStorageEnabled: true,
             mixedContentMode: AndroidMixedContentMode.MIXED_CONTENT_ALWAYS_ALLOW,
           )),
       onWebViewCreated: (InAppWebViewController controller) {
+        ProgressDialog.show(context, _vm.brandLogoUrl);
         _webViewController = controller;
         _webViewController!.loadUrl(
-            urlRequest: widget.gamePlatformCode == "BC"
-                ? //bet construct only
-                URLRequest(url: Uri.parse(apiUrl), headers: {
-                    "Authentication": "bearer " + prefs.getString("auth_token")!,
-                    "token": prefs.getString("token")!
-                  })
-                : URLRequest(url: Uri.parse(_getValidUrl(_vm.url!))));
+            /* urlRequest: widget.gamePlatformCode == "BC"
+                ? */ //bet construct only
+            urlRequest: URLRequest(
+                url: Uri.parse(widget.gamePlatformCode == "BC" ? apiUrl : _getValidUrl(_vm.url!)),
+                headers: {
+              "Authentication": "bearer " + prefs.getString("auth_token")!,
+              "token": prefs.getString("token")!
+            }));
+        /* : URLRequest(url: Uri.parse(_getValidUrl(_vm.url!))));*/
+        print("111"+_getValidUrl(_vm.url!));
+        print("222");
+        ProgressDialog.hide();
       },
       onExitFullscreen: (InAppWebViewController controller) {
         Navigator.pop(
@@ -139,6 +146,7 @@ class _GameWebState extends BaseState<GameWeb> {
       onLoadStart: (controller, url) {
         //ProgressDialog.show(context, _vm.brandLogoUrl);
       },
+
       onLoadStop: (controller, url) async {
         // ProgressDialog.hide();
       },

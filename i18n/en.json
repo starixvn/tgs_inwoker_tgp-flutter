@@ -981,5 +981,6 @@
   "game_platform_inactive": "Game platform is inactive",
   "edit_email": "Edit Email",
   "promotion_name": "Promotion Name",
-  "promotion_history": "Promotion Report"
+  "promotion_history": "Promotion Report",
+  "image_size_limit": "Image size is greater than upload limit, please upload again."
 }

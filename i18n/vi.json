@@ -968,5 +968,6 @@
   "game_platform_inactive": "Nền tảng trò chơi đã bị đóng",
   "edit_email": "Chỉnh sửa địa chỉ email",
   "promotion_name": "tên khuyến mãi",
-  "promotion_history": "lịch sử thăng tiến"
+  "promotion_history": "lịch sử thăng tiến",
+  "image_size_limit": "Kích thước của ảnh lớn hơn giới hạn tải lên, vui lòng tải lên lại"
 }

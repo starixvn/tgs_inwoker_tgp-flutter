@@ -246,9 +246,4 @@ class _HomeState extends BaseState<Home> {
     handleApiState(_vm.getAnnouncementApiState, isAutoHideLoading: false, onSuccess: () {});
     handleApiState(_vm.getBannerApiState, isAutoHideLoading: false, onSuccess: () {});
   }
-
-  _handleGameApiState() {
-    handleApiState(_gameViewModel.getGameProviderListApiState, isAutoHideLoading: false, onSuccess: () {});
-    handleApiState(_gameViewModel.getGameApiState, onSuccess: () {});
-  }
 }
