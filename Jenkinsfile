@@ -21,7 +21,7 @@ pipeline{
             
             steps {
                 echo "PG_dev"
-                 runShellScript('pg_dev/pg_dev.yaml', 'com.tgs.pg_dev', 'PG_dev')
+                 runShellScript('pg_dev\pg_dev.yaml', 'com.tgs.pg_dev', 'PG_dev')
                 }
         }
                 
@@ -47,10 +47,10 @@ def cmd_exec(command) {
 
 def runShellScript(yamlFilePath, appId, appName) {
     echo "Configurating"
-    echo "${WORKSPACE}/env/${yamlFilePath}, ${appId}, ${appName}"
-    sh 'flutter pub run --no-sound-null-safetyflutter_launcher_icons:main -f ${WORKSPACE}/env/${yamlFilePath}'
-    sh 'flutter pub run --no-sound-null-safety environment_config:generate --config=env/${yamlFilePath}'
-    sh 'cd ../../'
+    echo "${WORKSPACE}\env\${yamlFilePath}, ${appId}, ${appName}"
+    sh 'flutter pub run --no-sound-null-safetyflutter_launcher_icons:main -f ${WORKSPACE}\env\${yamlFilePath}'
+    sh 'flutter pub run --no-sound-null-safety environment_config:generate --config=${WORKSPACE}\env\${yamlFilePath}}'
+    sh 'cd ..\..\'
     sh 'dart pub global run rename --bundleId ${appId}'
     sh 'dart pub global run rename --appname ${appName}'
     echo "Done"
