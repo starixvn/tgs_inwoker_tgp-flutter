@@ -49,8 +49,8 @@ def runShellScript(yamlFilePath, appId, appName) {
     echo "Configurating"
     echo "${WORKSPACE}\\env\\${yamlFilePath}, ${appId}, ${appName}"
     bat 'flutter pub get'
-    bat 'flutter pub run --no-sound-null-safety flutter_launcher_icons:main -f ${WORKSPACE}\\env\\${yamlFilePath}'
-    bat 'flutter pub run --no-sound-null-safety environment_config:generate --config=${WORKSPACE}\\env\\${yamlFilePath}}'
+    bat 'flutter pub run --no-sound-null-safety flutter_launcher_icons:main -f env\\${yamlFilePath}'
+    bat 'flutter pub run --no-sound-null-safety environment_config:generate --config=env\\${yamlFilePath}}'
     bat 'cd ..\\..\\'
     bat 'dart pub global run rename --bundleId ${appId}'
     bat 'dart pub global run rename --appname ${appName}'
