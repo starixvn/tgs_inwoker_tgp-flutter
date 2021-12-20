@@ -50,9 +50,9 @@ def runShellScript(yamlFilePath, appId, appName) {
     echo "${PATH}"
     bat 'flutter pub get'
     bat 'flutter pub run --no-sound-null-safety flutter_launcher_icons:main -f env\\pg_dev\\pg_dev.yaml'
-    bat 'flutter pub run --no-sound-null-safety environment_config:generate --config=env\\%yamlFilePath%'
+    bat 'flutter pub run --no-sound-null-safety environment_config:generate --config=env\\$yamlFilePath'
     bat 'cd ..\\..\\'
-    bat 'dart pub global run rename --bundleId ${appId}'
-    bat 'dart pub global run rename --appname ${appName}'
+    bat 'dart pub global run rename --bundleId $appId'
+    bat 'dart pub global run rename --appname $appName'
     echo "Done"
 }
