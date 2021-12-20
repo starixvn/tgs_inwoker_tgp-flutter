@@ -49,7 +49,7 @@ def runShellScript(yamlFilePath, appId, appName) {
     echo "${WORKSPACE}\\env\\${yamlFilePath}, ${appId}, ${appName}"
     echo "${PATH}"
     bat 'flutter pub get'
-    bat 'flutter pub run --no-sound-null-safety flutter_launcher_icons:main -f env\\${yamlFilePath}'
+    bat 'flutter pub run --no-sound-null-safety flutter_launcher_icons:main -f C:\Program Files (x86)\Jenkins\workspace\tgs-flutter_develop\env\pg_dev\pg_dev.yaml'
     bat 'flutter pub run --no-sound-null-safety environment_config:generate --config=env\\${yamlFilePath}'
     bat 'cd ..\\..\\'
     bat 'dart pub global run rename --bundleId ${appId}'
