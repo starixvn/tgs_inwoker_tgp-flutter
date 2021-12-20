@@ -11,8 +11,13 @@ pipeline{
                 cmd_exec('flutter doctor -v')
             }
         }
+         stage ('Flutter clean') {
+            steps {
+                cmd_exec('flutter clean')
+            }
+        }
 
-        stage ('test stage') {
+        stage ('Build pg developement environment') {
             when {
                 expression {
                     params.BRAND == 'PG' && params.ENVIRONMENT == 'developement'
@@ -24,12 +29,21 @@ pipeline{
                  runShellScript('pg_dev\\pg_dev.yaml', 'com.tgs.pg_dev', 'PG_dev')
                 }
         }
-                
-        stage ('Flutter clean') {
-            steps {
-                cmd_exec('flutter clean')
+
+        stage ('Build pg staging environment') {
+            when {
+                expression {
+                    params.BRAND == 'PG' && params.ENVIRONMENT == 'staging'
+                }
             }
+            
+            steps {
+                echo "PG_dev"
+                 runShellScript('pg_stg\\pg_stg.yaml', 'com.tgs.pg_stg', 'PG_stg')
+                }
         }
+                
+       
         stage ('Flutter Build APK') {
             steps {
                 echo "test output ${DEPLOY_ENV}"
