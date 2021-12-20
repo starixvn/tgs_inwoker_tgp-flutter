@@ -27,6 +27,11 @@ pipeline{
             steps {
                 echo "PG_dev"
                  runShellScript('pg_dev\\pg_dev.yaml', 'com.tgs.pg_dev', 'PG_dev')
+                 script{
+					yaml_file = env.WORKSPACE + "pg_dev\\pg_dev.yaml"
+					read_yaml_file(yaml_file)
+					println "=========================="
+				}
                 }
         }
 
@@ -119,4 +124,17 @@ def runShellScript(yamlFilePath, appId, appName) {
     bat "dart pub global run rename --bundleId ${appId}"
     bat "dart pub global run rename --appname ${appName}"
     echo "Done"
+}
+
+def read_yaml_file(yaml_file) {
+	def datas = ""
+	if(yaml_file.toString().endsWith(".yaml")){
+		datas = readYaml file : yaml_file
+		
+	}else {
+		datas = readYaml text : yaml_file
+	}
+	datas.each {
+		println ( it.key + " = " + it.value )
+	 }
 }
