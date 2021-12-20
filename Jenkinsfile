@@ -38,11 +38,62 @@ pipeline{
             }
             
             steps {
-                echo "PG_dev"
+                echo "PG_stg"
                  runShellScript('pg_stg\\pg_stg.yaml', 'com.tgs.pg_stg', 'PG_stg')
                 }
         }
-                
+
+        stage ('Build pg production environment') {
+            when {
+                expression {
+                    params.BRAND == 'PG' && params.ENVIRONMENT == 'production'
+                }
+            }
+            
+            steps {
+                echo "PG_prod"
+                 runShellScript('pg_prod\\pg_prod.yaml', 'com.tgs.pg_prod', 'PG')
+                }
+        }  
+
+        stage ('Build hkjp environment') {
+            when {
+                expression {
+                    params.BRAND == 'HKJP'
+                }
+            }
+            
+            steps {
+                echo "hkjp"
+                 runShellScript('hkjp\\hkjp.yaml', 'com.tgs.hkjp', 'HKJP')
+                }
+        } 
+
+        stage ('Build bin environment') {
+            when {
+                expression {
+                    params.BRAND == 'BIN'
+                }
+            }
+            
+            steps {
+                echo "hkjp"
+                 runShellScript('bin_gaming\\bin_gaming.yaml', 'com.tgs.bin_gaming', 'BIN')
+                }
+        }
+
+        stage ('Build wlg environment') {
+            when {
+                expression {
+                    params.BRAND == 'WLG'
+                }
+            }
+            
+            steps {
+                echo "WLG"
+                 runShellScript('wlg\\wlg.yaml', 'com.tgs.wlg', 'WLG')
+                }
+        }
        
         stage ('Flutter Build APK') {
             steps {
@@ -65,7 +116,6 @@ def runShellScript(yamlFilePath, appId, appName) {
     bat "flutter pub run --no-sound-null-safety flutter_launcher_icons:main -f env\\${yamlFilePath}"
     bat "flutter pub run --no-sound-null-safety environment_config:generate --config=env\\${yamlFilePath}"
     bat 'cd ..\\..\\'
-    bat 'dart pub global activate rename'
     bat "dart pub global run rename --bundleId ${appId}"
     bat "dart pub global run rename --appname ${appName}"
     echo "Done"
