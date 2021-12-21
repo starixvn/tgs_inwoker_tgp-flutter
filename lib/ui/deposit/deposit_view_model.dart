@@ -39,9 +39,9 @@ class DepositViewModel extends BaseViewModel {
     getPaymentApiState = await depositRepo.getPayment();
     if (getPaymentApiState.isSuccess) {
       List<Payment> list = getPaymentApiState.result;
-      list.sort((a, b) => a.order.compareTo(b.order));
+      list.sort((a, b) => (a.order ?? 0).compareTo(b.order ?? 0));
       paymentCodeList = groupBy(list, (Payment obj) => obj.paymentCode)
-          .map((key, value) => MapEntry(key, groupBy(value, (obj) => obj.bankType)));
+          .map((key, value) => MapEntry(key!, groupBy(value, (obj) => obj.bankType!)));
     }
     setLoading(false);
     return getPaymentApiState;
@@ -61,7 +61,7 @@ class DepositViewModel extends BaseViewModel {
     if (getPlayerPromotionListApiState.isSuccess) {
       List<Promotion> list = getPlayerPromotionListApiState.result.items;
       list.forEach((value) {
-        displayPromotionList.add({"name": value.localization?.name ?? value.name, "id": value.id});
+        displayPromotionList.add({"name": (value.localization?.name ?? value.name) ?? "", "id": value.id ?? ""});
       });
     }
     setLoading(false);

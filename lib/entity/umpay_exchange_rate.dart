@@ -9,12 +9,12 @@ part 'umpay_exchange_rate.g.dart';
 class UmPayExchangeRate {
   UmPayExchangeRate(this.rate, this.fee, this.inRate, this.outRate);
 
-  double rate;
-  double fee;
+  double? rate;
+  double? fee;
   @JsonKey(name: "in_rate")
-  double inRate;
+  double? inRate;
   @JsonKey(name: "out_rate")
-  double outRate;
+  double? outRate;
 
   factory UmPayExchangeRate.fromJson(Map<String, dynamic> json) => _$UmPayExchangeRateFromJson(json);
 

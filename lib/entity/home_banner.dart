@@ -8,10 +8,10 @@ class HomeBanner {
   HomeBanner(this.id, this.mobileUrl, this.title);
 
   @JsonKey(name: 'id')
-  String id;
+  String? id;
   @JsonKey(name: 'mobileurl')
-  String mobileUrl;
-  String title;
+  String? mobileUrl;
+  String? title;
 
   factory HomeBanner.fromJson(Map<String, dynamic> json) => _$HomeBannerFromJson(json);
 

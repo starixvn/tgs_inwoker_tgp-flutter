@@ -8,7 +8,7 @@ part of 'game_url_response.dart';
 
 GameUrlResponse _$GameUrlResponseFromJson(Map<String, dynamic> json) =>
     GameUrlResponse(
-      json['url'] as String,
+      json['url'] as String?,
     );
 
 Map<String, dynamic> _$GameUrlResponseToJson(GameUrlResponse instance) =>

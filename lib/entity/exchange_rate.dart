@@ -10,11 +10,11 @@ class ExchangeRate {
   ExchangeRate(this.buyPrice, this.sellPrice, this.updateTime);
 
   @JsonKey(name: "buyprice")
-  String buyPrice;
+  String? buyPrice;
   @JsonKey(name: "sellprice")
-  String sellPrice;
+  String? sellPrice;
   @JsonKey(name: "updatetime")
-  String updateTime;
+  String? updateTime;
 
   factory ExchangeRate.fromJson(Map<String, dynamic> json) => _$ExchangeRateFromJson(json);
 

@@ -9,7 +9,7 @@ part of 'check_username_response.dart';
 CheckUsernameResponse _$CheckUsernameResponseFromJson(
         Map<String, dynamic> json) =>
     CheckUsernameResponse(
-      json['isexist'] as bool,
+      json['isexist'] as bool?,
     );
 
 Map<String, dynamic> _$CheckUsernameResponseToJson(

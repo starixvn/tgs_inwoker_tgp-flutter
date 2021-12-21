@@ -7,11 +7,11 @@ part 'transfer_report.g.dart';
 class TransferReport {
   TransferReport(this.from, this.to, this.amount, this.balanceTime);
 
-  String from;
-  String to;
-  double amount;
+  String? from;
+  String? to;
+  double? amount;
   @JsonKey(name: 'balancetime')
-  String balanceTime;
+  String? balanceTime;
 
   factory TransferReport.fromJson(Map<String, dynamic> json) => _$TransferReportFromJson(json);
 

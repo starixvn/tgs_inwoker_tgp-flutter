@@ -8,7 +8,7 @@ part of 'language_option.dart';
 
 LanguageOption _$LanguageOptionFromJson(Map<String, dynamic> json) =>
     LanguageOption(
-      json['culturecode'] as String,
+      json['culturecode'] as String?,
     );
 
 Map<String, dynamic> _$LanguageOptionToJson(LanguageOption instance) =>

@@ -7,11 +7,11 @@ part of 'message.dart';
 // **************************************************************************
 
 Message _$MessageFromJson(Map<String, dynamic> json) => Message(
-      json['id'] as String,
-      json['createon'] as String,
-      json['content'] as String,
-      json['subject'] as String,
-      json['isread'] as bool,
+      json['id'] as String?,
+      json['createon'] as String?,
+      json['content'] as String?,
+      json['subject'] as String?,
+      json['isread'] as bool?,
       json['localization'] == null
           ? null
           : Localization.fromJson(json['localization'] as Map<String, dynamic>),

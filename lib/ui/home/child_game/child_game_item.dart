@@ -26,7 +26,7 @@ class ChildGameItem extends StatefulWidget {
   final GameViewModel vm;
 
   ChildGameItem({
-    required  this.game,
+    required this.game,
     required this.isDisabled,
     required this.vm,
   });
@@ -97,10 +97,11 @@ class _ChildGameItemState extends BaseState<ChildGameItem> {
   _getImageUrl() {
     var gameName = _getGameName();
     if (gameName == "FishingYiLuFa")
-      return EnvironmentConfig.slotGameUrl + "${widget.game.gamePlatformCode.toUpperCase()}/zh-CN/$gameName.jpg";
+      return EnvironmentConfig.slotGameUrl +
+          "${(widget.game.gamePlatformCode ?? "").toUpperCase()}/zh-CN/$gameName.jpg";
     else
       return EnvironmentConfig.slotGameUrl +
-          "${widget.game.gamePlatformCode.toUpperCase()}/${languageCode ?? "en-US"}/$gameName.jpg";
+          "${(widget.game.gamePlatformCode ?? "").toUpperCase()}/${languageCode ?? "en-US"}/$gameName.jpg";
   }
 
   _getGameName() => widget.game.code;
@@ -126,7 +127,7 @@ class _ChildGameItemState extends BaseState<ChildGameItem> {
             child: Container(
               margin: EdgeInsets.only(right: 3.auto),
               child: AutoSizeText(
-                widget.game.name,
+                widget.game.name ?? "",
                 style: TextStyle(color: Colors.white),
                 minFontSize: 3,
                 stepGranularity: 1,

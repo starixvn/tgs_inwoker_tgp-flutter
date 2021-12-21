@@ -6,9 +6,9 @@ part 'register_response.g.dart';
 class RegisterResponse {
   RegisterResponse(this.uid, this.isNew);
 
-  String uid;
+  String? uid;
   @JsonKey(name: 'isnew')
-  bool isNew;
+  bool? isNew;
 
   factory RegisterResponse.fromJson(Map<String, dynamic> json) => _$RegisterResponseFromJson(json);
 

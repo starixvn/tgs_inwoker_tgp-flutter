@@ -6,7 +6,7 @@ part 'login_response.g.dart';
 class LoginResponse {
   LoginResponse(this.token, this.expires);
 
-  String token;
+  String? token;
   int? expires;
 
   factory LoginResponse.fromJson(Map<String, dynamic> json) => _$LoginResponseFromJson(json);

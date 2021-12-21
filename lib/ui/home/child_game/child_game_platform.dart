@@ -19,7 +19,7 @@ class ChildGamePlatform extends StatefulWidget {
   final GameViewModel vm;
 
   ChildGamePlatform({
-     this.gameList,
+    this.gameList,
     this.isSearching = false,
     required this.onFilterPlatform,
     required this.initialPlatformCode,
@@ -54,7 +54,7 @@ class _ChildGamePlatformState extends BaseState<ChildGamePlatform> with SingleTi
       {"name": "all", "code": "ALL"}
     ];
     widget.vm.platformList!.asMap().forEach((index, value) {
-      list.add({"name": value.name, "code": value.code});
+      list.add({"name": value.name ?? "", "code": value.code ?? ""});
       if (value.code == widget.initialPlatformCode) {
         platformTabIndex = index + 1;
       }

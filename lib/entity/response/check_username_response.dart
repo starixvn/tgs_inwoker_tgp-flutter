@@ -7,7 +7,7 @@ class CheckUsernameResponse {
   CheckUsernameResponse(this.isExist);
 
   @JsonKey(name: 'isexist')
-  bool isExist;
+  bool? isExist;
 
   factory CheckUsernameResponse.fromJson(Map<String, dynamic> json) => _$CheckUsernameResponseFromJson(json);
 

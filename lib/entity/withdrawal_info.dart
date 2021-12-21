@@ -12,27 +12,27 @@ class WithdrawalInfo {
   WithdrawalInfo(this.id, this.bankType, this.channelId, this.channelName, this.channelCode, this.methodCode,
       this.methodId, this.paymentCode, this.paymentId, this.transferLimit, this.bankExtendedInfo);
 
-  String id;
+  String? id;
   @JsonKey(name: "banktype")
-  BankType bankType;
+  BankType? bankType;
   @JsonKey(name: "channelid")
-  String channelId;
+  String? channelId;
   @JsonKey(name: "channelname")
-  String channelName;
+  String? channelName;
   @JsonKey(name: "channelcode")
-  String channelCode;
+  String? channelCode;
   @JsonKey(name: "methodcode")
-  String methodCode;
+  String? methodCode;
   @JsonKey(name: "methodid")
-  String methodId;
+  String? methodId;
   @JsonKey(name: "paymentcode")
-  String paymentCode;
+  String? paymentCode;
   @JsonKey(name: "paymentid")
-  String paymentId;
+  String? paymentId;
   @JsonKey(name: "transferlimit")
-  TransferLimit transferLimit;
+  TransferLimit? transferLimit;
   @JsonKey(name: "extended")
-  BankExtendedInfo bankExtendedInfo;
+  BankExtendedInfo? bankExtendedInfo;
 
   factory WithdrawalInfo.fromJson(Map<String, dynamic> json) => _$WithdrawalInfoFromJson(json);
 

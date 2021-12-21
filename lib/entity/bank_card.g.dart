@@ -7,10 +7,12 @@ part of 'bank_card.dart';
 // **************************************************************************
 
 BankCard _$BankCardFromJson(Map<String, dynamic> json) => BankCard(
-      json['id'] as String,
-      json['paymentchannelid'] as String,
-      $enumDecode(_$BankTypeEnumMap, json['banktype']),
-      BankDetail.fromJson(json['detail'] as Map<String, dynamic>),
+      json['id'] as String?,
+      json['paymentchannelid'] as String?,
+      $enumDecodeNullable(_$BankTypeEnumMap, json['banktype']),
+      json['detail'] == null
+          ? null
+          : BankDetail.fromJson(json['detail'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$BankCardToJson(BankCard instance) => <String, dynamic>{

@@ -25,7 +25,7 @@ class ChildGameSuggestion extends StatefulWidget {
 }
 
 class _ChildGameSuggestionState extends BaseState<ChildGameSuggestion> {
- // var _vm = GameViewModel();
+  // var _vm = GameViewModel();
 
   Widget build(BuildContext context) {
     return Visibility(
@@ -67,7 +67,7 @@ class _ChildGameSuggestionState extends BaseState<ChildGameSuggestion> {
               borderRadius: BorderRadius.all(Radius.circular(10))),
           child: Center(
             child: AutoSizeText(
-              game.name,
+              game.name ?? "",
               style: TextStyle(color: Colors.white, fontSize: 15),
               minFontSize: 10,
               stepGranularity: 1,
@@ -78,7 +78,13 @@ class _ChildGameSuggestionState extends BaseState<ChildGameSuggestion> {
 
   _navigateToGameWeb(Game game) {
     WidgetsBinding.instance!.addPostFrameCallback((_) {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => GameWeb(gamePlatformCode: game.gamePlatformCode, gameId: game.id,)));
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => GameWeb(
+                    gamePlatformCode: game.gamePlatformCode,
+                    gameId: game.id,
+                  )));
     });
   }
 }

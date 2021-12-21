@@ -11,8 +11,8 @@ class PromotionReport{
     this.promotionName,
   );
 
-  String joinedOn;
-  String promotionName;
+  String? joinedOn;
+  String? promotionName;
 
   factory PromotionReport.fromJson(Map<String, dynamic> json) => _$PromotionReportFromJson(json);
 

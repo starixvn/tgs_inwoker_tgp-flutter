@@ -48,7 +48,7 @@ class _PromotionItemDetailsState extends BaseState<PromotionItemDetails> {
                     TextStyle(color: CustomColor.theme_bar_gradient_1, fontSize: 14.auto, fontWeight: FontWeight.bold),
               )),
           _buildPromotionText(
-              "${getTranslatedText("promotion_person")}：\n VIP" + widget.promotion.vipLevels.join(", VIP")),
+              "${getTranslatedText("promotion_person")}：\n VIP" + (widget.promotion.vipLevels ?? []).join(", VIP")),
           _buildPromotionText("${getTranslatedText("promotion_time")}：\n " +
               Format().dateTimeFormat(widget.promotion.from) +
               " - " +
@@ -136,20 +136,20 @@ class _PromotionItemDetailsState extends BaseState<PromotionItemDetails> {
         child: Text(displayText),
       );
 
-  _buildPromotionContentText(String displayText) => Container(
+  _buildPromotionContentText(String? displayText) => Container(
         margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 15.auto),
         child: Text(
-          displayText,
+          displayText ?? "",
           style: TextStyle(color: CustomColor.theme_bar_gradient_1),
         ),
       );
 
-  _buildPromotionTermsText(String displayText) => Container(
+  _buildPromotionTermsText(String? displayText) => Container(
         margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 15.auto),
         child: RichText(
             text: HTML.toTextSpan(
           context,
-          displayText,
+          displayText ?? "",
           defaultTextStyle: TextStyle(fontSize: 12.auto),
           overrideStyle: <String, TextStyle>{
             'p': TextStyle(fontSize: 15.auto),

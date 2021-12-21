@@ -9,8 +9,8 @@ class Announcement {
 
   String? subject;
   String? content;
-  int from;
-  int to;
+  int? from;
+  int? to;
   Localization? localization;
 
   factory Announcement.fromJson(Map<String, dynamic> json) => _$AnnouncementFromJson(json);

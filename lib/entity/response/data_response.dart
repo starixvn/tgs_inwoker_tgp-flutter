@@ -6,7 +6,7 @@ part 'data_response.g.dart';
 class DataResponse {
   DataResponse(this.data);
 
-  dynamic data;
+  dynamic? data;
 
   factory DataResponse.fromJson(Map<String, dynamic> json) => _$DataResponseFromJson(json);
 

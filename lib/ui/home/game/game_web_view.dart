@@ -120,9 +120,10 @@ class _GameWebState extends BaseState<GameWeb> {
             useWideViewPort: true,
             domStorageEnabled: true,
             mixedContentMode: AndroidMixedContentMode.MIXED_CONTENT_ALWAYS_ALLOW,
-          )),
+          ),
+          ios: IOSInAppWebViewOptions(allowsInlineMediaPlayback: true)),
       onWebViewCreated: (InAppWebViewController controller) {
-        ProgressDialog.show(context, _vm.brandLogoUrl);
+        //ProgressDialog.show(context, _vm.brandLogoUrl);
         _webViewController = controller;
         _webViewController!.loadUrl(
             /* urlRequest: widget.gamePlatformCode == "BC"
@@ -134,9 +135,8 @@ class _GameWebState extends BaseState<GameWeb> {
               "token": prefs.getString("token")!
             }));
         /* : URLRequest(url: Uri.parse(_getValidUrl(_vm.url!))));*/
-        print("111"+_getValidUrl(_vm.url!));
-        print("222");
-        ProgressDialog.hide();
+
+        //ProgressDialog.hide();
       },
       onExitFullscreen: (InAppWebViewController controller) {
         Navigator.pop(
@@ -148,7 +148,7 @@ class _GameWebState extends BaseState<GameWeb> {
       },
 
       onLoadStop: (controller, url) async {
-        // ProgressDialog.hide();
+        //ProgressDialog.hide();
       },
       shouldOverrideUrlLoading: (controller, navigationAction) async {
         var uri = navigationAction.request.url;

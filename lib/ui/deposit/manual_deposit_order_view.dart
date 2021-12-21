@@ -231,7 +231,7 @@ class _ManualDepositOrderViewState extends BaseState<ManualDepositOrderView> {
         ),
       );
 
-  _buildText(String title, String content) {
+  _buildText(String title, String? content) {
     if (content == "BankTransfer")
       content = getTranslatedText("bank_transfer");
     else if (content == "Crypto") content = getTranslatedText("crypto");
@@ -241,11 +241,11 @@ class _ManualDepositOrderViewState extends BaseState<ManualDepositOrderView> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            getTranslatedText(title) ?? title,
+            getTranslatedText(title), //?? title,
             style: TextStyle(fontSize: 13.auto, color: CustomColor.grey),
           ),
           AutoSizeText(
-            content,
+            content ?? "",
             style: TextStyle(fontSize: 13.auto, color: Colors.black),
             minFontSize: 2,
             maxLines: 1,

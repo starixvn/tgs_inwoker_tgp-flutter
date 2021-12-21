@@ -37,7 +37,7 @@ class WalletTransferViewModel extends BaseViewModel {
       setAutoTransferApiState;
   bool isFetchingBalance = false, autoTransferValue = false;
 
-  transferWallet(String gpCode, int transferAmount, bool isFundOut) async {
+  transferWallet(String? gpCode, int transferAmount, bool isFundOut) async {
     setLoading();
     transferWalletApiState = await walletRepo.fundTransfer(gpCode, transferAmount, isFundOut);
     if (transferWalletApiState.isSuccess) {

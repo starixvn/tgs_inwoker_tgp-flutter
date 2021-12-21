@@ -7,11 +7,11 @@ class GameTag {
   GameTag(this.isNew, this.isHot, this.isRecommend);
 
   @JsonKey(name: "new")
-  bool isNew;
+  bool? isNew;
   @JsonKey(name: "hot")
-  bool isHot;
+  bool? isHot;
   @JsonKey(name: "recommend")
-  bool isRecommend;
+  bool? isRecommend;
 
   factory GameTag.fromJson(Map<String, dynamic> json) => _$GameTagFromJson(json);
 

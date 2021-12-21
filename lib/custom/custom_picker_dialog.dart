@@ -123,7 +123,7 @@ class _CustomPickerDialogState extends BaseState<CustomPickerDialog> {
         Expanded(
           flex:3,
           child: Text(
-            _getDisplayBankAccountText (widget.list[index]),
+            _getDisplayBankAccountText (widget.list[index]) ??"",
             style: TextStyle(fontSize: 13.auto),
             textAlign: TextAlign.center,
             overflow: TextOverflow.ellipsis,
@@ -133,16 +133,16 @@ class _CustomPickerDialogState extends BaseState<CustomPickerDialog> {
     );
   }
 
-  _getDisplayBankAccountText(BankCard bankCard) {
+  String? _getDisplayBankAccountText(BankCard bankCard) {
     switch (bankCard.bankType) {
       case BankType.CRYPTO:
-        return bankCard.bankDetail.address;
+        return bankCard.bankDetail?.address;
       case BankType.THIRD_PARTY:
-        return bankCard.bankDetail.phone;
+        return bankCard.bankDetail?.phone;
       case BankType.FPS:
-        return bankCard.bankDetail.phone;
+        return bankCard.bankDetail?.phone;
       default:
-        return bankCard.bankDetail.bankAccount;
+        return bankCard.bankDetail?.bankAccount;
     }
   }
 }

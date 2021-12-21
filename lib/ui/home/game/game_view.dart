@@ -181,7 +181,7 @@ class _GameViewState extends BaseState<GameView> {
     });
   }
 
-  _navigate(String gamePlatformCode, GameType gameType) async {
+  _navigate(String? gamePlatformCode, GameType? gameType) async {
     var id;
     if (gameType == GameType.Slot || gameType == GameType.EGame || gameType == GameType.Fishing) {
       //navigate to child game

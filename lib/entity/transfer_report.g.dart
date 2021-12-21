@@ -8,10 +8,10 @@ part of 'transfer_report.dart';
 
 TransferReport _$TransferReportFromJson(Map<String, dynamic> json) =>
     TransferReport(
-      json['from'] as String,
-      json['to'] as String,
-      (json['amount'] as num).toDouble(),
-      json['balancetime'] as String,
+      json['from'] as String?,
+      json['to'] as String?,
+      (json['amount'] as num?)?.toDouble(),
+      json['balancetime'] as String?,
     );
 
 Map<String, dynamic> _$TransferReportToJson(TransferReport instance) =>

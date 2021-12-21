@@ -7,15 +7,18 @@ part of 'payment.dart';
 // **************************************************************************
 
 Payment _$PaymentFromJson(Map<String, dynamic> json) => Payment(
-      json['id'] as String,
-      $enumDecode(_$BankTypeEnumMap, json['banktype']),
-      json['channelname'] as String,
-      TransferLimit.fromJson(json['transferlimit'] as Map<String, dynamic>),
-      json['paymentid'] as String,
-      json['paymentcode'] as String,
-      json['methodid'] as String,
-      json['methodcode'] as String,
-      json['displayorder'] as int,
+      json['id'] as String?,
+      $enumDecodeNullable(_$BankTypeEnumMap, json['banktype']),
+      json['channelname'] as String?,
+      json['transferlimit'] == null
+          ? null
+          : TransferLimit.fromJson(
+              json['transferlimit'] as Map<String, dynamic>),
+      json['paymentid'] as String?,
+      json['paymentcode'] as String?,
+      json['methodid'] as String?,
+      json['methodcode'] as String?,
+      json['displayorder'] as int?,
     )..qrCode = json['extended'] == null
         ? null
         : PaymentQrCode.fromJson(json['extended'] as Map<String, dynamic>);

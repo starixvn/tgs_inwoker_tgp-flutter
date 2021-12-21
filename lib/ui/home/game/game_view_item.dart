@@ -18,7 +18,7 @@ class GameViewItem extends StatefulWidget {
   final Function(GameProvider2)? onGameClick;
   final Key key;
 
-  GameViewItem(this.key, {required this.controller, this.gameProviderList, this.onGameClick}) ;
+  GameViewItem(this.key, {required this.controller, this.gameProviderList, this.onGameClick});
 
   @override
   GameViewItemState createState() => GameViewItemState();
@@ -74,9 +74,9 @@ class GameViewItemState extends BaseState<GameViewItem> {
   }
 
   _getImagePath(GameProvider2 gameProvider) {
-    var gameType = gameProvider.gameType.getImagePath();
-    var gamePlatformCode = gameProvider.code.toLowerCase();
-    var imagePath = "images/game/${gameType}_${gamePlatformCode}.png";
+    var gameType = gameProvider.gameType?.getImagePath();
+    var gamePlatformCode = gameProvider.code?.toLowerCase();
+    var imagePath = "images/game/${gameType}_$gamePlatformCode.png";
     return imagePath;
   }
 

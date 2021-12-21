@@ -8,8 +8,8 @@ part of 'register_response.dart';
 
 RegisterResponse _$RegisterResponseFromJson(Map<String, dynamic> json) =>
     RegisterResponse(
-      json['uid'] as String,
-      json['isnew'] as bool,
+      json['uid'] as String?,
+      json['isnew'] as bool?,
     );
 
 Map<String, dynamic> _$RegisterResponseToJson(RegisterResponse instance) =>

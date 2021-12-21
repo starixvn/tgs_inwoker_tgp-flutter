@@ -7,7 +7,7 @@ class ListResponse<T> {
   ListResponse(this.totalCount, this.items);
 
   @JsonKey(name: 'totalcount')
-  int totalCount;
+  int? totalCount;
   List<T>? items;
 
   factory ListResponse.fromJson(

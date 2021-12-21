@@ -228,7 +228,7 @@ class _WalletTransferState extends BaseState<WalletTransfer> with TickerProvider
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              wallet.title,
+              wallet.title ?? "",
               style: TextStyle(fontSize: (12.5).auto, color: CustomColor.theme_title_text_color),
             ),
             Padding(

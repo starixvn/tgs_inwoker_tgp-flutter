@@ -36,7 +36,7 @@ class MessageViewModel extends BaseViewModel {
     if (getMessageListApiState.isSuccess) {
       list = getMessageListApiState.result.items;
       if (messageList == null) messageList = [];
-      if(page == 1) messageList = [];
+      if (page == 1) messageList = [];
       messageList!.addAll(list);
       endRecord = messageList!.length >= getMessageListApiState.result.totalCount ? true : false;
     }
@@ -44,7 +44,7 @@ class MessageViewModel extends BaseViewModel {
     return getMessageListApiState;
   }
 
-  readMessage(List<String> idList) async {
+  readMessage(List<String?> idList) async {
     setLoading();
     var state = await messageRepo.readMessage(idList);
     if (state.isSuccess) {

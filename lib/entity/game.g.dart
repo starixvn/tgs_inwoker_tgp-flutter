@@ -7,15 +7,16 @@ part of 'game.dart';
 // **************************************************************************
 
 Game _$GameFromJson(Map<String, dynamic> json) => Game(
-      json['id'] as int,
-      json['code'] as String,
-      json['name'] as String,
+      json['id'] as int?,
+      json['code'] as String?,
+      json['name'] as String?,
       json['description'] as String?,
-      json['gpcode'] as String,
-      json['isactive'] as bool,
-      $enumDecode(_$GameTypeEnumMap, json['type']),
-      GameTag.fromJson(json['tag'] as Map<String, dynamic>),
-      json['localizedName'] as String?,
+      json['gpcode'] as String?,
+      json['isactive'] as bool?,
+      $enumDecodeNullable(_$GameTypeEnumMap, json['type']),
+      json['tag'] == null
+          ? null
+          : GameTag.fromJson(json['tag'] as Map<String, dynamic>),
       json['isFavourite'] as bool?,
     );
 
@@ -28,7 +29,6 @@ Map<String, dynamic> _$GameToJson(Game instance) => <String, dynamic>{
       'isactive': instance.isActive,
       'type': _$GameTypeEnumMap[instance.type],
       'tag': instance.tag,
-      'localizedName': instance.localizedName,
       'isFavourite': instance.isFavourite,
     };
 

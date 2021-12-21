@@ -8,11 +8,11 @@ part of 'game_provider2.dart';
 
 GameProvider2 _$GameProvider2FromJson(Map<String, dynamic> json) =>
     GameProvider2(
-      $enumDecode(_$GameTypeEnumMap, json['gameType']),
-      json['code'] as String,
-      json['name'] as String,
+      $enumDecodeNullable(_$GameTypeEnumMap, json['gameType']),
+      json['code'] as String?,
+      json['name'] as String?,
       json['description'] as String?,
-      json['status'] as int,
+      json['status'] as int?,
     );
 
 Map<String, dynamic> _$GameProvider2ToJson(GameProvider2 instance) =>

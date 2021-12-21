@@ -343,9 +343,9 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
   onSelectedChannel(Payment payment) {
     setState(() {
       _payment = payment;
-      channelPickerText = payment.channelName.replaceAll("_", " ");
-      paymentMin = payment.transferLimit.from;
-      paymentMax = payment.transferLimit.to;
+      channelPickerText = (payment.channelName ?? "").replaceAll("_", " ");
+      paymentMin = payment.transferLimit?.from ?? 0;
+      paymentMax = payment.transferLimit?.to ?? 0;
     });
     if (_isLeePayDeposit())
       _vm.getExchangeRate(_payment!.id, false);

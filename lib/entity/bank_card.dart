@@ -8,13 +8,13 @@ part 'bank_card.g.dart';
 class BankCard {
   BankCard(this.id, this.paymentChannelId, this.bankType, this.bankDetail);
 
-  String id;
+  String? id;
   @JsonKey(name: "paymentchannelid")
-  String paymentChannelId;
+  String? paymentChannelId;
   @JsonKey(name: "banktype")
-  BankType bankType;
+  BankType? bankType;
   @JsonKey(name: "detail")
-  BankDetail bankDetail;
+  BankDetail? bankDetail;
 
   factory BankCard.fromJson(Map<String, dynamic> json) => _$BankCardFromJson(json);
 

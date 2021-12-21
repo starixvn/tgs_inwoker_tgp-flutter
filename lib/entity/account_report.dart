@@ -8,16 +8,16 @@ class AccountReport {
   AccountReport(
       this.id, this.createdOn, this.updatedOn, this.status, this.amount, this.canUploadCerts, this.orderNo);
 
-  String id;
+  String? id;
   @JsonKey(name: 'createdon')
   String createdOn;
   String? updatedOn;
   Status status;
-  double amount;
+  double? amount;
   @JsonKey(name: 'canuploadcerts')
-  bool canUploadCerts;
+  bool? canUploadCerts;
   @JsonKey(name: 'orderno')
-  String orderNo;
+  String? orderNo;
 
   factory AccountReport.fromJson(Map<String, dynamic> json) => _$AccountReportFromJson(json);
 
