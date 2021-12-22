@@ -3,7 +3,7 @@ pipeline{
     parameters {
         string(name: 'DEPLOY_ENV', defaultValue: 'TESTING', description: 'The target environment')
         choice(name: 'BRAND', choices:['PG','HKJP','WLG','BIN'], description: 'The brand choice')
-        choice(name: 'ENVIRONMENT', choices:['developement','staging','production'], description: 'The environment choice')
+        choice(name: 'ENVIRONMENT', choices:['development','staging','production'], description: 'The environment choice')
    }
     stages{
         stage ('Flutter Doctor') {
