@@ -17,87 +17,91 @@ pipeline{
             }
         }
 
-        stage ('Build pg developement environment') {
-            when {
-                expression {
-                    params.BRAND == 'PG' && params.ENVIRONMENT == 'developement'
-                }
-            }
-            
-            steps {
-                echo "PG_dev"
-                script{
-					yaml_file = env.WORKSPACE + "pg_dev\\pg_dev.yaml"
-					read_yaml_file(yaml_file)
-					println "=========================="
-				}
-                 runShellScript('pg_dev\\pg_dev.yaml', 'com.tgs.pg_dev', 'PG_dev')
-                }
-        }
+        stage('Build environment'){
+            parallel{
+                stage ('Build pg development environment') {
+                    when {
+                        expression {
+                            params.BRAND == 'PG' && params.ENVIRONMENT == 'development'
+                        }
+                    }
 
-        stage ('Build pg staging environment') {
-            when {
-                expression {
-                    params.BRAND == 'PG' && params.ENVIRONMENT == 'staging'
+                    steps {
+                        echo "PG_dev"
+                        script{
+        					yaml_file = env.WORKSPACE + "pg_dev\\pg_dev.yaml"
+        					read_yaml_file(yaml_file)
+        					println "=========================="
+        				}
+                         runShellScript('pg_dev\\pg_dev.yaml', 'com.tgs.pg_dev', 'PG_dev')
+                        }
                 }
-            }
-            
-            steps {
-                echo "PG_stg"
-                 runShellScript('pg_stg\\pg_stg.yaml', 'com.tgs.pg_stg', 'PG_stg')
-                }
-        }
 
-        stage ('Build pg production environment') {
-            when {
-                expression {
-                    params.BRAND == 'PG' && params.ENVIRONMENT == 'production'
-                }
-            }
-            
-            steps {
-                echo "PG_prod"
-                 runShellScript('pg_prod\\pg_prod.yaml', 'com.tgs.pg_prod', 'PG')
-                }
-        }  
+                stage ('Build pg staging environment') {
+                    when {
+                        expression {
+                            params.BRAND == 'PG' && params.ENVIRONMENT == 'staging'
+                        }
+                    }
 
-        stage ('Build hkjp environment') {
-            when {
-                expression {
-                    params.BRAND == 'HKJP'
+                    steps {
+                        echo "PG_stg"
+                         runShellScript('pg_stg\\pg_stg.yaml', 'com.tgs.pg_stg', 'PG_stg')
+                        }
                 }
-            }
-            
-            steps {
-                echo "hkjp"
-                 runShellScript('hkjp\\hkjp.yaml', 'com.tgs.hkjp', 'HKJP')
-                }
-        } 
 
-        stage ('Build bin environment') {
-            when {
-                expression {
-                    params.BRAND == 'BIN'
-                }
-            }
-            
-            steps {
-                echo "hkjp"
-                 runShellScript('bin_gaming\\bin_gaming.yaml', 'com.tgs.bin_gaming', 'BIN')
-                }
-        }
+                stage ('Build pg production environment') {
+                    when {
+                        expression {
+                            params.BRAND == 'PG' && params.ENVIRONMENT == 'production'
+                        }
+                    }
 
-        stage ('Build wlg environment') {
-            when {
-                expression {
-                    params.BRAND == 'WLG'
+                    steps {
+                        echo "PG_prod"
+                         runShellScript('pg_prod\\pg_prod.yaml', 'com.tgs.pg_prod', 'PG')
+                        }
+                }
+
+                stage ('Build hkjp environment') {
+                    when {
+                        expression {
+                            params.BRAND == 'HKJP'
+                        }
+                    }
+
+                    steps {
+                        echo "HKJP"
+                         runShellScript('hkjp\\hkjp.yaml', 'com.tgs.hkjp', 'HKJP')
+                        }
+                }
+
+                stage ('Build bin environment') {
+                    when {
+                        expression {
+                            params.BRAND == 'BIN'
+                        }
+                    }
+
+                    steps {
+                        echo "BIN"
+                         runShellScript('bin_gaming\\bin_gaming.yaml', 'com.tgs.bin_gaming', 'BIN')
+                        }
+                }
+
+                stage ('Build wlg environment') {
+                    when {
+                        expression {
+                            params.BRAND == 'WLG'
+                        }
+                    }
+
+                    steps {
+                        echo "WLG"
+                         runShellScript('wlg\\wlg.yaml', 'com.tgs.wlg', 'WLG')
+                        }
                 }
             }
-            
-            steps {
-                echo "WLG"
-                 runShellScript('wlg\\wlg.yaml', 'com.tgs.wlg', 'WLG')
-                }
         }
        
         stage ('Flutter Build APK') {
