@@ -180,7 +180,7 @@ class _ManualDepositOrderViewState extends BaseState<ManualDepositOrderView> {
       );
 
   _displayImage() {
-    if (widget.manualDepositOrder!.qrCode?.isEmpty ?? false)
+    if (widget.manualDepositOrder?.qrCode?.isEmpty ?? false)
       return Expanded(
         flex: 2,
         child: QrImage(
@@ -189,7 +189,7 @@ class _ManualDepositOrderViewState extends BaseState<ManualDepositOrderView> {
           size: 150.0,
         ),
       );
-    else if (widget.paymentQrCode!.qrCodeFileUrl?.isEmpty ?? false)
+    else if (widget.paymentQrCode?.qrCodeFileUrl?.isEmpty ?? false)
       return Expanded(
         flex: 2,
         child: Image.network(
