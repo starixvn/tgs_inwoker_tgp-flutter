@@ -30,7 +30,7 @@ pipeline{
                         echo "PG_dev"
                         script{
                             echo "reading yaml file"
-        					yaml_file = env.WORKSPACE + "pg_dev\\pg_dev.yaml"
+        					yaml_file = env.WORKSPACE + "\\env\\pg_dev\\pg_dev.yaml"
         					read_yaml_file(yaml_file)
         				}
                          runShellScript('pg_dev\\pg_dev.yaml', 'com.tgs.pg_dev', 'PG_dev')
