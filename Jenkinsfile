@@ -4,6 +4,12 @@ pipeline{
         string(name: 'DEPLOY_ENV', defaultValue: 'TESTING', description: 'The target environment')
         choice(name: 'BRAND', choices:['PG','HKJP','WLG','BIN'], description: 'The brand choice')
         choice(name: 'ENVIRONMENT', choices:['development','staging','production'], description: 'The environment choice')
+        booleanParam(name: 'SHOW_WECHAT_QQ', defaultValue: false, description: 'Configurable for display QQ and WeChat')
+        booleanParam(name: 'SHOW_IC_VERIFICATION', defaultValue: false, description: 'Configurable for IC verification')
+        booleanParam(name: 'SHOW_BANK_ACC', defaultValue: false, description: 'Configurable for display Bank account field in deposit page')
+        booleanParam(name: 'SHOW_POP_UP_MARQUEE', defaultValue: false, description: 'Configurable to popup first marquee message in home screen')
+        booleanParam(name: 'SHOW_SMS_VERIFICATION', defaultValue: false, description: 'Configurable for SMS verification/Email verification')
+        booleanParam(name: 'SHOW_BANK_CARD', defaultValue: false, description: 'Configurable for add bank card with bank branch')
    }
     stages{
         stage ('Flutter Doctor') {
@@ -32,6 +38,16 @@ pipeline{
                             echo "reading yaml file"
         					yaml_file = env.WORKSPACE + "\\env\\pg_dev\\pg_dev.yaml"
         					read_yaml_file(yaml_file)
+
+                        def amap = environment_config = [fields:[
+                        isShowSmsVerification:[type:bool, default:params.SHOW_SMS_VERIFICATION],
+                         isShowIcVerification:[type:bool, default:params.SHOW_IC_VERIFICATION],
+                         isShowWechatQQ:[type:bool, default:params.SHOW_WECHAT_QQ],
+                          isShowBankBranch:[type:bool, default:params.SHOW_BANK_CARD],
+                          isShowBankAcc:[type:bool, default:params.SHOW_BANK_ACC],
+                          isShowMarqueePopUp:[type:bool, default:params. SHOW_POP_UP_MARQUEE]]]
+                        echo "writing yaml file"
+                        write_yaml_file(amap,yaml_file)
         				}
                          runShellScript('pg_dev\\pg_dev.yaml', 'com.tgs.pg_dev', 'PG_dev')
                         }
@@ -141,4 +157,8 @@ def read_yaml_file(yaml_file) {
 	datas.each {
 		echo "${it.key} = ${it.value} "
 	 }
+}
+
+def write_yaml_file(data, yaml_path){
+    writeYaml file: yaml_path, data: map_data
 }
