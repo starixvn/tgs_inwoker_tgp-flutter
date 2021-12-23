@@ -153,7 +153,12 @@ def read_yaml_file(yaml_file) {
 
 def write_yaml_file(yaml_path){
     def datas = readYaml file: yaml_path
+    datas.environment_config.fields.isShowWechatQQ.default = params.SHOW_WECHAT_QQ
+    datas.environment_config.fields.isShowIcVerification.default = params.SHOW_IC_VERIFICATION
+    datas.environment_config.fields.isShowBankAcc.default = params.SHOW_BANK_ACC
+    datas.environment_config.fields.isShowMarqueePopUp.default = params.SHOW_POP_UP_MARQUEE
     datas.environment_config.fields.isShowSmsVerification.default = params.SHOW_SMS_VERIFICATION
+    datas.environment_config.fields.isShowBankBranch.default = params.SHOW_BANK_CARD
     datas.each {
     		echo "${it.key} = ${it.value} "
     	 }
