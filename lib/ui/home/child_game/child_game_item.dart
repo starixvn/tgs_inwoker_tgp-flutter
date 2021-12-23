@@ -48,12 +48,10 @@ class _ChildGameItemState extends BaseState<ChildGameItem> {
     SharedPreferences _prefs = await SharedPreferences.getInstance();
     var code = _prefs.getString("LANGUAGE_CODE");
     setState(() {
-      if (code == "zh-TW")
+      if (code == "zh-TW" || code == "zh-CN")
         languageCode = "zh-CN";
-      else if (code == "th-TH")
-        languageCode = "en-US";
       else
-        languageCode = code;
+        languageCode = "en-US";
     });
   }
 
