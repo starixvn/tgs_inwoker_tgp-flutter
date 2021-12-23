@@ -37,17 +37,9 @@ pipeline{
                         script{
                             echo "reading yaml file"
         					yaml_file = env.WORKSPACE + "\\env\\pg_dev\\pg_dev.yaml"
-        					read_yaml_file(yaml_file)
 
-                        def amap = environment_config = [fields:[
-                        isShowSmsVerification:[type:bool, default:params.SHOW_SMS_VERIFICATION],
-                         isShowIcVerification:[type:bool, default:params.SHOW_IC_VERIFICATION],
-                         isShowWechatQQ:[type:bool, default:params.SHOW_WECHAT_QQ],
-                          isShowBankBranch:[type:bool, default:params.SHOW_BANK_CARD],
-                          isShowBankAcc:[type:bool, default:params.SHOW_BANK_ACC],
-                          isShowMarqueePopUp:[type:bool, default:params. SHOW_POP_UP_MARQUEE]]]
                         echo "writing yaml file"
-                        write_yaml_file(amap,yaml_file)
+                        write_yaml_file(yaml_file)
         				}
                          runShellScript('pg_dev\\pg_dev.yaml', 'com.tgs.pg_dev', 'PG_dev')
                         }
@@ -159,6 +151,11 @@ def read_yaml_file(yaml_file) {
 	 }
 }
 
-def write_yaml_file(data, yaml_path){
-    writeYaml file: yaml_path, data: map_data
+def write_yaml_file(yaml_path){
+    def data = readYaml file: yaml_path
+    data.environment_config.fields.isShowSmsVerification.default = params.SHOW_SMS_VERIFICATION
+    datas.each {
+    		echo "${it.key} = ${it.value} "
+    	 }
+    writeYaml file: yaml_path, data: map_data, overwrite: true
 }
