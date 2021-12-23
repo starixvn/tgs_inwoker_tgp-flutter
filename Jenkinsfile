@@ -152,10 +152,10 @@ def read_yaml_file(yaml_file) {
 }
 
 def write_yaml_file(yaml_path){
-    def data = readYaml file: yaml_path
-    data.environment_config.fields.isShowSmsVerification.default = params.SHOW_SMS_VERIFICATION
-    data.each {
+    def datas = readYaml file: yaml_path
+    datas.environment_config.fields.isShowSmsVerification.default = params.SHOW_SMS_VERIFICATION
+    datas.each {
     		echo "${it.key} = ${it.value} "
     	 }
-    writeYaml file: yaml_path, data: map_data, overwrite: true
+    writeYaml file: yaml_path, data: datas, overwrite: true
 }
