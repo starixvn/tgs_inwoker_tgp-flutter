@@ -232,4 +232,13 @@ class ContentRepository extends BaseRepository {
       }),*/
     ).executeWithoutBaseResponse();
   }
+
+  Future<EventResult<dynamic>> getVersionJson(String brand) async {
+    return await ApiRequestBuilder<dynamic>(
+      method: HttpMethod.GET,
+      endPoint: "version_${brand}.json",
+      isAssetUrl: true,
+      isAutoHeader: false
+    ).executeWithoutBaseResponse();
+  }
 }

@@ -14,19 +14,19 @@ http.Client? client;
 //const timeoutDuration = Duration(seconds: 5);
 
 Future<http.Response> api(HttpMethod method, final endPoint,
-    {final content, isAuthorization = true, imageContent, timeout = 3}) async {
+    {final content, isAuthorization = true, imageContent, timeout = 3, isAssetUrl = false,isAutoHeader = true}) async {
   if (client == null) {
     client = http.Client();
   }
 
-  var header = await _getHeader(isAuthorization);
-  var url = EnvironmentConfig.url + endPoint;
+  var header = isAutoHeader ? await _getHeader(isAuthorization) : Map<String, String>();
+  var url = (isAssetUrl ? EnvironmentConfig.assetUrl : EnvironmentConfig.url) + endPoint;
   var timeoutDuration = Duration(seconds: timeout);
 
   var onTimeout = () {
     // CustomToast.show("Debug:Timeout -> $url");
     print("Debug:Timeout -> $url");
-    return api(method, endPoint, content: content, isAuthorization: isAuthorization, timeout: timeout);
+    return api(method, endPoint, content: content, isAuthorization: isAuthorization, timeout: timeout,isAssetUrl:isAssetUrl,isAutoHeader:isAutoHeader);
   };
 
   _handleError(var exception) {
@@ -42,10 +42,10 @@ Future<http.Response> api(HttpMethod method, final endPoint,
     case HttpMethod.POST:
       response = await client!
           .post(
-            Uri.parse(url),
-            headers: header,
-            body: jsonEncode(content),
-          )
+        Uri.parse(url),
+        headers: header,
+        body: jsonEncode(content),
+      )
           .timeout(timeoutDuration, onTimeout: onTimeout)
           .catchError((e) => _handleError(e));
       break;
@@ -61,9 +61,9 @@ Future<http.Response> api(HttpMethod method, final endPoint,
 
         response = await client!
             .get(
-              Uri.parse(url + queryParams),
-              headers: header,
-            )
+          Uri.parse(url + queryParams),
+          headers: header,
+        )
             .timeout(timeoutDuration, onTimeout: onTimeout)
             .catchError((e) => _handleError(e));
         print("Api->End ${method.getName}:$url");
@@ -72,29 +72,29 @@ Future<http.Response> api(HttpMethod method, final endPoint,
     case HttpMethod.DELETE:
       response = await client!
           .delete(
-            Uri.parse(url),
-            headers: header,
-          )
+        Uri.parse(url),
+        headers: header,
+      )
           .timeout(timeoutDuration, onTimeout: onTimeout)
           .catchError((e) => _handleError(e));
       break;
     case HttpMethod.PATCH:
       response = await client!
           .patch(
-            Uri.parse(url),
-            headers: header,
-            body: jsonEncode(content),
-          )
+        Uri.parse(url),
+        headers: header,
+        body: jsonEncode(content),
+      )
           .timeout(timeoutDuration, onTimeout: onTimeout)
           .catchError((e) => _handleError(e));
       break;
     case HttpMethod.PUT:
       response = await client!
           .put(
-            Uri.parse(url),
-            headers: header,
-            body: jsonEncode(content),
-          )
+        Uri.parse(url),
+        headers: header,
+        body: jsonEncode(content),
+      )
           .timeout(timeoutDuration, onTimeout: onTimeout)
           .catchError((e) => _handleError(e));
       break;
@@ -113,10 +113,10 @@ Future<http.Response> api(HttpMethod method, final endPoint,
     default:
       response = await client!
           .post(
-            Uri.parse(url),
-            headers: header,
-            body: jsonEncode(content),
-          )
+        Uri.parse(url),
+        headers: header,
+        body: jsonEncode(content),
+      )
           .timeout(timeoutDuration, onTimeout: onTimeout)
           .catchError((e) => _handleError(e));
       break;
@@ -161,4 +161,11 @@ _getToken(Map<String, String> header) async {
   if (token != null) {
     header["Token"] = token;
   }
+}
+
+Future<http.Response> readJsonFile(String url) async{
+  http.Response response = await client!.get(
+      Uri.parse(url)
+  );
+  return response;
 }

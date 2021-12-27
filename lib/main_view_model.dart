@@ -1,11 +1,17 @@
+import 'dart:convert';
+
+import 'package:package_info/package_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tgp_flutter/base_viewmodel.dart';
 import 'package:tgp_flutter/entity/game_provider.dart';
 import 'package:tgp_flutter/entity/language_option.dart';
+import 'package:tgp_flutter/network/event_result.dart';
 import 'package:tgp_flutter/repository/base_repository.dart';
 import 'package:tgp_flutter/repository/content_repository.dart';
 import 'package:tgp_flutter/repository/user_repository.dart';
 import 'package:tgp_flutter/repository/wallet_repository.dart';
+
+import 'environment_config.dart';
 
 class MainViewModel extends BaseViewModel {
   final contentRepo = ContentRepository.getSingleton();
@@ -17,6 +23,7 @@ class MainViewModel extends BaseViewModel {
 
   bool isNotLogin = false, isExpired = false;
   var authApiState, getLanguageApiState, getBrandLogoApiState, autoLoginApiState, getBasicInfoApiState;
+  var versionUpdateState;
   double gameBalance = 0.0;
   double? totalBalance;
 
@@ -25,6 +32,27 @@ class MainViewModel extends BaseViewModel {
   get balance => userRepo.wallet?.main;
 
   get userProfile => userRepo.userProfile;
+
+  getVersion() async {
+    setLoading();
+    EventResult<dynamic> eventResult = await contentRepo.getVersionJson(EnvironmentConfig.brandName);
+    if (eventResult.isSuccess) {
+      var package = await PackageInfo.fromPlatform();
+      try {
+        var version = jsonDecode(eventResult.result);
+        var android = version
+            .where((element) => element["platform"] == "android")
+            .first;
+        var v = android["version"];
+        if (v != package.version) {
+          versionUpdateState = android;
+        }
+      }catch(e){
+        //ignore
+      }
+    }
+    setLoading(false);
+  }
 
   getAuthToken() async {
     setLoading();

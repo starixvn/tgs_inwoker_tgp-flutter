@@ -25,6 +25,8 @@ class ApiRequestBuilder<T> extends ChangeNotifier {
   ResultConsumer? consumer;
   dynamic imageContent;
   int timeout;
+  bool isAssetUrl;
+  bool isAutoHeader;
 
   ApiRequestBuilder(
       {this.isAuthorization = true,
@@ -36,11 +38,13 @@ class ApiRequestBuilder<T> extends ChangeNotifier {
       this.jwtRefresher,
       this.consumer,
       this.imageContent,
-      this.timeout = 3});
+      this.timeout = 3,
+      this.isAssetUrl = false,
+      this.isAutoHeader = true});
 
   Future<EventResult<T>> execute() async {
     var response = await api(method, endPoint,
-        content: params, isAuthorization: isAuthorization, imageContent: imageContent, timeout: timeout);
+        content: params, isAuthorization: isAuthorization, imageContent: imageContent, timeout: timeout,isAssetUrl:isAssetUrl,isAutoHeader:isAutoHeader);
     var result = resolveBaseResponse(response, converter, consumer);
     if (result.errorCode == 101 && retryCounter < 2 && !isJWTAuthRequest) {
       retryCounter++;
@@ -76,13 +80,13 @@ class ApiRequestBuilder<T> extends ChangeNotifier {
 
   Future<EventResult<dynamic>> executeWithoutBaseResponse() async {
     var response = await api(method, endPoint,
-        content: params, isAuthorization: isAuthorization, imageContent: imageContent, timeout: timeout);
+        content: params, isAuthorization: isAuthorization, imageContent: imageContent, timeout: timeout,isAssetUrl:isAssetUrl,isAutoHeader:isAutoHeader);
     var result = resolveWithoutBaseResponse(response, converter, consumer);
-    if (retryCounter < 2 && !isJWTAuthRequest) {
-      retryCounter++;
-      await jwtRefresher!();
-      return executeWithoutBaseResponse();
-    }
+    // if (retryCounter < 2 && !isJWTAuthRequest) {
+    //   retryCounter++;
+    //   await jwtRefresher!();
+    //   return executeWithoutBaseResponse();
+    // }
     return result;
   }
 
