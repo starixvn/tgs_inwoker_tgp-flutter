@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:package_info/package_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -39,13 +40,14 @@ class MainViewModel extends BaseViewModel {
     if (eventResult.isSuccess) {
       var package = await PackageInfo.fromPlatform();
       try {
-        var version = jsonDecode(eventResult.result);
-        var android = version
-            .where((element) => element["platform"] == "android")
+        var versionList = jsonDecode(eventResult.result);
+        var platform =  Platform.isAndroid ? "android" : Platform.isIOS ? "iOS" : "";
+        var version = versionList
+            .where((element) => element["platform"] == platform)
             .first;
-        var v = android["version"];
-        if (v != package.version) {
-          versionUpdateState = android;
+
+        if (version["version"] != package.version) {
+          versionUpdateState = version;
         }
       }catch(e){
         //ignore
