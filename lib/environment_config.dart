@@ -6,7 +6,7 @@ class EnvironmentConfig {
 
   static const String currency = 'CNY';
 
-  static const String appTitleName = 'PG Gaming';
+  static const String appTitleName = 'MESS8';
 
   static const String slotGameUrl = 'https://images.srvptt.com/';
 
