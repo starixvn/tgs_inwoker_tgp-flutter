@@ -43,6 +43,7 @@ class _RegisterContentState extends BaseState<RegisterContent> {
       phone = TextEditingController();
   InputValidationProvider validate = new InputValidationProvider();
   LoginViewModel _vm = LoginViewModel();
+  bool _isTermsChecked = true;
 
   @override
   Widget build(BuildContext context) {
@@ -59,6 +60,7 @@ class _RegisterContentState extends BaseState<RegisterContent> {
               //_buildPayPasswordTextFormField(),
               //_buildPhoneTextFormField(),
               _buildPromotionCodeTextFormField(),
+              _buildRegisterTermsText(),
               _buildRegisterButton(),
               //_buildPhoneReVerifyButton()
             ],
@@ -178,15 +180,42 @@ class _RegisterContentState extends BaseState<RegisterContent> {
       );
 
   _buildRegisterButton() => Container(
-        margin: EdgeInsets.only(top: 50.auto, bottom: 10.auto),
+        margin: EdgeInsets.only(top: 10.auto, bottom: 10.auto),
         child: GradientButton(
           title: getTranslatedText("register"),
           onClick: () {
             _register();
           },
-          isEnabled: true,
+          isEnabled: _isTermsChecked,
           radius: 2.9,
           height: 44.5,
+        ),
+      );
+
+  _buildRegisterTermsText() => Container(
+        margin: EdgeInsets.only(top: 10.auto),
+        child: Row(
+          children: [
+            Expanded(
+              flex: 1,
+              child: Checkbox(
+                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                value: this._isTermsChecked,
+                checkColor: Colors.white,
+                activeColor: Colors.black,
+                onChanged: (val) => this.setState(() {
+                  this._isTermsChecked = !this._isTermsChecked;
+                }),
+              ),
+            ),
+            Expanded(
+              flex: 9,
+              child: Text(
+                getTranslatedText("register_terms"),
+                style: TextStyle(color: Colors.black, fontSize: 12.auto),
+              ),
+            ),
+          ],
         ),
       );
 
@@ -242,8 +271,10 @@ class _RegisterContentState extends BaseState<RegisterContent> {
       if (EnvironmentConfig.appTitleName == "HKJP" || EnvironmentConfig.isShowSmsVerification)
         widget.onSubmitUsernameAndPassword!([username.text, password.text]);
       //_navigateToPhoneReVerification(username: username.text, password: password.text);
-      else
+      else {
+        _vm.login(username.text, password.text, true);
         _navigateToHome();
+      }
     });
     handleApiState(_vm.checkUsernameApiState, isRequireResult: true, onSuccess: (result) {
       if (result.isExist) {

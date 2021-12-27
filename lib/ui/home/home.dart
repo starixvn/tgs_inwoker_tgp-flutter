@@ -176,7 +176,7 @@ class _HomeState extends BaseState<Home> {
                 ),
                 scrollAxis: Axis.horizontal,
                 crossAxisAlignment: CrossAxisAlignment.center,
-                blankSpace: 5.auto,
+                blankSpace: 300.auto,
                 pauseAfterRound: Duration(seconds: 1),
                 showFadingOnlyWhenScrolling: false),
       ),

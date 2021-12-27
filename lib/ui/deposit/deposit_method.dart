@@ -265,17 +265,18 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
   }
 
   onTextChange() {
-    if (_amountController.text != null && _amountController.text.isNotEmpty) {
+    if (_amountController.text.isNotEmpty) {
       amount = int.parse(_amountController.text);
     } else {
       amount = 0;
     }
     if (_isManualDeposit() &&
-        _bankNameController.text != null &&
+        EnvironmentConfig.isShowBankAcc &&
         _bankNameController.text.isNotEmpty &&
         amount! >= paymentMin &&
         amount! <= paymentMax) {
       setState(() {
+        //
         isButtonEnabled = true;
       });
     } else if (amount! >= paymentMin && amount! <= paymentMax) {

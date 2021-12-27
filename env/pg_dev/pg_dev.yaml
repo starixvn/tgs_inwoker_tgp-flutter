@@ -27,7 +27,7 @@ environment_config:
       default: "development"
     isShowSmsVerification:
       type: bool
-      default: true
+      default: false
     isShowIcVerification:
       type: bool
       default: true
@@ -44,4 +44,4 @@ environment_config:
       default: false
     isShowMarqueePopUp:
       type: bool
-      default: true
+      default: false

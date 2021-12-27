@@ -18,7 +18,7 @@ class EnvironmentConfig {
 
   static const String environmentStage = 'development';
 
-  static const bool isShowSmsVerification = true;
+  static const bool isShowSmsVerification = false;
 
   static const bool isShowIcVerification = true;
 
@@ -28,5 +28,5 @@ class EnvironmentConfig {
 
   static const bool isShowBankAcc = false;
 
-  static const bool isShowMarqueePopUp = true;
+  static const bool isShowMarqueePopUp = false;
 }

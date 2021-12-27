@@ -44,32 +44,7 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
             Navigator.of(context).pushNamed(RoutePath.blacklistedUser);
           });
         }
-        /*else if ((eventResult.errorCode == 102 || eventResult.errorCode == 101) &&
-            isCheckSessionExpired &&
-            !isSplashScreen) {
-          UserRepository.getSingleton().clearSession();
-          WidgetsBinding.instance!.addPostFrameCallback((_) {
-            showDialog(
-                barrierDismissible: false,
-                context: context,
-                builder: (BuildContext context) => WillPopScope(
-                      onWillPop: () async => false,
-                      child: CustomDialog(
-                        title: getTranslatedText("login_time_out"),
-                        description: getTranslatedText("login_again"),
-                        buttonText1: getTranslatedText("login"),
-                        buttonText2: getTranslatedText("cancel"),
-                        onClick: () {
-                          Navigator.of(context).pushReplacementNamed("/home");
-                          Navigator.of(context).pushNamed("/login");
-                        },
-                        onClick2: () {
-                          Navigator.of(context).pushReplacementNamed("/home");
-                        },
-                      ),
-                    ));
-          });
-        }*/
+
         else if (eventResult.errorMsgId != null) {
           if (eventResult.errorMsgId == 'UnderMaintenance') {
             WidgetsBinding.instance!.addPostFrameCallback((_) {
@@ -83,17 +58,17 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
         } else {
           _showErrorMessage(eventResult);
         }
-      } else if (eventResult.isMaintenance) {
+      }  else if (eventResult.isMaintenance) {
         WidgetsBinding.instance!.addPostFrameCallback((_) {
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
                   builder: (context) => Maintenance(
-                        isShowCS: true,
-                        isShowsAppBar: false,
-                      )),
-              (Route<dynamic> route) => false);
+                    isShowCS: true,
+                    isShowsAppBar: false,
+                  )),
+                  (Route<dynamic> route) => false);
         });
-      } else if (eventResult.isSuccess) {
+      }else if (eventResult.isSuccess) {
         if (isAutoHideLoading) ProgressDialog.hide();
         if (isRequireResult) {
           onSuccess(eventResult.result);
@@ -167,7 +142,7 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
 
   getCurrentLanguage() {
     var list = LanguageProvider().list;
-    Language deviceLanguage = list.singleWhere((e) => e.locale == Localizations.localeOf(context));
+    Language? deviceLanguage = list.singleWhere((e) => e.locale == Localizations.localeOf(context));
     return deviceLanguage;
   }
 }

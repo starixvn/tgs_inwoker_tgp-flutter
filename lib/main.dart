@@ -59,6 +59,8 @@ import 'package:tgp_flutter/ui/withdraw/withdraw.dart';
 import 'package:tgp_flutter/ui/home/child_game/child_game.dart';
 import 'package:tgp_flutter/ui/transfer/wallet_transfer.dart';
 
+import 'entity/response/login_response.dart';
+
 Future main() async {
   //await DotEnv.load();
   // await DotEnv.load(fileName: ".env");
@@ -117,18 +119,25 @@ class _MyAppState extends BaseState<MyApp> {
 
   Future<EventResult<List<LanguageOption>>> initData() async {
     if (firstInit) {
-      await _vm.getAuthToken();
       await _vm.getLanguageOption();
       _vm.getApiError();
       _vm.getBrandLogo();
       _vm.resumeIfNeed();
-     // _vm.autoLogin();
+      // _vm.autoLogin();
       setState(() {
         firstInit = false;
       });
       _getLocale();
       langList = LanguageProvider().list.map((e) => e.locale).toList();
       return _vm.getLanguageApiState;
+    } else
+      return EventResult.loading();
+  }
+
+  Future<EventResult<LoginResponse>> initAuthToken() async {
+    if (firstInit) {
+      await _vm.getAuthToken();
+      return _vm.authApiState;
     } else
       return EventResult.loading();
   }
@@ -140,95 +149,105 @@ class _MyAppState extends BaseState<MyApp> {
     ));
     _handleApiState();
     return FutureBuilder(
-        future: initData(),
-        builder: (BuildContext context, AsyncSnapshot<EventResult<List<LanguageOption>>> snapshot) {
-          if (!snapshot.hasData) {
+        future: initAuthToken(),
+        builder: (BuildContext context, AsyncSnapshot<EventResult<LoginResponse>> snapshot) {
+           if (!snapshot.hasData) {
             return MaterialApp(debugShowCheckedModeBanner: false, home: Splash());
           } else if (snapshot.data!.isMaintenance) {
-            return MaterialApp(debugShowCheckedModeBanner: false, home: Maintenance(isShowCS: true));
+            return MaterialApp(debugShowCheckedModeBanner: false, home: Maintenance(isShowsAppBar: false));
           } else {
-            return GestureDetector(
-              onTap: () {
-                FocusScopeNode currentFocus = FocusScope.of(context);
-                if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) {
-                  currentFocus.focusedChild!.unfocus();
-                }
-              },
-              child: MaterialApp(
-                debugShowCheckedModeBanner: false,
-                title: appTitle,
-                initialRoute: '/',
-                routes: {
-                  RoutePath.empty: (context) => MyHomePage(),
-                  RoutePath.home: (context) => MyHomePage(),
-                  RoutePath.login: (context) => Login(),
-                  RoutePath.menu: (context) => Menu(),
-                  RoutePath.profile: (context) => Profile(),
-                  RoutePath.promotion: (context) => PromotionPage(),
-                  RoutePath.childGame: (context) => ChildGame(),
-                  RoutePath.deposit: (context) => Deposit(),
-                  RoutePath.walletTransfer: (context) => WalletTransfer(),
-                  RoutePath.withdraw: (context) => Withdraw(),
-                  RoutePath.transaction: (context) => Report(),
-                  RoutePath.mainCard: (context) => MainCard(),
-                  RoutePath.message: (context) => MessageView(),
-                  RoutePath.frequentQuestion: (context) => FrequentQuestion(),
-                  RoutePath.referFriend: (context) => ReferFriend(),
-                  RoutePath.profileInfo: (context) => ProfileInfo(),
-                  RoutePath.realNameVerification: (context) => RealNameVerification(),
-                  RoutePath.phoneVerification: (context) => PhoneVerification(),
-                  RoutePath.editPhone: (context) => EditPhone(),
-                  RoutePath.emailVerification: (context) => EmailVerification(0),
-                  RoutePath.qqAccount: (context) => QQAccount(),
-                  RoutePath.wechat: (context) => Wechat(),
-                  RoutePath.address: (context) => Address(),
-                  RoutePath.editPassword: (context) => EditPassword(),
-                  RoutePath.resetPayPassword: (context) => ResetPayPassword(),
-                  RoutePath.payPassword: (context) => PayPassword(),
-                  RoutePath.securityAnswer: (context) => SecurityAnswer(),
-                  RoutePath.editSecurityAnswer: (context) => EditSecurityAnswer(),
-                  RoutePath.editSecurityAnswerBySecurityAnswer: (context) => EditSecurityAnswerBySecurityAnswer(),
-                  RoutePath.forgotPassword: (context) => ForgotPassword(),
-                  RoutePath.language: (context) => LanguageView(),
-                  RoutePath.addCard: (context) => AddCard(),
-                  RoutePath.customerService: (context) => CustomerService(),
-                  // RoutePath.promotionItemDetails: (context) => PromotionItemDetails(),
-                  RoutePath.csWebView: (context) => CustomerServiceWebView(),
-                  RoutePath.csQrCode: (context) => CustomerServiceQrCode(),
-                  RoutePath.maintenance: (context) => Maintenance(),
-                  RoutePath.blacklistedUser: (context) => BlacklistedUser(),
-                  RoutePath.phoneReVerification: (context) => PhoneReVerification(),
-                  RoutePath.editEmail: (context) => EditEmail(),
-                },
-                localizationsDelegates: [
-                  MyLocalizations.delegate,
-                  GlobalMaterialLocalizations.delegate,
-                  GlobalWidgetsLocalizations.delegate
-                ],
-                // MyHomePage(title: appTitle),
-                supportedLocales: langList,
-                locale: _locale,
-                localeResolutionCallback: (locale, supportedLocales) {
-                  for (var supportedLocale in supportedLocales) {
-                    if (supportedLocale.languageCode == locale!.languageCode &&
-                        supportedLocale.scriptCode == locale.scriptCode) {
-                      return supportedLocale;
-                    }
+            return FutureBuilder(
+                future: initData(),
+                builder: (BuildContext context, AsyncSnapshot<EventResult<List<LanguageOption>>> snapshot) {
+                  if (!snapshot.hasData) {
+                    return MaterialApp(debugShowCheckedModeBanner: false, home: Splash());
+                  } else if (snapshot.data!.isMaintenance) {
+                    return MaterialApp(debugShowCheckedModeBanner: false, home: Maintenance(isShowsAppBar: false));
+                  } else {
+                    return GestureDetector(
+                      onTap: () {
+                        FocusScopeNode currentFocus = FocusScope.of(context);
+                        if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) {
+                          currentFocus.focusedChild!.unfocus();
+                        }
+                      },
+                      child: MaterialApp(
+                        debugShowCheckedModeBanner: false,
+                        title: appTitle,
+                        initialRoute: '/',
+                        routes: {
+                          RoutePath.empty: (context) => MyHomePage(),
+                          RoutePath.home: (context) => MyHomePage(),
+                          RoutePath.login: (context) => Login(),
+                          RoutePath.menu: (context) => Menu(),
+                          RoutePath.profile: (context) => Profile(),
+                          RoutePath.promotion: (context) => PromotionPage(),
+                          RoutePath.childGame: (context) => ChildGame(),
+                          RoutePath.deposit: (context) => Deposit(),
+                          RoutePath.walletTransfer: (context) => WalletTransfer(),
+                          RoutePath.withdraw: (context) => Withdraw(),
+                          RoutePath.transaction: (context) => Report(),
+                          RoutePath.mainCard: (context) => MainCard(),
+                          RoutePath.message: (context) => MessageView(),
+                          RoutePath.frequentQuestion: (context) => FrequentQuestion(),
+                          RoutePath.referFriend: (context) => ReferFriend(),
+                          RoutePath.profileInfo: (context) => ProfileInfo(),
+                          RoutePath.realNameVerification: (context) => RealNameVerification(),
+                          RoutePath.phoneVerification: (context) => PhoneVerification(),
+                          RoutePath.editPhone: (context) => EditPhone(),
+                          RoutePath.emailVerification: (context) => EmailVerification(0),
+                          RoutePath.qqAccount: (context) => QQAccount(),
+                          RoutePath.wechat: (context) => Wechat(),
+                          RoutePath.address: (context) => Address(),
+                          RoutePath.editPassword: (context) => EditPassword(),
+                          RoutePath.resetPayPassword: (context) => ResetPayPassword(),
+                          RoutePath.payPassword: (context) => PayPassword(),
+                          RoutePath.securityAnswer: (context) => SecurityAnswer(),
+                          RoutePath.editSecurityAnswer: (context) => EditSecurityAnswer(),
+                          RoutePath.editSecurityAnswerBySecurityAnswer: (context) => EditSecurityAnswerBySecurityAnswer(),
+                          RoutePath.forgotPassword: (context) => ForgotPassword(),
+                          RoutePath.language: (context) => LanguageView(),
+                          RoutePath.addCard: (context) => AddCard(),
+                          RoutePath.customerService: (context) => CustomerService(),
+                          // RoutePath.promotionItemDetails: (context) => PromotionItemDetails(),
+                          RoutePath.csWebView: (context) => CustomerServiceWebView(),
+                          RoutePath.csQrCode: (context) => CustomerServiceQrCode(),
+                          RoutePath.maintenance: (context) => Maintenance(),
+                          RoutePath.blacklistedUser: (context) => BlacklistedUser(),
+                          RoutePath.phoneReVerification: (context) => PhoneReVerification(),
+                          RoutePath.editEmail: (context) => EditEmail(),
+                        },
+                        localizationsDelegates: [
+                          MyLocalizations.delegate,
+                          GlobalMaterialLocalizations.delegate,
+                          GlobalWidgetsLocalizations.delegate
+                        ],
+                        // MyHomePage(title: appTitle),
+                        supportedLocales: langList,
+                        locale: _locale,
+                        localeResolutionCallback: (locale, supportedLocales) {
+                          for (var supportedLocale in supportedLocales) {
+                            if (supportedLocale.languageCode == locale!.languageCode &&
+                                supportedLocale.scriptCode == locale.scriptCode) {
+                              return supportedLocale;
+                            }
+                          }
+                          return supportedLocales.first;
+                        },
+                      ),
+                    );
                   }
-                  return supportedLocales.first;
-                },
-              ),
-            );
+                });
           }
         });
+    // }
   }
 
   _handleApiState() {
-    handleApiState(_vm.getLanguageApiState, isAutoHideLoading: false, isSplashScreen: true, onSuccess: (){});
+    handleApiState(_vm.getLanguageApiState, isAutoHideLoading: false, isSplashScreen: true, onSuccess: () {});
     handleApiState(_vm.getBrandLogoApiState, isAutoHideLoading: false, isSplashScreen: true, onSuccess: () {});
     handleApiState(_vm.authApiState, isAutoHideLoading: false, isSplashScreen: true, onSuccess: () {});
   }
-
 }
 
 class MyHomePage extends StatefulWidget {
@@ -244,6 +263,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends BaseState<MyHomePage> {
   int currentBottomIndex = 0;
   List _page = [];
+  var _vm = MainViewModel();
 
   @override
   void initState() {
@@ -311,14 +331,35 @@ class _MyHomePageState extends BaseState<MyHomePage> {
                 type: MaterialType.transparency,
                 child: InkWell(
                   onTap: () {
-                    if (index == 1) {
+                    /*if (index == 1) {
                       Navigator.of(context).pushNamed("/promotion");
                     } else if (index == 3) {
                       Navigator.of(context).pushNamed(RoutePath.customerService);
-                    } else {
+                    } else if(in)else {
                       setState(() {
                         currentBottomIndex = index;
                       });
+                    }*/
+                    switch (index) {
+                      case 1:
+                        Navigator.of(context).pushNamed("/promotion");
+                        break;
+                      case 2:
+                        if (_vm.userProfile == null)
+                          Navigator.of(context).pushNamed(RoutePath.login);
+                        else
+                          setState(() {
+                            currentBottomIndex = index;
+                          });
+                        break;
+                      case 3:
+                        Navigator.of(context).pushNamed(RoutePath.customerService);
+                        break;
+                      default:
+                        setState(() {
+                          currentBottomIndex = index;
+                        });
+                        break;
                     }
                   },
                   child: Column(

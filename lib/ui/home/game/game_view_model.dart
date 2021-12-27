@@ -190,7 +190,7 @@ class GameViewModel extends BaseViewModel {
   Future<List<Game>> _filterPlatform() async {
     if (mPlatform == "ALL") {
       //get all game list
-      List<Game> _list = await _addGameList(_gameList!);
+      List<Game> _list = await _addGameList();
       return _list;
     } else {
       //if (gameListMap[mPlatform] == null) {
@@ -204,7 +204,7 @@ class GameViewModel extends BaseViewModel {
     }
   }
 
-  _addGameList(List<Game> list) async {
+  _addGameList() async {
     var task = <Future>[];
     platformList!.forEach((platform) {
       if (gameListMap[platform.code] == null) {

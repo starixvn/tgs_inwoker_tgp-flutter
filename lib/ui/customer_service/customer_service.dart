@@ -32,7 +32,7 @@ class _CustomerServiceState extends BaseState<CustomerService> {
   void initState() {
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       _vm.getBrandCommunication();
-      _vm.getLiveChatUrl(getCurrentLanguage().apiCode);
+      _vm.getLiveChatUrl(getCurrentLanguage().apiCode ?? "en-US");
     });
     super.initState();
   }

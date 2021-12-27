@@ -54,7 +54,7 @@ class _PromotionItemDetailsState extends BaseState<PromotionItemDetails> {
               " - " +
               Format().dateTimeFormat(widget.promotion.to)),
           _buildPromotionContentText(
-              parseHtmlString(widget.promotion.localization?.content ?? widget.promotion.content)),
+              parseHtmlString(widget.promotion.localization?.content ?? widget.promotion.content ?? "")),
           _buildPromotionTermsText(widget.promotion.terms),
           _buildJoinButton()
         ],
