@@ -88,7 +88,7 @@ class _MessageItemState extends BaseState<MessageItem> {
             Container(
               margin: EdgeInsets.symmetric(vertical: 5.auto),
               child: Text(
-                widget.message.createdOn == null ? "" : Format().dateFormat(DateTime.parse(widget.message.createdOn!)),
+                widget.message.createdOn == null ? "" : Format().dateTimezoneFormat(widget.message.createdOn!),
                 style: TextStyle(fontSize: 11.auto, color: CustomColor.grey),
               ),
             ),

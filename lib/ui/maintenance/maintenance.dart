@@ -135,7 +135,7 @@ class _MaintenanceState extends BaseState<Maintenance> {
                             brandLogoUrl: _vm.brandLogoUrl,
                           )));
             },
-            title: getCurrentLanguage() == null ? "Contact CS" : getTranslatedText("contact_cs"),
+            title:  "Contact CS" ,
             isEnabled: true,
             width: context.screenWidth / 3.5,
             height: context.screenHeight / 18,
@@ -143,7 +143,7 @@ class _MaintenanceState extends BaseState<Maintenance> {
             color: Colors.white,
           ),
           GradientButton(
-            title: getCurrentLanguage() == null ? "Instant Messaging" : getTranslatedText("instant_messaging"),
+            title: "Instant Messaging" ,
             onClick: () {
               showDialog(
                 context: context,

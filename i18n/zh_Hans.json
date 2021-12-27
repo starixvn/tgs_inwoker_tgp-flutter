@@ -970,5 +970,6 @@
   "promotion_name": "活动名称",
   "promotion_history": "活动记录",
   "image_size_limit": "照片尺寸大于上传限制，请重新上传",
-  "register_terms": "我确认我已年满18岁，并已阅读和接受本网站的策略丶隐私声明，条款及条件。"
+  "register_terms": "我确认我已年满18岁，并已阅读和接受本网站的策略丶隐私声明，条款及条件。",
+  "empty_promotion": "没有活动可选"
 }

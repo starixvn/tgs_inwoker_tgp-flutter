@@ -970,5 +970,6 @@
   "promotion_name": "tên khuyến mãi",
   "promotion_history": "lịch sử thăng tiến",
   "image_size_limit": "Kích thước của ảnh lớn hơn giới hạn tải lên, vui lòng tải lên lại",
-  "register_terms": "Tôi xác nhận rằng tôi từ 18 tuổi trở lên và đã đọc và chấp nhận chính sách, tuyên bố về quyền riêng tư, các điều khoản và điều kiện của trang web này."
+  "register_terms": "Tôi xác nhận rằng tôi từ 18 tuổi trở lên và đã đọc và chấp nhận chính sách, tuyên bố về quyền riêng tư, các điều khoản và điều kiện của trang web này.",
+  "empty_promotion": "không thể chọn khuyến mãi"
 }

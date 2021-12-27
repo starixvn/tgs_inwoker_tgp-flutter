@@ -26,7 +26,7 @@ class EnvironmentConfig {
 
   static const bool isShowBankBranch = true;
 
-  static const bool isShowBankAcc = false;
+  static const bool isShowBankAcc = true;
 
   static const bool isShowMarqueePopUp = false;
 }

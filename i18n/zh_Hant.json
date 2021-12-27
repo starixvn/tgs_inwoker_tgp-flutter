@@ -971,5 +971,6 @@
   "promotion_name": "活動名稱",
   "promotion_history": "活動記錄",
   "image_size_limit": "照片尺寸大於上傳限制，請重新上傳",
-  "register_terms": "我確認我已年滿18歲，並已閱讀和接受本網站的策略丶隱私聲明，條款及條件。"
+  "register_terms": "我確認我已年滿18歲，並已閱讀和接受本網站的策略丶隱私聲明，條款及條件。",
+  "empty_promotion": "沒有活動可選"
 }

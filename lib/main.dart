@@ -154,7 +154,7 @@ class _MyAppState extends BaseState<MyApp> {
            if (!snapshot.hasData) {
             return MaterialApp(debugShowCheckedModeBanner: false, home: Splash());
           } else if (snapshot.data!.isMaintenance) {
-            return MaterialApp(debugShowCheckedModeBanner: false, home: Maintenance(isShowsAppBar: false));
+            return MaterialApp(debugShowCheckedModeBanner: false, home: Maintenance(isShowsAppBar: false, isShowCS: true,));
           } else {
             return FutureBuilder(
                 future: initData(),

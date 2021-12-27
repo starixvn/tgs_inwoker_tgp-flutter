@@ -41,7 +41,7 @@ environment_config:
     isShowBankAcc:
       #deposit
       type: bool
-      default: false
+      default: true
     isShowMarqueePopUp:
       type: bool
       default: false

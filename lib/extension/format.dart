@@ -27,17 +27,19 @@ class Format {
   }
 
   String currencyWithDecimalFormat(double? amount) {
-    if(amount!=null){
+    if (amount != null) {
       var f = new NumberFormat("#,###,##0.00", "en_US");
       return f.format(amount);
-    }else return "";
+    } else
+      return "";
   }
 
   String currencyFormat(int? amount) {
-    if(amount!=null){
+    if (amount != null) {
       var f = new NumberFormat("#,###,###", "en_US");
       return f.format(amount);
-    }else return "";
+    } else
+      return "";
   }
 
 /*  String currencySymbolFormat(int amount) {
@@ -49,22 +51,33 @@ class Format {
   }*/
 
   String percentageFormat(double? percentage) {
-
-   if(percentage!=null){
-     var f = new NumberFormat("##.##%", "en_US");
-     return f.format((percentage - 100) / 100);
-   }else return "";
+    if (percentage != null) {
+      var f = new NumberFormat("##.##%", "en_US");
+      return f.format((percentage - 100) / 100);
+    } else
+      return "";
   }
 
   String dateFormat(DateTime? date) {
-    if(date!=null)return DateFormat("yyyy/MM/dd").format(date);
-    else return "";
+    if (date != null)
+      return DateFormat("yyyy/MM/dd").format(date);
+    else
+      return "";
   }
 
   String dateTimeFormat(String? dateString) {
-    if(dateString!=null){
+    if (dateString != null) {
       final date = DateTime.parse(dateString);
       return DateFormat("yyyy/MM/dd HH:mm:ss").format(date.toLocal());
-    }else return "";
+    } else
+      return "";
+  }
+
+  String dateTimezoneFormat(String? dateString) {
+    if (dateString != null) {
+      final date = DateTime.parse(dateString);
+      return DateFormat("yyyy-MM-dd hh:mm a").format(date.toLocal());
+    } else
+      return "";
   }
 }

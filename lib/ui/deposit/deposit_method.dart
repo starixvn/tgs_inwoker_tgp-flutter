@@ -43,7 +43,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
   TextEditingController _amountController = TextEditingController(),
       _bankNameController = TextEditingController(),
       _transferNameController = TextEditingController();
-  var isButtonEnabled = false, isHintText = false;
+  var isButtonEnabled = false, isHintText = false, isPromotionEnabled = false;
   var selectedPayment;
   var paymentMin, paymentMax;
   int? amount;
@@ -125,9 +125,13 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
             list: list ?? [],
             isHintText: isHintText,
             width: context.screenWidth,
-            onClick: () {
-              _buildBottomSheet(title, list ?? []);
-            },
+            onClick: (list?.isEmpty ?? true)
+                ? () {
+                    CustomToast.show(getTranslatedText("empty_promotion"));
+                  }
+                : () {
+                    _buildBottomSheet(title, list ?? []);
+                  },
           ),
         ));
   }

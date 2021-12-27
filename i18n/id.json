@@ -971,5 +971,6 @@
   "promotion_name": "Nama Promosi",
   "promotion_history": "Riwayat Promosi",
   "image_size_limit": "Ukuran foto lebih besar dari batas upload, silakan upload lagi",
-  "register_terms": "Saya mengonfirmasi bahwa saya berusia di atas 18 tahun dan telah membaca serta menerima kebijakan, pernyataan privasi, syarat dan ketentuan situs web ini."
+  "register_terms": "Saya mengonfirmasi bahwa saya berusia di atas 18 tahun dan telah membaca serta menerima kebijakan, pernyataan privasi, syarat dan ketentuan situs web ini.",
+  "empty_promotion": "Tidak ada promosi yang dapat dipilih"
 }

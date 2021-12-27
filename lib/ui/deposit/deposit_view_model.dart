@@ -23,9 +23,9 @@ class DepositViewModel extends BaseViewModel {
   Map<String, Map<BankType, List<Payment>>>? paymentCodeList;
   List<Payment>? paymentList;
   var manualDepositOrder;
-  List<Map<String, String>> displayPromotionList = [
+  List<Map<String, String>> displayPromotionList = [] /*= [
     {"name": "promotion_picker_hint", "id": "-1"}
-  ];
+  ]*/;
   var rows = 20;
 
   get wallet => userRepo.wallet;

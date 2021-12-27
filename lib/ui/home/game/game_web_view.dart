@@ -47,7 +47,11 @@ class _GameWebState extends BaseState<GameWeb> {
 
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () => _displayDialog(),
+      onWillPop: () async {
+        _webViewController!.goBack();
+        _webViewController!.goBack();
+        return true;
+      },
       child: ProviderWidget<GameViewModel>(
           model: _vm,
           builder: (ctx, vm, _) {
@@ -97,9 +101,10 @@ class _GameWebState extends BaseState<GameWeb> {
   }
 
   _buildWebView() {
-    /*isHabaPPGamePlatform()
+    var apiUrl = EnvironmentConfig.url + "api/game/bc";
+    return /* isHabaPPGamePlatform()
         ? WebviewScaffold(
-            url: _getValidUrl(url),
+            url: _getValidUrl(_vm.url!),
             withZoom: false,
             withLocalStorage: true,
             withJavascript: true,
@@ -107,15 +112,9 @@ class _GameWebState extends BaseState<GameWeb> {
             hidden: true,
           )
         : */
-    var apiUrl = EnvironmentConfig.url + "api/game/bc";
-
-    return InAppWebView(
-      //initialUrlRequest: URLRequest(url: Uri.parse(_getValidUrl(_vm.url!))),
+        InAppWebView(
       initialOptions: InAppWebViewGroupOptions(
-          crossPlatform: InAppWebViewOptions(
-              //debuggingEnabled: true,
-              javaScriptEnabled: true,
-              useShouldOverrideUrlLoading: true),
+          crossPlatform: InAppWebViewOptions(javaScriptEnabled: true, useShouldOverrideUrlLoading: true),
           android: AndroidInAppWebViewOptions(
             useWideViewPort: true,
             domStorageEnabled: true,
@@ -123,7 +122,6 @@ class _GameWebState extends BaseState<GameWeb> {
           ),
           ios: IOSInAppWebViewOptions(allowsInlineMediaPlayback: true)),
       onWebViewCreated: (InAppWebViewController controller) {
-        //ProgressDialog.show(context, _vm.brandLogoUrl);
         _webViewController = controller;
         _webViewController!.loadUrl(
             /* urlRequest: widget.gamePlatformCode == "BC"
@@ -135,21 +133,14 @@ class _GameWebState extends BaseState<GameWeb> {
               "token": prefs.getString("token")!
             }));
         /* : URLRequest(url: Uri.parse(_getValidUrl(_vm.url!))));*/
-
-        //ProgressDialog.hide();
       },
       onExitFullscreen: (InAppWebViewController controller) {
         Navigator.pop(
           context,
         );
       },
-      onLoadStart: (controller, url) {
-        //ProgressDialog.show(context, _vm.brandLogoUrl);
-      },
-
-      onLoadStop: (controller, url) async {
-        //ProgressDialog.hide();
-      },
+      onLoadStart: (controller, url) {},
+      onLoadStop: (controller, url) async {},
       shouldOverrideUrlLoading: (controller, navigationAction) async {
         var uri = navigationAction.request.url;
         if (uri == Uri.parse(lobbyUrl!)) {
@@ -177,6 +168,8 @@ class _GameWebState extends BaseState<GameWeb> {
 
   _displayDialog() {
     // if (isHabaPPGamePlatform()) webviewPlugin.close();
+    /*Navigator.pushNamed(context, "home");
+    print("111");*/
     showDialog(
       context: context,
       builder: (BuildContext context) => LeaveGameDialog(),
@@ -192,7 +185,7 @@ class _GameWebState extends BaseState<GameWeb> {
   }
 
   isHabaPPGamePlatform() {
-    return widget.gamePlatformCode == "PP" || widget.gamePlatformCode == "HABA";
+    return widget.gamePlatformCode == "PP" || widget.gamePlatformCode == "HABA" || widget.gamePlatformCode == "JILI";
   }
 
   _handleApiState() {
