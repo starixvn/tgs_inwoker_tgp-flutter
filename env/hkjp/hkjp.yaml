@@ -45,3 +45,5 @@ environment_config:
     isShowMarqueePopUp:
       type: bool
       default: true
+    default_lang:
+      default: "en-US"

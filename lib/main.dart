@@ -164,7 +164,9 @@ class _MyAppState extends BaseState<MyApp> {
                 title: appTitle,
                 initialRoute: '/',
                 routes: {
-                  RoutePath.empty: (context) => MyHomePage(versionUpdate: _vm.versionUpdateState,),
+                  RoutePath.empty: (context) => MyHomePage(
+                        versionUpdate: _vm.versionUpdateState,
+                      ),
                   RoutePath.home: (context) => MyHomePage(),
                   RoutePath.login: (context) => Login(),
                   RoutePath.menu: (context) => Menu(),
@@ -229,11 +231,10 @@ class _MyAppState extends BaseState<MyApp> {
   }
 
   _handleApiState() {
-    handleApiState(_vm.getLanguageApiState, isAutoHideLoading: false, isSplashScreen: true, onSuccess: (){});
+    handleApiState(_vm.getLanguageApiState, isAutoHideLoading: false, isSplashScreen: true, onSuccess: () {});
     handleApiState(_vm.getBrandLogoApiState, isAutoHideLoading: false, isSplashScreen: true, onSuccess: () {});
     handleApiState(_vm.authApiState, isAutoHideLoading: false, isSplashScreen: true, onSuccess: () {});
   }
-
 }
 
 class MyHomePage extends StatefulWidget {
@@ -241,7 +242,7 @@ class MyHomePage extends StatefulWidget {
   final int? index;
   final dynamic versionUpdate;
 
-  MyHomePage({this.isFirstRun = false, this.index,this.versionUpdate});
+  MyHomePage({this.isFirstRun = false, this.index, this.versionUpdate});
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -259,7 +260,7 @@ class _MyHomePageState extends BaseState<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    if(widget.versionUpdate != null){
+    if (widget.versionUpdate != null) {
       Future.delayed(Duration.zero, () => _showNewVersionUpdateDialog(widget.versionUpdate));
     }
     _page = [
@@ -310,71 +311,71 @@ class _MyHomePageState extends BaseState<MyHomePage> {
   }
 
   _buildBottomBarItem(int index, String imagePath, String title, {bool isNewMessage = false}) => Expanded(
-    child: Stack(
-      children: [
-        _buildNotification(isNewMessage),
-        SizedBox(
-          height: 58.auto,
-          width: context.screenWidth / 5,
-          child: Material(
-            type: MaterialType.transparency,
-            child: InkWell(
-              onTap: () {
-                if (index == 1) {
-                  Navigator.of(context).pushNamed("/promotion");
-                } else if (index == 3) {
-                  Navigator.of(context).pushNamed(RoutePath.customerService);
-                } else {
-                  setState(() {
-                    currentBottomIndex = index;
-                  });
-                }
-              },
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  index != 2 ? _buildImageIcon(imagePath, index, isNewMessage) : _buildMenuIcon(imagePath, index),
-                  Visibility(
-                    visible: index != 2,
-                    child: Container(
-                      margin: EdgeInsets.only(top: 3.auto),
-                      child: AutoSizeText(
-                        getTranslatedText(title),
-                        style: TextStyle(
-                          fontSize: 11.auto,
-                          color: currentBottomIndex == index ? Colors.yellow : Colors.white,
+        child: Stack(
+          children: [
+            _buildNotification(isNewMessage),
+            SizedBox(
+              height: 58.auto,
+              width: context.screenWidth / 5,
+              child: Material(
+                type: MaterialType.transparency,
+                child: InkWell(
+                  onTap: () {
+                    if (index == 1) {
+                      Navigator.of(context).pushNamed("/promotion");
+                    } else if (index == 3) {
+                      Navigator.of(context).pushNamed(RoutePath.customerService);
+                    } else {
+                      setState(() {
+                        currentBottomIndex = index;
+                      });
+                    }
+                  },
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      index != 2 ? _buildImageIcon(imagePath, index, isNewMessage) : _buildMenuIcon(imagePath, index),
+                      Visibility(
+                        visible: index != 2,
+                        child: Container(
+                          margin: EdgeInsets.only(top: 3.auto),
+                          child: AutoSizeText(
+                            getTranslatedText(title),
+                            style: TextStyle(
+                              fontSize: 11.auto,
+                              color: currentBottomIndex == index ? Colors.yellow : Colors.white,
+                            ),
+                            minFontSize: 5,
+                            stepGranularity: 1,
+                            textAlign: TextAlign.center,
+                            maxLines: 1,
+                          ),
                         ),
-                        minFontSize: 5,
-                        stepGranularity: 1,
-                        textAlign: TextAlign.center,
-                        maxLines: 1,
-                      ),
-                    ),
-                  )
-                ],
+                      )
+                    ],
+                  ),
+                ),
               ),
             ),
-          ),
+          ],
         ),
-      ],
-    ),
-  );
+      );
 
   _buildImageIcon(String imagePath, int index, bool isNewMessage) => ImageIcon(
-    AssetImage("images/bottom_navigation_bar/$imagePath.png"),
-    size: 23.auto,
-    color: currentBottomIndex == index ? Colors.yellow : Colors.white,
-  );
+        AssetImage("images/bottom_navigation_bar/$imagePath.png"),
+        size: 23.auto,
+        color: currentBottomIndex == index ? Colors.yellow : Colors.white,
+      );
 
   _buildMenuIcon(String imagePath, int index) => CircleAvatar(
-    backgroundColor: CustomColor.theme_title_text_color,
-    child: ImageIcon(
-      AssetImage("images/bottom_navigation_bar/$imagePath.png"),
-      size: 41.auto,
-      color: currentBottomIndex == index ? Colors.yellow : Colors.white,
-    ),
-  );
+        backgroundColor: CustomColor.theme_title_text_color,
+        child: ImageIcon(
+          AssetImage("images/bottom_navigation_bar/$imagePath.png"),
+          size: 41.auto,
+          color: currentBottomIndex == index ? Colors.yellow : Colors.white,
+        ),
+      );
 
   _buildNotification(bool isNewMessage) => Visibility(
       visible: isNewMessage,
@@ -385,20 +386,18 @@ class _MyHomePageState extends BaseState<MyHomePage> {
             color: CustomColor.theme_label_text_highlight_color,
           )));
 
-  _showNewVersionUpdateDialog(dynamic data){
+  _showNewVersionUpdateDialog(dynamic data) {
     showDialog(
         context: context,
         builder: (BuildContext context) => CustomDialog(
-          title: getTranslatedText("New update: ${data["version"]}"),
-          description: data["content"],
-          buttonText1: getTranslatedText("update"),
-          onClick: () {
-            Navigator.pop(
-              context,
-            );
-            launch(data["link"]);
-          }
-        ));
+            title: getTranslatedText("new_update") + " : ${data["version"]}",
+            description: data["content"],
+            buttonText1: getTranslatedText("update"),
+            onClick: () {
+              Navigator.pop(
+                context,
+              );
+              launch(data["link"]);
+            }));
   }
 }
-

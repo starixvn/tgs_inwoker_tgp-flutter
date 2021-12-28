@@ -29,3 +29,25 @@ environment_config:
       default: "bin_login_logo"
     environmentStage:
       default: "staging"
+    isShowSmsVerification:
+      type: bool
+      default: true
+    isShowBankBranch:
+      #add bank card
+      type: bool
+      default: true
+    isShowIcVerification:
+      type: bool
+      default: true
+    isShowWechatQQ:
+      type: bool
+      default: true
+    isShowBankAcc:
+      #deposit
+      type: bool
+      default: true
+    isShowMarqueePopUp:
+      type: bool
+      default: true
+    default_lang:
+      default: "en-US"
