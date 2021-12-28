@@ -1,10 +1,10 @@
 class EnvironmentConfig {
   static const String jwtKey =
-      'I7nKiimrZQOqnJ6ryjUw74c0Hi64KC6Myunhob4cHh8VOUIuZh4p63czefxyyzbZ';
+      'ZRnqkDXR53QugWXnKc02Wo9JKwoQQWsMRGrspmiYbsaW3e1zwiC6S7';
 
-  static const String url = 'https://stg-t1.rpgp.cc/';
+  static const String url = 'https://mess888.com/';
 
-  static const String currency = 'CNY';
+  static const String currency = 'VND_1000';
 
   static const String appTitleName = 'MESS8';
 
@@ -16,7 +16,7 @@ class EnvironmentConfig {
 
   static const String imageLogo = 'pg_login_logo';
 
-  static const String environmentStage = 'staging';
+  static const String environmentStage = 'production';
 
   static const bool isShowSmsVerification = false;
 
