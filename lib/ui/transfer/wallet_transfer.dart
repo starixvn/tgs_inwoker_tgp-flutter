@@ -293,17 +293,6 @@ class _WalletTransferState extends BaseState<WalletTransfer> with TickerProvider
               list: list,
               onChanged: (value) {
                 setState(() {
-                  /*  if (isFrom) {
-                    if (toWallet != null && value.gpCode == toWallet.gpCode)
-                      CustomToast.show("不能转账去同样的钱包！");
-                    else
-                      setFromWallet(value);
-                  } else {
-                    if (fromWallet != null && value.gpCode == fromWallet.gpCode)
-                      CustomToast.show("不能转账去同样的钱包！");
-                    else
-                      setToWallet(value);
-                  }*/
                   if (isFrom) {
                     if (!value.isMainWallet)
                       setToWallet(list.first);

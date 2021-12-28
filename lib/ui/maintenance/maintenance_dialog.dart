@@ -30,7 +30,7 @@ class _MaintenanceDialogState extends BaseState<MaintenanceDialog> {
         child: _dialogContent());
   }
 
-  _dialogContent() => Column(
+  _dialogContent() => Wrap(
         children: [
           Expanded(
             flex: 1,
@@ -50,7 +50,7 @@ class _MaintenanceDialogState extends BaseState<MaintenanceDialog> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    getTranslatedText("instant_messaging"),
+                    "Instant Messaging",
                     style: TextStyle(color: Colors.white),
                   ),
                   InkWell(

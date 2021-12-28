@@ -24,7 +24,7 @@ class WalletTransferViewModel extends BaseViewModel {
 
   get userMainWalletBalance => walletList.singleWhere((element) => element.isMainWallet).balance;
 
-  get gameWalletList => walletList.where((element) => !element.isMainWallet && element.balance!=null).toList();
+  get gameWalletList => walletList.where((element) => !element.isMainWallet && element.balance != null).toList();
 
   get brandLogoUrl => contentRepo.brandLogo?.mobileUrl;
 
@@ -53,10 +53,13 @@ class WalletTransferViewModel extends BaseViewModel {
       wallet.balance = userRepo.wallet!.main;
     } else {
       var state = await walletRepo.getGameWallet(wallet.gpCode);
-      if (state.isSuccess ) {
+      if (state.isSuccess) {
         wallet.balance = state.result?.balance ?? 0.0;
-      } else
+      } else {
+        //remove wallet when balance is null or error
         wallet.balance = null;
+        walletList.removeWhere((element) => element.gpCode == wallet.gpCode);
+      }
     }
     notifyListeners();
   }

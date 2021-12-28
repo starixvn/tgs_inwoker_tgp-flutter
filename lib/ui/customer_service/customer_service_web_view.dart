@@ -51,7 +51,7 @@ class _CustomerServiceWebViewState extends BaseState<CustomerServiceWebView> {
         ),
         centerTitle: true,
         title: Text(
-          getTranslatedText("customer_service"),
+          getTranslatedText("customer_service") ?? "Customer service",
           style: TextStyle(fontSize: 20.auto),
         ),
         leading: IconButton(
@@ -62,7 +62,7 @@ class _CustomerServiceWebViewState extends BaseState<CustomerServiceWebView> {
         ),
       ),
       body: widget.url == null
-          ? buildProgressDialog(widget.brandLogoUrl!)
+          ? buildProgressDialog(widget.brandLogoUrl)
           : InAppWebView(
               initialUrlRequest: URLRequest(url: Uri.parse(widget.url!)),
               initialOptions: InAppWebViewGroupOptions(
@@ -79,7 +79,7 @@ class _CustomerServiceWebViewState extends BaseState<CustomerServiceWebView> {
                 _webViewController!.loadUrl(urlRequest: URLRequest(url: Uri.parse(widget.url!)));
               },
               onLoadStart: (controller, url) {
-                ProgressDialog.show(context, widget.brandLogoUrl!);
+                ProgressDialog.show(context, widget.brandLogoUrl);
               },
               onLoadStop: (controller, url) async {
                 ProgressDialog.hide();
