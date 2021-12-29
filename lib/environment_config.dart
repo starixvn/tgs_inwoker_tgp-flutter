@@ -1,12 +1,12 @@
 class EnvironmentConfig {
   static const String jwtKey =
-      'ZRnqkDXR53QugWXnKc02Wo9JKwoQQWsMRGrspmiYbsaW3e1zwiC6S7';
+      'I7nKiimrZQOqnJ6ryjUw74c0Hi64KC6Myunhob4cHh8VOUIuZh4p63czefxyyzbZ';
 
-  static const String url = 'https://mess888.com/';
+  static const String url = 'https://dev-t1.rpgp.cc/';
 
-  static const String currency = 'VND_1000';
+  static const String currency = 'CNY';
 
-  static const String appTitleName = 'MESS8';
+  static const String appTitleName = 'PG Gaming';
 
   static const String slotGameUrl = 'https://images.srvptt.com/';
 
@@ -16,24 +16,23 @@ class EnvironmentConfig {
 
   static const String imageLogo = 'pg_login_logo';
 
-  static const String environmentStage = 'production';
+  static const String environmentStage = 'development';
 
   static const bool isShowSmsVerification = false;
-
-  static const bool isShowBankBranch = true;
 
   static const bool isShowIcVerification = true;
 
   static const bool isShowWechatQQ = true;
 
+  static const bool isShowBankBranch = true;
+
   static const bool isShowBankAcc = true;
 
   static const bool isShowMarqueePopUp = false;
 
-  static const String brandName = 'MESS8';
+  static const String default_lang = 'en-US';
 
   static const String assetUrl = 'https://app12.s3.ap-east-1.amazonaws.com/';
 
-  static const String default_lang = 'vi-VN';
-
+  static const String brandName = 'GPI';
 }

@@ -47,4 +47,7 @@ environment_config:
       default: false
     default_lang:
       default: "en-US"
-
+    assetUrl:
+      default: "https://app12.s3.ap-east-1.amazonaws.com/"
+    brandName:
+      default: "GPI"
