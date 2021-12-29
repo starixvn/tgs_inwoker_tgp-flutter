@@ -6,8 +6,8 @@ part 'transfer_limit.g.dart';
 class TransferLimit {
   TransferLimit(this.from, this.to);
 
-  double from;
-  double to;
+  double? from;
+  double? to;
 
   factory TransferLimit.fromJson(Map<String, dynamic> json) => _$TransferLimitFromJson(json);
 

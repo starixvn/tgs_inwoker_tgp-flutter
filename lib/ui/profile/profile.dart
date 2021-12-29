@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter/custom/color_button.dart';
 import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
@@ -97,13 +98,15 @@ class _ProfileState extends BaseState<Profile> {
   _buildUserInfoText() => Container(
         margin: EdgeInsets.only(left: 20.auto),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text(
+          AutoSizeText(
             _vm.userProfile.username ?? "",
             style: TextStyle(
               color: Colors.white,
-              fontSize: (19.2).auto,
+              //fontSize: (19.2).auto,
             ),
             textAlign: TextAlign.left,
+            minFontSize: 10,
+            stepGranularity: 1,
           ),
           Padding(
             padding: EdgeInsets.only(top: 3.auto, bottom: 3.auto),

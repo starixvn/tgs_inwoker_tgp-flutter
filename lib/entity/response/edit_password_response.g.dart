@@ -9,8 +9,8 @@ part of 'edit_password_response.dart';
 EditPasswordResponse _$EditPasswordResponseFromJson(
         Map<String, dynamic> json) =>
     EditPasswordResponse(
-      json['playercode'] as String,
-      json['updatetime'] as String,
+      json['playercode'] as String?,
+      json['updatetime'] as String?,
     );
 
 Map<String, dynamic> _$EditPasswordResponseToJson(

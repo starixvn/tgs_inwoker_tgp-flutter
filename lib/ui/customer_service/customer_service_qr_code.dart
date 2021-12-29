@@ -81,7 +81,7 @@ class _CustomerServiceQrCodeState extends BaseState<CustomerServiceQrCode> {
             version: QrVersions.auto,
             size: 200.0,
           ),
-          Text(brandCommunication.type)
+          Text(brandCommunication.type ?? "")
         ]),
       );
 

@@ -7,9 +7,9 @@ part of 'home_banner.dart';
 // **************************************************************************
 
 HomeBanner _$HomeBannerFromJson(Map<String, dynamic> json) => HomeBanner(
-      json['id'] as String,
-      json['mobileurl'] as String,
-      json['title'] as String,
+      json['id'] as String?,
+      json['mobileurl'] as String?,
+      json['title'] as String?,
     );
 
 Map<String, dynamic> _$HomeBannerToJson(HomeBanner instance) =>

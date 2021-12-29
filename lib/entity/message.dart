@@ -8,15 +8,15 @@ class Message {
   Message(this.id, this.createdOn, this.content, this.subject, this.isRead, this.localization);
 
   @JsonKey(name: 'id')
-  String id;
+  String? id;
   @JsonKey(name: 'createon')
-  String createdOn;
+  String? createdOn;
   @JsonKey(name: 'content')
-  String content;
+  String? content;
   @JsonKey(name: 'subject')
-  String subject;
+  String? subject;
   @JsonKey(name: 'isread')
-  bool isRead;
+  bool? isRead;
   Localization? localization;
 
   factory Message.fromJson(Map<String, dynamic> json) => _$MessageFromJson(json);

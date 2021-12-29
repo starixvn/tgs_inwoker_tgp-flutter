@@ -7,11 +7,11 @@ class DepositRedirectApplePay {
   DepositRedirectApplePay(this.formId, this.paymentUrl, this.errorMsg);
 
   @JsonKey(name: "formid")
-  String formId;
+  String? formId;
   @JsonKey(name: "paymenturl")
-  String paymentUrl;
+  String? paymentUrl;
   @JsonKey(name: "errormsg")
-  String errorMsg;
+  String? errorMsg;
 
   factory DepositRedirectApplePay.fromJson(Map<String, dynamic> json) => _$DepositRedirectApplePayFromJson(json);
 

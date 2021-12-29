@@ -8,17 +8,22 @@ part of 'withdrawal_info.dart';
 
 WithdrawalInfo _$WithdrawalInfoFromJson(Map<String, dynamic> json) =>
     WithdrawalInfo(
-      json['id'] as String,
-      $enumDecode(_$BankTypeEnumMap, json['banktype']),
-      json['channelid'] as String,
-      json['channelname'] as String,
-      json['channelcode'] as String,
-      json['methodcode'] as String,
-      json['methodid'] as String,
-      json['paymentcode'] as String,
-      json['paymentid'] as String,
-      TransferLimit.fromJson(json['transferlimit'] as Map<String, dynamic>),
-      BankExtendedInfo.fromJson(json['extended'] as Map<String, dynamic>),
+      json['id'] as String?,
+      $enumDecodeNullable(_$BankTypeEnumMap, json['banktype']),
+      json['channelid'] as String?,
+      json['channelname'] as String?,
+      json['channelcode'] as String?,
+      json['methodcode'] as String?,
+      json['methodid'] as String?,
+      json['paymentcode'] as String?,
+      json['paymentid'] as String?,
+      json['transferlimit'] == null
+          ? null
+          : TransferLimit.fromJson(
+              json['transferlimit'] as Map<String, dynamic>),
+      json['extended'] == null
+          ? null
+          : BankExtendedInfo.fromJson(json['extended'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$WithdrawalInfoToJson(WithdrawalInfo instance) =>

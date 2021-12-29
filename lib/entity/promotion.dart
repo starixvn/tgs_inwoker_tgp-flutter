@@ -8,15 +8,15 @@ class Promotion {
   Promotion(this.id, this.name, this.from, this.to, this.vipLevels, this.localization, this.mobileBanner, this.content,
       this.terms);
 
-  String id;
-  String name;
-  String from;
-  String to;
-  List<int> vipLevels;
+  String? id;
+  String? name;
+  String? from;
+  String? to;
+  List<int>? vipLevels;
   Localization? localization;
   String? mobileBanner;
-  String content;
-  String terms;
+  String? content;
+  String? terms;
 
   factory Promotion.fromJson(Map<String, dynamic> json) => _$PromotionFromJson(json);
 

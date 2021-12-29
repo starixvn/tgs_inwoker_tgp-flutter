@@ -87,7 +87,7 @@ class DepositReportViewState extends BaseState<DepositReportView> {
               getManualDepositId: () => _vm.getManualDepositOrder(_vm.accountReportList![index].id),
               type: _getReportItemType(index),
               isEndRecord: _vm.endRecord,
-              isUploadButton: _vm.accountReportList![index].canUploadCerts,
+              isUploadButton: _vm.accountReportList![index].canUploadCerts ?? false,
               isDepositReport: true,
             ),
           );

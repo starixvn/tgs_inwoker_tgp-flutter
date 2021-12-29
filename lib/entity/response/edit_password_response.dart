@@ -7,9 +7,9 @@ class EditPasswordResponse {
   EditPasswordResponse(this.playerCode, this.updateTime);
 
   @JsonKey(name: 'playercode')
-  String playerCode;
+  String? playerCode;
   @JsonKey(name: 'updatetime')
-  String updateTime;
+  String? updateTime;
 
   factory EditPasswordResponse.fromJson(Map<String, dynamic> json) => _$EditPasswordResponseFromJson(json);
 

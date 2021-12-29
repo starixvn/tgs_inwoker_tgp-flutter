@@ -7,9 +7,9 @@ class DepositRedirect {
   DepositRedirect(this.formId, this.paymentUrl);
 
   @JsonKey(name: "formid")
-  String formId;
+  String? formId;
   @JsonKey(name: "paymenturl")
-  String paymentUrl;
+  String? paymentUrl;
 
   factory DepositRedirect.fromJson(Map<String, dynamic> json) => _$DepositRedirectFromJson(json);
 

@@ -7,7 +7,7 @@ class BrandLogo {
   BrandLogo(this.id, this.mobileUrl, this.hasInvitationCode);
 
   @JsonKey(name: 'brandId')
-  String id;
+  String? id;
   @JsonKey(name: 'mobileLogoUrl')
   String? mobileUrl;
   bool? hasInvitationCode;

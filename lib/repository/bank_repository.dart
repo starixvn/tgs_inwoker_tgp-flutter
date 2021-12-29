@@ -42,7 +42,7 @@ class BankRepository extends BaseRepository {
   }
 
   Future<EventResult<String>> getManualBankDepositId(
-      String account, String amount, String paymentId, String? promotionId) async {
+      String account, String amount, String? paymentId, String? promotionId) async {
     return await ApiRequestBuilder<String>(
             method: HttpMethod.PUT,
             endPoint: "api/deposit/manual/bank",
@@ -57,7 +57,7 @@ class BankRepository extends BaseRepository {
   }
 
   Future<EventResult<String>> getManualThirdPartyDepositId(
-      String account, String amount, String paymentId, String? promotionId) async {
+      String account, String amount, String? paymentId, String? promotionId) async {
     return await ApiRequestBuilder<String>(
             method: HttpMethod.PUT,
             endPoint: "api/deposit/manual/thirdparty",
@@ -109,7 +109,7 @@ class BankRepository extends BaseRepository {
         .execute();
   }
 
-  Future<EventResult<dynamic>> addBankCard(String paymentChannelId, BankType bankType,
+  Future<EventResult<dynamic>> addBankCard(String? paymentChannelId, BankType bankType,
       {String? address, bankAccount, bankName, name, bankBranch, phone, realName}) async {
     return await ApiRequestBuilder<dynamic>(
             method: HttpMethod.POST,
@@ -142,13 +142,13 @@ class BankRepository extends BaseRepository {
         .execute();
   }
 
-  Future<EventResult<dynamic>> deleteBankCard(String bankInfoId) async {
+  Future<EventResult<dynamic>> deleteBankCard(String? bankInfoId) async {
     return await ApiRequestBuilder<dynamic>(
             method: HttpMethod.DELETE, endPoint: "api/bankinfo/$bankInfoId", jwtRefresher: jwtAuth)
         .execute();
   }
 
-  Future<EventResult<DepositRedirect>> leePayDepositOrder(String amount, String paymentId, String? promotionId) async {
+  Future<EventResult<DepositRedirect>> leePayDepositOrder(String amount, String? paymentId, String? promotionId) async {
     return await ApiRequestBuilder<DepositRedirect>(
             method: HttpMethod.PUT,
             endPoint: "api/deposit/crypto/leepay",
@@ -163,7 +163,7 @@ class BankRepository extends BaseRepository {
   }
 
   Future<EventResult<DepositRedirect>> primePayDepositOrder(
-      String amount, String paymentId, String? promotionId) async {
+      String amount, String? paymentId, String? promotionId) async {
     return await ApiRequestBuilder<DepositRedirect>(
             method: HttpMethod.POST,
             endPoint: "api/deposit/bank/primepay",
@@ -190,7 +190,7 @@ class BankRepository extends BaseRepository {
   }
 
   Future<EventResult<DepositRedirectApplePay>> applePayDepositOrder(
-      String amount, String paymentId, String? promotionId, String transName) async {
+      String amount, String? paymentId, String? promotionId, String transName) async {
     return await ApiRequestBuilder<DepositRedirectApplePay>(
             method: HttpMethod.POST,
             endPoint: "api/deposit/bank/applepay",
@@ -205,7 +205,7 @@ class BankRepository extends BaseRepository {
         .execute();
   }
 
-  Future<EventResult<ExchangeRate>> getLeePayExchangeRate(String paymentId) async {
+  Future<EventResult<ExchangeRate>> getLeePayExchangeRate(String? paymentId) async {
     return await ApiRequestBuilder<ExchangeRate>(
             method: HttpMethod.GET,
             endPoint: "api/deposit/crypto/leepay/exchangerate",
@@ -216,7 +216,7 @@ class BankRepository extends BaseRepository {
   }
 
   Future<EventResult<DepositRedirect>> umPayBankDepositOrder(
-      String amount, String paymentId, String? promotionId) async {
+      String amount, String? paymentId, String? promotionId) async {
     return await ApiRequestBuilder<DepositRedirect>(
             method: HttpMethod.POST,
             endPoint: "api/deposit/bank/umpay",
@@ -231,7 +231,7 @@ class BankRepository extends BaseRepository {
   }
 
   Future<EventResult<DepositRedirect>> umPayCryptoDepositOrder(
-      String amount, String paymentId, String? promotionId) async {
+      String amount, String? paymentId, String? promotionId) async {
     return await ApiRequestBuilder<DepositRedirect>(
             method: HttpMethod.POST,
             endPoint: "api/deposit/crypto/umpay",
@@ -245,7 +245,7 @@ class BankRepository extends BaseRepository {
         .execute();
   }
 
-  Future<EventResult<UmPayExchangeRate>> getUmPayExchangeRate(String paymentId) async {
+  Future<EventResult<UmPayExchangeRate>> getUmPayExchangeRate(String? paymentId) async {
     return await ApiRequestBuilder<UmPayExchangeRate>(
             method: HttpMethod.GET,
             endPoint: "api/deposit/crypto/umpay/exchangerate",
@@ -256,7 +256,7 @@ class BankRepository extends BaseRepository {
   }
 
   Future<EventResult<DepositRedirect>> maticPayDepositOrder(
-      String amount, String paymentId, String? promotionId) async {
+      String amount, String? paymentId, String? promotionId) async {
     return await ApiRequestBuilder<DepositRedirect>(
             method: HttpMethod.POST,
             endPoint: "api/deposit/bank/maticpay",
@@ -278,7 +278,7 @@ class BankRepository extends BaseRepository {
   }
 
   Future<EventResult<DepositRedirect>> help2PayDepositOrder(
-      String amount, String paymentId, String? promotionId) async {
+      String amount, String? paymentId, String? promotionId) async {
     return await ApiRequestBuilder<DepositRedirect>(
             method: HttpMethod.POST,
             endPoint: "api/deposit/bank/help2pay",
@@ -306,7 +306,7 @@ class BankRepository extends BaseRepository {
         .executeWithoutBaseResponse();
   }
 
-  Future<EventResult<DepositRedirect>> skyPayDepositOrder(String amount, String paymentId, String? promotionId) async {
+  Future<EventResult<DepositRedirect>> skyPayDepositOrder(String amount, String? paymentId, String? promotionId) async {
     return await ApiRequestBuilder<DepositRedirect>(
             method: HttpMethod.POST,
             endPoint: "api/deposit/bank/skypay",

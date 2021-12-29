@@ -7,9 +7,9 @@ part of 'game_tag.dart';
 // **************************************************************************
 
 GameTag _$GameTagFromJson(Map<String, dynamic> json) => GameTag(
-      json['new'] as bool,
-      json['hot'] as bool,
-      json['recommend'] as bool,
+      json['new'] as bool?,
+      json['hot'] as bool?,
+      json['recommend'] as bool?,
     );
 
 Map<String, dynamic> _$GameTagToJson(GameTag instance) => <String, dynamic>{

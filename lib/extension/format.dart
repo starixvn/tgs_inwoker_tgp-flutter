@@ -15,7 +15,7 @@ class Format {
     }
   }
 
-  String amountFormat(dynamic amount) {
+  String amountFormat(dynamic? amount) {
     if (amount is int) {
       return amount.toStringAsFixed(2);
     } else if (amount is double) {
@@ -26,14 +26,20 @@ class Format {
       return " ";
   }
 
-  String currencyWithDecimalFormat(double amount) {
-    var f = new NumberFormat("#,###,##0.00", "en_US");
-    return f.format(amount);
+  String currencyWithDecimalFormat(double? amount) {
+    if (amount != null) {
+      var f = new NumberFormat("#,###,##0.00", "en_US");
+      return f.format(amount);
+    } else
+      return "";
   }
 
-  String currencyFormat(int amount) {
-    var f = new NumberFormat("#,###,###", "en_US");
-    return f.format(amount);
+  String currencyFormat(int? amount) {
+    if (amount != null) {
+      var f = new NumberFormat("#,###,###", "en_US");
+      return f.format(amount);
+    } else
+      return "";
   }
 
 /*  String currencySymbolFormat(int amount) {
@@ -44,17 +50,34 @@ class Format {
     return "¥" + currencyWithDecimalFormat(amount);
   }*/
 
-  String percentageFormat(double percentage) {
-    var f = new NumberFormat("##.##%", "en_US");
-    return f.format((percentage - 100) / 100);
+  String percentageFormat(double? percentage) {
+    if (percentage != null) {
+      var f = new NumberFormat("##.##%", "en_US");
+      return f.format((percentage - 100) / 100);
+    } else
+      return "";
   }
 
-  String dateFormat(DateTime date) {
-    return DateFormat("yyyy/MM/dd").format(date);
+  String dateFormat(DateTime? date) {
+    if (date != null)
+      return DateFormat("yyyy/MM/dd").format(date);
+    else
+      return "";
   }
 
-  String dateTimeFormat(String dateString) {
-    final date = DateTime.parse(dateString);
-    return DateFormat("yyyy/MM/dd HH:mm:ss").format(date.toLocal());
+  String dateTimeFormat(String? dateString) {
+    if (dateString != null) {
+      final date = DateTime.parse(dateString);
+      return DateFormat("yyyy/MM/dd HH:mm:ss").format(date.toLocal());
+    } else
+      return "";
+  }
+
+  String dateTimezoneFormat(String? dateString) {
+    if (dateString != null) {
+      final date = DateTime.parse(dateString);
+      return DateFormat("yyyy-MM-dd hh:mm a").format(date.toLocal());
+    } else
+      return "";
   }
 }

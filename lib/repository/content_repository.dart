@@ -157,16 +157,16 @@ class ContentRepository extends BaseRepository {
         .execute();
   }*/
 
-  Future<EventResult<List<int>>> getFavoriteGame(GameType gameType) async {
+  Future<EventResult<List<int>>> getFavoriteGame(GameType? gameType) async {
     return await ApiRequestBuilder<List<int>>(
             method: HttpMethod.GET,
-            endPoint: "api/game/favorite/${gameType.getJsonValue}",
+            endPoint: "api/game/favorite/${gameType?.getJsonValue}",
             converter: (json) => json.cast<int>(),
             jwtRefresher: jwtAuth)
         .execute();
   }
 
-  Future<EventResult<dynamic>> setFavoriteGame(int gameId) async {
+  Future<EventResult<dynamic>> setFavoriteGame(int? gameId) async {
     return await ApiRequestBuilder<dynamic>(
             method: HttpMethod.PUT,
             endPoint: "api/game/favorite/$gameId",
@@ -175,7 +175,7 @@ class ContentRepository extends BaseRepository {
         .execute();
   }
 
-  Future<EventResult<dynamic>> deleteFavoriteGame(int gameId) async {
+  Future<EventResult<dynamic>> deleteFavoriteGame(int? gameId) async {
     return await ApiRequestBuilder<dynamic>(
             method: HttpMethod.DELETE,
             endPoint: "api/game/favorite/$gameId",

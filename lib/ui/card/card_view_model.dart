@@ -44,7 +44,7 @@ class CardViewModel extends BaseViewModel {
     getWithdrawalInfoListApiState = await bankRepo.getWithdrawalInfoList();
     if (getWithdrawalInfoListApiState.isSuccess) {
       List<WithdrawalInfo> list = getWithdrawalInfoListApiState.result;
-      bankTypeList = groupBy(list, (obj) => obj.bankType);
+      bankTypeList = groupBy(list, (obj) => obj.bankType!);
     }
     setLoading(false);
     return getWithdrawalInfoListApiState;
@@ -80,7 +80,7 @@ class CardViewModel extends BaseViewModel {
     return addBankCardApiState;
   }
 
-  deleteBankCard(String bankInfoId) async {
+  deleteBankCard(String? bankInfoId) async {
     setLoading();
     deleteBankCardApiState = await bankRepo.deleteBankCard(bankInfoId);
     getBankCardList(); //incase failed, had to get back the deleted card

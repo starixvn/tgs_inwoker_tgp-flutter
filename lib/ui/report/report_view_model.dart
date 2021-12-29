@@ -171,11 +171,13 @@ class ReportViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  getManualDepositOrder(String id) async {
+  getManualDepositOrder(String? id) async {
     setLoading();
-    getDepositOrderApiState = await depositRepo.getManualDepositOrder(id);
-    if (getDepositOrderApiState.isSuccess) {
-      paymentId = id;
+    if (id != null) {
+      getDepositOrderApiState = await depositRepo.getManualDepositOrder(id);
+      if (getDepositOrderApiState.isSuccess) {
+        paymentId = id;
+      }
     }
     setLoading(false);
     return getDepositOrderApiState;
@@ -203,7 +205,7 @@ class ReportViewModel extends BaseViewModel {
 
       promotionReportList!.addAll(list);
       endRecord =
-          ((promotionReportList?.length ??0) >= (getPromotionReportApiState.result.totalCount ?? 0)) ? true : false;
+          ((promotionReportList?.length ?? 0) >= (getPromotionReportApiState.result.totalCount ?? 0)) ? true : false;
       notifyListeners();
     }
     setLoading(false);

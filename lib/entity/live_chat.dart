@@ -8,8 +8,8 @@ part 'live_chat.g.dart';
 class LiveChat {
   LiveChat(this.name, this.setting);
 
-  String name;
-  Url setting;
+  String? name;
+  Url? setting;
 
   factory LiveChat.fromJson(Map<String, dynamic> json) => _$LiveChatFromJson(json);
 

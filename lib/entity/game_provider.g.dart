@@ -7,13 +7,13 @@ part of 'game_provider.dart';
 // **************************************************************************
 
 GameProvider _$GameProviderFromJson(Map<String, dynamic> json) => GameProvider(
-      json['code'] as String,
-      json['name'] as String,
+      json['code'] as String?,
+      json['name'] as String?,
       json['description'] as String?,
-      json['status'] as int,
-      json['transferwallet'] as bool,
-      (json['gametypes'] as List<dynamic>)
-          .map((e) => $enumDecode(_$GameTypeEnumMap, e))
+      json['status'] as int?,
+      json['transferwallet'] as bool?,
+      (json['gametypes'] as List<dynamic>?)
+          ?.map((e) => $enumDecode(_$GameTypeEnumMap, e))
           .toList(),
     );
 
@@ -24,7 +24,8 @@ Map<String, dynamic> _$GameProviderToJson(GameProvider instance) =>
       'description': instance.description,
       'status': instance.status,
       'transferwallet': instance.transferWallet,
-      'gametypes': instance.gameTypes.map((e) => _$GameTypeEnumMap[e]).toList(),
+      'gametypes':
+          instance.gameTypes?.map((e) => _$GameTypeEnumMap[e]).toList(),
     };
 
 const _$GameTypeEnumMap = {

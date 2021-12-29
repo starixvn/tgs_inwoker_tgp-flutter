@@ -62,7 +62,7 @@ class _HomeState extends BaseState<Home> {
     await _gameViewModel.getGameProviderList(isRefresh: true);
     _vm.getTotalBalance();
     getLanguage();
-    if (widget.isFirstRun && _vm.firstAnnouncement!=null) {
+    if (widget.isFirstRun && _vm.firstAnnouncement != null) {
       WidgetsBinding.instance!.addPostFrameCallback((_) {
         if (EnvironmentConfig.isShowMarqueePopUp) _displayMarqueeDialog();
       });
@@ -79,10 +79,7 @@ class _HomeState extends BaseState<Home> {
         model: _vm,
         builder: (ctx, vm, _) {
           _handleApiState();
-          return Scaffold(
-              resizeToAvoidBottomInset: false,
-              backgroundColor: Colors.white,
-              body: _buildWidget());
+          return Scaffold(resizeToAvoidBottomInset: false, backgroundColor: Colors.white, body: _buildWidget());
         });
   }
 
@@ -113,13 +110,15 @@ class _HomeState extends BaseState<Home> {
                 indicatorBackgroundColor: Colors.grey,
                 children: List.generate(
                     _vm.bannerList!.length,
-                    (index) => CachedNetworkImage(
-                          placeholder: (context, url) => _buildEmptyContainer(),
-                          imageUrl: _vm.bannerList![index].mobileUrl,
-                          //handling error
-                          fit: BoxFit.fill,
-                          errorWidget: (context, url, error) => _buildEmptyContainer(),
-                        )),
+                    (index) => _vm.bannerList![index].mobileUrl == null
+                        ? _buildEmptyContainer()
+                        : CachedNetworkImage(
+                            placeholder: (context, url) => _buildEmptyContainer(),
+                            imageUrl: _vm.bannerList![index].mobileUrl!,
+                            //handling error
+                            fit: BoxFit.fill,
+                            errorWidget: (context, url, error) => _buildEmptyContainer(),
+                          )),
                 isLoop: true,
                 autoPlayInterval: 3000),
       );
@@ -145,7 +144,7 @@ class _HomeState extends BaseState<Home> {
   _buildMarqueeRow() => Row(
         children: [
           Container(
-            width: (languageCode?.contains("zh")?? false) ? context.screenWidth / 10 : context.screenWidth / 5,
+            width: (languageCode?.contains("zh") ?? false) ? context.screenWidth / 10 : context.screenWidth / 5,
             padding: EdgeInsets.only(left: 10.auto),
             child: AutoSizeText(
               getTranslatedText("notice"),
@@ -161,7 +160,7 @@ class _HomeState extends BaseState<Home> {
       );
 
   _buildTextMarquee() {
-    var announcement = _removeMultiLine(parseHtmlString(_vm.announcement??""));
+    var announcement = _removeMultiLine(parseHtmlString(_vm.announcement ?? ""));
     return Expanded(
       child: Container(
         decoration: BoxDecoration(color: CustomColor.theme_bar_gradient_1, borderRadius: BorderRadius.circular(10.0)),
@@ -177,15 +176,18 @@ class _HomeState extends BaseState<Home> {
                 ),
                 scrollAxis: Axis.horizontal,
                 crossAxisAlignment: CrossAxisAlignment.center,
-                blankSpace: 5.auto,
+                blankSpace: 300.auto,
                 pauseAfterRound: Duration(seconds: 1),
                 showFadingOnlyWhenScrolling: false),
       ),
     );
   }
 
-  _removeMultiLine(String text) {
-    return text.replaceAll("\n", " ");
+  _removeMultiLine(String? text) {
+    if (text != null)
+      return text.replaceAll("\n", " ");
+    else
+      return "";
   }
 
   navigateToLogin() async {
@@ -245,10 +247,5 @@ class _HomeState extends BaseState<Home> {
     handleApiState(_vm.getBasicInfoApiState, isAutoHideLoading: false, onSuccess: () {});
     handleApiState(_vm.getAnnouncementApiState, isAutoHideLoading: false, onSuccess: () {});
     handleApiState(_vm.getBannerApiState, isAutoHideLoading: false, onSuccess: () {});
-  }
-
-  _handleGameApiState() {
-    handleApiState(_gameViewModel.getGameProviderListApiState, isAutoHideLoading: false, onSuccess: () {});
-    handleApiState(_gameViewModel.getGameApiState, onSuccess: () {});
   }
 }

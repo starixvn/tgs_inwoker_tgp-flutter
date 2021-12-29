@@ -8,12 +8,12 @@ part of 'manual_deposit_order.dart';
 
 ManualDepositOrder _$ManualDepositOrderFromJson(Map<String, dynamic> json) =>
     ManualDepositOrder(
-      json['methodname'] as String,
-      json['channelname'] as String,
+      json['methodname'] as String?,
+      json['channelname'] as String?,
       (json['amount'] as num).toDouble(),
-      json['bankname'] as String,
-      json['bankaccountname'] as String,
-      json['bankaccount'] as String,
+      json['bankname'] as String?,
+      json['bankaccountname'] as String?,
+      json['bankaccount'] as String?,
     )..qrCode = json['qrcode'] as String?;
 
 Map<String, dynamic> _$ManualDepositOrderToJson(ManualDepositOrder instance) =>

@@ -8,8 +8,8 @@ part of 'transfer_limit.dart';
 
 TransferLimit _$TransferLimitFromJson(Map<String, dynamic> json) =>
     TransferLimit(
-      (json['from'] as num).toDouble(),
-      (json['to'] as num).toDouble(),
+      (json['from'] as num?)?.toDouble(),
+      (json['to'] as num?)?.toDouble(),
     );
 
 Map<String, dynamic> _$TransferLimitToJson(TransferLimit instance) =>

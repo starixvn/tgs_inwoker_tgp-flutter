@@ -89,8 +89,8 @@ class _MaintenanceState extends BaseState<Maintenance> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (context) => MyHomePage()), (route) => false);
+            Navigator.of(context)
+                .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => MyHomePage()), (route) => false);
           },
         ),
         title: Text(
@@ -135,7 +135,7 @@ class _MaintenanceState extends BaseState<Maintenance> {
                             brandLogoUrl: _vm.brandLogoUrl,
                           )));
             },
-            title: getTranslatedText("contact_cs"),
+            title:  "Contact CS" ,
             isEnabled: true,
             width: context.screenWidth / 3.5,
             height: context.screenHeight / 18,
@@ -143,7 +143,7 @@ class _MaintenanceState extends BaseState<Maintenance> {
             color: Colors.white,
           ),
           GradientButton(
-            title: getTranslatedText("instant_messaging"),
+            title: "Instant Messaging" ,
             onClick: () {
               showDialog(
                 context: context,
@@ -164,6 +164,6 @@ class _MaintenanceState extends BaseState<Maintenance> {
 
   _handleApiState() {
     handleApiState(_vm.getLiveChatUrlApiState, isAutoHideLoading: false, onSuccess: () {});
-    handleApiState(_vm.getBrandCommunicationApiState, isAutoHideLoading: false, onSuccess: () {});
+    // handleApiState(_vm.getBrandCommunicationApiState, isAutoHideLoading: false, onSuccess: () {});
   }
 }

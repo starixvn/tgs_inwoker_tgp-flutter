@@ -28,5 +28,5 @@ class EventResult<T> {
           errorMsgId: errorMsgId,
         );
 
-  EventResult.maintenance(T result) : this(result: result, isMaintenance: true);
+  EventResult.maintenance({T? result}) : this(result: result, isMaintenance: true);
 }

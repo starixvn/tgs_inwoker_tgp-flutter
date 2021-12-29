@@ -47,7 +47,11 @@ class _GameWebState extends BaseState<GameWeb> {
 
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () => _displayDialog(),
+      onWillPop: () async {
+        _webViewController!.goBack();
+        _webViewController!.goBack();
+        return true;
+      },
       child: ProviderWidget<GameViewModel>(
           model: _vm,
           builder: (ctx, vm, _) {
@@ -97,9 +101,10 @@ class _GameWebState extends BaseState<GameWeb> {
   }
 
   _buildWebView() {
-    /*isHabaPPGamePlatform()
+    var apiUrl = EnvironmentConfig.url + "api/game/bc";
+    return /* isHabaPPGamePlatform()
         ? WebviewScaffold(
-            url: _getValidUrl(url),
+            url: _getValidUrl(_vm.url!),
             withZoom: false,
             withLocalStorage: true,
             withJavascript: true,
@@ -107,41 +112,35 @@ class _GameWebState extends BaseState<GameWeb> {
             hidden: true,
           )
         : */
-    var apiUrl = EnvironmentConfig.url + "api/game/bc";
-
-    return InAppWebView(
-      initialUrlRequest: URLRequest(url: Uri.parse(_getValidUrl(_vm.url!))),
+        InAppWebView(
       initialOptions: InAppWebViewGroupOptions(
-          crossPlatform: InAppWebViewOptions(
-              //debuggingEnabled: true,
-              javaScriptEnabled: true,
-              useShouldOverrideUrlLoading: true),
+          crossPlatform: InAppWebViewOptions(javaScriptEnabled: true, useShouldOverrideUrlLoading: true),
           android: AndroidInAppWebViewOptions(
             useWideViewPort: true,
+            domStorageEnabled: true,
             mixedContentMode: AndroidMixedContentMode.MIXED_CONTENT_ALWAYS_ALLOW,
-          )),
+          ),
+          ios: IOSInAppWebViewOptions(allowsInlineMediaPlayback: true)),
       onWebViewCreated: (InAppWebViewController controller) {
         _webViewController = controller;
         _webViewController!.loadUrl(
-            urlRequest: widget.gamePlatformCode == "BC"
-                ? //bet construct only
-                URLRequest(url: Uri.parse(apiUrl), headers: {
-                    "Authentication": "bearer " + prefs.getString("auth_token")!,
-                    "token": prefs.getString("token")!
-                  })
-                : URLRequest(url: Uri.parse(_getValidUrl(_vm.url!))));
+            /* urlRequest: widget.gamePlatformCode == "BC"
+                ? */ //bet construct only
+            urlRequest: URLRequest(
+                url: Uri.parse(widget.gamePlatformCode == "BC" ? apiUrl : _getValidUrl(_vm.url!)),
+                headers: {
+              "Authentication": "bearer " + prefs.getString("auth_token")!,
+              "token": prefs.getString("token")!
+            }));
+        /* : URLRequest(url: Uri.parse(_getValidUrl(_vm.url!))));*/
       },
       onExitFullscreen: (InAppWebViewController controller) {
         Navigator.pop(
           context,
         );
       },
-      onLoadStart: (controller, url) {
-        //ProgressDialog.show(context, _vm.brandLogoUrl);
-      },
-      onLoadStop: (controller, url) async {
-        // ProgressDialog.hide();
-      },
+      onLoadStart: (controller, url) {},
+      onLoadStop: (controller, url) async {},
       shouldOverrideUrlLoading: (controller, navigationAction) async {
         var uri = navigationAction.request.url;
         if (uri == Uri.parse(lobbyUrl!)) {
@@ -169,6 +168,8 @@ class _GameWebState extends BaseState<GameWeb> {
 
   _displayDialog() {
     // if (isHabaPPGamePlatform()) webviewPlugin.close();
+    /*Navigator.pushNamed(context, "home");
+    print("111");*/
     showDialog(
       context: context,
       builder: (BuildContext context) => LeaveGameDialog(),
@@ -184,7 +185,7 @@ class _GameWebState extends BaseState<GameWeb> {
   }
 
   isHabaPPGamePlatform() {
-    return widget.gamePlatformCode == "PP" || widget.gamePlatformCode == "HABA";
+    return widget.gamePlatformCode == "PP" || widget.gamePlatformCode == "HABA" || widget.gamePlatformCode == "JILI";
   }
 
   _handleApiState() {

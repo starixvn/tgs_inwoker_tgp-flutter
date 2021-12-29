@@ -35,4 +35,5 @@ class EnvironmentConfig {
   static const String assetUrl = 'https://app12.s3.ap-east-1.amazonaws.com/';
 
   static const String default_lang = 'vi-VN';
+
 }

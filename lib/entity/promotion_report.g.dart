@@ -8,8 +8,8 @@ part of 'promotion_report.dart';
 
 PromotionReport _$PromotionReportFromJson(Map<String, dynamic> json) =>
     PromotionReport(
-      json['joinedOn'] as String,
-      json['promotionName'] as String,
+      json['joinedOn'] as String?,
+      json['promotionName'] as String?,
     );
 
 Map<String, dynamic> _$PromotionReportToJson(PromotionReport instance) =>

@@ -8,8 +8,8 @@ part of 'brand_communication.dart';
 
 BrandCommunication _$BrandCommunicationFromJson(Map<String, dynamic> json) =>
     BrandCommunication(
-      json['type'] as String,
-      json['phone'] as String,
+      json['type'] as String?,
+      json['phone'] as String?,
       json['appid'] as String?,
       json['qrcodeurl'] as String?,
     );

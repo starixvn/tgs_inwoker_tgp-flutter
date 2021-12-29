@@ -86,7 +86,7 @@
   "rmb_password": "Ingat Kata Sandi",
   "enter_username_hint": "Silakan masukkan nomor akun Anda",
   "enter_password_hint": "Silakan masukkan kata sandi Anda",
-  "signup_username_hint": "Silakan masukkan akun (6-32 digit, huruf, kombinasi)",
+  "signup_username_hint": "Silakan masukkan akun (6-16 digit, huruf, kombinasi)",
   "signup_password_hint": "Silakan masukkan kata sandi (6-20 digit, huruf, kombinasi)",
   "confirm_password": "Konfirmasi Kata Sandi",
   "signup_pay_password_hint": "Sandi penarikan (6 digit)",
@@ -969,6 +969,8 @@
   "game_platform_inactive": "Platform permainan ditutup",
   "edit_email": "Edit alamat email",
   "promotion_name": "Nama Promosi",
-  "promotion_history": "Riwayat Promosi",
-  "new_update": "Memperbarui"
+  "new_update": "Memperbarui",
+  "image_size_limit": "Ukuran foto lebih besar dari batas upload, silakan upload lagi",
+  "register_terms": "Saya mengonfirmasi bahwa saya berusia di atas 18 tahun dan telah membaca serta menerima kebijakan, pernyataan privasi, syarat dan ketentuan situs web ini.",
+  "empty_promotion": "Tidak ada promosi yang dapat dipilih"
 }

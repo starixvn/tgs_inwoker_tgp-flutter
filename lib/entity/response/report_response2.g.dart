@@ -11,7 +11,7 @@ ReportResponse2<T> _$ReportResponse2FromJson<T>(
   T Function(Object? json) fromJsonT,
 ) =>
     ReportResponse2<T>(
-      json['totalcount'] as int,
+      json['totalcount'] as int?,
       (json['items'] as List<dynamic>?)?.map(fromJsonT).toList(),
     );
 

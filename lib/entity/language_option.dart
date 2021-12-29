@@ -7,7 +7,7 @@ class LanguageOption {
   LanguageOption(this.code);
 
   @JsonKey(name: "culturecode")
-  String code;
+  String? code;
 
   factory LanguageOption.fromJson(Map<String, dynamic> json) => _$LanguageOptionFromJson(json);
 
