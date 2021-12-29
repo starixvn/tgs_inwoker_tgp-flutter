@@ -100,7 +100,7 @@ class DepositMethodViewModel extends BaseViewModel {
       getExchangeRateApiState = await depositRepo.getUmPayExchangeRate(paymentId);
     if (getExchangeRateApiState.isSuccess) {
       if (!isUmPay)
-        exchangeRate = getExchangeRateApiState.result.buyPrice;
+        exchangeRate = getExchangeRateApiState.result.buyPrice.replaceAll(',','.');
       else
         exchangeRate = getExchangeRateApiState.result.rate.toString();
     }

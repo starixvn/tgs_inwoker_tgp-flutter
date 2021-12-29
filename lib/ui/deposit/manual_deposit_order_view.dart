@@ -264,24 +264,30 @@ class _ManualDepositOrderViewState extends BaseState<ManualDepositOrderView> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              getTranslatedText("upload_prof_hint"),
-              style: TextStyle(fontSize: 10.auto, color: CustomColor.grey),
-            ),
-            ColorButton(
-              text: Text(
-                getTranslatedText("pick_prof"),
-                textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.white, fontSize: 13.auto),
+            Expanded(
+              flex: 7,
+              child: Text(
+                getTranslatedText("upload_prof_hint"),
+                style: TextStyle(fontSize: 10.auto, color: CustomColor.grey),
               ),
-              width: 70.auto,
-              height: 30.auto,
-              onClick: () {
-                chooseImage();
-              },
-              isEnabled: true,
-              color: CustomColor.theme_bar_gradient_2,
-              radius: 9.6,
+            ),
+            Expanded(
+              flex:3,
+              child: ColorButton(
+                text: Text(
+                  getTranslatedText("pick_prof"),
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.white, fontSize: 13.auto),
+                ),
+                width: 70.auto,
+                height: 30.auto,
+                onClick: () {
+                  chooseImage();
+                },
+                isEnabled: true,
+                color: CustomColor.theme_bar_gradient_2,
+                radius: 9.6,
+              ),
             )
           ],
         ),
