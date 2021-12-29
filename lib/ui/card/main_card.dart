@@ -215,33 +215,39 @@ class _MainCardState extends BaseState<MainCard> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Container(
-                    margin: EdgeInsets.symmetric(vertical: 20.auto, horizontal: 20.auto),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          getTranslatedText("add_card"),
-                          style: TextStyle(fontSize: 11.auto, color: Colors.black),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(top: 5.auto),
-                          child: Text(
-                            getTranslatedText("max_card_hint"),
-                            style: TextStyle(fontSize: 9.auto, color: Colors.black),
+                  Expanded(
+                    flex:8,
+                    child: Container(
+                      margin: EdgeInsets.symmetric(vertical: 20.auto, horizontal: 20.auto),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            getTranslatedText("add_card"),
+                            style: TextStyle(fontSize: 11.auto, color: Colors.black),
                           ),
-                        )
-                      ],
+                          Container(
+                            margin: EdgeInsets.only(top: 5.auto),
+                            child: Text(
+                              getTranslatedText("max_card_hint"),
+                              style: TextStyle(fontSize: 9.auto, color: Colors.black),
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                   ),
-                  Container(
-                      margin: EdgeInsets.symmetric(horizontal: 20.auto),
-                      child: ImageIcon(
-                          AssetImage(
-                            "images/card/ic_add_card.png",
-                          ),
-                          size: 23.auto,
-                          color: CustomColor.theme_button_disable_bg)),
+                  Expanded(
+                    flex:2,
+                    child: Container(
+                        margin: EdgeInsets.symmetric(horizontal: 15.auto),
+                        child: ImageIcon(
+                            AssetImage(
+                              "images/card/ic_add_card.png",
+                            ),
+                            size: 23.auto,
+                            color: CustomColor.theme_button_disable_bg)),
+                  ),
                 ],
               )),
         ),
