@@ -41,15 +41,17 @@ class MainViewModel extends BaseViewModel {
       var package = await PackageInfo.fromPlatform();
       try {
         var versionList = jsonDecode(eventResult.result);
-        var platform =  Platform.isAndroid ? "android" : Platform.isIOS ? "iOS" : "";
-        var version = versionList
-            .where((element) => element["platform"] == platform)
-            .first;
+        var platform = Platform.isAndroid
+            ? "android"
+            : Platform.isIOS
+                ? "iOS"
+                : "";
+        var version = versionList.where((element) => element["platform"] == platform).first;
 
         if (version["version"] != package.version) {
           versionUpdateState = version;
         }
-      }catch(e){
+      } catch (e) {
         //ignore
       }
     }

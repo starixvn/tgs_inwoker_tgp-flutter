@@ -63,7 +63,7 @@ class DepositReportViewState extends BaseState<DepositReportView> {
             },
             scrollController: _scrollController,
             refreshController: _refreshController,
-            list: _vm.accountReportList,
+            list: _vm.reportList,
             displayItemList: _getList(),
             isUploadButton: true,
             url: _vm.brandLogoUrl,
@@ -71,35 +71,36 @@ class DepositReportViewState extends BaseState<DepositReportView> {
         });
   }
 
-  List<Widget> _getList() => _vm.accountReportList == null
+  List<Widget> _getList() => _vm.reportList == null
       ? []
-      : List.generate(_vm.accountReportList!.length, (index) {
+      : List.generate(_vm.reportList!.length, (index) {
           return Container(
             child: ReportCellItem(
+              reportList: _vm.reportList!,
               list: [
-                _vm.accountReportList![index].id,
-                _vm.accountReportList![index].orderNo,
-                Format().dateTimeFormat(_vm.accountReportList![index].createdOn),
-                _vm.accountReportList![index].status.getName(context),
-                _vm.accountReportList![index].amount.toString(),
-                _vm.accountReportList![index].status == Status.WaitingPayment ? true : false
+                _vm.reportList![index].id,
+                _vm.reportList![index].orderNo,
+                Format().dateTimeFormat(_vm.reportList![index].createdOn),
+                _vm.reportList![index].status.getName(context),
+                _vm.reportList![index].amount.toString(),
+                _vm.reportList![index].status == Status.WaitingPayment ? true : false
               ],
-              getManualDepositId: () => _vm.getManualDepositOrder(_vm.accountReportList![index].id),
+              getManualDepositId: () => _vm.getManualDepositOrder(_vm.reportList![index].id),
               type: _getReportItemType(index),
               isEndRecord: _vm.endRecord,
-              isUploadButton: _vm.accountReportList![index].canUploadCerts ?? false,
+              isUploadButton: _vm.reportList![index].canUploadCerts ?? false,
               isDepositReport: true,
             ),
           );
         }).toList();
 
   _getReportItemType(int index) {
-    if (_vm.accountReportList!.length == 1) {
+    if (_vm.reportList!.length == 1) {
       return ReportCellItemType.SINGLE;
     } else {
       if (index == 0) {
         return ReportCellItemType.TOP;
-      } else if (index == _vm.accountReportList!.length - 1) {
+      } else if (index == _vm.reportList!.length - 1) {
         return ReportCellItemType.BOTTOM;
       } else {
         return ReportCellItemType.CENTER;
@@ -158,7 +159,7 @@ class DepositReportViewState extends BaseState<DepositReportView> {
   }
 
   _getReport({bool isLoadMore = false, Status? status}) async {
-    await _vm.getAccountReport(isLoadMore: isLoadMore, status: status);
+    await _vm.getReport(isLoadMore: isLoadMore, status: status);
   }
 
   _handleApiState() {

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
-import 'package:tgp_flutter/ui/report/report.dart';
+import 'package:tgp_flutter/ui/report/report_view.dart';
 
 class MenuItem extends StatefulWidget {
   final String? image;
@@ -66,7 +66,7 @@ class _MenuItemState extends BaseState<MenuItem> {
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => Report(
+              builder: (context) => ReportView(
                     tabIndex: widget.navigationID!,
                   )));
     }

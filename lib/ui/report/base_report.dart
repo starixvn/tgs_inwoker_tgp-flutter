@@ -44,10 +44,10 @@ class BaseReport extends StatefulWidget {
   });
 
   @override
-  BasereportState createState() => BasereportState();
+  BaseReportState createState() => BaseReportState();
 }
 
-class BasereportState extends BaseState<BaseReport> {
+class BaseReportState extends BaseState<BaseReport> {
   Widget build(BuildContext context) {
     return Container(
       height: context.screenHeight,

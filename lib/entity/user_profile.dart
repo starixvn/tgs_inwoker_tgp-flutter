@@ -5,7 +5,7 @@ part 'user_profile.g.dart';
 @JsonSerializable()
 class UserProfile {
   UserProfile(this.username, this.realname, this.phone, this.email, this.qq, this.wechat, this.isSetPayPassword,
-      this.identityAuthentication, this.vipLevel);
+      this.identityAuthentication, this.vipLevel, this.playerCode);
 
   String? username;
   String? realname;
@@ -19,6 +19,8 @@ class UserProfile {
   bool? identityAuthentication;
   @JsonKey(name: 'viplevel')
   int? vipLevel;
+  @JsonKey(name: 'playercode')
+  String? playerCode;
 
   factory UserProfile.fromJson(Map<String, dynamic> json) => _$UserProfileFromJson(json);
 

@@ -124,15 +124,15 @@ class _GameWebState extends BaseState<GameWeb> {
       onWebViewCreated: (InAppWebViewController controller) {
         _webViewController = controller;
         _webViewController!.loadUrl(
-            /* urlRequest: widget.gamePlatformCode == "BC"
-                ? */ //bet construct only
-            urlRequest: URLRequest(
-                url: Uri.parse(widget.gamePlatformCode == "BC" ? apiUrl : _getValidUrl(_vm.url!)),
-                headers: {
-              "Authentication": "bearer " + prefs.getString("auth_token")!,
-              "token": prefs.getString("token")!
-            }));
-        /* : URLRequest(url: Uri.parse(_getValidUrl(_vm.url!))));*/
+            urlRequest: widget.gamePlatformCode == "BC"
+                ? //bet construct only
+                URLRequest(
+                    url: Uri.parse(/*widget.gamePlatformCode == "BC" ? apiUrl : */ _getValidUrl(_vm.url!)),
+                    headers: {
+                        "Authentication": "bearer " + prefs.getString("auth_token")!,
+                        "token": prefs.getString("token")!
+                      })
+                : URLRequest(url: Uri.parse(_getValidUrl(_vm.url!))));
       },
       onExitFullscreen: (InAppWebViewController controller) {
         Navigator.pop(

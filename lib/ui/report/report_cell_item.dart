@@ -1,6 +1,8 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter/custom/gradient_button.dart';
+import 'package:tgp_flutter/entity/report.dart';
+import 'package:tgp_flutter/entity/account_report.dart';
 import 'package:tgp_flutter/entity/report_cell_item_type.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
@@ -14,9 +16,11 @@ class ReportCellItem extends StatefulWidget {
   final bool isDepositReport;
   final bool isWithdrawReport;
   final Function? getManualDepositId;
+  final List<dynamic> reportList;
 
   ReportCellItem({
     required this.list,
+    required this.reportList,
     required this.type,
     required this.isEndRecord,
     this.isUploadButton = false,
@@ -152,7 +156,23 @@ class _ReportCellItemState extends BaseState<ReportCellItem> {
                               )
                             : Container(),
                       );
-                    else
+                    else if (index == 7 && widget.reportList is List<AccountReport>) {
+                      return Expanded(
+                        //first header (time) flex number is 2, others will be 1
+                        flex: 2,
+                        child: Container(
+                          margin: EdgeInsets.symmetric(horizontal: 2.auto),
+                          child: AutoSizeText(
+                            widget.list[index] ?? "",
+                            style: TextStyle(color: widget.list[index].contains("-") ? Colors.red : Colors.green),
+                            textAlign: index == 1 ? TextAlign.start : TextAlign.center,
+                            minFontSize: 5,
+                            maxFontSize: 12,
+                            stepGranularity: 1,
+                          ),
+                        ),
+                      );
+                    } else
                       return Expanded(
                         //first header (time) flex number is 2, others will be 1
                         flex: 2,

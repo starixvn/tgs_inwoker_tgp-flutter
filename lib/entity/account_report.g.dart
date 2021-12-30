@@ -9,31 +9,21 @@ part of 'account_report.dart';
 AccountReport _$AccountReportFromJson(Map<String, dynamic> json) =>
     AccountReport(
       json['id'] as String?,
-      json['createdon'] as String,
-      json['updatedOn'] as String?,
-      $enumDecode(_$StatusEnumMap, json['status']),
-      (json['amount'] as num?)?.toDouble(),
-      json['canuploadcerts'] as bool?,
-      json['orderno'] as String?,
+      json['createdOn'] as String?,
+      json['gameProviderName'] as String?,
+      (json['betAmount'] as num?)?.toDouble(),
+      (json['validBetAmount'] as num?)?.toDouble(),
+      (json['winLoss'] as num?)?.toDouble(),
+      json['gameName'] as String?,
     );
 
 Map<String, dynamic> _$AccountReportToJson(AccountReport instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'createdon': instance.createdOn,
-      'updatedOn': instance.updatedOn,
-      'status': _$StatusEnumMap[instance.status],
-      'amount': instance.amount,
-      'canuploadcerts': instance.canUploadCerts,
-      'orderno': instance.orderNo,
+      'createdOn': instance.createdOn,
+      'gameProviderName': instance.gameProviderName,
+      'betAmount': instance.betAmount,
+      'validBetAmount': instance.validBetAmount,
+      'winLoss': instance.winLoss,
+      'gameName': instance.gameName,
     };
-
-const _$StatusEnumMap = {
-  Status.All: 'All',
-  Status.WaitingPayment: 1,
-  Status.Review: 2,
-  Status.Approved: 3,
-  Status.Rejected: 4,
-  Status.WaitingPaid: 5,
-  Status.Paid: 6,
-};

@@ -174,7 +174,7 @@
   "receiver_bank_account": "Receiver Bank Account",
   "receiver_bank_number": "Receiver Bank Number",
   "cancel": "Cancel",
-  "enter_username_error_message": "The username length must be between 6 and 32 digits, and must consist of numbers, letters or a combination",
+  "enter_username_error_message": "The username length must be between 6 and 16 digits, and must consist of numbers, letters or a combination",
   "enter_password_error_msg": "The password length must be between of 6-20 digits, and must consist of numbers, letters or a combination",
   "confirm_password_error_msg": "Confirm password not match",
   "confirm_pay_error_msg": "Confirm pay password is not same with pay password",
@@ -985,5 +985,9 @@
   "new_update": "New update",
   "image_size_limit": "Image size is greater than upload limit, please upload again.",
   "register_terms": "I confirm that I am at least 18 years old and have read and accepted the policy, privacy statement, terms and conditions of this website.",
-  "empty_promotion": "No promotion can be select."
+  "empty_promotion": "No promotion can be select.",
+  "affiliate_link": "Affiliate link",
+  "affiliate": "Affiliate",
+  "affiliate_qr_code": "Affiliate QR Code",
+  "copy": "Copy"
 }

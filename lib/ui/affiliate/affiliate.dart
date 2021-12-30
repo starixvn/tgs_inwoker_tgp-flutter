@@ -1,25 +1,35 @@
 import 'dart:ui';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 import 'package:tgp_flutter/custom/color_button.dart';
+import 'package:tgp_flutter/custom/custom_toast.dart';
+import 'package:tgp_flutter/environment_config.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/my_behavior.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
+import 'package:tgp_flutter/ui/affiliate/affiliate_view_model.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
 import 'package:tgp_flutter/src/gradient_decoration.dart';
 import 'package:tgp_flutter/ui/message/message_view.dart';
 import 'package:tgp_flutter/ui/profile/profile_bottom_item.dart';
 import 'package:tgp_flutter/ui/profile_info/profile_info.dart';
 
-class ReferFriend extends StatefulWidget {
+class Affiliate extends StatefulWidget {
   @override
-  _ReferFriendState createState() => _ReferFriendState();
+  _AffiliateState createState() => _AffiliateState();
 }
 
-class _ReferFriendState extends BaseState<ReferFriend> {
+class _AffiliateState extends BaseState<Affiliate> {
   var isEditing = false, isSelected = false;
+  AffiliateViewModel _vm = AffiliateViewModel();
+  String? affiliateUrl;
 
   @override
   void initState() {
+    if (_vm.userProfile.playerCode != null)
+      affiliateUrl = EnvironmentConfig.url + "a/${_vm.userProfile.playerCode}?do=register";
     super.initState();
   }
 
@@ -33,15 +43,24 @@ class _ReferFriendState extends BaseState<ReferFriend> {
         child: Column(
           //mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Text(
+              getTranslatedText("affiliate_qr_code"),
+              style: TextStyle(fontSize: 16.auto),
+              textAlign: TextAlign.center,
+            ),
             Container(
-              margin: EdgeInsets.only(top: 50.auto),
+              margin: EdgeInsets.only(top: 20.auto),
               height: 120.auto,
               width: 120.auto,
-              color: CustomColor.theme_bar_gradient_1,
+              child: QrImage(
+                data: affiliateUrl!,
+                version: QrVersions.auto,
+                size: 150.0,
+              ),
             ),
             _buildReferIdText(),
             _buildIdLink(),
-            _buildProfileItem()
+            //_buildProfileItem()
           ],
         ),
       ),
@@ -61,7 +80,7 @@ class _ReferFriendState extends BaseState<ReferFriend> {
           },
         ),
         title: Text(
-          "推荐朋友",
+          getTranslatedText("affiliate"),
           style: TextStyle(fontSize: 16.auto),
         ),
       );
@@ -82,12 +101,12 @@ class _ReferFriendState extends BaseState<ReferFriend> {
             Container(
               margin: EdgeInsets.only(right: 10.auto),
               child: Text(
-                "My Refer ID",
+                getTranslatedText("my_refer_id"),
                 style: TextStyle(color: CustomColor.theme_button_disable_bg, fontSize: 16.auto),
               ),
             ),
             Text(
-              "m1189",
+              _vm.userProfile.playerCode ?? "",
               style: TextStyle(color: CustomColor.theme_bar_gradient_2, fontSize: 16.auto),
             )
           ],
@@ -107,31 +126,56 @@ class _ReferFriendState extends BaseState<ReferFriend> {
         margin: EdgeInsets.only(top: 20.auto),
         child: Row(
           children: [
-            Container(
-                margin: EdgeInsets.only(right: 10.auto),
-                width: 20.auto,
-                height: 20.auto,
-                child: Image.asset("images/referFriend/ic_link.png")),
-            Text(
-              "yg.ck881.com/en-US/a/m1189",
-              style: TextStyle(color: CustomColor.theme_bar_gradient_2, fontSize: 14.auto),
-            ),
-            Spacer(),
-            Container(
-              padding: EdgeInsets.zero,
-              height: 25.auto,
-              child: ColorButton(
-                text: Text(
-                  "COPY",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.white, fontSize: 14.auto),
+            Expanded(
+              flex: 3,
+              child: Container(
+                margin: EdgeInsets.only(right: 3.auto),
+                child: Text(
+                  getTranslatedText("affiliate_link"),
+                  style: TextStyle(color: CustomColor.theme_button_disable_bg, fontSize: 16.auto),
                 ),
-                onClick: () => {},
-                isEnabled: true,
-                color: CustomColor.theme_bar_gradient_2,
-                radius: 20,
-                width: 50.auto,
-                padding: MaterialStateProperty.all(EdgeInsets.zero),
+              ),
+            ),
+            Expanded(
+              flex: 8,
+              child: Container(
+                child: AutoSizeText(
+                  affiliateUrl ?? "",
+                  style: TextStyle(
+                    color: CustomColor.theme_bar_gradient_2,
+                  ),
+                  maxFontSize: 11,
+                  maxLines: 2,
+                  stepGranularity: 1,
+                  minFontSize: 5,
+                ),
+              ),
+            ),
+            Expanded(
+              flex: 2,
+              child: InkWell(
+                onTap: () {
+                  Clipboard.setData(ClipboardData(text: affiliateUrl ?? ""));
+                  CustomToast.show(getTranslatedText("copy_text"));
+                },
+                child: Container(
+                  padding: EdgeInsets.zero,
+                  margin: EdgeInsets.only(left: 3.auto),
+                  height: 25.auto,
+                  child: ColorButton(
+                    text: Text(
+                      getTranslatedText("copy"),
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Colors.white, fontSize: 14.auto),
+                    ),
+                    onClick: () => {},
+                    isEnabled: true,
+                    color: CustomColor.theme_bar_gradient_2,
+                    radius: 20,
+                    width: 50.auto,
+                    padding: MaterialStateProperty.all(EdgeInsets.zero),
+                  ),
+                ),
               ),
             )
           ],

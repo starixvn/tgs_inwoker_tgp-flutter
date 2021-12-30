@@ -99,7 +99,7 @@
   "retry lagi": "Coba lagi",
   "no_promotion_available": "Tidak ada acara seperti ini",
   "qrcode": "Kode QR Promosi",
-  "my_refer_id": "ID Promosi Saya",
+  "my_refer_id": "ID Referensi Saya",
   "download_qr": "Unduh KODE QR",
   "copied": "disalin",
   "rebate_description": "Deskripsi rabat",
@@ -174,7 +174,7 @@
   "receiver_bank_account": "Rekening Bank Penerima",
   "receiver_bank_number": "Nomor Rekening Bank Penerima",
   "cancel": "Batalkan",
-  "enter_username_error_message": "Panjang akun harus antara 6 dan 32 digit, dan harus kombinasi angka, huruf, dan huruf",
+  "enter_username_error_message": "Panjang akun harus antara 6 dan 16 digit, dan harus kombinasi angka, huruf, dan huruf",
   "enter_password_error_msg": "Panjang password harus antara 6-20 digit, dan harus kombinasi angka, huruf, dan huruf",
   "confirm_password_error_msg": "Konfirmasi kata sandi tidak sesuai dengan kata sandi",
   "confirm_pay_error_msg": "Kata sandi penarikan yang berulang tidak sesuai dengan kata sandi penarikan",
@@ -972,5 +972,9 @@
   "new_update": "Memperbarui",
   "image_size_limit": "Ukuran foto lebih besar dari batas upload, silakan upload lagi",
   "register_terms": "Saya mengonfirmasi bahwa saya berusia di atas 18 tahun dan telah membaca serta menerima kebijakan, pernyataan privasi, syarat dan ketentuan situs web ini.",
-  "empty_promotion": "Tidak ada promosi yang dapat dipilih"
+  "empty_promotion": "Tidak ada promosi yang dapat dipilih",
+  "affiliate_link": "Tautan Sponsor",
+  "affiliate": "Promosi untuk menghasilkan uang",
+  "affiliate_qr_code": "Kode QR Bersponsor",
+  "copy": "Salin"
 }

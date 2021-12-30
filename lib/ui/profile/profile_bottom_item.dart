@@ -10,7 +10,7 @@ import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/ui/base_state.dart';
-import 'package:tgp_flutter/ui/report/report.dart';
+import 'package:tgp_flutter/ui/report/report_view.dart';
 
 import 'animated_dot.dart';
 
@@ -95,7 +95,7 @@ class _ProfileBottomItemState extends BaseState<ProfileBottomItem> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => Report(
+                  builder: (context) => ReportView(
                         tabIndex: widget.navigationID,
                       )));
         }

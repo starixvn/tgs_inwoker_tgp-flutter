@@ -22,8 +22,8 @@ import 'package:tgp_flutter/ui/profile/profile_top_item.dart';
 import 'package:tgp_flutter/ui/profile/profile_view_model.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/ui/profile_info/profile_info.dart';
-import 'package:tgp_flutter/ui/referFriend/refer_friend.dart';
-import 'package:tgp_flutter/ui/report/report.dart';
+import 'package:tgp_flutter/ui/affiliate/affiliate.dart';
+import 'package:tgp_flutter/ui/report/report_view.dart';
 import 'package:tgp_flutter/ui/transfer/wallet_transfer.dart';
 import 'package:tgp_flutter/ui/withdraw/withdraw.dart';
 
@@ -173,7 +173,7 @@ class _ProfileState extends BaseState<Profile> {
                   _buildProfileBottomItem("transfer_history", "ic_account_detail", "transaction", 3),
                   _buildProfileBottomItem("promotion_history", "ic_account_detail", "transaction", 4),
                   _buildProfileBottomItem("manage_card", "ic_card_detail", "main_card", 0),
-                  //_buildProfileBottomItem("customer_service", "ic_customer_service", "customer_service", 0),
+                  _buildProfileBottomItem("affiliate", "ic_refer_friend", "affiliate", 0),
                   //_buildProfileBottomItem("frequent_question", "ic_profile_question", "frequent_question", 0),
                   _buildProfileBottomItem("language", "ic_lang", "language", 0),
                 ],

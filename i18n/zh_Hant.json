@@ -973,5 +973,9 @@
   "new_update": "更新",
   "image_size_limit": "照片尺寸大於上傳限制，請重新上傳",
   "register_terms": "我確認我已年滿18歲，並已閱讀和接受本網站的策略丶隱私聲明，條款及條件。",
-  "empty_promotion": "沒有活動可選"
+  "empty_promotion": "沒有活動可選",
+  "affiliate_link": "推廣鏈接",
+  "affiliate": "推廣賺錢",
+  "affiliate_qr_code": "推廣二維碼",
+  "copy": "拷貝"
 }

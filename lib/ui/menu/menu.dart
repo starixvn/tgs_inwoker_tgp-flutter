@@ -11,7 +11,7 @@ import 'package:tgp_flutter/ui/card/main_card.dart';
 import 'package:tgp_flutter/ui/deposit/deposit.dart';
 import 'package:tgp_flutter/ui/home/home.dart';
 import 'package:tgp_flutter/ui/message/message_view.dart';
-import 'package:tgp_flutter/ui/report/report.dart';
+import 'package:tgp_flutter/ui/report/report_view.dart';
 import 'package:tgp_flutter/ui/transfer/wallet_transfer.dart';
 import 'package:tgp_flutter/ui/withdraw/withdraw.dart';
 

@@ -16,6 +16,7 @@ UserProfile _$UserProfileFromJson(Map<String, dynamic> json) => UserProfile(
       json['issetpaypassword'] as bool?,
       json['identityauthentication'] as bool?,
       json['viplevel'] as int?,
+      json['playercode'] as String?,
     );
 
 Map<String, dynamic> _$UserProfileToJson(UserProfile instance) =>
@@ -29,4 +30,5 @@ Map<String, dynamic> _$UserProfileToJson(UserProfile instance) =>
       'issetpaypassword': instance.isSetPayPassword,
       'identityauthentication': instance.identityAuthentication,
       'viplevel': instance.vipLevel,
+      'playercode': instance.playerCode,
     };
