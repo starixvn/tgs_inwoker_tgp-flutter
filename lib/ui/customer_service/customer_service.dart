@@ -52,7 +52,7 @@ class _CustomerServiceState extends BaseState<CustomerService> {
                 ),
                 centerTitle: true,
                 title: Text(
-                  getTranslatedText("customer_service"),
+                  getTranslatedText("customer_service") ,
                   style: TextStyle(fontSize: 20.auto),
                 ),
                 leading: IconButton(

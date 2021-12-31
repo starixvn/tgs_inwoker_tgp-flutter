@@ -43,9 +43,7 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
             Navigator.of(context).pushNamedAndRemoveUntil(RoutePath.empty, (Route<dynamic> route) => false);
             Navigator.of(context).pushNamed(RoutePath.blacklistedUser);
           });
-        }
-
-        else if (eventResult.errorMsgId != null) {
+        } else if (eventResult.errorMsgId != null) {
           if (eventResult.errorMsgId == 'UnderMaintenance') {
             WidgetsBinding.instance!.addPostFrameCallback((_) {
               Navigator.of(context).pushReplacementNamed(RoutePath.maintenance);
@@ -58,17 +56,17 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
         } else {
           _showErrorMessage(eventResult);
         }
-      }  else if (eventResult.isMaintenance) {
+      } else if (eventResult.isMaintenance) {
         WidgetsBinding.instance!.addPostFrameCallback((_) {
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
                   builder: (context) => Maintenance(
-                    isShowCS: true,
-                    isShowsAppBar: false,
-                  )),
-                  (Route<dynamic> route) => false);
+                        isShowCS: true,
+                        isShowsAppBar: false,
+                      )),
+              (Route<dynamic> route) => false);
         });
-      }else if (eventResult.isSuccess) {
+      } else if (eventResult.isSuccess) {
         if (isAutoHideLoading) ProgressDialog.hide();
         if (isRequireResult) {
           onSuccess(eventResult.result);
@@ -142,7 +140,12 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
 
   getCurrentLanguage() {
     var list = LanguageProvider().list;
-    Language? deviceLanguage = list.singleWhere((e) => e.locale == Localizations.localeOf(context));
-    return deviceLanguage;
+    Language? deviceLanguage;
+    if (list.length==1) {
+      return list.first;
+    } else {
+      deviceLanguage = list.singleWhere((e) => e.locale == Localizations.localeOf(context));
+      return deviceLanguage;
+    }
   }
 }

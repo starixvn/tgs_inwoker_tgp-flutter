@@ -26,7 +26,8 @@ class CardViewModel extends BaseViewModel {
   var getBankCardListApiState, getWithdrawalInfoListApiState, addBankCardApiState, deleteBankCardApiState;
   Map<BankType, List<WithdrawalInfo>> bankTypeList = new Map<BankType, List<WithdrawalInfo>>();
   List? bankCardList, withdrawalInfoList;
-  BankType pBankType = BankType.THIRD_PARTY;
+  BankType? pBankType;
+
   WithdrawalInfo? pWithdrawalInfo;
 
   getBankCardList() async {
@@ -50,15 +51,18 @@ class CardViewModel extends BaseViewModel {
     return getWithdrawalInfoListApiState;
   }
 
-  onSelectedBankType(BankType bankType) async {
-    if (bankTypeList == null || bankTypeList.isEmpty) await getWithdrawalInfoList();
-    pBankType = bankType;
-    withdrawalInfoList = (bankTypeList[bankType])!;
+  onSelectedBankType(BankType? bankType) async {
+    if (bankTypeList.isEmpty) await getWithdrawalInfoList();
+    if (bankType == null && pBankType == null)
+      pBankType = bankTypeList.keys.first;
+    else
+      pBankType = bankType;
+    withdrawalInfoList = (bankTypeList[pBankType])!;
     notifyListeners();
   }
 
   onSelectedWithdrawalInfo({WithdrawalInfo? withdrawalInfo}) async {
-    if (bankTypeList == null || bankTypeList.isEmpty) await getWithdrawalInfoList();
+    if (bankTypeList.isEmpty) await getWithdrawalInfoList();
     if (withdrawalInfo == null)
       pWithdrawalInfo = withdrawalInfoList!.first;
     else
@@ -68,7 +72,7 @@ class CardViewModel extends BaseViewModel {
 
   addBankCard({String? address, bankAccount, bankName, name, bankBranch, phone, realName}) async {
     setLoading();
-    addBankCardApiState = await bankRepo.addBankCard(pWithdrawalInfo!.channelId, pBankType,
+    addBankCardApiState = await bankRepo.addBankCard(pWithdrawalInfo!.channelId, pBankType!,
         address: address,
         bankAccount: bankAccount,
         bankName: bankName,

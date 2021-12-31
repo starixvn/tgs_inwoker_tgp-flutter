@@ -299,12 +299,12 @@ class _AddCardState extends BaseState<AddCard> {
   }
 
   onSelectedBankType({BankType? bankType}) async {
-    if (bankType == null) bankType = _vm.pBankType;
     await _vm.onSelectedBankType(bankType);
-    onSelectedWithdrawalInfo();
+    if (bankType == null) bankType = _vm.pBankType;
+    await onSelectedWithdrawalInfo();
     setState(() {
       // currBankType = bankType;
-      bankTypePickerText = bankType!.getName(context);
+      bankTypePickerText =  _vm.pBankType!.getName(context);
     });
   }
 

@@ -4,6 +4,7 @@ import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/custom/custom_text_form_field.dart';
 import 'package:tgp_flutter/custom/custom_toast.dart';
 import 'package:tgp_flutter/data/provider/input_validation_provider.dart';
+import 'package:tgp_flutter/environment_config.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
@@ -99,28 +100,28 @@ class _WechatState extends BaseState<Wechat> {
 
   _buildFooterText() => Visibility(
         visible: _vm.userProfile.wechat != null,
-        child: Container(
-          alignment: Alignment.center,
-          child: Wrap(
-            children: [
-              Text(
-                getTranslatedText("edit_wechat_cs"),
-                style: TextStyle(fontSize: 12.auto, color: CustomColor.theme_title_text_color),
-              ),
-              InkWell(
-                onTap: () {
-                  setState(() {
+        child: InkWell(
+          onTap: () {
+            EnvironmentConfig.brandName == "MESS8"
+                ? Navigator.of(context).pushNamed("/customer_service")
+                : setState(() {
                     isTextFieldEnabled = true;
                     isButtonEnabled = true;
                     buttonText = getTranslatedText("edit");
                     _focusNode.requestFocus();
                   });
-                },
-                child: Text(
-                  getTranslatedText("here"),
-                  style: TextStyle(fontSize: 12.auto, color: CustomColor.theme_bar_gradient_2),
-                ),
-              )
+          },
+          child: Wrap(
+            children: [
+              Text(
+                getTranslatedText("edit_wechat_cs"),
+                style: TextStyle(fontSize: 12.auto),
+              ),
+              Text(
+                EnvironmentConfig.brandName == "MESS8" ? getTranslatedText("online_cs") : getTranslatedText("here"),
+                style: TextStyle(
+                    decoration: TextDecoration.underline, color: CustomColor.theme_bar_gradient_1, fontSize: 12.auto),
+              ),
             ],
           ),
         ),

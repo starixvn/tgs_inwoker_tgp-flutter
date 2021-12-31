@@ -1,11 +1,13 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:tgp_flutter/custom/custom_dialog.dart';
 import 'package:tgp_flutter/custom/custom_picker_dialog.dart';
 import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/custom/custom_toast.dart';
 import 'package:tgp_flutter/entity/bank_card.dart';
 import 'package:tgp_flutter/entity/bank_type.dart';
+import 'package:tgp_flutter/environment_config.dart';
 import 'package:tgp_flutter/extension/format.dart';
 import 'package:tgp_flutter/extension/screen_apis.dart';
 import 'package:tgp_flutter/main.dart';
@@ -57,19 +59,24 @@ class _MainCardState extends BaseState<MainCard> {
                           Wrap(
                             children: List.generate(_vm.bankCardList!.length, (index) {
                               return Container(
-                                  child: Dismissible(
-                                key: UniqueKey(),
-                                child: _buildBankCardItem(_vm.bankCardList![index]),
-                                background: _swipeLeftBackground(),
-                                direction: DismissDirection.endToStart,
-                                behavior: HitTestBehavior.deferToChild,
-                                onDismissed: (_) {
-                                  _delete(_vm.bankCardList![index], index);
-                                },
-                              ));
+                                  child: EnvironmentConfig.brandName != "MESS8"
+                                      ? Dismissible(
+                                          key: UniqueKey(),
+                                          child: _buildBankCardItem(_vm.bankCardList![index]),
+                                          background: _swipeLeftBackground(),
+                                          direction: DismissDirection.endToStart,
+                                          behavior: HitTestBehavior.deferToChild,
+                                          onDismissed: (_) {
+                                            EnvironmentConfig.brandName == "MESS8"
+                                                ?
+                                            _showDialog()
+                                            : _delete(_vm.bankCardList![index], index);
+                                          },
+                                        )
+                                      : _buildBankCardItem(_vm.bankCardList![index]));
                             }),
                           ),
-                          _buildDeleteHintText(),
+                          _buildHintText(),
                           _buildAddCardItem(),
                         ],
                       ),
@@ -177,34 +184,43 @@ class _MainCardState extends BaseState<MainCard> {
         ),
       );
 
-  _buildDeleteHintText() => Container(
-        margin: EdgeInsets.only(right: 23.auto, top: 10.auto),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            ImageIcon(
-              AssetImage(
-                "images/card/ic_card_delete_hint.png",
+  _buildHintText() =>
+      InkWell(
+        onTap: () {
+          setState(() {});
+        },
+        child: Container(
+          margin: EdgeInsets.only(right: 23.auto, top: 10.auto),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              ImageIcon(
+                AssetImage(
+                  "images/card/ic_card_delete_hint.png",
+                ),
+                size: 15.auto,
+                color: CustomColor.theme_button_disable_bg,
               ),
-              size: 15.auto,
-              color: CustomColor.theme_button_disable_bg,
-            ),
-            Container(
-              margin: EdgeInsets.only(left: 5.auto),
-              child: Text(
-                getTranslatedText("slide_to_delete_card"),
-                style: TextStyle(fontSize: 9.auto, color: CustomColor.theme_button_disable_bg),
+              Container(
+                margin: EdgeInsets.only(left: 5.auto),
+                child: Text(
+                  getTranslatedText("slide_to_delete_card"),
+                  style: TextStyle(fontSize: 9.auto, color: CustomColor.theme_button_disable_bg),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       );
 
   _buildAddCardItem() => InkWell(
-        onTap: () async {
-          await Navigator.of(context).pushNamed("/add_card");
-          _getBankCardList(); //reinitdata after pop from  add card
-        },
+        onTap:  EnvironmentConfig.brandName != "MESS8" && _vm.bankCardList!.length != 1
+            ? () async {
+                await Navigator.of(context).pushNamed("/add_card");
+                _getBankCardList(); //reinitdata after pop from  add card
+              }
+            :
+            () => _showDialog(),
         child: Container(
           margin: EdgeInsets.only(top: 15.auto, left: 5.auto, right: 5.auto, bottom: 20.auto),
           child: DottedBorder(
@@ -216,7 +232,7 @@ class _MainCardState extends BaseState<MainCard> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Expanded(
-                    flex:8,
+                    flex: 8,
                     child: Container(
                       margin: EdgeInsets.symmetric(vertical: 20.auto, horizontal: 20.auto),
                       child: Column(
@@ -238,7 +254,7 @@ class _MainCardState extends BaseState<MainCard> {
                     ),
                   ),
                   Expanded(
-                    flex:2,
+                    flex: 2,
                     child: Container(
                         margin: EdgeInsets.symmetric(horizontal: 15.auto),
                         child: ImageIcon(
@@ -290,6 +306,18 @@ class _MainCardState extends BaseState<MainCard> {
         return bankCard.bankDetail?.bankAccount;
     }
   }
+
+  _showDialog() => showDialog(
+        context: context,
+        builder: (BuildContext context) => CustomDialog(
+          description: getTranslatedText("edit_bank_card_cs"),
+          buttonText1: "确认",
+          onClick: () {
+            Navigator.pop(context);
+            _getBankCardList();//reinite data after pop
+          },
+        ),
+      );
 
   _handleApiState() async {
     handleApiState(_vm.getBankCardListApiState, isAutoHideLoading: isInitLoading, onSuccess: () {

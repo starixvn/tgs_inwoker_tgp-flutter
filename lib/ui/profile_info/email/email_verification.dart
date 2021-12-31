@@ -7,6 +7,7 @@ import 'package:tgp_flutter/custom/custom_toast.dart';
 import 'package:tgp_flutter/custom/otp_text_form_field.dart';
 import 'package:tgp_flutter/custom/outline_border_button.dart';
 import 'package:tgp_flutter/data/provider/input_validation_provider.dart';
+import 'package:tgp_flutter/environment_config.dart';
 import 'package:tgp_flutter/provider/provider_widget.dart';
 import 'package:tgp_flutter/route_path.dart';
 import 'package:tgp_flutter/src/custom_color.dart';
@@ -58,7 +59,7 @@ class _EmailVerificationState extends BaseState<EmailVerification> {
                     _buildTextFormField(),
                     _buildOtpTextFormField(),
                     _buildButton(),
-                  _buildEditEmailText()
+                    _buildEditEmailText()
                   ],
                 ),
               ));
@@ -141,26 +142,29 @@ class _EmailVerificationState extends BaseState<EmailVerification> {
         radius: 9.6,
       ));
 
-  _buildEditEmailText() => Wrap(
-    children: [
-      Text(
-        getTranslatedText("edit_email_cs"),
-      ),
-      InkWell(
-        onTap: () {
-          Navigator.of(context)
-              .pushNamed(RoutePath.editEmail)
-              .then((value) => WidgetsBinding.instance!.addPostFrameCallback((_) {
-            _getUserProfile();
-          }));
-        },
-        child: Text(
-          getTranslatedText("here"),
-          style: TextStyle(decoration: TextDecoration.underline, color: CustomColor.theme_bar_gradient_1),
-        ),
-      ),
-    ],
-  );
+  _buildEditEmailText() => InkWell(
+      onTap: () {
+        EnvironmentConfig.brandName == "MESS8"
+            ? Navigator.of(context).pushNamed("/customer_service")
+            : Navigator.of(context)
+                .pushNamed(RoutePath.editEmail)
+                .then((value) => WidgetsBinding.instance!.addPostFrameCallback((_) {
+                      _getUserProfile();
+                    }));
+      },
+      child: Wrap(
+        children: [
+          Text(
+            getTranslatedText("edit_email_cs"),
+            style: TextStyle(fontSize: 12.auto),
+          ),
+          Text(
+            EnvironmentConfig.brandName == "MESS8" ? getTranslatedText("online_cs") : getTranslatedText("here"),
+            style: TextStyle(
+                decoration: TextDecoration.underline, color: CustomColor.theme_bar_gradient_1, fontSize: 12.auto),
+          ),
+        ],
+      ));
 
   _onTextChange() {
     setState(() {
@@ -223,10 +227,11 @@ class _EmailVerificationState extends BaseState<EmailVerification> {
         _getUserProfile();
         if (widget.popDirection == 1) Navigator.of(context).pop(true);
       });
-    }, onError: (_){
-      if(_vm.emailVerifyApiState.errorCode == 409){
+    }, onError: (_) {
+      if (_vm.emailVerifyApiState.errorCode == 409) {
         CustomToast.show(getTranslatedText("email_duplicate"));
-      }else showApiErrorMessage(_vm.emailVerifyApiState);
+      } else
+        showApiErrorMessage(_vm.emailVerifyApiState);
     });
   }
 }
