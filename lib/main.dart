@@ -106,9 +106,6 @@ class _MyAppState extends BaseState<MyApp> {
     super.initState();
   }
 
-/*  @override
-  void didChangeDependencies() {
-    WidgetsBinding.instance!.addPostFrameCallback((_) {*/
   _getLocale() {
     LanguageProvider().getLocale().then((locale) {
       setState(() {
@@ -116,10 +113,6 @@ class _MyAppState extends BaseState<MyApp> {
       });
     });
   }
-
-  /*);
-    super.didChangeDependencies();
-  }*/
 
   Future<EventResult<List<LanguageOption>>> initData() async {
     if (firstInit) {
@@ -173,7 +166,13 @@ class _MyAppState extends BaseState<MyApp> {
                   if (!snapshot.hasData) {
                     return MaterialApp(debugShowCheckedModeBanner: false, home: Splash());
                   } else if (snapshot.data!.isMaintenance) {
-                    return MaterialApp(debugShowCheckedModeBanner: false, home: Maintenance(isShowsAppBar: false));
+                    return MaterialApp(
+                      debugShowCheckedModeBanner: false,
+                      home: Maintenance(
+                        isShowsAppBar: false,
+                      ),
+
+                    );
                   } else {
                     return GestureDetector(
                       onTap: () {
@@ -258,7 +257,8 @@ class _MyAppState extends BaseState<MyApp> {
   _handleApiState() {
     handleApiState(_vm.getLanguageApiState, isAutoHideLoading: false, isSplashScreen: true, onSuccess: () {});
     handleApiState(_vm.getBrandLogoApiState, isAutoHideLoading: false, isSplashScreen: true, onSuccess: () {});
-    handleApiState(_vm.authApiState, isAutoHideLoading: false, isSplashScreen: true, onSuccess: () {});
+    handleApiState(_vm.authApiState,
+        isAutoHideLoading: false, isSplashScreen: true, maintenanceAction: 1, onSuccess: () {});
   }
 }
 

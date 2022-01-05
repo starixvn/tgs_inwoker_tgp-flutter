@@ -61,29 +61,37 @@ class _HomeUserInfoViewState extends BaseState<HomeUserInfoView> {
         padding: EdgeInsets.only(top: 5.auto, left: 10.auto, right: 10.auto, bottom: 5.auto),
         child: Row(
           children: [
-            _buildWelcomeText(),
-            Visibility(
-                visible: widget.userProfile != null,
-                child: Wrap(
-                  crossAxisAlignment: WrapCrossAlignment.center,
-                  children: [
-                    Text(
-                      widget.userProfile?.username ?? "",
-                      style: TextStyle(color: CustomColor.theme_label_text_highlight_color, fontSize: 10.auto),
-                      textAlign: TextAlign.center,
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(left: 3.auto),
-                      child: Text(
-                        "(VIP ${widget.userProfile?.vipLevel ?? 0}) ",
-                        style: TextStyle(color: Colors.white, fontSize: 10.auto),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  ],
-                )),
+            Expanded(
+              flex:3,
+              child: Wrap(
+                //mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  _buildWelcomeText(),
+                  Visibility(
+                      visible: widget.userProfile != null,
+                      child: Wrap(
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        children: [
+                          Text(
+                            widget.userProfile?.username ?? "",
+                            style: TextStyle(color: CustomColor.theme_label_text_highlight_color, fontSize: 10.auto),
+                            textAlign: TextAlign.center,
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(left: 3.auto),
+                            child: Text(
+                              "(VIP ${widget.userProfile?.vipLevel ?? 0}) ",
+                              style: TextStyle(color: Colors.white, fontSize: 10.auto),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ],
+                      )),
+                ],
+              ),
+            ),
             Spacer(),
-            _buildProfileInfoText()
+            Expanded(flex: 1, child: _buildProfileInfoText())
           ],
         ),
       );
@@ -111,15 +119,21 @@ class _HomeUserInfoViewState extends BaseState<HomeUserInfoView> {
         ),
       );
 
-  _buildWelcomeText() => Text(
+  _buildWelcomeText() => AutoSizeText(
         (widget.userProfile != null ? getTranslatedText("welcome_back") : getTranslatedText("home_login_hint")) ?? "",
         style: TextStyle(color: Colors.white, fontSize: 10.auto),
+        minFontSize: 5,
+        maxLines: 1,
+        stepGranularity: 1,
       );
 
-  _buildProfileInfoText() => Text(
+  _buildProfileInfoText() => AutoSizeText(
         getTranslatedText("profile_detail"),
         style: TextStyle(color: Colors.white, fontSize: 10.auto),
         textAlign: TextAlign.right,
+        minFontSize: 8,
+        maxLines: 1,
+        stepGranularity: 1,
       );
 
   _buildWalletText() => Expanded(

@@ -7,6 +7,10 @@ class InputValidationProvider {
     return RegExp("^.{6,20}\$", caseSensitive: false, multiLine: false).hasMatch(password);
   }
 
+  validateInputLength(String input) {
+    return RegExp("^.{0,256}\$", caseSensitive: false, multiLine: false).hasMatch(input);
+  }
+
   validateUsernamePassword(String username) {
     return RegExp(r'^[a-zA-Z0-9]+$', caseSensitive: true, multiLine: false).hasMatch(username);
   }

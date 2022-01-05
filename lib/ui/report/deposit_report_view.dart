@@ -78,7 +78,7 @@ class DepositReportViewState extends BaseState<DepositReportView> {
             child: ReportCellItem(
               reportList: _vm.reportList!,
               list: [
-                _vm.reportList![index].id,
+                "",
                 _vm.reportList![index].orderNo,
                 Format().dateTimeFormat(_vm.reportList![index].createdOn),
                 _vm.reportList![index].status.getName(context),

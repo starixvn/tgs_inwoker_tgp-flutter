@@ -48,6 +48,7 @@ class _GameWebState extends BaseState<GameWeb> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
+        //handle full screen web view
         _webViewController!.goBack();
         _webViewController!.goBack();
         return true;

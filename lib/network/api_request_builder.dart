@@ -29,7 +29,7 @@ class ApiRequestBuilder<T> extends ChangeNotifier {
   bool isAutoHeader;
 
   ApiRequestBuilder(
-      {this.isAuthorization = true,
+       {this.isAuthorization = true,
       this.isJWTAuthRequest = false,
       this.method = HttpMethod.POST,
       this.endPoint,

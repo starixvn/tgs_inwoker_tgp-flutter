@@ -977,6 +977,10 @@
   "affiliate": "推广赚钱",
   "affiliate_qr_code": "推广二维码",
   "copy": "拷贝",
-  "edit_bank_card_cs": "无法添加，编辑和删除。如需帮助，请联系客服。"
-
+  "edit_bank_card_cs": "无法添加，编辑和删除。如需帮助，请联系客服。",
+  "doc_no": "文件号码",
+  "enter_doc_no_hint": "请输入文件号码",
+  "input_length_error": "栏位输入长度必须少于256位",
+  "full_name": "全名",
+  "enter_full_name_hint": "请输入全名"
 }

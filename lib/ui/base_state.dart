@@ -32,10 +32,15 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
     bool isRequireResult = false,
     bool isCheckSessionExpired = true,
     bool isSplashScreen = false,
+    Function? onLogout,
+    int? maintenanceAction,
   }) async {
     if (eventResult == null) return;
     if (!eventResult.isHandled) {
-      if (eventResult.isError) {
+      if (onLogout != null) {
+        //force user to logout even api return error or maintenance
+        onLogout();
+      } else if (eventResult.isError) {
         if (isAutoHideLoading) ProgressDialog.hide();
         if (eventResult.errorCode == 210) {
           UserRepository.getSingleton().clearSession();
@@ -45,10 +50,7 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
           });
         } else if (eventResult.errorMsgId != null) {
           if (eventResult.errorMsgId == 'UnderMaintenance') {
-            WidgetsBinding.instance!.addPostFrameCallback((_) {
-              Navigator.of(context).pushReplacementNamed(RoutePath.maintenance);
-              Navigator.of(context).popAndPushNamed(RoutePath.maintenance);
-            });
+            _getMaintenanceAction(maintenanceAction ?? 0);
           } else if (onError != null) {
             onError(eventResult.error);
           } else
@@ -57,15 +59,7 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
           _showErrorMessage(eventResult);
         }
       } else if (eventResult.isMaintenance) {
-        WidgetsBinding.instance!.addPostFrameCallback((_) {
-          Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(
-                  builder: (context) => Maintenance(
-                        isShowCS: true,
-                        isShowsAppBar: false,
-                      )),
-              (Route<dynamic> route) => false);
-        });
+        _getMaintenanceAction(maintenanceAction ?? 0);
       } else if (eventResult.isSuccess) {
         if (isAutoHideLoading) ProgressDialog.hide();
         if (isRequireResult) {
@@ -75,6 +69,51 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
       }
     }
     eventResult.isHandled = true;
+  }
+
+  _getMaintenanceAction(int index) {
+    switch (index) {
+      case 0:
+        //push maintenance page
+        WidgetsBinding.instance!.addPostFrameCallback((_) {
+          Navigator.of(context).pushReplacementNamed(RoutePath.maintenance);
+          Navigator.of(context).popAndPushNamed(RoutePath.maintenance);
+        });
+        break;
+      case 1:
+        //remove all routes
+        WidgetsBinding.instance!.addPostFrameCallback((_) {
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                  builder: (context) => Maintenance(
+                        isShowCS: true,
+                        isShowsAppBar: false,
+                      )),
+              (Route<dynamic> route) => false);
+        });
+        break;
+      case 2:
+        //pop dialog
+        WidgetsBinding.instance!.addPostFrameCallback((_) {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) => CustomDialog(
+              description: "维护中：该终公司/公司。平台/游戏商/游戏正在维护中。",
+              buttonText1: getTranslatedText("confirm"),
+              onClick: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          );
+        });
+        break;
+      default:
+        WidgetsBinding.instance!.addPostFrameCallback((_) {
+          Navigator.of(context).pushReplacementNamed(RoutePath.maintenance);
+          Navigator.of(context).popAndPushNamed(RoutePath.maintenance);
+        });
+        break;
+    }
   }
 
   buildProgressDialog(String? url) => Center(
@@ -141,7 +180,7 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
   getCurrentLanguage() {
     var list = LanguageProvider().list;
     Language? deviceLanguage;
-    if (list.length==1) {
+    if (list.length == 1) {
       return list.first;
     } else {
       deviceLanguage = list.singleWhere((e) => e.locale == Localizations.localeOf(context));

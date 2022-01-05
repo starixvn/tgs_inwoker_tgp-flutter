@@ -75,7 +75,7 @@ class WithdrawReportViewState extends BaseState<WithdrawReportView> {
             child: ReportCellItem(
               reportList: _vm.withdrawReportList!,
               list: [
-                _vm.withdrawReportList![index].id,
+                "",
                 _vm.withdrawReportList![index].orderNo,
                 Format().dateTimeFormat(_vm.withdrawReportList![index].createdOn),
                 _vm.withdrawReportList![index].status.getName(context),

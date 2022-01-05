@@ -59,8 +59,7 @@ class _MainCardState extends BaseState<MainCard> {
                           Wrap(
                             children: List.generate(_vm.bankCardList!.length, (index) {
                               return Container(
-                                  child: EnvironmentConfig.brandName != "MESS8"
-                                      ? Dismissible(
+                                  child: Dismissible(
                                           key: UniqueKey(),
                                           child: _buildBankCardItem(_vm.bankCardList![index]),
                                           background: _swipeLeftBackground(),
@@ -73,7 +72,7 @@ class _MainCardState extends BaseState<MainCard> {
                                             : _delete(_vm.bankCardList![index], index);
                                           },
                                         )
-                                      : _buildBankCardItem(_vm.bankCardList![index]));
+                                      );
                             }),
                           ),
                           _buildHintText(),

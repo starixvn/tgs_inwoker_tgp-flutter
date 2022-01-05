@@ -224,7 +224,7 @@ class _ProfileState extends BaseState<Profile> {
   _handleApiState() {
     handleApiState(_vm.logoutApiState, onSuccess: () {
       _navigateToLogin();
-    }, onError: (error, errorCode) {
+    }, onLogout: () {
       _navigateToLogin();
     });
     handleApiState(_vm.getWalletBalanceApiState, isAutoHideLoading: false, onSuccess: () {});

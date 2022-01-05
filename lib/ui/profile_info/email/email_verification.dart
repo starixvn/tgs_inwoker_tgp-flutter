@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tgp_flutter/custom/color_button.dart';
 import 'package:tgp_flutter/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter/custom/custom_tab_bar.dart';
@@ -180,7 +181,7 @@ class _EmailVerificationState extends BaseState<EmailVerification> {
     });
   }
 
-  _getUserProfile() {
+  _getUserProfile() async{
     var _email = _vm.userProfile.email;
     setState(() {
       if (_email != null) {

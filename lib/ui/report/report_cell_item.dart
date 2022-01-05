@@ -94,11 +94,11 @@ class _ReportCellItemState extends BaseState<ReportCellItem> {
           margin: EdgeInsets.symmetric(horizontal: 10.auto),
           child: Column(
             children: [
-              widget.list[0].isEmpty
-                  ? Container()
-                  : Column(
-                      children: [
-                        Row(
+              Column(
+                children: [
+                  widget.list[0].isEmpty
+                      ? Container()
+                      : Row(
                           children: [
                             Text(
                               getTranslatedText("order_number"),
@@ -113,26 +113,25 @@ class _ReportCellItemState extends BaseState<ReportCellItem> {
                             )
                           ],
                         ),
-                        Visibility(
-                          visible: widget.isDepositReport || widget.isWithdrawReport,
-                          child: Row(
-                            children: [
-                              Text(
-                                getTranslatedText("gms_order_number"),
-                                style: TextStyle(fontSize: 12, color: Colors.grey[700]),
-                              ),
-                              AutoSizeText(
-                                widget.list[1] ?? "",
-                                style: TextStyle(color: Colors.grey[700]),
-                                minFontSize: 10,
-                                maxFontSize: 12,
-                                stepGranularity: 1,
-                              )
-                            ],
-                          ),
+                  (widget.list[1]?.isEmpty ?? false) && !(widget.isDepositReport || widget.isWithdrawReport)
+                      ? Container()
+                      : Row(
+                          children: [
+                            Text(
+                              getTranslatedText("gms_order_number"),
+                              style: TextStyle(fontSize: 12, color: Colors.grey[700]),
+                            ),
+                            AutoSizeText(
+                              widget.list[1] ?? "",
+                              style: TextStyle(color: Colors.grey[700]),
+                              minFontSize: 10,
+                              maxFontSize: 12,
+                              stepGranularity: 1,
+                            )
+                          ],
                         ),
-                      ],
-                    ),
+                ],
+              ),
               Container(
                 margin: EdgeInsets.only(top: 5.auto),
                 child: Row(

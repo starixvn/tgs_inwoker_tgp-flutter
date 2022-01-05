@@ -133,7 +133,7 @@ class _WechatState extends BaseState<Wechat> {
       setState(() {
         if (wechat != null) {
           if (wechat.isNotEmpty) {
-            _wechatController.text = wechat;
+           _wechatController.text = wechat;
             buttonText = getTranslatedText("verified");
             isButtonEnabled = false;
             isTextFieldEnabled = false;

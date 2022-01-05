@@ -7,7 +7,7 @@ import 'package:tgp_flutter/repository/user_repository.dart';
 class RealNameVerificationViewModel extends BaseViewModel{
   final userRepo = UserRepository.getSingleton();
   final contentRepo = ContentRepository.getSingleton();
-  var idVerifyApiState;
+  var idVerifyApiState, uploadDepositImageApiState;
 
   @override
   List<BaseRepository> get repoList => [userRepo];
@@ -22,5 +22,13 @@ class RealNameVerificationViewModel extends BaseViewModel{
     }else idVerifyApiState = _status;
     setLoading(false);
     return idVerifyApiState;
+  }
+
+  uploadDepositImage(String imageFile, String id) async {
+    setLoading();
+   // uploadDepositImageApiState = await depositRepo.uploadDepositImage(imageFile, id);
+    if (uploadDepositImageApiState.isSuccess) {}
+    setLoading(false);
+    return uploadDepositImageApiState;
   }
 }
