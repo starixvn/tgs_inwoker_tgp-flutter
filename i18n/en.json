@@ -174,7 +174,7 @@
   "receiver_bank_account": "Receiver Bank Account",
   "receiver_bank_number": "Receiver Bank Number",
   "cancel": "Cancel",
-  "enter_username_error_message": "The username length must be between 6 and 32 digits, and must consist of numbers, letters or a combination",
+  "enter_username_error_message": "The username length must be between 6 and 16 digits, and must consist of numbers, letters or a combination",
   "enter_password_error_msg": "The password length must be between of 6-20 digits, and must consist of numbers, letters or a combination",
   "confirm_password_error_msg": "Confirm password not match",
   "confirm_pay_error_msg": "Confirm pay password is not same with pay password",

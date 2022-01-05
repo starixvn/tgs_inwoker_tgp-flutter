@@ -173,7 +173,7 @@
   "receiver_bank_account": "Nhận Tài khoản Ngân hàng",
   "receiver_bank_number": "Số Tài khoản Ngân hàng Nhận",
   "cancel": "Hủy bỏ",
-  "enter_username_error_message": "Độ dài tài khoản phải từ 6 đến 32 chữ số và nó phải bao gồm số, chữ cái và kết hợp",
+  "enter_username_error_message": "Độ dài tài khoản phải từ 6 đến 16 chữ số và nó phải bao gồm số, chữ cái và kết hợp",
   "enter_password_error_msg": "Độ dài mật khẩu phải từ 6-20 chữ số và nó phải là sự kết hợp của số, chữ cái và chữ cái",
   "confirm_password_error_msg": "Xác nhận mật khẩu không phù hợp với mật khẩu",
   "confirm_pay_error_msg": "Mật khẩu rút tiền lặp lại không nhất quán với mật khẩu rút tiền",
