@@ -487,7 +487,7 @@ class _WalletTransferState extends BaseState<WalletTransfer> with TickerProvider
     if (_vm.isFetchingBalance) {
       if (!_controller!.isAnimating) _controller!.forward(from: 0.0);
     }
-    handleApiState(_vm.transferWalletApiState,maintenanceAction: 2, onSuccess: () {
+    handleApiState(_vm.transferWalletApiState,isMaintenanceDialog : true, onSuccess: () {
       CustomToast.show(getTranslatedText("success"));
 
       WidgetsBinding.instance!.addPostFrameCallback((_) {

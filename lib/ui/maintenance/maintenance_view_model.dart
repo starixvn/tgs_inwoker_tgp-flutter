@@ -23,7 +23,7 @@ class MaintenanceViewModel extends BaseViewModel{
   getBrandCommunication() async {
     setLoading();
     getBrandCommunicationApiState = await userRepo.getBrandCommunication();
-    if (getBrandCommunicationApiState.isSuccess) {
+    if (getLiveChatUrlApiState.isSuccess && getLiveChatUrlApiState.result.setting != null) {
       var _list = getBrandCommunicationApiState.result;
       communicationList = _list;
     }

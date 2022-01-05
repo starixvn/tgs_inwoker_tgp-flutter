@@ -122,7 +122,7 @@ class _MyAppState extends BaseState<MyApp> {
       _vm.getApiError();
       _vm.getBrandLogo();
       _vm.resumeIfNeed();
-      // _vm.autoLogin();
+       _vm.autoLogin();
       setState(() {
         firstInit = false;
       });
@@ -162,8 +162,7 @@ class _MyAppState extends BaseState<MyApp> {
           } else {
             return FutureBuilder(
                 future: initData(),
-                builder: (BuildContext context, AsyncSnapshot<EventResult<List<LanguageOption>>> snapshot) {
-                  if (!snapshot.hasData) {
+                builder: (BuildContext context, AsyncSnapshot<EventResult<dynamic>> snapshot) {                  if (!snapshot.hasData) {
                     return MaterialApp(debugShowCheckedModeBanner: false, home: Splash());
                   } else if (snapshot.data!.isMaintenance) {
                     return MaterialApp(
@@ -186,8 +185,7 @@ class _MyAppState extends BaseState<MyApp> {
                         title: appTitle,
                         initialRoute: '/',
                         routes: {
-                          RoutePath.empty: (context) => MyHomePage(),
-                          RoutePath.home: (context) => MyHomePage(),
+                          RoutePath.empty: (context) => MyHomePage(versionUpdate: _vm.versionUpdateState,),                          RoutePath.home: (context) => MyHomePage(),
                           RoutePath.login: (context) => Login(),
                           RoutePath.menu: (context) => Menu(),
                           RoutePath.profile: (context) => Profile(),
@@ -223,8 +221,7 @@ class _MyAppState extends BaseState<MyApp> {
                           // RoutePath.promotionItemDetails: (context) => PromotionItemDetails(),
                           RoutePath.csWebView: (context) => CustomerServiceWebView(),
                           RoutePath.csQrCode: (context) => CustomerServiceQrCode(),
-                          RoutePath.maintenance: (context) => Maintenance(),
-                          RoutePath.blacklistedUser: (context) => BlacklistedUser(),
+                          RoutePath.maintenance: (context) => Maintenance(),                          RoutePath.blacklistedUser: (context) => BlacklistedUser(),
                           RoutePath.phoneReVerification: (context) => PhoneReVerification(),
                           RoutePath.editEmail: (context) => EditEmail(),
                         },
@@ -258,7 +255,7 @@ class _MyAppState extends BaseState<MyApp> {
     handleApiState(_vm.getLanguageApiState, isAutoHideLoading: false, isSplashScreen: true, onSuccess: () {});
     handleApiState(_vm.getBrandLogoApiState, isAutoHideLoading: false, isSplashScreen: true, onSuccess: () {});
     handleApiState(_vm.authApiState,
-        isAutoHideLoading: false, isSplashScreen: true, maintenanceAction: 1, onSuccess: () {});
+        isAutoHideLoading: false, isSplashScreen: true, onSuccess: () {});
   }
 }
 
